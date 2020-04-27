@@ -4,7 +4,9 @@ import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/Suppo
 
 import { store } from '../../store';
 import { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
+
 import { SESSION_EXPIRED } from '@streakoid/streakoid-shared/lib/actions/types';
+import * as RNLocalize from 'react-native-localize';
 
 export const apiUrl = 'https://qz6l18dx09.execute-api.eu-west-1.amazonaws.com/dev';
 //export const apiUrl = 'http://6196343e.ngrok.io ';
@@ -88,8 +90,7 @@ export const getIdToken = async () => {
 streakodClient.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
         const idToken = await getIdToken();
-        // eslint-disable-next-line no-undef
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const timezone = RNLocalize.getTimeZone();
         if (config.baseURL === apiUrl) {
             config.headers.Authorization = idToken;
             config.headers[SupportedRequestHeaders.Timezone] = timezone || 'Europe/London';
