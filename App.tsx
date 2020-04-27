@@ -212,14 +212,12 @@ class AppContainerComponent extends React.Component<Props> {
 
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)(AppContainerComponent);
 
-export default class App extends React.Component {
-    render(): JSX.Element {
-        return (
-            <Provider store={store}>
-                <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
-                    <AppContainer />
-                </PersistGate>
-            </Provider>
-        );
-    }
-}
+const App = () => (
+    <Provider store={store}>
+        <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
+            <AppContainer />
+        </PersistGate>
+    </Provider>
+);
+
+export default App;

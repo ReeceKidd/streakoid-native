@@ -8,10 +8,11 @@ import { Text, Button, ListItem } from 'react-native-elements';
 import { ActivityIndicator, FlatList } from 'react-native';
 import { AppState } from '../../store';
 import { NoteWithClientData } from '@streakoid/streakoid-shared/lib/reducers/notesReducer';
-import { FontAwesome } from '@expo/vector-icons';
 import { Spacer } from './Spacer';
 import { NavigationEvents, NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { Screens } from '../screens/Screens';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const notes = state && state.notes && state.notes.notes;
@@ -96,7 +97,7 @@ class NotesComponent extends Component<Props> {
                                 }}
                                 rightElement={
                                     <Button
-                                        icon={<FontAwesome name="times" size={25} style={{ color: 'white' }} />}
+                                        icon={<FontAwesomeIcon icon={faTimes} size={25} style={{ color: 'white' }} />}
                                         buttonStyle={{ backgroundColor: 'red' }}
                                         onPress={() => this.props.deleteNote({ noteId: _id })}
                                         loading={deleteNoteIsLoading}
