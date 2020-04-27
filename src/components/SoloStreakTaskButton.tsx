@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCheckCircle, faCircle } from '@fortawesome/pro-solid-svg-icons';
+import { faCheckCircle, faCircle } from '@fortawesome/pro-light-svg-icons';
 import { Vibration } from 'react-native';
 
 interface SoloStreakTaskButtonProps {
