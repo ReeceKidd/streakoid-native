@@ -14,9 +14,9 @@ interface TeamStreakDetailsProps {
 class TeamStreakDetails extends Component<TeamStreakDetailsProps> {
     renderMemberHasCompletedTaskToday(completedToday: boolean) {
         return completedToday ? (
-            <FontAwesomeIcon icon={faCheckCircle} size={40} color="green" />
+            <FontAwesomeIcon icon={faCheckCircle} size={20} color="green" />
         ) : (
-            <FontAwesomeIcon icon={faTimesCircle} size={40} color="red" />
+            <FontAwesomeIcon icon={faTimesCircle} size={20} color="red" />
         );
     }
 

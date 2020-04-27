@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
     faFacebook,
     faYoutube,
@@ -8,6 +8,7 @@ import {
     faSnapchat,
     faInstagram,
     faReddit,
+    faAmazon,
 } from '@fortawesome/free-brands-svg-icons';
 import {
     faBreadSlice,
@@ -22,8 +23,24 @@ import {
     faFlaskPoison,
     faCoffeeTogo,
     faScanner,
-} from '@fortawesome/pro-solid-svg-icons';
-import {
+    faPhone,
+    faSun,
+    faPhoneRotary,
+    faScarf,
+    faLungs,
+    faMusic,
+    faProcedures,
+    faBookAlt,
+    faCookie,
+    faSkiLift,
+    faSwimmingPool,
+    faScrollOld,
+    faBookSpells,
+    faJackOLantern,
+    faGuitars,
+    faGlobeEurope,
+    faChild,
+    faRunning,
     faBeer,
     faCrow,
     faNewspaper,
@@ -51,6 +68,32 @@ import {
     faShower,
     faBath,
     faChartPieAlt,
+    faPencil,
+    faTruckMoving,
+    faDog,
+    faHandsHeart,
+    faHeartCircle,
+    faSunglasses,
+    faHandshakeAlt,
+    faGlass,
+    faHandPaper,
+    faSmokingBan,
+    faAppleCrate,
+    faMugTea,
+    faWineBottle,
+    faPenAlt,
+    faPie,
+    faCow,
+    faBreadLoaf,
+    faUmbrellaBeach,
+    faTvRetro,
+    faWater,
+    faCarrot,
+    faDigging,
+    faCameraRetro,
+    faLaptopCode,
+    faLevelUp,
+    faRobot,
 } from '@fortawesome/pro-solid-svg-icons';
 import {
     faCreditCard,
@@ -63,10 +106,28 @@ import {
     faTeethOpen,
     faUserInjured,
     faChartPie,
+    faSmileBeam,
+    faLaugh,
+    faThumbsUp,
+    faSurprise,
+    faSmile,
+    faDemocrat,
+    faPencilAlt,
+    faPaintBrush,
+    faMugHot,
+    faGrinBeamSweat,
+    faTv,
+    faTint,
+    faHiking,
+    faLeaf,
+    faSortNumericUp,
+    faHome,
 } from '@fortawesome/free-solid-svg-icons';
+import { faHeadSideMedical } from '@fortawesome/pro-light-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 interface ChallengeIconProps {
-    icon?: string;
+    icon?: IconProp | string;
     color?: string;
 }
 
@@ -242,8 +303,194 @@ class ChallengeIcon extends Component<ChallengeIconProps> {
             case 'scanner':
                 return <FontAwesomeIcon icon={faScanner} style={{ color }} />;
 
+            case 'phone':
+                return <FontAwesomeIcon icon={faPhone} style={{ color }} />;
+
+            case 'smile-beam':
+                return <FontAwesomeIcon icon={faSmileBeam} style={{ color }} />;
+
+            case 'pencil':
+                return <FontAwesomeIcon icon={faPencil} style={{ color }} />;
+
+            case 'laugh':
+                return <FontAwesomeIcon icon={faLaugh} style={{ color }} />;
+
+            case 'sun':
+                return <FontAwesomeIcon icon={faSun} style={{ color }} />;
+
+            case 'truck-moving':
+                return <FontAwesomeIcon icon={faTruckMoving} style={{ color }} />;
+
+            case 'dog':
+                return <FontAwesomeIcon icon={faDog} style={{ color }} />;
+
+            case 'hands-heart':
+                return <FontAwesomeIcon icon={faHandsHeart} style={{ color }} />;
+
+            case 'phone-rotary':
+                return <FontAwesomeIcon icon={faPhoneRotary} style={{ color }} />;
+
+            case 'scarf':
+                return <FontAwesomeIcon icon={faScarf} style={{ color }} />;
+
+            case 'lungs':
+                return <FontAwesomeIcon icon={faLungs} style={{ color }} />;
+
+            case 'music':
+                return <FontAwesomeIcon icon={faMusic} style={{ color }} />;
+
+            case 'thumbs-up':
+                return <FontAwesomeIcon icon={faThumbsUp} style={{ color }} />;
+
+            case 'surprise':
+                return <FontAwesomeIcon icon={faSurprise} style={{ color }} />;
+
+            case 'heart-circle':
+                return <FontAwesomeIcon icon={faHeartCircle} style={{ color }} />;
+
+            case 'sunglasses':
+                return <FontAwesomeIcon icon={faSunglasses} style={{ color }} />;
+
+            case 'smile':
+                return <FontAwesomeIcon icon={faSmile} style={{ color }} />;
+
+            case 'handshake-alt':
+                return <FontAwesomeIcon icon={faHandshakeAlt} style={{ color }} />;
+
+            case 'glass':
+                return <FontAwesomeIcon icon={faGlass} style={{ color }} />;
+
+            case 'hand-paper':
+                return <FontAwesomeIcon icon={faHandPaper} style={{ color }} />;
+
+            case 'democrat':
+                return <FontAwesomeIcon icon={faDemocrat} style={{ color }} />;
+
+            case 'smoking-ban':
+                return <FontAwesomeIcon icon={faSmokingBan} style={{ color }} />;
+
+            case 'procedures':
+                return <FontAwesomeIcon icon={faProcedures} style={{ color }} />;
+
+            case 'apple-crate':
+                return <FontAwesomeIcon icon={faAppleCrate} style={{ color }} />;
+
+            case 'mug-tea':
+                return <FontAwesomeIcon icon={faMugTea} style={{ color }} />;
+
+            case 'wine-bottle':
+                return <FontAwesomeIcon icon={faWineBottle} style={{ color }} />;
+
+            case 'pencil-alt':
+                return <FontAwesomeIcon icon={faPencilAlt} style={{ color }} />;
+
+            case 'paint-brush':
+                return <FontAwesomeIcon icon={faPaintBrush} style={{ color }} />;
+
+            case 'pen-alt':
+                return <FontAwesomeIcon icon={faPenAlt} style={{ color }} />;
+
+            case 'book-alt':
+                return <FontAwesomeIcon icon={faBookAlt} style={{ color }} />;
+
+            case 'mug-hot':
+                return <FontAwesomeIcon icon={faMugHot} style={{ color }} />;
+
+            case 'grin-beam-sweat':
+                return <FontAwesomeIcon icon={faGrinBeamSweat} style={{ color }} />;
+
+            case 'tv':
+                return <FontAwesomeIcon icon={faTv} style={{ color }} />;
+
+            case 'amazon':
+                return <FontAwesomeIcon icon={faAmazon} style={{ color }} />;
+
+            case 'cookie':
+                return <FontAwesomeIcon icon={faCookie} style={{ color }} />;
+
+            case 'pie':
+                return <FontAwesomeIcon icon={faPie} style={{ color }} />;
+
+            case 'cow':
+                return <FontAwesomeIcon icon={faCow} style={{ color }} />;
+
+            case 'bread-loaf':
+                return <FontAwesomeIcon icon={faBreadLoaf} style={{ color }} />;
+
+            case 'umbrella-beach':
+                return <FontAwesomeIcon icon={faUmbrellaBeach} style={{ color }} />;
+
+            case 'tint':
+                return <FontAwesomeIcon icon={faTint} style={{ color }} />;
+
+            case 'tv-retro':
+                return <FontAwesomeIcon icon={faTvRetro} style={{ color }} />;
+
+            case 'ski-lift':
+                return <FontAwesomeIcon icon={faSkiLift} style={{ color }} />;
+
+            case 'hiking':
+                return <FontAwesomeIcon icon={faHiking} style={{ color }} />;
+
+            case 'water':
+                return <FontAwesomeIcon icon={faWater} style={{ color }} />;
+
+            case 'swimming-pool':
+                return <FontAwesomeIcon icon={faSwimmingPool} style={{ color }} />;
+
+            case 'carrot':
+                return <FontAwesomeIcon icon={faCarrot} style={{ color }} />;
+
+            case 'leaf':
+                return <FontAwesomeIcon icon={faLeaf} style={{ color }} />;
+
+            case 'scroll-old':
+                return <FontAwesomeIcon icon={faScrollOld} style={{ color }} />;
+
+            case 'sort-numeric-up':
+                return <FontAwesomeIcon icon={faSortNumericUp} style={{ color }} />;
+
+            case 'book-spells':
+                return <FontAwesomeIcon icon={faBookSpells} style={{ color }} />;
+
+            case 'jack-o-lantern':
+                return <FontAwesomeIcon icon={faJackOLantern} style={{ color }} />;
+
+            case 'guitars':
+                return <FontAwesomeIcon icon={faGuitars} style={{ color }} />;
+
+            case 'digging':
+                return <FontAwesomeIcon icon={faDigging} style={{ color }} />;
+
+            case 'home':
+                return <FontAwesomeIcon icon={faHome} style={{ color }} />;
+
+            case 'camera-retro':
+                return <FontAwesomeIcon icon={faCameraRetro} style={{ color }} />;
+
+            case 'globe-europe':
+                return <FontAwesomeIcon icon={faGlobeEurope} style={{ color }} />;
+
+            case 'laptop-code':
+                return <FontAwesomeIcon icon={faLaptopCode} style={{ color }} />;
+
+            case 'level-up':
+                return <FontAwesomeIcon icon={faLevelUp} style={{ color }} />;
+
+            case 'child':
+                return <FontAwesomeIcon icon={faChild} style={{ color }} />;
+
+            case 'head-side-mask':
+                return <FontAwesomeIcon icon={faHeadSideMedical} style={{ color }} />;
+
+            case 'running':
+                return <FontAwesomeIcon icon={faRunning} style={{ color }} />;
+
+            case 'emoji-happy':
+                return <FontAwesomeIcon icon={faSmileBeam} style={{ color }} />;
+
             default:
-                return null;
+                return <FontAwesomeIcon icon={faRobot} style={{ color: 'black' }} />;
         }
     }
 }

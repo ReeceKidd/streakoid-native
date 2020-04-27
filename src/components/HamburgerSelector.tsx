@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHamburger } from '@fortawesome/pro-solid-svg-icons';
+import { faBars } from '@fortawesome/pro-solid-svg-icons';
 
 interface HamburgerSelectorProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,7 +14,7 @@ class HamburgerSelector extends Component<HamburgerSelectorProps> {
         return (
             <Button
                 type="clear"
-                icon={<FontAwesomeIcon icon={faHamburger} size={30} />}
+                icon={<FontAwesomeIcon icon={faBars} size={30} />}
                 onPress={() => navigation.openDrawer()}
             />
         );

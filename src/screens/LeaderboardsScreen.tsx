@@ -9,7 +9,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { leaderboardActions } from '../actions/sharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider } from 'react-native-elements';
-import { faChild, faPeopleCarry, faMedal, IconDefinition } from '@fortawesome/pro-light-svg-icons';
+import { faChild, faPeopleCarry, faMedal, IconDefinition } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({

@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
 import { Text, ListItem, Button, Card, Divider } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {
-    faCalculator,
-    faShareAlt,
-    faUsers,
-    faCalendarCheck,
-    faCrown,
-    faAbacus,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faShareAlt, faUsers, faCalendarCheck, faCrown, faAbacus } from '@fortawesome/pro-solid-svg-icons';
 import { Platform } from 'react-native';
 
 import { NavigationScreenProp, NavigationState, FlatList, NavigationEvents, ScrollView } from 'react-navigation';
@@ -105,12 +98,10 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                             }}
                         >
                             <ChallengeIcon icon={selectedChallenge.icon} color={selectedChallenge.color} />
-                            <Text h3 style={{ textAlign: 'center' }}>
+                            <Text h4 style={{ textAlign: 'center' }}>
                                 {this.props.navigation.getParam('challengeName')}
                             </Text>
-                            <Text h4 style={{ textAlign: 'center' }}>
-                                {selectedChallenge.description}
-                            </Text>
+                            <Text style={{ textAlign: 'center' }}>{selectedChallenge.description}</Text>
                         </View>
                         <Spacer></Spacer>
                         {selectedChallenge.userIsApartOfChallenge ? (
@@ -122,9 +113,7 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                     })
                                 }
                             >
-                                <Text h4 style={{ textAlign: 'center', color: 'blue' }}>
-                                    Track this challenge
-                                </Text>
+                                <Text style={{ textAlign: 'center', color: 'blue' }}>Track this challenge</Text>
                             </TouchableOpacity>
                         ) : (
                             <Button
@@ -163,13 +152,6 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                 <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.longestEverStreakForChallenge}
-                                </Text>
-                            </Card>
-                            <Card>
-                                <FontAwesomeIcon icon={faCalculator} size={20} />
-                                <Text style={{ textAlign: 'center' }}>Average Streak</Text>
-                                <Text h4 style={{ textAlign: 'center' }}>
-                                    {selectedChallenge.averageStreakForChallenge.toFixed(2)}
                                 </Text>
                             </Card>
                             <Card>

@@ -463,7 +463,7 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                             ) : (
                                 <Text style={{ color: 'red' }}>Archived</Text>
                             )}
-                            <Text h4 h4Style={{ color: streakCompletionString.error ? 'red' : 'green' }}>
+                            <Text style={{ color: streakCompletionString.error ? 'red' : 'green' }}>
                                 {streakCompletionString.string}
                             </Text>
                         </Spacer>
