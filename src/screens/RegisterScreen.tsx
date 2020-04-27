@@ -4,13 +4,13 @@ import { Dispatch } from 'redux';
 
 import { AppState } from '../../store';
 import { bindActionCreators } from 'redux';
-import { RegisterForm } from '../../components/RegisterForm';
+import { RegisterForm } from '../components/RegisterForm';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { authActions } from '../../actions/sharedActions';
+import { authActions } from '../actions/sharedActions';
 
 const mapStateToProps = (state: AppState) => {
     const registerErrorMessage = state && state.auth && state.auth.registerErrorMessage;

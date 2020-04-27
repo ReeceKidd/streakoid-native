@@ -5,39 +5,36 @@ import { AppState } from '../../store';
 import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { soloStreakActions, userActions } from '../../actions/sharedActions';
+import { soloStreakActions, userActions } from '../actions/sharedActions';
 import { Text, Button, ListItem } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { NavigationScreenProp, NavigationState, NavigationEvents, ScrollView } from 'react-navigation';
-import { LoadingScreenSpinner } from '../../components/LoadingScreenSpinner';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { ErrorMessage } from '../../components/ErrorMessage';
+import { ErrorMessage } from '../components/ErrorMessage';
 import { connect } from 'react-redux';
-import { LongestStreakCard } from '../../components/LongestStreakCard';
-import { AverageStreakCard } from '../../components/AverageStreakCard';
-import { TotalNumberOfDaysCard } from '../../components/TotalNumberOfDaysCard';
-import { StreakStartDateCard } from '../../components/StreakStartDateCard';
-import { DaysSinceStreakCreationCard } from '../../components/DaysSinceStreakCreationCard';
-import { StreakRestartsCard } from '../../components/StreakRestartsCard';
-import {
-    StreakStatus,
-    StreakReminderTypes,
-    PushNotificationTypes,
-    RouterCategories,
-} from '@streakoid/streakoid-sdk/lib';
+import { LongestStreakCard } from '../components/LongestStreakCard';
+import { AverageStreakCard } from '../components/AverageStreakCard';
+import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
+import { StreakStartDateCard } from '../components/StreakStartDateCard';
+import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
+import { StreakRestartsCard } from '../components/StreakRestartsCard';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { IndividualNotes } from '../../components/IndividualNotes';
+import { IndividualNotes } from '../components/IndividualNotes';
 import { Picker, StyleSheet, View, ActivityIndicator, Share } from 'react-native';
-import { Notifications } from 'expo';
-import { LocalNotification } from 'expo/build/Notifications/Notifications.types';
 
 import { YellowBox } from 'react-native';
-import { GeneralActivityFeed } from '../../components/GeneralActivityFeed';
+import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { CustomSoloStreakReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
 import { CustomSoloStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
-import { streakoidUrl } from '../../streakoidUrl';
+import { streakoidUrl } from '../streakoidUrl';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEdit, faShareAlt } from '@fortawesome/pro-solid-svg-icons';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 
 YellowBox.ignoreWarnings([
     'VirtualizedLists should never be nested', // TODO: Remove when fixed
@@ -120,13 +117,13 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
                     {isUsersStreak ? (
                         <Button
                             type="clear"
-                            icon={<FontAwesome5 name="edit" size={20} />}
+                            icon={<FontAwesomeIcon icon={faEdit} size={20} />}
                             onPress={() => NavigationService.navigate(Screens.EditSoloStreak)}
                         />
                     ) : null}
                     <Button
                         type="clear"
-                        icon={<FontAwesome5 name="share-alt" size={20} />}
+                        icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
                         onPress={async () => {
                             await Share.share({
                                 message: `View solo streak ${streakName} at ${streakoidUrl}/${RouterCategories.soloStreaks}/${soloStreakId}`,
@@ -178,7 +175,7 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
             soloStreakId,
             soloStreakName,
         };
-        const dailyPushNotification: LocalNotification = {
+        const dailyPushNotification = {
             title,
             body,
             ios: {
@@ -186,15 +183,16 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
             },
             data,
         };
+        dailyPushNotification;
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        const repeat = 'day';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const schedulingOptions = { time: scheduleTime, repeat } as any;
-        return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        // const repeat = 'day';
+        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // const schedulingOptions = { time: scheduleTime, repeat } as any;
+        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
     };
 
     updateCustomSoloStreakReminder = async ({
@@ -210,12 +208,12 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
         const soloStreakId = this.props.navigation.getParam('_id');
         const customStreakReminders = this.props.currentUser.pushNotifications.customStreakReminders;
         const customCompleteSoloStreakReminder = customStreakReminders.find(
-            (pushNotificaion) =>
-                pushNotificaion.streakReminderType === StreakReminderTypes.customSoloStreakReminder &&
-                pushNotificaion.soloStreakId == soloStreakId,
+            (pushNotification) =>
+                pushNotification.streakReminderType === StreakReminderTypes.customSoloStreakReminder &&
+                pushNotification.soloStreakId == soloStreakId,
         );
         if (customCompleteSoloStreakReminder) {
-            await Notifications.cancelScheduledNotificationAsync(customCompleteSoloStreakReminder.expoId);
+            // await Notifications.cancelScheduledNotificationAsync(customCompleteSoloStreakReminder.expoId);
         }
         if (enabled) {
             const newExpoId = await this.scheduleDailyPush({
@@ -237,10 +235,10 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
                 soloStreakName,
             };
             const customStreakRemindersWithoutOldReminder = customStreakReminders.filter(
-                (pushNotificaion) =>
+                (pushNotification) =>
                     !(
-                        pushNotificaion.streakReminderType === StreakReminderTypes.customSoloStreakReminder &&
-                        pushNotificaion.soloStreakId === soloStreakId
+                        pushNotification.streakReminderType === StreakReminderTypes.customSoloStreakReminder &&
+                        pushNotification.soloStreakId === soloStreakId
                     ),
             );
 
@@ -257,10 +255,10 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
         } else {
             if (customCompleteSoloStreakReminder) {
                 const customStreakRemindersWithoutOldReminder = customStreakReminders.filter(
-                    (pushNotificaion) =>
+                    (pushNotification) =>
                         !(
-                            pushNotificaion.streakReminderType === StreakReminderTypes.customSoloStreakReminder &&
-                            pushNotificaion.soloStreakId === soloStreakId
+                            pushNotification.streakReminderType === StreakReminderTypes.customSoloStreakReminder &&
+                            pushNotification.soloStreakId === soloStreakId
                         ),
                 );
                 const updatedCustomStreakReminder: CustomSoloStreakReminder = {

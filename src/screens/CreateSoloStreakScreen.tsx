@@ -5,12 +5,13 @@ import { AppState } from '../../store';
 
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { CreateSoloStreakForm } from '../../components/CreateSoloStreakForm';
+import { CreateSoloStreakForm } from '../components/CreateSoloStreakForm';
 
-import { soloStreakActions } from '../../actions/sharedActions';
+import { soloStreakActions } from '../actions/sharedActions';
 import { View, StyleSheet } from 'react-native';
-import { Spacer } from '../../components/Spacer';
-import { FontAwesome } from '@expo/vector-icons';
+import { Spacer } from '../components/Spacer';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const createSoloStreakIsLoading = state && state.soloStreaks && state.soloStreaks.createSoloStreakIsLoading;
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
 class CreateSoloStreakScreenComponent extends Component<Props> {
     static navigationOptions = {
         title: 'Create solo streak',
-        tabBarIcon: <FontAwesome name="plus" size={20} />,
+        tabBarIcon: <FontAwesomeIcon icon={faPlus} size={20} />,
     };
 
     render(): JSX.Element {

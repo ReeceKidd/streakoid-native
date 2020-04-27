@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { AppActions, AppState } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { soloStreakActions, userActions } from '../../../actions/sharedActions';
 import { StyleSheet, View } from 'react-native';
-import { Spacer } from '../../../components/Spacer';
 import { Text, Button } from 'react-native-elements';
 import NavigationService from '../NavigationService';
 import { Screens } from '../Screens';
+import { soloStreakActions, userActions } from '../../actions/sharedActions';
+import { Spacer } from '../../components/Spacer';
 
 const mapStateToProps = (state: AppState) => {
     const createSoloStreakIsLoading = state && state.soloStreaks && state.soloStreaks.createSoloStreakIsLoading;

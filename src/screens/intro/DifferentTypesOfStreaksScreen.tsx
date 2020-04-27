@@ -2,10 +2,11 @@ import React from 'react';
 
 import { Text, Button } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
-import { Spacer } from '../../../components/Spacer';
 import NavigationService from '../NavigationService';
 import { Screens } from '../Screens';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icons';
+import { Spacer } from '../../components/Spacer';
 
 const styles = StyleSheet.create({
     container: {
@@ -31,17 +32,17 @@ class DifferentTypesOfStreaksScreen extends React.Component {
                         Complete streaks by yourself, with friends or compete with others across the globe.
                     </Text>
                     <Spacer />
-                    <FontAwesome5 name="child" size={20} style={{ textAlign: 'center', color: 'blue' }} />
+                    <FontAwesomeIcon icon={faChild} size={20} style={{ color: 'blue' }} />
                     <Text h4> Solo Streaks </Text>
                     <Text>Just for you. Try to get your longest streak.</Text>
                     <Spacer />
-                    <FontAwesome5 name="people-carry" size={20} style={{ textAlign: 'center', color: 'purple' }} />
+                    <FontAwesomeIcon icon={faPeopleCarry} size={20} style={{ color: 'purple' }} />
                     <Text h4>Team Streaks</Text>
                     <Text>
                         You and your friends are in it together. If one person loses the streak you all lose it.
                     </Text>
                     <Spacer />
-                    <FontAwesome5 name="medal" size={20} style={{ textAlign: 'center', color: 'navy' }} />
+                    <FontAwesomeIcon icon={faMedal} size={20} style={{ color: 'navy' }} />
                     <Text h4> Challenge Streaks</Text>
                     <Text>Complete streaks with others around the globe.</Text>
                 </Spacer>

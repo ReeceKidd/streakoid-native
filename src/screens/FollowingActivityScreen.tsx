@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, NavigationEvents } from 'react-navigation';
 
 import { AppState } from '../../store';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
+import { HamburgerSelector } from '../components/HamburgerSelector';
 import { ScrollView } from 'react-native-gesture-handler';
-import { FollowingActivityFeed } from '../../components/FollowingActivityFeed';
-import { Spacer } from '../../components/Spacer';
+import { FollowingActivityFeed } from '../components/FollowingActivityFeed';
+import { Spacer } from '../components/Spacer';
 import { Dispatch, bindActionCreators } from 'redux';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { activityFeedItemActions } from '../../actions/sharedActions';
+import { activityFeedItemActions } from '../actions/sharedActions';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;

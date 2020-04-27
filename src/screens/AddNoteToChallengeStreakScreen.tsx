@@ -6,11 +6,11 @@ import { AppState } from '../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { noteActions } from '../../actions/sharedActions';
+import { noteActions } from '../actions/sharedActions';
 import { View, StyleSheet } from 'react-native';
-import { Spacer } from '../../components/Spacer';
-import { AddNoteForm } from '../../components/AddNoteForm';
-import { StreakTypes } from '@streakoid/streakoid-sdk/lib';
+import { Spacer } from '../components/Spacer';
+import { AddNoteForm } from '../components/AddNoteForm';
+import StreakTypes from '@streakoid/streakoid-models/lib/Types/StreakTypes';
 
 const mapStateToProps = (state: AppState) => {
     const selectedChallengeStreak = state && state.challengeStreaks && state.challengeStreaks.selectedChallengeStreak;

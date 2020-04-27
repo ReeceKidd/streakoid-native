@@ -12,20 +12,21 @@ import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-nat
 
 import { AppState } from '../../store';
 import { Button, Avatar, Text, ListItem } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { authActions, userActions } from '../../actions/sharedActions';
-import { FontAwesome } from '@expo/vector-icons';
-import { NotificationOptions } from '../../components/NotificationOptions';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
+import { authActions, userActions } from '../actions/sharedActions';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCog, faShareAlt, faUser } from '@fortawesome/pro-solid-svg-icons';
+import { NotificationOptions } from '../components/NotificationOptions';
+import { HamburgerSelector } from '../components/HamburgerSelector';
 import { FlatList } from 'react-native-gesture-handler';
 import { Screens } from './Screens';
-import { NavigationLink } from '../../components/NavigationLink';
-import { GeneralActivityFeed } from '../../components/GeneralActivityFeed';
-import { streakoidUrl } from '../../streakoidUrl';
+import { NavigationLink } from '../components/NavigationLink';
+import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
+import { streakoidUrl } from '../streakoidUrl';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 
 import { YellowBox, Share } from 'react-native';
-import { RouterCategories } from '@streakoid/streakoid-sdk/lib';
 
 YellowBox.ignoreWarnings([
     'VirtualizedLists should never be nested', // TODO: Remove when fixed
@@ -88,11 +89,11 @@ class AccountScreenComponent extends React.Component<Props> {
         return {
             title: 'Account',
             headerLeft: () => <HamburgerSelector navigation={navigation} />,
-            drawerIcon: () => <FontAwesome name="gear" size={20} />,
+            drawerIcon: () => <FontAwesomeIcon icon={faCog} size={20} />,
             headerRight: username ? (
                 <Button
                     type="clear"
-                    icon={<FontAwesome name="share-alt" size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
                     onPress={async () => {
                         await Share.share({
                             message: `View my Streakoid profile at ${streakoidUrl}/${RouterCategories.users}/${username}`,
@@ -146,7 +147,7 @@ class AccountScreenComponent extends React.Component<Props> {
 
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Following <FontAwesome name="user" size={20} /> {`${currentUser.following.length} `}
+                            Following <FontAwesomeIcon icon={faUser} size={20} /> {`${currentUser.following.length} `}
                         </Text>
                         {currentUser && currentUser.following && currentUser.following.length > 0 ? (
                             <FlatList
@@ -204,7 +205,7 @@ class AccountScreenComponent extends React.Component<Props> {
                     </Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Followers <FontAwesome name="user" size={20} /> {`${currentUser.followers.length} `}
+                            Followers <FontAwesomeIcon icon={faUser} size={20} /> {`${currentUser.followers.length} `}
                         </Text>
                         {currentUser && currentUser.followers && currentUser.followers.length > 0 ? (
                             <FlatList

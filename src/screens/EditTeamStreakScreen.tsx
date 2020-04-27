@@ -7,9 +7,9 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet } from 'react-native';
 
-import { Spacer } from '../../components/Spacer';
-import { teamStreakActions } from '../../actions/sharedActions';
-import { EditTeamStreakForm } from '../../components/EditTeamStreakForm';
+import { Spacer } from '../components/Spacer';
+import { teamStreakActions } from '../actions/sharedActions';
+import { EditTeamStreakForm } from '../components/EditTeamStreakForm';
 
 const mapStateToProps = (state: AppState) => {
     const selectedTeamStreak = state && state.teamStreaks && state.teamStreaks.selectedTeamStreak;

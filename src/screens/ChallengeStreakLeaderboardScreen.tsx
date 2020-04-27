@@ -4,13 +4,14 @@ import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, Navi
 
 import { AppState } from '../../store';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { leaderboardActions } from '../../actions/sharedActions';
+import { leaderboardActions } from '../actions/sharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text } from 'react-native-elements';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
 
 const mapStateToProps = (state: AppState) => {
@@ -88,7 +89,7 @@ class ChallengeStreakLeaderboardScreenComponent extends Component<Props> {
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Challenge Streak Leaderboard <FontAwesome5 name="medal" size={20} />
+                            Challenge Streak Leaderboard <FontAwesomeIcon icon={faMedal} size={20} />
                         </Text>
                         {getChallengeStreakLeaderboardIsLoading ? (
                             <ActivityIndicator style={{ marginLeft: 10 }} />

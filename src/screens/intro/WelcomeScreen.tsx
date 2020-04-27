@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { Text, Image, Button } from 'react-native-elements';
-import { Spacer } from '../../../components/Spacer';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import NavigationService from '../NavigationService';
 import { Screens } from '../Screens';
+import { Spacer } from '../../components/Spacer';
 
 const styles = StyleSheet.create({
     container: {

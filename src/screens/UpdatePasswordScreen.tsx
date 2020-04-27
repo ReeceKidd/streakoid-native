@@ -7,9 +7,9 @@ import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-n
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 
 import { AppState } from '../../store';
-import { UpdatePasswordForm } from '../../components/UpdatePasswordForm';
-import { Spacer } from '../../components/Spacer';
-import { authActions } from '../../actions/sharedActions';
+import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
+import { Spacer } from '../components/Spacer';
+import { authActions } from '../actions/sharedActions';
 
 const mapStateToProps = (state: AppState) => {
     const username = state && state.auth && state.auth.username;

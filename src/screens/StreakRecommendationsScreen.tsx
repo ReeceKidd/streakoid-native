@@ -9,18 +9,19 @@ import {
     NavigationState,
     NavigationParams,
 } from 'react-navigation';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { LoadingScreenSpinner } from '../../components/LoadingScreenSpinner';
-import { streakRecommendationActions } from '../../actions/sharedActions';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
-import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
+import { streakRecommendationActions } from '../actions/sharedActions';
+import { HamburgerSelector } from '../components/HamburgerSelector';
 import { StreakRecommendationWithClientData } from '@streakoid/streakoid-shared/lib/reducers/streakRecommendationsReducer';
-import { NavigationLink } from '../../components/NavigationLink';
+import { NavigationLink } from '../components/NavigationLink';
 import { Screens } from './Screens';
-import { ChallengeIcon } from '../../components/ChallengeIcon';
+import { ChallengeIcon } from '../components/ChallengeIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faRobot, faCheck, faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const streakRecommendations =
@@ -65,14 +66,18 @@ class StreakRecommendationsScreenComponent extends Component<Props> {
         return {
             title: 'Streak Recommendations',
             headerLeft: () => <HamburgerSelector navigation={navigation} />,
-            drawerIcon: () => <FontAwesome5 name="robot" size={20} />,
+            drawerIcon: () => <FontAwesomeIcon icon={faRobot} size={20} />,
         };
     };
 
     renderStreakSelectButton(streakRecommendation: StreakRecommendationWithClientData): JSX.Element {
         const { hasBeenSelected, _id } = streakRecommendation;
         const streakSelectButton = hasBeenSelected ? (
-            <Button icon={<FontAwesome name="check" size={20} />} buttonStyle={{ backgroundColor: 'green' }} disabled />
+            <Button
+                icon={<FontAwesomeIcon icon={faCheck} size={20} />}
+                buttonStyle={{ backgroundColor: 'green' }}
+                disabled
+            />
         ) : (
             <Button
                 onPress={() =>
@@ -97,13 +102,13 @@ class StreakRecommendationsScreenComponent extends Component<Props> {
                 <>
                     <Spacer>
                         <View style={{ alignItems: 'center' }}>
-                            <Text>{`Oid uses artifical intelligence to recommend streaks for you`}</Text>
+                            <Text>{`Oid uses artificial intelligence to recommend streaks for you`}</Text>
                         </View>
                     </Spacer>
                     <Spacer>
                         <Button
                             buttonStyle={{ backgroundColor: 'green' }}
-                            icon={<FontAwesome name="refresh" color="white" size={20} />}
+                            icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" size={20} />}
                             onPress={() => {
                                 this.props.getRandomStreakRecommendations();
                             }}

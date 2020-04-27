@@ -3,20 +3,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, withNavigationFocus } from 'react-navigation';
 import { Button, Text } from 'react-native-elements';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet } from 'react-native';
 
-import { teamStreakActions, teamMemberStreakTaskActions } from '../../actions/sharedActions';
+import { teamStreakActions, teamMemberStreakTaskActions } from '../actions/sharedActions';
 import { AppState } from '../../store';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { LiveTeamStreakList } from '../../components/LiveTeamStreakList';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
-import { Spacer } from '../../components/Spacer';
-import { ArchivedTeamStreakList } from '../../components/ArchivedTeamStreakList';
+import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
+import { HamburgerSelector } from '../components/HamburgerSelector';
+import { Spacer } from '../components/Spacer';
+import { ArchivedTeamStreakList } from '../components/ArchivedTeamStreakList';
 import { ScrollView } from 'react-native-gesture-handler';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus, faArchive } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const liveTeamStreaks = state && state.teamStreaks && state.teamStreaks.liveTeamStreaks;
@@ -71,7 +72,7 @@ class TeamStreaksScreenComponent extends Component<Props> {
             headerRight: (
                 <Button
                     type="clear"
-                    icon={<FontAwesome name="plus" size={30} />}
+                    icon={<FontAwesomeIcon icon={faPlus} size={30} />}
                     onPress={() => NavigationService.navigate(Screens.CreateTeamStreak)}
                 />
             ),
@@ -111,7 +112,7 @@ class TeamStreaksScreenComponent extends Component<Props> {
                     </Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                            Archived Team Streaks <FontAwesome5 name="archive" size={20} />
+                            Archived Team Streaks <FontAwesomeIcon icon={faArchive} size={20} />
                         </Text>
                         <ArchivedTeamStreakList
                             getTeamStreak={getTeamStreak}

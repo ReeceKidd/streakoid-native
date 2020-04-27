@@ -7,15 +7,16 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { View, TouchableOpacity, Platform } from 'react-native';
 
 import { AppState } from '../../store';
-import { Spacer } from '../../components/Spacer';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
-import { challengeActions } from '../../actions/sharedActions';
-import { Challenge } from '@streakoid/streakoid-sdk/lib';
+import { Spacer } from '../components/Spacer';
+import { HamburgerSelector } from '../components/HamburgerSelector';
+import { challengeActions } from '../actions/sharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text, SearchBar } from 'react-native-elements';
-import { ChallengeIcon } from '../../components/ChallengeIcon';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { ChallengeIcon } from '../components/ChallengeIcon';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUsers } from '@fortawesome/pro-solid-svg-icons';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Challenge } from '@streakoid/streakoid-models/lib/Models/Challenge';
 
 const mapStateToProps = (state: AppState) => {
     const challengeList = state && state.challenges && state.challenges.challengeList;
@@ -100,7 +101,7 @@ class ChallengesScreenComponent extends Component<Props, State> {
                                                 rightElement={
                                                     <View style={{ flexDirection: 'row' }}>
                                                         <Text>
-                                                            <FontAwesome5 name="users" size={15} />
+                                                            <FontAwesomeIcon icon={faUsers} size={15} />
                                                             {` `}
                                                             {members.length}
                                                         </Text>

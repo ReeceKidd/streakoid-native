@@ -2,9 +2,10 @@ import React from 'react';
 
 import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
-import { Linking } from 'expo';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Spacer } from '../components/Spacer';
+import { Linking } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icons';
 
 const styles = StyleSheet.create({
     container: {
@@ -31,16 +32,16 @@ class StreakLimitReachedScreen extends React.Component {
                     <Text>{`Free accounts are allowed:`}</Text>
                     <Text />
                     <Text style={{ fontWeight: 'bold' }}>
-                        Two Solo Streaks <FontAwesome5 name="child" size={20} style={{ color: 'blue' }} />
+                        Two Solo Streaks <FontAwesomeIcon icon={faChild} size={20} style={{ color: 'blue' }} />
                     </Text>
                     <Text />
                     <Text style={{ fontWeight: 'bold' }}>
                         Two Team Streaks
-                        <FontAwesome5 name="people-carry" size={20} style={{ textAlign: 'center', color: 'purple' }} />
+                        <FontAwesomeIcon icon={faPeopleCarry} size={20} style={{ color: 'purple' }} />
                     </Text>
                     <Text />
                     <Text style={{ fontWeight: 'bold' }}>
-                        Two Challenge Streaks <FontAwesome5 name="medal" size={20} style={{ color: 'navy' }} />
+                        Two Challenge Streaks <FontAwesomeIcon icon={faMedal} size={20} style={{ color: 'navy' }} />
                     </Text>
                     <Text />
                     <Text>{`Upgrade for unlimited streaks.`}</Text>

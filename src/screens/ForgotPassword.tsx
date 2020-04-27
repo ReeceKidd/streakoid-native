@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../store';
 import { bindActionCreators, Dispatch } from 'redux';
-import { ForgotPasswordForm } from '../../components/ForgotPasswordForm';
+import { ForgotPasswordForm } from '../components/ForgotPasswordForm';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
-import { authActions } from '../../actions/sharedActions';
+import { authActions } from '../actions/sharedActions';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 
 const mapStateToProps = (state: AppState) => {

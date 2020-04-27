@@ -5,14 +5,15 @@ import { NavigationScreenProp, NavigationState, NavigationParams, NavigationEven
 import { View, StyleSheet } from 'react-native';
 
 import { AppState } from '../../store';
-import { LoginForm } from '../../components/LoginForm';
+import { LoginForm } from '../components/LoginForm';
 import { Text } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { authActions } from '../../actions/sharedActions';
-import { NavigationLink } from '../../components/NavigationLink';
-import { FontAwesome } from '@expo/vector-icons';
+import { authActions } from '../actions/sharedActions';
+import { NavigationLink } from '../components/NavigationLink';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const loginErrorMessage = state && state.auth && state.auth.loginErrorMessage;
@@ -46,7 +47,7 @@ class LoginScreenComponent extends React.Component<Props> {
     static navigationOptions = {
         title: 'Login',
         header: null,
-        tabBarIcon: <FontAwesome name="plus" size={20} />,
+        tabBarIcon: <FontAwesomeIcon icon={faPlus} size={20} />,
     };
 
     clearMessages() {

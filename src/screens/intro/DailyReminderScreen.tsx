@@ -2,17 +2,13 @@ import React from 'react';
 
 import { Text, Button, Icon } from 'react-native-elements';
 import { StyleSheet, View, Picker } from 'react-native';
-import { Spacer } from '../../../components/Spacer';
 import NavigationService from '../NavigationService';
 import { Screens } from '../Screens';
-import { Notifications } from 'expo';
-import * as Permissions from 'expo-permissions';
-import { LocalNotification } from 'expo/build/Notifications/Notifications.types';
 import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { userActions } from '../../../actions/sharedActions';
 import { connect } from 'react-redux';
-import { StreakReminderTypes } from '@streakoid/streakoid-sdk/lib';
+import { userActions } from '../../actions/sharedActions';
+import { Spacer } from '../../components/Spacer';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -56,13 +52,13 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const date = currentDate.getDate();
-        const dailyPushNotification: LocalNotification = {
-            title: 'Complete your streaks',
-            body: 'Do it before Oid finds out.',
-            ios: {
-                sound: true,
-            },
-        };
+        // const dailyPushNotification = {
+        //     title: 'Complete your streaks',
+        //     body: 'Do it before Oid finds out.',
+        //     ios: {
+        //         sound: true,
+        //     },
+        // };
         const defaultReminderHour = 0;
         const reminderHour =
             (completeAllStreaksReminder && completeAllStreaksReminder.reminderHour) || defaultReminderHour;
@@ -75,23 +71,23 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
 
-        const repeat = 'day';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const schedulingOptions = { time: scheduleTime, repeat } as any;
-        const newCompleteAllStreaksPushNotification = await Notifications.scheduleLocalNotificationAsync(
-            dailyPushNotification,
-            schedulingOptions,
-        );
+        // const repeat = 'day';
+        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // const schedulingOptions = { time: scheduleTime, repeat } as any;
+        // const newCompleteAllStreaksPushNotification = await Notifications.scheduleLocalNotificationAsync(
+        //     dailyPushNotification,
+        //     schedulingOptions,
+        // );
 
-        this.props.updateCurrentUserPushNotifications({
-            completeAllStreaksReminder: {
-                expoId: String(newCompleteAllStreaksPushNotification),
-                enabled: true,
-                reminderHour: 21,
-                reminderMinute: 0,
-                streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-            },
-        });
+        // this.props.updateCurrentUserPushNotifications({
+        //     completeAllStreaksReminder: {
+        //         expoId: String(newCompleteAllStreaksPushNotification),
+        //         enabled: true,
+        //         reminderHour: 21,
+        //         reminderMinute: 0,
+        //         streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+        //     },
+        // });
     };
 
     scheduleDailyPush = async ({
@@ -105,39 +101,40 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
         reminderHour: number;
         reminderMinute: number;
     }) => {
+        title + body;
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const date = currentDate.getDate();
-        const dailyPushNotification: LocalNotification = {
-            title,
-            body,
-            ios: {
-                sound: true,
-            },
-        };
+        // const dailyPushNotification = {
+        //     title,
+        //     body,
+        //     ios: {
+        //         sound: true,
+        //     },
+        // };
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        const repeat = 'day';
+        // const repeat = 'day';
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const schedulingOptions = { time: scheduleTime, repeat } as any;
-        return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        // const schedulingOptions = { time: scheduleTime, repeat } as any;
+        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
     };
 
     askPermissionForNotifications = async () => {
-        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-        }
-        if (finalStatus !== 'granted') {
-            return false;
-        }
-        return true;
+        // const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        // let finalStatus = existingStatus;
+        // if (existingStatus !== 'granted') {
+        //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        //     finalStatus = status;
+        // }
+        // if (finalStatus !== 'granted') {
+        //     return false;
+        // }
+        // return true;
     };
 
     updateCompleteAllStreaksReminderPush = async ({
@@ -151,38 +148,41 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
         enabled: boolean;
         expoId: string;
     }) => {
-        const hasPermission = await this.askPermissionForNotifications();
-        if (hasPermission) {
-            await Notifications.cancelScheduledNotificationAsync(expoId);
-
-            if (enabled) {
-                const newCompleteAllStreaksPushNotification = await this.scheduleDailyPush({
-                    title: 'Complete your streaks!',
-                    body: 'Complete your streaks before Oid finds out',
-                    reminderHour,
-                    reminderMinute,
-                });
-                this.props.updateCurrentUserPushNotifications({
-                    completeAllStreaksReminder: {
-                        expoId: String(newCompleteAllStreaksPushNotification),
-                        reminderHour,
-                        reminderMinute,
-                        enabled,
-                        streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-                    },
-                });
-            } else {
-                this.props.updateCurrentUserPushNotifications({
-                    completeAllStreaksReminder: {
-                        reminderHour,
-                        reminderMinute,
-                        enabled,
-                        expoId,
-                        streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-                    },
-                });
-            }
-        }
+        reminderHour;
+        reminderMinute;
+        enabled;
+        expoId;
+        //const hasPermission = await this.askPermissionForNotifications();
+        // if (hasPermission) {
+        //     await Notifications.cancelScheduledNotificationAsync(expoId);
+        //     if (enabled) {
+        //         const newCompleteAllStreaksPushNotification = await this.scheduleDailyPush({
+        //             title: 'Complete your streaks!',
+        //             body: 'Complete your streaks before Oid finds out',
+        //             reminderHour,
+        //             reminderMinute,
+        //         });
+        //         this.props.updateCurrentUserPushNotifications({
+        //             completeAllStreaksReminder: {
+        //                 expoId: String(newCompleteAllStreaksPushNotification),
+        //                 reminderHour,
+        //                 reminderMinute,
+        //                 enabled,
+        //                 streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+        //             },
+        //         });
+        //     } else {
+        //         this.props.updateCurrentUserPushNotifications({
+        //             completeAllStreaksReminder: {
+        //                 reminderHour,
+        //                 reminderMinute,
+        //                 enabled,
+        //                 expoId,
+        //                 streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+        //             },
+        //         });
+        //     }
+        // }
     };
 
     renderCompleteStreaksReminderNotification(): JSX.Element | null {

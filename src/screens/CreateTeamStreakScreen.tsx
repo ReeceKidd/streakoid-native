@@ -6,11 +6,12 @@ import { AppState } from '../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { teamStreakActions, userActions } from '../../actions/sharedActions';
+import { teamStreakActions, userActions } from '../actions/sharedActions';
 import { View, StyleSheet } from 'react-native';
-import { Spacer } from '../../components/Spacer';
-import { FontAwesome } from '@expo/vector-icons';
-import { CreateTeamStreakForm } from '../../components/CreateTeamStreakForm';
+import { Spacer } from '../components/Spacer';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus } from '@fortawesome/pro-solid-svg-icons';
+import { CreateTeamStreakForm } from '../components/CreateTeamStreakForm';
 import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
 
 const mapStateToProps = (state: AppState) => {
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
 class CreateTeamStreakScreenComponent extends Component<Props> {
     static navigationOptions = {
         title: 'Create team streak',
-        tabBarIcon: <FontAwesome name="plus" size={20} />,
+        tabBarIcon: <FontAwesomeIcon icon={faPlus} size={20} />,
     };
 
     render(): JSX.Element {

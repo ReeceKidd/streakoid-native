@@ -6,12 +6,12 @@ import { AppState } from '../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { emailActions } from '../../actions/sharedActions';
+import { emailActions } from '../actions/sharedActions';
 import { View, StyleSheet, Text } from 'react-native';
-import { Spacer } from '../../components/Spacer';
-import { ContactUsForm } from '../../components/ContactUsForm';
-import { ErrorMessage } from '../../components/ErrorMessage';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
+import { Spacer } from '../components/Spacer';
+import { ContactUsForm } from '../components/ContactUsForm';
+import { ErrorMessage } from '../components/ErrorMessage';
+import { HamburgerSelector } from '../components/HamburgerSelector';
 import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
 const mapStateToProps = (state: AppState) => {

@@ -2,15 +2,16 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { ListItem, Button, Text } from 'react-native-elements';
 import { FlatList, ScrollView, NavigationEvents } from 'react-navigation';
-import { Spacer } from '../../../components/Spacer';
 import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { streakRecommendationActions } from '../../../actions/sharedActions';
 import { Screens } from '../Screens';
-import { ChallengeIcon } from '../../../components/ChallengeIcon';
 import NavigationService from '../NavigationService';
 import { connect } from 'react-redux';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
+import { Spacer } from '../../components/Spacer';
+import { streakRecommendationActions } from '../../actions/sharedActions';
+import { ChallengeIcon } from '../../components/ChallengeIcon';
 
 const mapStateToProps = (state: AppState) => {
     const streakRecommendations =
@@ -62,12 +63,12 @@ class StreakRecommendationsIntroScreenComponent extends React.Component<Props> {
                 />
                 <Spacer />
                 <Spacer>
-                    <Text h4> Get personalised challenge recommendations.</Text>
+                    <Text h4> Get personalized challenge recommendations.</Text>
                 </Spacer>
                 <Spacer>
                     <Button
                         buttonStyle={{ backgroundColor: 'green' }}
-                        icon={<FontAwesome name="refresh" color="white" size={20} />}
+                        icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" size={20} />}
                         onPress={() => {
                             this.props.getRandomStreakRecommendations();
                         }}

@@ -5,11 +5,11 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, NavigationEvents } from 'react-navigation';
 
 import { AppState } from '../../store';
-import { userActions } from '../../actions/sharedActions';
-import { UsersList } from '../../components/UsersList';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
+import { userActions } from '../actions/sharedActions';
+import { UsersList } from '../components/UsersList';
+import { HamburgerSelector } from '../components/HamburgerSelector';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;

@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Text, Button, Image } from 'react-native-elements';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import { Spacer } from '../../../components/Spacer';
 import NavigationService from '../NavigationService';
 import { Screens } from '../Screens';
+import { Spacer } from '../../components/Spacer';
 
 const styles = StyleSheet.create({
     container: {

@@ -9,7 +9,6 @@ import {
     NavigationEvents,
 } from 'react-navigation';
 import { Text, Button } from 'react-native-elements';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
@@ -20,20 +19,21 @@ import {
     teamStreakActions,
     teamMemberStreakTaskActions,
     challengeStreakActions,
-} from '../../actions/sharedActions';
+} from '../actions/sharedActions';
 import { AppState } from '../../store';
-import { Spacer } from '../../components/Spacer';
-import { LiveSoloStreakList } from '../../components/LiveSoloStreakList';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
-import { StreakStatus, PushNotificationTypes, StreakReminderTypes } from '@streakoid/streakoid-sdk/lib';
-import { LiveTeamStreakList } from '../../components/LiveTeamStreakList';
-import { LiveChallengeStreakList } from '../../components/LiveChallengeStreakList';
+import { Spacer } from '../components/Spacer';
+import { LiveSoloStreakList } from '../components/LiveSoloStreakList';
+import { HamburgerSelector } from '../components/HamburgerSelector';
+import { LiveChallengeStreakList } from '../components/LiveChallengeStreakList';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { Notifications } from 'expo';
-import { LocalNotification } from 'expo/build/Notifications/Notifications.types';
 import { PushNotificationType } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
-import * as Permissions from 'expo-permissions';
+import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icons';
+import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -166,7 +166,7 @@ class HomeScreenComponent extends Component<Props> {
 
     initializePushNotifications = async () => {
         await this.askPermissionForNotifications();
-        await Notifications.cancelAllScheduledNotificationsAsync();
+        //await Notifications.cancelAllScheduledNotificationsAsync();
         const { currentUser } = this.props;
         const { pushNotifications } = currentUser;
         const { completeAllStreaksReminder, customStreakReminders } = pushNotifications;
@@ -256,15 +256,15 @@ class HomeScreenComponent extends Component<Props> {
     };
 
     askPermissionForNotifications = async () => {
-        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-        }
-        if (finalStatus !== 'granted') {
-            return false;
-        }
+        // const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        // let finalStatus = existingStatus;
+        // if (existingStatus !== 'granted') {
+        //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        //     finalStatus = status;
+        // }
+        // if (finalStatus !== 'granted') {
+        //     return false;
+        // }
         return true;
     };
 
@@ -285,7 +285,7 @@ class HomeScreenComponent extends Component<Props> {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const date = currentDate.getDate();
-        const dailyPushNotification: LocalNotification = {
+        const dailyPushNotification = {
             title,
             body,
             ios: {
@@ -293,15 +293,16 @@ class HomeScreenComponent extends Component<Props> {
             },
             data,
         };
+        dailyPushNotification;
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        const repeat = 'day';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const schedulingOptions = { time: scheduleTime, repeat } as any;
-        return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        // const repeat = 'day';
+        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // const schedulingOptions = { time: scheduleTime, repeat } as any;
+        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
     };
 
     getCompletePercentageForStreaks({
@@ -332,7 +333,7 @@ class HomeScreenComponent extends Component<Props> {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => NavigationService.navigate(Screens.SoloStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Solo Streaks <FontAwesome5 name="child" size={20} />
+                            Solo Streaks <FontAwesomeIcon icon={faChild} size={20} />
                         </Text>
                     </TouchableOpacity>
 
@@ -370,7 +371,7 @@ class HomeScreenComponent extends Component<Props> {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => NavigationService.navigate(Screens.TeamStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Team Streaks <FontAwesome5 name="people-carry" size={20} />
+                            Team Streaks <FontAwesomeIcon icon={faPeopleCarry} size={20} />
                         </Text>
                     </TouchableOpacity>
                     {getMultipleLiveTeamStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
@@ -406,7 +407,7 @@ class HomeScreenComponent extends Component<Props> {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => NavigationService.navigate(Screens.ChallengeStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Challenge Streaks <FontAwesome5 name="medal" size={20} />
+                            Challenge Streaks <FontAwesomeIcon icon={faMedal} size={20} />
                         </Text>
                     </TouchableOpacity>
                     {getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}

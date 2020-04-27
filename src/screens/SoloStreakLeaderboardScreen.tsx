@@ -4,14 +4,15 @@ import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, Navi
 
 import { AppState } from '../../store';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { leaderboardActions } from '../../actions/sharedActions';
+import { leaderboardActions } from '../actions/sharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text } from 'react-native-elements';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { View, ActivityIndicator } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChild } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const soloStreakLeaderboard = state && state.leaderboards && state.leaderboards.soloStreakLeaderboard;
@@ -88,7 +89,7 @@ class SoloStreakLeaderboardScreenComponent extends Component<Props> {
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                            Solo Streak Leaderboard <FontAwesome5 name="child" size={20} />
+                            Solo Streak Leaderboard <FontAwesomeIcon icon={faChild} size={20} />
                         </Text>
                         {getSoloStreakLeaderboardIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
                     </View>

@@ -3,19 +3,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
 import { Button, Text } from 'react-native-elements';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet } from 'react-native';
 
-import { soloStreakActions, userActions } from '../../actions/sharedActions';
+import { soloStreakActions, userActions } from '../actions/sharedActions';
 import { AppState } from '../../store';
-import { Spacer } from '../../components/Spacer';
-import { LiveSoloStreakList } from '../../components/LiveSoloStreakList';
+import { Spacer } from '../components/Spacer';
+import { LiveSoloStreakList } from '../components/LiveSoloStreakList';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
-import { ArchivedSoloStreakList } from '../../components/ArchivedSoloStreakList';
+import { HamburgerSelector } from '../components/HamburgerSelector';
+import { ArchivedSoloStreakList } from '../components/ArchivedSoloStreakList';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus, faArchive } from '@fortawesome/free-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -70,7 +71,7 @@ class SoloStreaksScreenComponent extends Component<Props> {
             headerRight: (
                 <Button
                     type="clear"
-                    icon={<FontAwesome name="plus" size={30} />}
+                    icon={<FontAwesomeIcon icon={faPlus} size={30} />}
                     onPress={() => NavigationService.navigate(Screens.CreateSoloStreak)}
                 />
             ),
@@ -110,7 +111,7 @@ class SoloStreaksScreenComponent extends Component<Props> {
                     </Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                            Archived Solo Streaks <FontAwesome5 name="archive" size={20} />
+                            Archived Solo Streaks <FontAwesomeIcon icon={faArchive} size={20} />
                         </Text>
                         <ArchivedSoloStreakList
                             getArchivedSoloStreaks={getArchivedSoloStreaks}

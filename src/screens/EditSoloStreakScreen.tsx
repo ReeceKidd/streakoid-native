@@ -5,11 +5,11 @@ import { AppState } from '../../store';
 
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { EditSoloStreakForm } from '../../components/EditSoloStreakForm';
+import { EditSoloStreakForm } from '../components/EditSoloStreakForm';
 
-import { soloStreakActions } from '../../actions/sharedActions';
+import { soloStreakActions } from '../actions/sharedActions';
 import { View, StyleSheet } from 'react-native';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 
 const mapStateToProps = (state: AppState) => {
     const selectedSoloStreak = state && state.soloStreaks && state.soloStreaks.selectedSoloStreak;

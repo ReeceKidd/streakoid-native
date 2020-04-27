@@ -6,38 +6,35 @@ import { AppState } from '../../store';
 import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { challengeStreakActions, userActions } from '../../actions/sharedActions';
+import { challengeStreakActions, userActions } from '../actions/sharedActions';
 import { View, StyleSheet, ActivityIndicator, Picker, Share } from 'react-native';
 import { Text, Button, ListItem } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { NavigationScreenProp, NavigationState, NavigationEvents } from 'react-navigation';
-import { ErrorMessage } from '../../components/ErrorMessage';
-import { LongestStreakCard } from '../../components/LongestStreakCard';
-import { AverageStreakCard } from '../../components/AverageStreakCard';
-import { StreakStartDateCard } from '../../components/StreakStartDateCard';
-import { DaysSinceStreakCreationCard } from '../../components/DaysSinceStreakCreationCard';
-import { TotalNumberOfDaysCard } from '../../components/TotalNumberOfDaysCard';
-import { StreakRestartsCard } from '../../components/StreakRestartsCard';
+import { ErrorMessage } from '../components/ErrorMessage';
+import { LongestStreakCard } from '../components/LongestStreakCard';
+import { AverageStreakCard } from '../components/AverageStreakCard';
+import { StreakStartDateCard } from '../components/StreakStartDateCard';
+import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
+import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
+import { StreakRestartsCard } from '../components/StreakRestartsCard';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import {
-    StreakStatus,
-    StreakReminderTypes,
-    PushNotificationTypes,
-    RouterCategories,
-} from '@streakoid/streakoid-sdk/lib';
 import { Screens } from './Screens';
 import NavigationService from './NavigationService';
-import { IndividualNotes } from '../../components/IndividualNotes';
-import { GeneralActivityFeed } from '../../components/GeneralActivityFeed';
-import { Notifications } from 'expo';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { LocalNotification } from 'expo/build/Notifications/Notifications.types';
+import { IndividualNotes } from '../components/IndividualNotes';
+import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import {
     CustomChallengeStreakReminder,
     CustomStreakReminder,
 } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
 import { CustomChallengeStreakReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
-import { streakoidUrl } from '../../streakoidUrl';
+import { streakoidUrl } from '../streakoidUrl';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faShareAlt } from '@fortawesome/pro-solid-svg-icons';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -126,7 +123,7 @@ class ChallengeStreakInfoComponent extends Component<Props> {
             headerRight: (
                 <Button
                     type="clear"
-                    icon={<FontAwesome5 name="share-alt" size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
                     onPress={async () => {
                         await Share.share({
                             message: `View challenge streak ${streakName} at ${streakoidUrl}/${RouterCategories.challengeStreaks}/${streakId}`,
@@ -173,7 +170,7 @@ class ChallengeStreakInfoComponent extends Component<Props> {
             challengeStreakId,
             challengeName,
         };
-        const dailyPushNotification: LocalNotification = {
+        const dailyPushNotification = {
             title,
             body,
             ios: {
@@ -181,15 +178,16 @@ class ChallengeStreakInfoComponent extends Component<Props> {
             },
             data,
         };
+        dailyPushNotification;
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        const repeat = 'day';
+        //const repeat = 'day';
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const schedulingOptions = { time: scheduleTime, repeat } as any;
-        return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        //const schedulingOptions = { time: scheduleTime, repeat } as any;
+        //return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
     };
 
     updateCustomChallengeStreakReminder = async ({
@@ -207,12 +205,12 @@ class ChallengeStreakInfoComponent extends Component<Props> {
         const challengeStreakId = this.props.navigation.getParam('_id');
         const customStreakReminders = this.props.currentUser.pushNotifications.customStreakReminders;
         const customCompleteChallengeStreakReminder = customStreakReminders.find(
-            (pushNotificaion) =>
-                pushNotificaion.streakReminderType === StreakReminderTypes.customChallengeStreakReminder &&
-                pushNotificaion.challengeStreakId == challengeStreakId,
+            (pushNotification) =>
+                pushNotification.streakReminderType === StreakReminderTypes.customChallengeStreakReminder &&
+                pushNotification.challengeStreakId == challengeStreakId,
         );
         if (customCompleteChallengeStreakReminder) {
-            await Notifications.cancelScheduledNotificationAsync(customCompleteChallengeStreakReminder.expoId);
+            //await Notifications.cancelScheduledNotificationAsync(customCompleteChallengeStreakReminder.expoId);
         }
         if (enabled) {
             const newExpoId = await this.scheduleDailyPush({

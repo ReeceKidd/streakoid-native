@@ -7,15 +7,15 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import { View, StyleSheet } from 'react-native';
-import { Spacer } from '../../components/Spacer';
-import { teamStreakActions } from '../../actions/sharedActions';
+import { Spacer } from '../components/Spacer';
+import { teamStreakActions } from '../actions/sharedActions';
 import { FlatList } from 'react-native-gesture-handler';
 import { ListItem, Button } from 'react-native-elements';
-import { Follower } from '@streakoid/streakoid-sdk/lib';
-import { NavigationLink } from '../../components/NavigationLink';
+import { NavigationLink } from '../components/NavigationLink';
 import { Screens } from './Screens';
 import { NavigationState, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
+import BasicUser from '@streakoid/streakoid-sdk/lib/models/BasicUser';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -59,7 +59,7 @@ class AddFollowerToTeamStreakScreenComponent extends Component<Props> {
             <View style={styles.container}>
                 <FlatList
                     data={followersNotInTeamStreak}
-                    keyExtractor={(follower: Follower) => follower.userId}
+                    keyExtractor={(follower: BasicUser) => follower.userId}
                     renderItem={({ item }) => {
                         const { profileImage } = item;
                         return (

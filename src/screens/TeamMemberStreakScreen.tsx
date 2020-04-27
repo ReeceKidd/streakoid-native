@@ -5,26 +5,27 @@ import { AppState } from '../../store';
 import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { teamMemberStreakActions } from '../../actions/sharedActions';
+import { teamMemberStreakActions } from '../actions/sharedActions';
 import { Text, ListItem } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { NavigationScreenProp, NavigationState, NavigationEvents, ScrollView } from 'react-navigation';
-import { LoadingScreenSpinner } from '../../components/LoadingScreenSpinner';
+import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Screens } from './Screens';
 import { connect } from 'react-redux';
-import { LongestStreakCard } from '../../components/LongestStreakCard';
-import { AverageStreakCard } from '../../components/AverageStreakCard';
-import { TotalNumberOfDaysCard } from '../../components/TotalNumberOfDaysCard';
-import { StreakStartDateCard } from '../../components/StreakStartDateCard';
-import { DaysSinceStreakCreationCard } from '../../components/DaysSinceStreakCreationCard';
-import { StreakRestartsCard } from '../../components/StreakRestartsCard';
+import { LongestStreakCard } from '../components/LongestStreakCard';
+import { AverageStreakCard } from '../components/AverageStreakCard';
+import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
+import { StreakStartDateCard } from '../components/StreakStartDateCard';
+import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
+import { StreakRestartsCard } from '../components/StreakRestartsCard';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { GeneralActivityFeed } from '../../components/GeneralActivityFeed';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { Share } from 'react-native';
 import { Button } from 'react-native-elements';
-import { streakoidUrl } from '../../streakoidUrl';
-import { RouterCategories } from '@streakoid/streakoid-sdk/lib';
+import { streakoidUrl } from '../streakoidUrl';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import { faShareAlt } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -65,7 +66,7 @@ class TeamMemberStreakInfoScreenComponent extends Component<Props> {
             headerRight: (
                 <Button
                     type="clear"
-                    icon={<FontAwesome5 name="share-alt" size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
                     onPress={async () => {
                         await Share.share({
                             message: `View team member streak ${streakName} at ${streakoidUrl}/${RouterCategories.teamMemberStreaks}/${streakId}`,

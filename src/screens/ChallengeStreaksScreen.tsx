@@ -8,14 +8,15 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { AppState } from '../../store';
-import { Spacer } from '../../components/Spacer';
-import { HamburgerSelector } from '../../components/HamburgerSelector';
-import { challengeStreakActions } from '../../actions/sharedActions';
-import { LiveChallengeStreakList } from '../../components/LiveChallengeStreakList';
-import { ArchivedChallengeStreakList } from '../../components/ArchivedChallengeStreakList';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { Spacer } from '../components/Spacer';
+import { HamburgerSelector } from '../components/HamburgerSelector';
+import { challengeStreakActions } from '../actions/sharedActions';
+import { LiveChallengeStreakList } from '../components/LiveChallengeStreakList';
+import { ArchivedChallengeStreakList } from '../components/ArchivedChallengeStreakList';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';
+import { faPlus, faArchive } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 const mapStateToProps = (state: AppState) => {
     const liveChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.liveChallengeStreaks;
@@ -72,7 +73,7 @@ class ChallengeStreaksScreenComponent extends Component<Props> {
             headerRight: (
                 <Button
                     type="clear"
-                    icon={<FontAwesome name="plus" size={30} />}
+                    icon={<FontAwesomeIcon icon={faPlus} size={30} />}
                     onPress={() => NavigationService.navigate(Screens.Challenges)}
                 />
             ),
@@ -111,7 +112,7 @@ class ChallengeStreaksScreenComponent extends Component<Props> {
                     </Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                            Archived Challenge Streaks <FontAwesome5 name="archive" size={20} />
+                            Archived Challenge Streaks <FontAwesomeIcon icon={faArchive} size={20} />
                         </Text>
                         <ArchivedChallengeStreakList
                             getArchivedChallengeStreaks={getArchivedChallengeStreaks}

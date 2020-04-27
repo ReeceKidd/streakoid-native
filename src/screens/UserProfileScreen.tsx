@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
 import { Text, ListItem, Avatar, Button } from 'react-native-elements';
 import { NavigationScreenProp, NavigationState, FlatList, ScrollView, NavigationEvents } from 'react-navigation';
-import { Spacer } from '../../components/Spacer';
-import { SoloStreak, PopulatedTeamStreak, ChallengeStreak, RouterCategories } from '@streakoid/streakoid-sdk/lib';
+import { Spacer } from '../components/Spacer';
 import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
-import { userActions } from '../../actions/sharedActions';
+import { userActions } from '../actions/sharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { LoadingScreenSpinner } from '../../components/LoadingScreenSpinner';
+import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Screens } from './Screens';
-import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
-import { GeneralActivityFeed } from '../../components/GeneralActivityFeed';
-import { streakoidUrl } from '../../streakoidUrl';
+import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
+import { streakoidUrl } from '../streakoidUrl';
+import { faShareAlt, faChild, faPeopleCarry, faMedal, faUser } from '@fortawesome/pro-solid-svg-icons';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { SoloStreak } from '@streakoid/streakoid-models/lib/Models/SoloStreak';
+import { PopulatedTeamStreak } from '@streakoid/streakoid-models/lib/Models/PopulatedTeamStreak';
+import { ChallengeStreak } from '@streakoid/streakoid-models/lib/Models/ChallengeStreak';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -58,7 +62,7 @@ class UserProfileScreenComponent extends Component<Props> {
             headerRight: username ? (
                 <Button
                     type="clear"
-                    icon={<FontAwesome name="share-alt" size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
                     onPress={async () => {
                         await Share.share({
                             message: `View ${username}'s profile at ${streakoidUrl}/${RouterCategories.users}/${username}`,
@@ -142,7 +146,7 @@ class UserProfileScreenComponent extends Component<Props> {
 
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>
-                                Solo Streaks <FontAwesome name="child" size={20} />
+                                Solo Streaks <FontAwesomeIcon icon={faChild} size={20} />
                                 {selectedUser.soloStreaks.length}
                             </Text>
                             {soloStreaks.length > 0 ? (
@@ -177,7 +181,7 @@ class UserProfileScreenComponent extends Component<Props> {
                         </Spacer>
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>
-                                Team Streaks <FontAwesome5 name="people-carry" size={20} />
+                                Team Streaks <FontAwesomeIcon icon={faPeopleCarry} size={20} />
                                 {selectedUser.teamStreaks.length}
                             </Text>
                             {teamStreaks.length > 0 ? (
@@ -268,7 +272,7 @@ class UserProfileScreenComponent extends Component<Props> {
                         </Spacer>
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>
-                                Challenge Streaks <FontAwesome5 name="medal" size={20} />
+                                Challenge Streaks <FontAwesomeIcon icon={faMedal} size={20} />
                                 {selectedUser.challengeStreaks.length}
                             </Text>
                             {challengeStreaks.length > 0 ? (
@@ -308,7 +312,7 @@ class UserProfileScreenComponent extends Component<Props> {
                         </Spacer>
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>
-                                Following <FontAwesome name="user" size={20} /> {selectedUser.following.length}
+                                Following <FontAwesomeIcon icon={faUser} size={20} /> {selectedUser.following.length}
                             </Text>
                             {selectedUser && selectedUser.following && selectedUser.following.length > 0 ? (
                                 <FlatList
@@ -345,7 +349,7 @@ class UserProfileScreenComponent extends Component<Props> {
                         </Spacer>
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>
-                                Followers <FontAwesome name="user" size={20} /> {selectedUser.followers.length}
+                                Followers <FontAwesomeIcon icon={faUser} size={20} /> {selectedUser.followers.length}
                             </Text>
                             {selectedUser && selectedUser.followers && selectedUser.followers.length > 0 ? (
                                 <FlatList

@@ -2,10 +2,11 @@ import React from 'react';
 
 import { Text, Button } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
-import { Spacer } from '../../../components/Spacer';
 import NavigationService from '../NavigationService';
 import { Screens } from '../Screens';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBook, faBrain, faWeight } from '@fortawesome/pro-solid-svg-icons';
+import { Spacer } from '../../components/Spacer';
 
 const styles = StyleSheet.create({
     container: {
@@ -35,11 +36,11 @@ class WhatIsAStreakScreen extends React.Component {
                 </Spacer>
                 <Spacer>
                     <Text h4 style={{ textAlign: 'center' }}>{`Reading`}</Text>
-                    <FontAwesome5 name="book" size={20} style={{ textAlign: 'center', color: 'blue' }} />
+                    <FontAwesomeIcon icon={faBook} size={20} style={{ color: 'blue' }} />
                     <Text h4 style={{ textAlign: 'center' }}>{`Meditation`}</Text>
-                    <FontAwesome5 name="brain" size={20} style={{ textAlign: 'center', color: 'pink' }} />
+                    <FontAwesomeIcon icon={faBrain} size={20} style={{ color: 'pink' }} />
                     <Text h4 style={{ textAlign: 'center' }}>{`Exercise`}</Text>
-                    <FontAwesome5 name="weight" size={20} style={{ textAlign: 'center', color: 'green' }} />
+                    <FontAwesomeIcon icon={faWeight} size={20} style={{ color: 'green' }} />
                 </Spacer>
 
                 <Spacer>

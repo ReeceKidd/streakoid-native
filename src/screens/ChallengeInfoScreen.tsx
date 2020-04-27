@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
 import { Text, ListItem, Button, Card, Divider } from 'react-native-elements';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {
+    faCalculator,
+    faShareAlt,
+    faUsers,
+    faCalendarCheck,
+    faCrown,
+    faAbacus,
+} from '@fortawesome/pro-solid-svg-icons';
 import { Platform } from 'react-native';
 
 import { NavigationScreenProp, NavigationState, FlatList, NavigationEvents, ScrollView } from 'react-navigation';
-import { Spacer } from '../../components/Spacer';
+import { Spacer } from '../components/Spacer';
 import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
-import { challengeActions } from '../../actions/sharedActions';
+import { challengeActions } from '../actions/sharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { ChallengeIcon } from '../../components/ChallengeIcon';
+import { ChallengeIcon } from '../components/ChallengeIcon';
 import { Screens } from './Screens';
-import { WhatsappGroupLink } from '../../components/WhatsappGroupLink';
-import { streakoidUrl } from '../../streakoidUrl';
-import { RouterCategories } from '@streakoid/streakoid-sdk/lib';
+import { WhatsappGroupLink } from '../components/WhatsappGroupLink';
+import { streakoidUrl } from '../streakoidUrl';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 
 const mapStateToProps = (state: AppState) => {
     const selectedChallenge = state && state.challenges && state.challenges.selectedChallenge;
@@ -54,7 +62,7 @@ class ChallengeInfoScreenComponent extends Component<Props> {
             headerRight: challengeName ? (
                 <Button
                     type="clear"
-                    icon={<FontAwesome5 name="share-alt" size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
                     onPress={async () => {
                         await Share.share({
                             message: `Join the ${challengeName} challenge at ${streakoidUrl}/${RouterCategories.challenges}/${challengeId}`,
@@ -96,7 +104,7 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                 alignItems: 'center',
                             }}
                         >
-                            <ChallengeIcon icon={selectedChallenge.icon} color={selectedChallenge.color} size={40} />
+                            <ChallengeIcon icon={selectedChallenge.icon} color={selectedChallenge.color} />
                             <Text h3 style={{ textAlign: 'center' }}>
                                 {this.props.navigation.getParam('challengeName')}
                             </Text>
@@ -137,35 +145,35 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                         ) : null}
                         <Spacer>
                             <Card>
-                                <FontAwesome5 name="users" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faUsers} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Members</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.members.length}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesome5 name="calendar-check" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faCalendarCheck} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Longest Current Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.longestCurrentStreakForChallenge}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesome5 name="crown" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faCrown} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.longestEverStreakForChallenge}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesome5 name="calculator" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faCalculator} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Average Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.averageStreakForChallenge.toFixed(2)}
                                 </Text>
                             </Card>
                             <Card>
-                                <MaterialCommunityIcons name="counter" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faAbacus} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.totalTimesTracked}

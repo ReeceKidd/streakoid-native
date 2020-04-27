@@ -6,31 +6,29 @@ import { AppState } from '../../store';
 import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { teamStreakActions, teamMemberStreakTaskActions, userActions } from '../../actions/sharedActions';
+import { teamStreakActions, teamMemberStreakTaskActions, userActions } from '../actions/sharedActions';
 import { NavigationScreenProp, NavigationState, NavigationEvents, withNavigationFocus } from 'react-navigation';
 import { Text, Button, ListItem, Divider, Card } from 'react-native-elements';
-import { LoadingScreenSpinner } from '../../components/LoadingScreenSpinner';
-import { Spacer } from '../../components/Spacer';
+import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
+import { Spacer } from '../components/Spacer';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { TeamStreakDetails } from '../../components/TeamStreakDetails';
-import {
-    StreakStatus,
-    PushNotificationTypes,
-    StreakReminderTypes,
-    RouterCategories,
-} from '@streakoid/streakoid-sdk/lib';
-import { ErrorMessage } from '../../components/ErrorMessage';
+import { TeamStreakDetails } from '../components/TeamStreakDetails';
+import { ErrorMessage } from '../components/ErrorMessage';
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler';
-import { TeamNotes } from '../../components/TeamNotes';
-import { GeneralActivityFeed } from '../../components/GeneralActivityFeed';
-import { Notifications } from 'expo';
+import { TeamNotes } from '../components/TeamNotes';
+import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { StyleSheet, Picker, View, ActivityIndicator, Share } from 'react-native';
-import { LocalNotification } from 'expo/build/Notifications/Notifications.types';
 import { CustomTeamStreakReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
 import { CustomTeamStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
-import { streakoidUrl } from '../../streakoidUrl';
+import { streakoidUrl } from '../streakoidUrl';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faEdit, faShareAlt, faCalculator, faAbacus, faCog } from '@fortawesome/pro-solid-svg-icons';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+import { faCrown } from '@fortawesome/free-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -122,13 +120,13 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                     {userIsApartOfStreak ? (
                         <Button
                             type="clear"
-                            icon={<FontAwesome5 name="edit" size={20} />}
+                            icon={<FontAwesomeIcon icon={faEdit} size={20} />}
                             onPress={() => NavigationService.navigate(Screens.EditTeamStreak)}
                         />
                     ) : null}
                     <Button
                         type="clear"
-                        icon={<FontAwesome5 name="share-alt" size={20} />}
+                        icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
                         onPress={async () => {
                             await Share.share({
                                 message: `View team streak ${streakName} at ${streakoidUrl}/${RouterCategories.teamStreaks}/${streakId}`,
@@ -180,7 +178,7 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
             teamStreakId,
             teamStreakName,
         };
-        const dailyPushNotification: LocalNotification = {
+        const dailyPushNotification = {
             title,
             body,
             ios: {
@@ -188,15 +186,16 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
             },
             data,
         };
+        dailyPushNotification;
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        const repeat = 'day';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const schedulingOptions = { time: scheduleTime, repeat } as any;
-        return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        // const repeat = 'day';
+        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // const schedulingOptions = { time: scheduleTime, repeat } as any;
+        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
     };
 
     updateCustomTeamStreakReminder = async ({
@@ -212,12 +211,12 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
         const teamStreakName = this.props.navigation.getParam('streakName');
         const customStreakReminders = this.props.currentUser.pushNotifications.customStreakReminders;
         const customCompleteTeamMemberStreakReminder = customStreakReminders.find(
-            (pushNotificaion) =>
-                pushNotificaion.streakReminderType === StreakReminderTypes.customTeamStreakReminder &&
-                pushNotificaion.teamStreakId == teamStreakId,
+            (pushNotification) =>
+                pushNotification.streakReminderType === StreakReminderTypes.customTeamStreakReminder &&
+                pushNotification.teamStreakId == teamStreakId,
         );
         if (customCompleteTeamMemberStreakReminder) {
-            await Notifications.cancelScheduledNotificationAsync(customCompleteTeamMemberStreakReminder.expoId);
+            //await Notifications.cancelScheduledNotificationAsync(customCompleteTeamMemberStreakReminder.expoId);
         }
         if (enabled) {
             const newExpoId = await this.scheduleDailyPush({
@@ -239,10 +238,10 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                 teamStreakId,
             };
             const customStreakRemindersWithoutOldReminder = customStreakReminders.filter(
-                (pushNotificaion) =>
+                (pushNotification) =>
                     !(
-                        pushNotificaion.streakReminderType === StreakReminderTypes.customTeamStreakReminder &&
-                        pushNotificaion.teamStreakId === teamStreakId
+                        pushNotification.streakReminderType === StreakReminderTypes.customTeamStreakReminder &&
+                        pushNotification.teamStreakId === teamStreakId
                     ),
             );
 
@@ -509,21 +508,21 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
                             <Card>
-                                <FontAwesome5 name="crown" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faCrown} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedTeamStreak.longestStreak}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesome5 name="calculator" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faCalculator} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Average Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedTeamStreak.averageStreak.toFixed(2)}
                                 </Text>
                             </Card>
                             <Card>
-                                <MaterialCommunityIcons name="counter" size={20} style={{ textAlign: 'center' }} />
+                                <FontAwesomeIcon icon={faAbacus} size={20} />
                                 <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedTeamStreak.totalTimesTracked}
@@ -597,7 +596,7 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                             />
                         </Spacer>
                         <Text h3 h3Style={{ textAlign: 'center' }}>
-                            <FontAwesome5 name="cog" size={40} />
+                            <FontAwesomeIcon icon={faCog} size={40} />
                         </Text>
                         <Spacer />
                         {isCurrentUserAMemberOfTeamStreak ? (

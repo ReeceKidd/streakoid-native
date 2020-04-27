@@ -7,8 +7,8 @@ import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-n
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { Text, Button } from 'react-native-elements';
 
-import { Spacer } from '../../components/Spacer';
-import { authActions } from '../../actions/sharedActions';
+import { Spacer } from '../components/Spacer';
+import { authActions } from '../actions/sharedActions';
 import { AppState } from '../../store';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';

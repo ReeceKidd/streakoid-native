@@ -2,8 +2,8 @@ import React from 'react';
 
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text, Button, Image } from 'react-native-elements';
-import { Spacer } from '../../components/Spacer';
-import { Linking } from 'expo';
+import { Spacer } from '../components/Spacer';
+import { Linking } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {

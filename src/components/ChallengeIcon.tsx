@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
     faFacebook,
@@ -67,8 +66,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 interface ChallengeIconProps {
-    icon: IconProp;
-    color: string;
+    icon?: string;
+    color?: string;
 }
 
 class ChallengeIcon extends Component<ChallengeIconProps> {
