@@ -10,6 +10,11 @@ module.exports = {
     env: {
         es6: true,
     },
+    settings: {
+        react: {
+            version: 'latest',
+        },
+    },
     parserOptions: {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: 'module', // Allows for the use of imports
