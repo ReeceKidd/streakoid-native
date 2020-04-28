@@ -163,6 +163,7 @@ class HomeScreenComponent extends Component<Props> {
         if (!hasCompletedIntroduction) {
             NavigationService.navigate(Screens.Welcome);
         }
+        this.initializePushNotifications();
     };
 
     initializePushNotifications = async () => {

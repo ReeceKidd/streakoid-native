@@ -20,13 +20,13 @@ import {
     userActions,
     authActions,
 } from './src/actions/sharedActions';
-import { ActivityIndicator, PushNotificationIOS } from 'react-native';
+import { ActivityIndicator, Platform } from 'react-native';
 import { AppState as ReactNativeAppState } from 'react-native';
 
 import { PushNotificationType } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
 import { Screens } from './src/screens/Screens';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
-import NativePushNotification, { PushNotification } from 'react-native-push-notification';
+import NativePushNotification from 'react-native-push-notification';
 
 const unauthenticatedSwitchNavigator = createSwitchNavigator({
     auth: AuthBottomTabNavigator,
@@ -84,8 +84,12 @@ class AppContainerComponent extends React.Component<Props> {
                     this.props.updateCurrentUser({ pushNotificationToken: token });
                 },
                 onNotification: (notification) => {
-                    notification.finish(PushNotificationIOS.FetchResult.NoData);
-                    this._handleNotification(notification);
+                    if (Platform.OS === 'ios') {
+                        this._handleNotification(notification.data as PushNotificationType);
+                    } else {
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        this._handleNotification((notification as any).userInfo);
+                    }
                 },
                 permissions: {
                     alert: true,
@@ -97,12 +101,7 @@ class AppContainerComponent extends React.Component<Props> {
         }
     };
 
-    _handleNotification = async (notification: PushNotification) => {
-        const pushNotification = notification.data as PushNotificationType;
-        // if (notification.origin === 'received') {
-        //     Vibration.vibrate(100);
-        // }
-
+    _handleNotification = async (pushNotification: PushNotificationType) => {
         if (ReactNativeAppState.currentState === 'background') {
             if (pushNotification.pushNotificationType == PushNotificationTypes.customSoloStreakReminder) {
                 return NavigationService.navigate(Screens.SoloStreakInfo, {
@@ -161,10 +160,6 @@ class AppContainerComponent extends React.Component<Props> {
                 return NavigationService.navigate(Screens.Account);
             }
         }
-    };
-
-    askPermissionForNotifications = async () => {
-        return true;
     };
 
     render() {

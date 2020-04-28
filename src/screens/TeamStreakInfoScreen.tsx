@@ -5,6 +5,7 @@ import { AppState } from '../../store';
 
 import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
+import NativePushNotification from 'react-native-push-notification';
 
 import { teamStreakActions, teamMemberStreakTaskActions, userActions } from '../actions/sharedActions';
 import { NavigationScreenProp, NavigationState, NavigationEvents, withNavigationFocus } from 'react-navigation';
@@ -23,7 +24,7 @@ import { CustomTeamStreakReminderPushNotification } from '@streakoid/streakoid-s
 import { CustomTeamStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
 import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEdit, faShareAlt, faCalculator, faAbacus, faCog } from '@fortawesome/pro-solid-svg-icons';
+import { faEdit, faShareAlt, faCalculator, faAbacus, faCog, faBell } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
@@ -192,10 +193,13 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        // const repeat = 'day';
-        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // const schedulingOptions = { time: scheduleTime, repeat } as any;
-        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        return NativePushNotification.localNotificationSchedule({
+            title,
+            message: body,
+            userInfo: data,
+            date: scheduleTime,
+            repeatType: 'day',
+        });
     };
 
     updateCustomTeamStreakReminder = async ({
@@ -216,7 +220,9 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                 pushNotification.teamStreakId == teamStreakId,
         );
         if (customCompleteTeamMemberStreakReminder) {
-            //await Notifications.cancelScheduledNotificationAsync(customCompleteTeamMemberStreakReminder.expoId);
+            await NativePushNotification.cancelLocalNotifications({
+                id: customCompleteTeamMemberStreakReminder.expoId,
+            });
         }
         if (enabled) {
             const newExpoId = await this.scheduleDailyPush({
@@ -258,10 +264,10 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
         } else {
             if (customCompleteTeamMemberStreakReminder) {
                 const customStreakRemindersWithoutOldReminder = customStreakReminders.filter(
-                    (pushNotificaion) =>
+                    (pushNotification) =>
                         !(
-                            pushNotificaion.streakReminderType === StreakReminderTypes.customTeamStreakReminder &&
-                            pushNotificaion.teamStreakId === teamStreakId
+                            pushNotification.streakReminderType === StreakReminderTypes.customTeamStreakReminder &&
+                            pushNotification.teamStreakId === teamStreakId
                         ),
                 );
                 const updatedCustomTeamStreakReminder: CustomTeamStreakReminder = {
@@ -297,7 +303,7 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
             <ListItem
                 title={title}
                 titleStyle={styles.itemTitle}
-                leftIcon={{ name: 'phone-android', color: enabled ? 'blue' : 'gray' }}
+                leftIcon={<FontAwesomeIcon icon={faBell} color={enabled ? 'blue' : 'gray'} />}
                 onPress={() => {
                     this.updateCustomTeamStreakReminder({
                         reminderHour,

@@ -5,6 +5,7 @@ import { AppState } from '../../store';
 
 import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
+import NativePushNotification from 'react-native-push-notification';
 
 import { challengeStreakActions, userActions } from '../actions/sharedActions';
 import { View, StyleSheet, ActivityIndicator, Picker, Share } from 'react-native';
@@ -30,7 +31,7 @@ import {
 import { CustomChallengeStreakReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
 import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faShareAlt } from '@fortawesome/pro-solid-svg-icons';
+import { faShareAlt, faBell } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
@@ -184,10 +185,13 @@ class ChallengeStreakInfoComponent extends Component<Props> {
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        //const repeat = 'day';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        //const schedulingOptions = { time: scheduleTime, repeat } as any;
-        //return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        return NativePushNotification.localNotificationSchedule({
+            title,
+            message: body,
+            userInfo: data,
+            date: scheduleTime,
+            repeatType: 'day',
+        });
     };
 
     updateCustomChallengeStreakReminder = async ({
@@ -210,7 +214,7 @@ class ChallengeStreakInfoComponent extends Component<Props> {
                 pushNotification.challengeStreakId == challengeStreakId,
         );
         if (customCompleteChallengeStreakReminder) {
-            //await Notifications.cancelScheduledNotificationAsync(customCompleteChallengeStreakReminder.expoId);
+            await NativePushNotification.cancelLocalNotifications({ id: customCompleteChallengeStreakReminder.expoId });
         }
         if (enabled) {
             const newExpoId = await this.scheduleDailyPush({
@@ -233,10 +237,10 @@ class ChallengeStreakInfoComponent extends Component<Props> {
                 challengeId,
             };
             const customStreakRemindersWithoutOldReminder = customStreakReminders.filter(
-                (pushNotificaion) =>
+                (pushNotification) =>
                     !(
-                        pushNotificaion.streakReminderType === StreakReminderTypes.customChallengeStreakReminder &&
-                        pushNotificaion.challengeStreakId === challengeStreakId
+                        pushNotification.streakReminderType === StreakReminderTypes.customChallengeStreakReminder &&
+                        pushNotification.challengeStreakId === challengeStreakId
                     ),
             );
 
@@ -253,10 +257,10 @@ class ChallengeStreakInfoComponent extends Component<Props> {
         } else {
             if (customCompleteChallengeStreakReminder) {
                 const customStreakRemindersWithoutOldReminder = customStreakReminders.filter(
-                    (pushNotificaion) =>
+                    (pushNotification) =>
                         !(
-                            pushNotificaion.streakReminderType === StreakReminderTypes.customChallengeStreakReminder &&
-                            pushNotificaion.challengeStreakId === challengeStreakId
+                            pushNotification.streakReminderType === StreakReminderTypes.customChallengeStreakReminder &&
+                            pushNotification.challengeStreakId === challengeStreakId
                         ),
                 );
                 const updatedCustomStreakReminder: CustomChallengeStreakReminder = {
@@ -294,7 +298,7 @@ class ChallengeStreakInfoComponent extends Component<Props> {
             <ListItem
                 title={title}
                 titleStyle={styles.itemTitle}
-                leftIcon={{ name: 'phone-android', color: enabled ? 'blue' : 'gray' }}
+                leftIcon={<FontAwesomeIcon icon={faBell} color={enabled ? 'blue' : 'gray'} />}
                 onPress={() => {
                     this.updateCustomChallengeStreakReminder({
                         reminderHour,

@@ -23,6 +23,7 @@ import { StreakRestartsCard } from '../components/StreakRestartsCard';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { IndividualNotes } from '../components/IndividualNotes';
 import { Picker, StyleSheet, View, ActivityIndicator, Share } from 'react-native';
+import NativePushNotification from 'react-native-push-notification';
 
 import { YellowBox } from 'react-native';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
@@ -30,7 +31,7 @@ import { CustomSoloStreakReminderPushNotification } from '@streakoid/streakoid-s
 import { CustomSoloStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
 import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEdit, faShareAlt } from '@fortawesome/pro-solid-svg-icons';
+import { faEdit, faShareAlt, faBell } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
@@ -189,10 +190,13 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        // const repeat = 'day';
-        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // const schedulingOptions = { time: scheduleTime, repeat } as any;
-        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        return NativePushNotification.localNotificationSchedule({
+            title,
+            message: body,
+            userInfo: data,
+            date: scheduleTime,
+            repeatType: 'day',
+        });
     };
 
     updateCustomSoloStreakReminder = async ({
@@ -213,7 +217,7 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
                 pushNotification.soloStreakId == soloStreakId,
         );
         if (customCompleteSoloStreakReminder) {
-            // await Notifications.cancelScheduledNotificationAsync(customCompleteSoloStreakReminder.expoId);
+            await NativePushNotification.cancelLocalNotifications({ id: customCompleteSoloStreakReminder.expoId });
         }
         if (enabled) {
             const newExpoId = await this.scheduleDailyPush({
@@ -293,7 +297,7 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
             <ListItem
                 title={title}
                 titleStyle={styles.itemTitle}
-                leftIcon={{ name: 'phone-android', color: enabled ? 'blue' : 'gray' }}
+                leftIcon={<FontAwesomeIcon icon={faBell} color={enabled ? 'blue' : 'gray'} />}
                 onPress={() => {
                     this.updateCustomSoloStreakReminder({
                         reminderHour,
