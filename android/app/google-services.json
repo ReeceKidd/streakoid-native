@@ -1,0 +1,40 @@
+{
+    "project_info": {
+        "project_number": "392167142636",
+        "firebase_url": "https://streakoid-542c3.firebaseio.com",
+        "project_id": "streakoid-542c3",
+        "storage_bucket": "streakoid-542c3.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:392167142636:android:344c27381bd568d38561c9",
+                "android_client_info": {
+                    "package_name": "com.streakoid"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "392167142636-7ntcpp5p9vpn8vu68g3fo7qktvqraugf.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyAP2OMq6afrlssMAXKYGnrfj3Cwh_5ISus"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "392167142636-7ntcpp5p9vpn8vu68g3fo7qktvqraugf.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}

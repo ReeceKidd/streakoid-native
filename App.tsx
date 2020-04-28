@@ -92,6 +92,7 @@ class AppContainerComponent extends React.Component<Props> {
                     badge: true,
                     sound: true,
                 },
+                senderID: '392167142636',
             });
         }
     };
