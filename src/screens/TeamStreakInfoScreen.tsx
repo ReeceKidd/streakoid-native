@@ -467,7 +467,10 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                                 {streakCompletionString.string}
                             </Text>
                         </Spacer>
-                        <TeamStreakDetails selectedTeamStreak={selectedTeamStreak} />
+                        <TeamStreakDetails
+                            selectedTeamStreak={selectedTeamStreak}
+                            navigate={this.props.navigation.navigate}
+                        />
                         {isCurrentUserAMemberOfTeamStreak ? (
                             <>
                                 <Spacer>

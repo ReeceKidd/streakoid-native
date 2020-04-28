@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { View, ActivityIndicator } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ListItem } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 import { PopulatedTeamStreak } from '@streakoid/streakoid-models/lib/Models/PopulatedTeamStreak';
 import { PopulatedTeamMember } from '@streakoid/streakoid-models/lib/Models/PopulatedTeamMember';
+import { Screens } from '../screens/Screens';
 
 interface TeamStreakDetailsProps {
     selectedTeamStreak: PopulatedTeamStreak;
+    navigate: Function;
 }
 
 class TeamStreakDetails extends Component<TeamStreakDetailsProps> {
@@ -26,17 +28,28 @@ class TeamStreakDetails extends Component<TeamStreakDetailsProps> {
                 data={members}
                 keyExtractor={(member: PopulatedTeamMember) => member._id}
                 renderItem={({ item }: { item: PopulatedTeamMember }) => {
-                    const { username, profileImage, teamMemberStreak } = item;
+                    const { username, profileImage, teamMemberStreak, _id } = item;
                     return (
                         <View>
-                            <ListItem
-                                title={username}
-                                leftAvatar={{
-                                    source: { uri: profileImage },
-                                    renderPlaceholderContent: <ActivityIndicator />,
-                                }}
-                                rightElement={this.renderMemberHasCompletedTaskToday(teamMemberStreak.completedToday)}
-                            />
+                            <TouchableOpacity
+                                onPress={() =>
+                                    this.props.navigate(Screens.UserProfile, {
+                                        username,
+                                        _id,
+                                    })
+                                }
+                            >
+                                <ListItem
+                                    title={username}
+                                    leftAvatar={{
+                                        source: { uri: profileImage },
+                                        renderPlaceholderContent: <ActivityIndicator />,
+                                    }}
+                                    rightElement={this.renderMemberHasCompletedTaskToday(
+                                        teamMemberStreak.completedToday,
+                                    )}
+                                />
+                            </TouchableOpacity>
                         </View>
                     );
                 }}

@@ -34,6 +34,7 @@ import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderType
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
+import NativePushNotification from 'react-native-push-notification';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -165,8 +166,7 @@ class HomeScreenComponent extends Component<Props> {
     };
 
     initializePushNotifications = async () => {
-        await this.askPermissionForNotifications();
-        //await Notifications.cancelAllScheduledNotificationsAsync();
+        NativePushNotification.cancelAllLocalNotifications();
         const { currentUser } = this.props;
         const { pushNotifications } = currentUser;
         const { completeAllStreaksReminder, customStreakReminders } = pushNotifications;
@@ -255,19 +255,6 @@ class HomeScreenComponent extends Component<Props> {
         }
     };
 
-    askPermissionForNotifications = async () => {
-        // const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        // let finalStatus = existingStatus;
-        // if (existingStatus !== 'granted') {
-        //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-        //     finalStatus = status;
-        // }
-        // if (finalStatus !== 'granted') {
-        //     return false;
-        // }
-        return true;
-    };
-
     scheduleDailyPush = async ({
         title,
         body,
@@ -285,24 +272,18 @@ class HomeScreenComponent extends Component<Props> {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const date = currentDate.getDate();
-        const dailyPushNotification = {
-            title,
-            body,
-            ios: {
-                sound: true,
-            },
-            data,
-        };
-        dailyPushNotification;
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        // const repeat = 'day';
-        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // const schedulingOptions = { time: scheduleTime, repeat } as any;
-        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
+        return NativePushNotification.localNotificationSchedule({
+            title,
+            message: body,
+            userInfo: data,
+            date: scheduleTime,
+            repeatType: 'day',
+        });
     };
 
     getCompletePercentageForStreaks({

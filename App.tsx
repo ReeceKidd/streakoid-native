@@ -20,12 +20,13 @@ import {
     userActions,
     authActions,
 } from './src/actions/sharedActions';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, PushNotificationIOS } from 'react-native';
 import { AppState as ReactNativeAppState } from 'react-native';
 
 import { PushNotificationType } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
 import { Screens } from './src/screens/Screens';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
+import NativePushNotification, { PushNotification } from 'react-native-push-notification';
 
 const unauthenticatedSwitchNavigator = createSwitchNavigator({
     auth: AuthBottomTabNavigator,
@@ -75,26 +76,28 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 
 class AppContainerComponent extends React.Component<Props> {
     componentDidMount = async () => {
-        //Notifications.addListener(this._handleNotification);
-        // if (Constants.isDevice) {
-        //     const hasPermission = await this.askPermissionForNotifications();
-        //     if (hasPermission) {
-        //         //const pushNotificationToken = await Notifications.getExpoPushTokenAsync();
-        //         if (isAuthenticated) {
-        //             //this.props.updateCurrentUser({ pushNotificationToken });
-        //         }
-        //     }
-        // }
-        // ErrorUtils &&
-        //     ErrorUtils.setGlobalHandler((error, isFatal) => {
-        //         if (isFatal) {
-        //             this.props.logoutUser();
-        //         }
-        //     });
+        const { isAuthenticated } = this.props;
+        if (isAuthenticated) {
+            NativePushNotification.configure({
+                onRegister: (tokenData) => {
+                    const { token } = tokenData;
+                    this.props.updateCurrentUser({ pushNotificationToken: token });
+                },
+                onNotification: (notification) => {
+                    notification.finish(PushNotificationIOS.FetchResult.NoData);
+                    this._handleNotification(notification);
+                },
+                permissions: {
+                    alert: true,
+                    badge: true,
+                    sound: true,
+                },
+            });
+        }
     };
 
-    _handleNotification = async (notification: Notification) => {
-        const pushNotification: PushNotificationType = notification.data;
+    _handleNotification = async (notification: PushNotification) => {
+        const pushNotification = notification.data as PushNotificationType;
         // if (notification.origin === 'received') {
         //     Vibration.vibrate(100);
         // }
