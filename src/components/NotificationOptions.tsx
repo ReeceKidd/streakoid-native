@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { ListItem, Text } from 'react-native-elements';
-import { View, Picker, StyleSheet, Platform } from 'react-native';
+import { View, Picker, StyleSheet } from 'react-native';
 
-import { requestNotifications } from 'react-native-permissions';
 import { userActions } from '../actions/sharedActions';
 import { Spacer } from './Spacer';
 import { PopulatedCurrentUser } from '@streakoid/streakoid-models/lib/Models/PopulatedCurrentUser';
 import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import { CompleteAllStreaksReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
+import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
+import NativePushNotification from 'react-native-push-notification';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBell } from '@fortawesome/pro-solid-svg-icons';
 
 interface NotificationOptionsProps {
     updateCurrentUserPushNotifications: typeof userActions.updateCurrentUserPushNotifications;
@@ -26,8 +30,7 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
         const { currentUser } = this.props;
         const { pushNotifications } = currentUser;
         const { completeAllStreaksReminder } = pushNotifications;
-        const hasPermission = await this.askPermissionForNotifications();
-        if (hasPermission && !completeAllStreaksReminder) {
+        if (!completeAllStreaksReminder) {
             const defaultReminderHour = 21;
             const defaultReminderMinute = 0;
             const newExpoId = await this.scheduleDailyPush({
@@ -36,7 +39,7 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
                 reminderHour: defaultReminderHour,
                 reminderMinute: defaultReminderMinute,
             });
-            //await Notifications.cancelScheduledNotificationAsync(newExpoId);
+            await NativePushNotification.cancelLocalNotifications({ id: newExpoId });
             this.props.updateCurrentUserPushNotifications({
                 completeAllStreaksReminder: {
                     expoId: String(newExpoId),
@@ -64,37 +67,21 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const date = currentDate.getDate();
-        // const data: CompleteAllStreaksReminderPushNotification = {
-        //     pushNotificationType: PushNotificationTypes.completeAllStreaksReminder,
-        // };
-        // const dailyPushNotification = {
-        //     title,
-        //     body,
-        //     ios: {
-        //         sound: true,
-        //     },
-        //     data,
-        // };
+        const data: CompleteAllStreaksReminderPushNotification = {
+            pushNotificationType: PushNotificationTypes.completeAllStreaksReminder,
+        };
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        // const repeat = 'day';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // const schedulingOptions = { time: scheduleTime, repeat } as any;
-        //return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
-    };
-
-    askPermissionForNotifications = async () => {
-        if (Platform.OS === 'ios') {
-            const { status } = await requestNotifications(['alert', 'sound']);
-            if (status !== 'granted') {
-                return false;
-            }
-            return true;
-        }
-        return true;
+        return NativePushNotification.localNotificationSchedule({
+            title,
+            message: body,
+            userInfo: data,
+            date: scheduleTime,
+            repeatType: 'day',
+        });
     };
 
     updateCompleteAllStreaksReminderPush = async ({
@@ -108,39 +95,40 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
         enabled: boolean;
         expoId: string;
     }) => {
-        const hasPermission = await this.askPermissionForNotifications();
-        if (hasPermission) {
-            if (!expoId) {
-                return;
-            }
-            //await Notifications.cancelScheduledNotificationAsync(expoId);
-            if (enabled) {
-                const newCompleteAllStreaksPushNotification = await this.scheduleDailyPush({
-                    title: 'Complete your streaks!',
-                    body: 'Complete your streaks before Oid finds out',
+        await NativePushNotification.cancelLocalNotifications({ id: expoId });
+        if (enabled) {
+            const newCompleteAllStreaksPushNotification = await this.scheduleDailyPush({
+                title: 'Complete your streaks!',
+                body: 'Complete your streaks before Oid finds out',
+                reminderHour,
+                reminderMinute,
+            });
+            this.props.updateCurrentUserPushNotifications({
+                completeAllStreaksReminder: {
+                    expoId: String(newCompleteAllStreaksPushNotification),
                     reminderHour,
                     reminderMinute,
-                });
-                this.props.updateCurrentUserPushNotifications({
-                    completeAllStreaksReminder: {
-                        expoId: String(newCompleteAllStreaksPushNotification),
-                        reminderHour,
-                        reminderMinute,
-                        enabled,
-                        streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-                    },
-                });
-            } else {
-                this.props.updateCurrentUserPushNotifications({
-                    completeAllStreaksReminder: {
-                        reminderHour,
-                        reminderMinute,
-                        enabled,
-                        expoId,
-                        streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-                    },
-                });
-            }
+                    enabled,
+                    streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+                },
+            });
+        } else {
+            const newCompleteAllStreaksPushNotification = await this.scheduleDailyPush({
+                title: 'Complete your streaks!',
+                body: 'Complete your streaks before Oid finds out',
+                reminderHour,
+                reminderMinute,
+            });
+            await NativePushNotification.cancelLocalNotifications({ id: newCompleteAllStreaksPushNotification });
+            this.props.updateCurrentUserPushNotifications({
+                completeAllStreaksReminder: {
+                    expoId: String(newCompleteAllStreaksPushNotification),
+                    reminderHour,
+                    reminderMinute,
+                    enabled,
+                    streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+                },
+            });
         }
     };
     renderCompleteStreaksReminderNotification(): JSX.Element | null {
@@ -155,10 +143,9 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
                 disabled={updatePushNotificationsIsLoading}
                 title={title}
                 titleStyle={styles.itemTitle}
-                rightIcon={{
-                    name: 'phone-android',
-                    color: completeAllStreaksReminder.enabled ? 'blue' : 'gray',
-                }}
+                rightIcon={
+                    <FontAwesomeIcon icon={faBell} color={completeAllStreaksReminder.enabled ? 'blue' : 'gray'} />
+                }
                 onPress={() => {
                     this.updateCompleteAllStreaksReminderPush({
                         ...completeAllStreaksReminder,
@@ -251,7 +238,7 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
                 disabled={updatePushNotificationsIsLoading}
                 title={'Team streak updates'}
                 titleStyle={styles.itemTitle}
-                rightIcon={{ name: 'phone-android', color: enabled ? 'blue' : 'gray' }}
+                rightIcon={<FontAwesomeIcon icon={faBell} color={enabled ? 'blue' : 'gray'} />}
                 topDivider
                 bottomDivider
                 onPress={() => {
@@ -275,7 +262,7 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
                 disabled={updatePushNotificationsIsLoading}
                 title={'New follower updates'}
                 titleStyle={styles.itemTitle}
-                rightIcon={{ name: 'phone-android', color: enabled ? 'blue' : 'gray' }}
+                rightIcon={<FontAwesomeIcon icon={faBell} color={enabled ? 'blue' : 'gray'} />}
                 topDivider
                 bottomDivider
                 onPress={() => {
@@ -300,7 +287,7 @@ class NotificationOptions extends Component<NotificationOptionsProps> {
                 disabled={updatePushNotificationsIsLoading}
                 title={'Achievement updates'}
                 titleStyle={styles.itemTitle}
-                rightIcon={{ name: 'phone-android', color: enabled ? 'blue' : 'gray' }}
+                rightIcon={<FontAwesomeIcon icon={faBell} color={enabled ? 'blue' : 'gray'} />}
                 topDivider
                 bottomDivider
                 onPress={() => {
