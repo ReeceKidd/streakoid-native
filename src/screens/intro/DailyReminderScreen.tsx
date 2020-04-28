@@ -9,6 +9,8 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { userActions } from '../../actions/sharedActions';
 import { Spacer } from '../../components/Spacer';
+import NativePushNotification from 'react-native-push-notification';
+import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -42,23 +44,16 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
     };
 
     componentDidMount() {
-        this.initaliseCompleteAllStreaksReminder();
+        this.initializeCompleteAllStreaksReminder();
     }
 
-    initaliseCompleteAllStreaksReminder = async () => {
+    initializeCompleteAllStreaksReminder = async () => {
         const { currentUser } = this.props;
         const completeAllStreaksReminder = currentUser.pushNotifications.completeAllStreaksReminder;
         const currentDate = new Date();
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const date = currentDate.getDate();
-        // const dailyPushNotification = {
-        //     title: 'Complete your streaks',
-        //     body: 'Do it before Oid finds out.',
-        //     ios: {
-        //         sound: true,
-        //     },
-        // };
         const defaultReminderHour = 0;
         const reminderHour =
             (completeAllStreaksReminder && completeAllStreaksReminder.reminderHour) || defaultReminderHour;
@@ -71,23 +66,22 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
 
-        // const repeat = 'day';
-        // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // const schedulingOptions = { time: scheduleTime, repeat } as any;
-        // const newCompleteAllStreaksPushNotification = await Notifications.scheduleLocalNotificationAsync(
-        //     dailyPushNotification,
-        //     schedulingOptions,
-        // );
+        const pushNotificationId = NativePushNotification.localNotificationSchedule({
+            title: 'Complete your streaks',
+            message: 'Do it before Oid finds out',
+            date: scheduleTime,
+            repeatType: 'day',
+        });
 
-        // this.props.updateCurrentUserPushNotifications({
-        //     completeAllStreaksReminder: {
-        //         expoId: String(newCompleteAllStreaksPushNotification),
-        //         enabled: true,
-        //         reminderHour: 21,
-        //         reminderMinute: 0,
-        //         streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-        //     },
-        // });
+        this.props.updateCurrentUserPushNotifications({
+            completeAllStreaksReminder: {
+                expoId: String(pushNotificationId),
+                enabled: true,
+                reminderHour: 21,
+                reminderMinute: 0,
+                streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+            },
+        });
     };
 
     scheduleDailyPush = async ({
@@ -106,35 +100,17 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
         const date = currentDate.getDate();
-        // const dailyPushNotification = {
-        //     title,
-        //     body,
-        //     ios: {
-        //         sound: true,
-        //     },
-        // };
         let scheduleTime = new Date(year, month, date, reminderHour, reminderMinute);
 
         if (scheduleTime <= new Date()) {
             scheduleTime = new Date(scheduleTime.setDate(scheduleTime.getDate() + 1));
         }
-        // const repeat = 'day';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // const schedulingOptions = { time: scheduleTime, repeat } as any;
-        // return Notifications.scheduleLocalNotificationAsync(dailyPushNotification, schedulingOptions);
-    };
-
-    askPermissionForNotifications = async () => {
-        // const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        // let finalStatus = existingStatus;
-        // if (existingStatus !== 'granted') {
-        //     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-        //     finalStatus = status;
-        // }
-        // if (finalStatus !== 'granted') {
-        //     return false;
-        // }
-        // return true;
+        return NativePushNotification.localNotificationSchedule({
+            title,
+            message: body,
+            date: scheduleTime,
+            repeatType: 'day',
+        });
     };
 
     updateCompleteAllStreaksReminderPush = async ({
@@ -152,37 +128,35 @@ class DailyRemindersScreenComponent extends React.Component<Props> {
         reminderMinute;
         enabled;
         expoId;
-        //const hasPermission = await this.askPermissionForNotifications();
-        // if (hasPermission) {
-        //     await Notifications.cancelScheduledNotificationAsync(expoId);
-        //     if (enabled) {
-        //         const newCompleteAllStreaksPushNotification = await this.scheduleDailyPush({
-        //             title: 'Complete your streaks!',
-        //             body: 'Complete your streaks before Oid finds out',
-        //             reminderHour,
-        //             reminderMinute,
-        //         });
-        //         this.props.updateCurrentUserPushNotifications({
-        //             completeAllStreaksReminder: {
-        //                 expoId: String(newCompleteAllStreaksPushNotification),
-        //                 reminderHour,
-        //                 reminderMinute,
-        //                 enabled,
-        //                 streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-        //             },
-        //         });
-        //     } else {
-        //         this.props.updateCurrentUserPushNotifications({
-        //             completeAllStreaksReminder: {
-        //                 reminderHour,
-        //                 reminderMinute,
-        //                 enabled,
-        //                 expoId,
-        //                 streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
-        //             },
-        //         });
-        //     }
-        // }
+
+        await NativePushNotification.cancelLocalNotifications({ id: expoId });
+        if (enabled) {
+            const newCompleteAllStreaksPushNotification = await this.scheduleDailyPush({
+                title: 'Complete your streaks!',
+                body: 'Complete your streaks before Oid finds out',
+                reminderHour,
+                reminderMinute,
+            });
+            this.props.updateCurrentUserPushNotifications({
+                completeAllStreaksReminder: {
+                    expoId: String(newCompleteAllStreaksPushNotification),
+                    reminderHour,
+                    reminderMinute,
+                    enabled,
+                    streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+                },
+            });
+        } else {
+            this.props.updateCurrentUserPushNotifications({
+                completeAllStreaksReminder: {
+                    reminderHour,
+                    reminderMinute,
+                    enabled,
+                    expoId,
+                    streakReminderType: StreakReminderTypes.completeAllStreaksReminder,
+                },
+            });
+        }
     };
 
     renderCompleteStreaksReminderNotification(): JSX.Element | null {
