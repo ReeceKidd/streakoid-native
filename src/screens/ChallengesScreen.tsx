@@ -102,7 +102,6 @@ class ChallengesScreenComponent extends Component<Props, State> {
                                                     <View style={{ flexDirection: 'row' }}>
                                                         <Text>
                                                             <FontAwesomeIcon icon={faUsers} size={15} />
-                                                            {` `}
                                                             {members.length}
                                                         </Text>
                                                     </View>
