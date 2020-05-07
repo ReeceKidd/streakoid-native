@@ -29,6 +29,9 @@ import NativePushNotification from 'react-native-push-notification';
 
 import * as Sentry from '@sentry/react-native';
 import RNRestart from 'react-native-restart';
+import { enableScreens } from 'react-native-screens';
+
+enableScreens();
 
 const unauthenticatedSwitchNavigator = createSwitchNavigator({
     auth: AuthBottomTabNavigator,
@@ -90,6 +93,7 @@ class AppContainerComponent extends React.Component<Props> {
             ],
             { cancelable: false },
         );
+        this.props.logoutUser();
     }
     componentDidMount = async () => {
         Sentry.init({
