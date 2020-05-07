@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 class CreateTeamStreakScreenComponent extends Component<Props> {
     static navigationOptions = {
         title: 'Create team streak',
-        tabBarIcon: <FontAwesomeIcon icon={faPlus} size={20} />,
+        tabBarIcon: <FontAwesomeIcon icon={faPlus} />,
     };
 
     render(): JSX.Element {

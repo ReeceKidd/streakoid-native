@@ -32,16 +32,16 @@ class StreakLimitReachedScreen extends React.Component {
                     <Text>{`Free accounts are allowed:`}</Text>
                     <Text />
                     <Text style={{ fontWeight: 'bold' }}>
-                        Two Solo Streaks <FontAwesomeIcon icon={faChild} size={20} style={{ color: 'blue' }} />
+                        Two Solo Streaks <FontAwesomeIcon icon={faChild} style={{ color: 'blue' }} />
                     </Text>
                     <Text />
                     <Text style={{ fontWeight: 'bold' }}>
                         Two Team Streaks
-                        <FontAwesomeIcon icon={faPeopleCarry} size={20} style={{ color: 'purple' }} />
+                        <FontAwesomeIcon icon={faPeopleCarry} style={{ color: 'purple' }} />
                     </Text>
                     <Text />
                     <Text style={{ fontWeight: 'bold' }}>
-                        Two Challenge Streaks <FontAwesomeIcon icon={faMedal} size={20} style={{ color: 'navy' }} />
+                        Two Challenge Streaks <FontAwesomeIcon icon={faMedal} style={{ color: 'navy' }} />
                     </Text>
                     <Text />
                     <Text>{`Upgrade for unlimited streaks.`}</Text>

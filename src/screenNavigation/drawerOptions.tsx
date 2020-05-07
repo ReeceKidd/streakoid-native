@@ -27,65 +27,65 @@ export const drawerOptions = {
     SoloStreaks: {
         screen: SoloStreakStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faChild} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faChild} />,
         },
     },
     TeamStreaks: {
         screen: TeamStreakStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faPeopleCarry} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faPeopleCarry} />,
         },
     },
     ChallengeStreaks: {
         screen: ChallengeStreakStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faMedal} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faMedal} />,
         },
     },
     Challenges: {
         screen: ChallengesStack,
         navigationOptions: {
             title: 'Challenges',
-            drawerIcon: <FontAwesomeIcon icon={faCrown} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faCrown} />,
         },
     },
     Leaderboards: {
         screen: LeaderboardsStack,
         navigationOptions: {
             title: 'Leaderboards',
-            drawerIcon: <FontAwesomeIcon icon={faHelmetBattle} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faHelmetBattle} />,
         },
     },
     ActivityFeed: {
         screen: ActivityBottomTabNavigator,
         navigationOptions: {
             title: 'Activity Feed',
-            drawerIcon: <FontAwesomeIcon icon={faUserFriends} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faUserFriends} />,
         },
     },
     StreakRecommendations: {
         screen: StreakRecommendationsStack,
         navigationOptions: {
             title: 'Streak Recommendations',
-            drawerIcon: <FontAwesomeIcon icon={faRobot} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faRobot} />,
         },
     },
     Users: {
         screen: UserStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faUser} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faUser} />,
         },
     },
     Feedback: {
         screen: FeedbackStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faMailBulk} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faMailBulk} />,
         },
     },
     Account: {
         screen: AccountStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faCog} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faCog} />,
         },
     },
 };

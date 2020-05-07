@@ -12,13 +12,13 @@ const FreeMemberAndroidDrawer = createDrawerNavigator({
     Home: {
         screen: HomeStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faHome} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faHome} />,
         },
     },
     Upgrade: {
         screen: UpgradeStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faStar} size={20} style={{ backgroundColor: 'yellow' }} />,
+            drawerIcon: <FontAwesomeIcon icon={faStar} style={{ backgroundColor: 'yellow' }} />,
         },
     },
     ...drawerOptions,
@@ -28,7 +28,7 @@ const FreeMemberIosDrawer = createDrawerNavigator({
     Home: {
         screen: HomeStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faHome} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faHome} />,
         },
     },
     ...drawerOptions,

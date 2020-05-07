@@ -18,7 +18,7 @@ const LoginStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Login',
-            tabBarIcon: <FontAwesomeIcon icon={faSignIn} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faSignIn} />,
         },
     },
 );
@@ -31,7 +31,7 @@ const RegisterStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Register',
-            tabBarIcon: <FontAwesomeIcon icon={faKey} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faKey} />,
         },
     },
 );

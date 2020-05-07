@@ -15,12 +15,11 @@ import { Screens } from './Screens';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { connect } from 'react-redux';
 import { LongestStreakCard } from '../components/LongestStreakCard';
-import { AverageStreakCard } from '../components/AverageStreakCard';
 import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
 import { StreakStartDateCard } from '../components/StreakStartDateCard';
 import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
 import { StreakRestartsCard } from '../components/StreakRestartsCard';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { IndividualNotes } from '../components/IndividualNotes';
 import { Picker, StyleSheet, View, ActivityIndicator, Share } from 'react-native';
 import NativePushNotification from 'react-native-push-notification';
@@ -118,13 +117,13 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
                     {isUsersStreak ? (
                         <Button
                             type="clear"
-                            icon={<FontAwesomeIcon icon={faEdit} size={20} />}
+                            icon={<FontAwesomeIcon icon={faEdit} />}
                             onPress={() => NavigationService.navigate(Screens.EditSoloStreak)}
                         />
                     ) : null}
                     <Button
                         type="clear"
-                        icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
+                        icon={<FontAwesomeIcon icon={faShareAlt} />}
                         onPress={async () => {
                             await Share.share({
                                 message: `View solo streak ${streakName} at ${streakoidUrl}/${RouterCategories.soloStreaks}/${soloStreakId}`,
@@ -499,7 +498,6 @@ class SoloStreakInfoScreenComponent extends Component<Props> {
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
                             <LongestStreakCard longestStreak={selectedSoloStreak.longestStreak} />
-                            <AverageStreakCard averageStreak={selectedSoloStreak.averageStreak} />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedSoloStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedSoloStreak.createdAt)} />
                             <DaysSinceStreakCreationCard

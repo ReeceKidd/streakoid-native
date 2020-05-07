@@ -315,7 +315,7 @@ class HomeScreenComponent extends Component<Props> {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => NavigationService.navigate(Screens.SoloStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Solo Streaks <FontAwesomeIcon icon={faChild} size={20} />
+                            Solo Streaks <FontAwesomeIcon icon={faChild} />
                         </Text>
                     </TouchableOpacity>
 
@@ -353,7 +353,7 @@ class HomeScreenComponent extends Component<Props> {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => NavigationService.navigate(Screens.TeamStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Team Streaks <FontAwesomeIcon icon={faPeopleCarry} size={20} />
+                            Team Streaks <FontAwesomeIcon icon={faPeopleCarry} />
                         </Text>
                     </TouchableOpacity>
                     {getMultipleLiveTeamStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
@@ -389,7 +389,7 @@ class HomeScreenComponent extends Component<Props> {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <TouchableOpacity onPress={() => NavigationService.navigate(Screens.ChallengeStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Challenge Streaks <FontAwesomeIcon icon={faMedal} size={20} />
+                            Challenge Streaks <FontAwesomeIcon icon={faMedal} />
                         </Text>
                     </TouchableOpacity>
                     {getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}

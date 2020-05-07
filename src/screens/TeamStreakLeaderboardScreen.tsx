@@ -121,7 +121,7 @@ class TeamStreakLeaderboardScreenComponent extends Component<Props> {
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Team Streak Leaderboard <FontAwesomeIcon icon={faPeopleCarry} size={20} />
+                            Team Streak Leaderboard <FontAwesomeIcon icon={faPeopleCarry} />
                         </Text>
                         {getTeamStreakLeaderboardIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
                     </View>

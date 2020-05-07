@@ -36,11 +36,11 @@ class WhatIsAStreakScreen extends React.Component {
                 </Spacer>
                 <Spacer>
                     <Text h4 style={{ textAlign: 'center' }}>{`Reading`}</Text>
-                    <FontAwesomeIcon icon={faBook} size={20} style={{ color: 'blue' }} />
+                    <FontAwesomeIcon icon={faBook} style={{ color: 'blue' }} />
                     <Text h4 style={{ textAlign: 'center' }}>{`Meditation`}</Text>
-                    <FontAwesomeIcon icon={faBrain} size={20} style={{ color: 'pink' }} />
+                    <FontAwesomeIcon icon={faBrain} style={{ color: 'pink' }} />
                     <Text h4 style={{ textAlign: 'center' }}>{`Exercise`}</Text>
-                    <FontAwesomeIcon icon={faWeight} size={20} style={{ color: 'green' }} />
+                    <FontAwesomeIcon icon={faWeight} style={{ color: 'green' }} />
                 </Spacer>
 
                 <Spacer>

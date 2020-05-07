@@ -116,11 +116,13 @@ class LiveChallengeStreakList extends Component<Props> {
                     }}
                 />
                 {totalNumberOfChallengeStreaks === 0 && !getMultipleLiveChallengeStreaksIsLoading ? (
-                    <NavigationLink
-                        navigation={this.props.navigation}
-                        text="No challenge streaks found. Join one"
-                        screen={Screens.Challenges}
-                    />
+                    <View style={{ marginTop: 5 }}>
+                        <NavigationLink
+                            navigation={this.props.navigation}
+                            text="No challenge streaks found. Join one"
+                            screen={Screens.Challenges}
+                        />
+                    </View>
                 ) : null}
                 {totalNumberOfChallengeStreaks > 0 && liveChallengeStreaks.length === 0 ? (
                     <Spacer>

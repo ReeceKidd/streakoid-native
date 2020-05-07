@@ -10,7 +10,7 @@ const PayingMemberDrawer = createDrawerNavigator({
     Home: {
         screen: HomeStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faHome} size={20} />,
+            drawerIcon: <FontAwesomeIcon icon={faHome} />,
         },
     },
     ...drawerOptions,

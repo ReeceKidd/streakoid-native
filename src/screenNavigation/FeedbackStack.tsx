@@ -11,7 +11,7 @@ const FeedbackStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Feedback ',
-            tabBarIcon: <FontAwesomeIcon icon={faMailBulk} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faMailBulk} />,
         },
     },
 );

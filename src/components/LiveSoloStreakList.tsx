@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SoloStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/soloStreakReducer';
-import { FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text } from 'react-native-elements';
 
@@ -115,11 +115,13 @@ class LiveSoloStreakList extends Component<Props> {
                     }}
                 />
                 {totalNumberOfSoloStreaks === 0 && !getMultipleLiveSoloStreaksIsLoading ? (
-                    <NavigationLink
-                        navigation={this.props.navigation}
-                        text="No solo streaks found. Add one"
-                        screen={Screens.CreateSoloStreak}
-                    />
+                    <View style={{ marginTop: 5 }}>
+                        <NavigationLink
+                            navigation={this.props.navigation}
+                            text="No solo streaks found. Add one"
+                            screen={Screens.CreateSoloStreak}
+                        />
+                    </View>
                 ) : null}
                 {totalNumberOfSoloStreaks > 0 && liveSoloStreaks.length === 0 ? (
                     <Spacer>

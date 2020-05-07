@@ -2,12 +2,14 @@
 import React, { Component } from 'react';
 
 import { NavigationScreenProp, NavigationParams, NavigationState } from 'react-navigation';
-import { Text, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { Spacer } from './Spacer';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { activityFeedItemActions } from '../actions/sharedActions';
 import { GeneralActivityFeed } from './GeneralActivityFeed';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
+import { NavigationLink } from './NavigationLink';
+import { Screens } from '../screens/Screens';
 
 interface FollowingActivityFeedProps {
     getFollowingActivityFeedItems: typeof activityFeedItemActions.getFollowingActivityFeedItems;
@@ -91,7 +93,13 @@ export class FollowingActivityFeed extends Component<Props, FollowingActivitySta
         return (
             <>
                 {!getFollowingActivityFeedIsLoading && followingActivityFeed.length === 0 ? (
-                    <Text style={{ color: 'red' }}>{`No activity `}</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <NavigationLink
+                            text={`Follow another user to see activity here.`}
+                            navigation={this.props.navigation}
+                            screen={Screens.Users}
+                        />
+                    </View>
                 ) : null}
                 {getFollowingActivityFeedIsLoading ? <ActivityIndicator /> : null}
                 <GeneralActivityFeed

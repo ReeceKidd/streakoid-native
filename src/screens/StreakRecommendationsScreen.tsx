@@ -66,18 +66,14 @@ class StreakRecommendationsScreenComponent extends Component<Props> {
         return {
             title: 'Streak Recommendations',
             headerLeft: () => <HamburgerSelector navigation={navigation} />,
-            drawerIcon: () => <FontAwesomeIcon icon={faRobot} size={20} />,
+            drawerIcon: () => <FontAwesomeIcon icon={faRobot} />,
         };
     };
 
     renderStreakSelectButton(streakRecommendation: StreakRecommendationWithClientData): JSX.Element {
         const { hasBeenSelected, _id } = streakRecommendation;
         const streakSelectButton = hasBeenSelected ? (
-            <Button
-                icon={<FontAwesomeIcon icon={faCheck} size={20} />}
-                buttonStyle={{ backgroundColor: 'green' }}
-                disabled
-            />
+            <Button icon={<FontAwesomeIcon icon={faCheck} />} buttonStyle={{ backgroundColor: 'green' }} disabled />
         ) : (
             <Button
                 onPress={() =>
@@ -108,7 +104,7 @@ class StreakRecommendationsScreenComponent extends Component<Props> {
                     <Spacer>
                         <Button
                             buttonStyle={{ backgroundColor: 'green' }}
-                            icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" size={20} />}
+                            icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" />}
                             onPress={() => {
                                 this.props.getRandomStreakRecommendations();
                             }}

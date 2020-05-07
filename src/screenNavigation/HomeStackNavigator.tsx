@@ -10,7 +10,7 @@ const HomeStack = createStackNavigator(
     },
     {
         navigationOptions: {
-            tabBarIcon: <FontAwesomeIcon icon={faHome} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faHome} />,
         },
     },
 );

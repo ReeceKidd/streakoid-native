@@ -20,8 +20,7 @@ import {
     userActions,
     authActions,
 } from './src/actions/sharedActions';
-import { ActivityIndicator, Platform } from 'react-native';
-import { AppState as ReactNativeAppState } from 'react-native';
+import { ActivityIndicator, Platform, View, Vibration } from 'react-native';
 
 import { PushNotificationType } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
 import { Screens } from './src/screens/Screens';
@@ -85,10 +84,16 @@ class AppContainerComponent extends React.Component<Props> {
                 },
                 onNotification: (notification) => {
                     if (Platform.OS === 'ios') {
-                        this._handleNotification(notification.data as PushNotificationType);
+                        this._handleNotification({
+                            pushNotification: notification.data as PushNotificationType,
+                            userInteraction: notification.userInteraction,
+                        });
                     } else {
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        this._handleNotification((notification as any).userInfo);
+                        this._handleNotification({
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            pushNotification: (notification as any).userInfo,
+                            userInteraction: notification.userInteraction,
+                        });
                     }
                 },
                 permissions: {
@@ -101,64 +106,72 @@ class AppContainerComponent extends React.Component<Props> {
         }
     };
 
-    _handleNotification = async (pushNotification: PushNotificationType) => {
-        if (ReactNativeAppState.currentState === 'background') {
-            if (pushNotification.pushNotificationType == PushNotificationTypes.customSoloStreakReminder) {
-                return NavigationService.navigate(Screens.SoloStreakInfo, {
-                    _id: pushNotification.soloStreakId,
-                    streakName: pushNotification.soloStreakName,
-                });
-            }
+    _handleNotification = async ({
+        pushNotification,
+        userInteraction,
+    }: {
+        pushNotification: PushNotificationType;
+        userInteraction: boolean;
+    }) => {
+        if (!userInteraction) {
+            Vibration.vibrate(100);
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.customChallengeStreakReminder) {
-                return NavigationService.navigate(Screens.ChallengeStreakInfo, {
-                    _id: pushNotification.challengeStreakId,
-                    streakName: pushNotification.challengeName,
-                });
-            }
+        if (pushNotification.pushNotificationType == PushNotificationTypes.customSoloStreakReminder) {
+            return NavigationService.navigate(Screens.SoloStreakInfo, {
+                _id: pushNotification.soloStreakId,
+                streakName: pushNotification.soloStreakName,
+            });
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.customTeamStreakReminder) {
-                return NavigationService.navigate(Screens.TeamStreakInfo, {
-                    _id: pushNotification.teamStreakId,
-                    streakName: pushNotification.teamStreakName,
-                });
-            }
+        if (pushNotification.pushNotificationType === PushNotificationTypes.customChallengeStreakReminder) {
+            return NavigationService.navigate(Screens.ChallengeStreakInfo, {
+                _id: pushNotification.challengeStreakId,
+                streakName: pushNotification.challengeName,
+            });
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.completeAllStreaksReminder) {
-                return NavigationService.navigate(Screens.Home);
-            }
+        if (pushNotification.pushNotificationType === PushNotificationTypes.customTeamStreakReminder) {
+            return NavigationService.navigate(Screens.TeamStreakInfo, {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+            });
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.completedTeamStreakUpdate) {
-                return NavigationService.navigate(Screens.TeamStreakInfo, {
-                    _id: pushNotification.teamStreakId,
-                    streakName: pushNotification.teamStreakName,
-                });
-            }
+        if (pushNotification.pushNotificationType === PushNotificationTypes.completeAllStreaksReminder) {
+            return NavigationService.navigate(Screens.Home);
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.incompletedTeamStreakUpdate) {
-                return NavigationService.navigate(Screens.TeamStreakInfo, {
-                    _id: pushNotification.teamStreakId,
-                    streakName: pushNotification.teamStreakName,
-                });
-            }
+        if (pushNotification.pushNotificationType === PushNotificationTypes.completedTeamStreakUpdate) {
+            return NavigationService.navigate(Screens.TeamStreakInfo, {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+            });
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.addedNoteToTeamStreak) {
-                return NavigationService.navigate(Screens.TeamStreakInfo, {
-                    _id: pushNotification.teamStreakId,
-                    streakName: pushNotification.teamStreakName,
-                });
-            }
+        if (pushNotification.pushNotificationType === PushNotificationTypes.incompletedTeamStreakUpdate) {
+            return NavigationService.navigate(Screens.TeamStreakInfo, {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+            });
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.newFollower) {
-                return NavigationService.navigate(Screens.UserProfile, {
-                    _id: pushNotification.followerId,
-                    username: pushNotification.followerUsername,
-                });
-            }
+        if (pushNotification.pushNotificationType === PushNotificationTypes.addedNoteToTeamStreak) {
+            return NavigationService.navigate(Screens.TeamStreakInfo, {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+            });
+        }
 
-            if (pushNotification.pushNotificationType === PushNotificationTypes.unlockedAchievement) {
-                return NavigationService.navigate(Screens.Account);
-            }
+        if (pushNotification.pushNotificationType === PushNotificationTypes.newFollower) {
+            return NavigationService.navigate(Screens.UserProfile, {
+                _id: pushNotification.followerId,
+                username: pushNotification.followerUsername,
+            });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.unlockedAchievement) {
+            return NavigationService.navigate(Screens.Account);
         }
     };
 
@@ -213,7 +226,24 @@ const AppContainer = connect(mapStateToProps, mapDispatchToProps)(AppContainerCo
 
 const App = () => (
     <Provider store={store}>
-        <PersistGate loading={<ActivityIndicator />} persistor={persistor}>
+        <PersistGate
+            loading={
+                <View
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    <ActivityIndicator size={'large'} />
+                </View>
+            }
+            persistor={persistor}
+        >
             <AppContainer />
         </PersistGate>
     </Provider>

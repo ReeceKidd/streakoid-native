@@ -55,7 +55,7 @@ class ChallengeInfoScreenComponent extends Component<Props> {
             headerRight: challengeName ? (
                 <Button
                     type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} />}
                     onPress={async () => {
                         await Share.share({
                             message: `Join the ${challengeName} challenge at ${streakoidUrl}/${RouterCategories.challenges}/${challengeId}`,
@@ -134,28 +134,28 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                         ) : null}
                         <Spacer>
                             <Card>
-                                <FontAwesomeIcon icon={faUsers} size={20} />
+                                <FontAwesomeIcon icon={faUsers} />
                                 <Text style={{ textAlign: 'center' }}>Members</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.members.length}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesomeIcon icon={faCalendarCheck} size={20} />
+                                <FontAwesomeIcon icon={faCalendarCheck} />
                                 <Text style={{ textAlign: 'center' }}>Longest Current Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.longestCurrentStreakForChallenge}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesomeIcon icon={faCrown} size={20} />
+                                <FontAwesomeIcon icon={faCrown} />
                                 <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.longestEverStreakForChallenge}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesomeIcon icon={faAbacus} size={20} />
+                                <FontAwesomeIcon icon={faAbacus} />
                                 <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.totalTimesTracked}
@@ -174,7 +174,6 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                         currentStreak,
                                         challengeStreakId,
                                         longestStreak,
-                                        averageStreak,
                                         totalTimesTracked,
                                     } = item;
                                     const currentStreakText =
@@ -185,10 +184,6 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                         longestStreak !== 1
                                             ? `Longest streak: ${longestStreak} days`
                                             : `Longest streak: ${longestStreak} day`;
-                                    const averageStreakText =
-                                        averageStreak !== 1
-                                            ? `Average streak: ${averageStreak.toFixed(2)} days`
-                                            : `Average streak: ${averageStreak.toFixed(2)} day`;
                                     const totalTimesTrackedText =
                                         totalTimesTracked !== 1
                                             ? `Total times tracked: ${totalTimesTracked} times`
@@ -211,7 +206,6 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                                     subtitle={currentStreakText}
                                                 ></ListItem>
                                                 <Text>{longestStreakText}</Text>
-                                                <Text>{averageStreakText}</Text>
                                                 <Text>{totalTimesTrackedText}</Text>
                                                 <Spacer />
                                             </TouchableOpacity>

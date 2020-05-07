@@ -89,7 +89,7 @@ class SoloStreakLeaderboardScreenComponent extends Component<Props> {
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                            Solo Streak Leaderboard <FontAwesomeIcon icon={faChild} size={20} />
+                            Solo Streak Leaderboard <FontAwesomeIcon icon={faChild} />
                         </Text>
                         {getSoloStreakLeaderboardIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
                     </View>

@@ -13,7 +13,7 @@ const UpgradeStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Upgrade',
-            tabBarIcon: <FontAwesomeIcon icon={faStar} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faStar} />,
         },
     },
 );

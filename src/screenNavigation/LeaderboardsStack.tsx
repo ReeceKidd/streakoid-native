@@ -6,9 +6,13 @@ import { faHelmetBattle } from '@fortawesome/pro-solid-svg-icons';
 import { SoloStreakLeaderboardScreen } from '../screens/SoloStreakLeaderboardScreen';
 import { TeamStreakLeaderboardScreen } from '../screens/TeamStreakLeaderboardScreen';
 import { ChallengeStreakLeaderboardScreen } from '../screens/ChallengeStreakLeaderboardScreen';
+import { FollowingLeaderboardScreen } from '../screens/FollowingLeaderboardScreen';
+import { GlobalUserLeaderboardScreen } from '../screens/GlobalLeaderboardScreen';
 
 const LeaderboardsStack = createStackNavigator(
     {
+        FollowingLeaderboard: FollowingLeaderboardScreen,
+        GlobalUserLeaderboard: GlobalUserLeaderboardScreen,
         Leaderboards: LeaderboardsScreen,
         SoloStreakLeaderboard: SoloStreakLeaderboardScreen,
         TeamStreakLeaderboard: TeamStreakLeaderboardScreen,
@@ -17,7 +21,7 @@ const LeaderboardsStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Leaderboards',
-            tabBarIcon: <FontAwesomeIcon icon={faHelmetBattle} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faHelmetBattle} />,
         },
     },
 );

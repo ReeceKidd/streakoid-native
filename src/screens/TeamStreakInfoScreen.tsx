@@ -24,7 +24,7 @@ import { CustomTeamStreakReminderPushNotification } from '@streakoid/streakoid-s
 import { CustomTeamStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
 import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEdit, faShareAlt, faCalculator, faAbacus, faCog, faBell } from '@fortawesome/pro-solid-svg-icons';
+import { faEdit, faShareAlt, faAbacus, faCog, faBell } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
@@ -121,13 +121,13 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                     {userIsApartOfStreak ? (
                         <Button
                             type="clear"
-                            icon={<FontAwesomeIcon icon={faEdit} size={20} />}
+                            icon={<FontAwesomeIcon icon={faEdit} />}
                             onPress={() => NavigationService.navigate(Screens.EditTeamStreak)}
                         />
                     ) : null}
                     <Button
                         type="clear"
-                        icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
+                        icon={<FontAwesomeIcon icon={faShareAlt} />}
                         onPress={async () => {
                             await Share.share({
                                 message: `View team streak ${streakName} at ${streakoidUrl}/${RouterCategories.teamStreaks}/${streakId}`,
@@ -517,21 +517,14 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
                             <Card>
-                                <FontAwesomeIcon icon={faCrown} size={20} />
+                                <FontAwesomeIcon icon={faCrown} />
                                 <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedTeamStreak.longestStreak}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesomeIcon icon={faCalculator} size={20} />
-                                <Text style={{ textAlign: 'center' }}>Average Streak</Text>
-                                <Text h4 style={{ textAlign: 'center' }}>
-                                    {selectedTeamStreak.averageStreak.toFixed(2)}
-                                </Text>
-                            </Card>
-                            <Card>
-                                <FontAwesomeIcon icon={faAbacus} size={20} />
+                                <FontAwesomeIcon icon={faAbacus} />
                                 <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedTeamStreak.totalTimesTracked}
@@ -545,12 +538,7 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                                 keyExtractor={(teamMember) => teamMember._id}
                                 renderItem={({ item, index }) => {
                                     const { username, profileImage, teamMemberStreak } = item;
-                                    const {
-                                        currentStreak,
-                                        averageStreak,
-                                        totalTimesTracked,
-                                        longestStreak,
-                                    } = teamMemberStreak;
+                                    const { currentStreak, totalTimesTracked, longestStreak } = teamMemberStreak;
                                     const currentStreakText =
                                         currentStreak.numberOfDaysInARow !== 1
                                             ? `${currentStreak.numberOfDaysInARow.toString()} days`
@@ -559,10 +547,6 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                                         longestStreak !== 1
                                             ? `Longest streak: ${longestStreak} days`
                                             : `Longest streak: ${longestStreak} day`;
-                                    const averageStreakText =
-                                        averageStreak !== 1
-                                            ? `Average streak: ${averageStreak.toFixed(2)} days`
-                                            : `Average streak: ${averageStreak.toFixed(2)} day`;
                                     const totalTimesTrackedText =
                                         totalTimesTracked !== 1
                                             ? `Total times tracked: ${totalTimesTracked} times`
@@ -586,7 +570,6 @@ class TeamStreakInfoScreenComponent extends Component<Props> {
                                                     subtitle={currentStreakText}
                                                 ></ListItem>
                                                 <Text>{longestStreakText}</Text>
-                                                <Text>{averageStreakText}</Text>
                                                 <Text>{totalTimesTrackedText}</Text>
                                                 <Spacer />
                                             </TouchableOpacity>

@@ -13,7 +13,7 @@ const UserStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Users',
-            tabBarIcon: <FontAwesomeIcon icon={faUser} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faUser} />,
         },
     },
 );

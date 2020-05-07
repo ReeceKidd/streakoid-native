@@ -13,12 +13,11 @@ import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Screens } from './Screens';
 import { connect } from 'react-redux';
 import { LongestStreakCard } from '../components/LongestStreakCard';
-import { AverageStreakCard } from '../components/AverageStreakCard';
 import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
 import { StreakStartDateCard } from '../components/StreakStartDateCard';
 import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
 import { StreakRestartsCard } from '../components/StreakRestartsCard';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { Share } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -66,7 +65,7 @@ class TeamMemberStreakInfoScreenComponent extends Component<Props> {
             headerRight: (
                 <Button
                     type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} />}
                     onPress={async () => {
                         await Share.share({
                             message: `View team member streak ${streakName} at ${streakoidUrl}/${RouterCategories.teamMemberStreaks}/${streakId}`,
@@ -126,7 +125,6 @@ class TeamMemberStreakInfoScreenComponent extends Component<Props> {
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
                             <LongestStreakCard longestStreak={selectedTeamMemberStreak.longestStreak} />
-                            <AverageStreakCard averageStreak={selectedTeamMemberStreak.averageStreak} />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedTeamMemberStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedTeamMemberStreak.createdAt)} />
                             <DaysSinceStreakCreationCard

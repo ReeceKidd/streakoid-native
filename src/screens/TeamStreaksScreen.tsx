@@ -112,7 +112,7 @@ class TeamStreaksScreenComponent extends Component<Props> {
                     </Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                            Archived Team Streaks <FontAwesomeIcon icon={faArchive} size={20} />
+                            Archived Team Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedTeamStreakList
                             getTeamStreak={getTeamStreak}

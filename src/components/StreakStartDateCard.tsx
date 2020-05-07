@@ -14,7 +14,7 @@ class StreakStartDateCard extends Component<StreakStartDateCardProps> {
 
         return (
             <Card>
-                <FontAwesomeIcon icon={faBaby} size={20} />
+                <FontAwesomeIcon icon={faBaby} />
                 <Text h4 style={{ textAlign: 'center' }}>
                     {createdAt.toDateString()}
                 </Text>

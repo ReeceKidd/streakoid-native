@@ -100,10 +100,11 @@ class ChallengesScreenComponent extends Component<Props, State> {
                                                 leftIcon={<ChallengeIcon icon={icon} color={color ? color : 'black'} />}
                                                 rightElement={
                                                     <View style={{ flexDirection: 'row' }}>
-                                                        <Text>
+                                                        <Text />
+                                                        <Text style={{ textAlignVertical: 'center' }}>
                                                             <FontAwesomeIcon icon={faUsers} size={15} />
-                                                            {members.length}
                                                         </Text>
+                                                        <Text style={{ marginLeft: 3 }}>{members.length}</Text>
                                                     </View>
                                                 }
                                             />

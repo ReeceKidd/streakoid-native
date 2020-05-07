@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 class CreateSoloStreakScreenComponent extends Component<Props> {
     static navigationOptions = {
         title: 'Create solo streak',
-        tabBarIcon: <FontAwesomeIcon icon={faPlus} size={20} />,
+        tabBarIcon: <FontAwesomeIcon icon={faPlus} />,
     };
 
     render(): JSX.Element {

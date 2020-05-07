@@ -29,7 +29,7 @@ class FollowerSelector extends Component<Props> {
         return follower.isSelected ? (
             <Button
                 type="clear"
-                icon={<FontAwesomeIcon icon={faMinus} color="red" size={20} />}
+                icon={<FontAwesomeIcon icon={faMinus} color="red" />}
                 onPress={() => {
                     unselectFollower(follower.userId);
                 }}
@@ -37,7 +37,7 @@ class FollowerSelector extends Component<Props> {
         ) : (
             <Button
                 type="clear"
-                icon={<FontAwesomeIcon icon={faPlus} color="green" size={20} />}
+                icon={<FontAwesomeIcon icon={faPlus} color="green" />}
                 onPress={() => {
                     selectFollower(follower.userId);
                 }}

@@ -13,7 +13,7 @@ const ChallengesStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Challenges',
-            tabBarIcon: <FontAwesomeIcon icon={faCrown} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faCrown} />,
         },
     },
 );

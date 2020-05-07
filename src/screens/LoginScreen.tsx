@@ -47,7 +47,7 @@ class LoginScreenComponent extends React.Component<Props> {
     static navigationOptions = {
         title: 'Login',
         header: null,
-        tabBarIcon: <FontAwesomeIcon icon={faPlus} size={20} />,
+        tabBarIcon: <FontAwesomeIcon icon={faPlus} />,
     };
 
     clearMessages() {

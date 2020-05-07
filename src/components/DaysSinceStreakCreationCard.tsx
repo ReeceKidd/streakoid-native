@@ -13,7 +13,7 @@ class DaysSinceStreakCreationCard extends Component<DaysSinceStreakCreationCardP
         const { daysSinceStreakCreation } = this.props;
         return (
             <Card>
-                <FontAwesomeIcon icon={faBirthdayCake} size={20} />
+                <FontAwesomeIcon icon={faBirthdayCake} />
                 <Text h4 style={{ textAlign: 'center' }}>
                     {daysSinceStreakCreation}
                 </Text>

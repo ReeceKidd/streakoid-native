@@ -14,7 +14,6 @@ import { Spacer } from '../components/Spacer';
 import { NavigationScreenProp, NavigationState, NavigationEvents } from 'react-navigation';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { LongestStreakCard } from '../components/LongestStreakCard';
-import { AverageStreakCard } from '../components/AverageStreakCard';
 import { StreakStartDateCard } from '../components/StreakStartDateCard';
 import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
 import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
@@ -124,7 +123,7 @@ class ChallengeStreakInfoComponent extends Component<Props> {
             headerRight: (
                 <Button
                     type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} />}
                     onPress={async () => {
                         await Share.share({
                             message: `View challenge streak ${streakName} at ${streakoidUrl}/${RouterCategories.challengeStreaks}/${streakId}`,
@@ -529,7 +528,6 @@ class ChallengeStreakInfoComponent extends Component<Props> {
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
                             <LongestStreakCard longestStreak={selectedChallengeStreak.longestStreak} />
-                            <AverageStreakCard averageStreak={selectedChallengeStreak.averageStreak} />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedChallengeStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedChallengeStreak.createdAt)} />
                             <DaysSinceStreakCreationCard

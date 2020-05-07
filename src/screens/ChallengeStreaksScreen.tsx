@@ -112,7 +112,7 @@ class ChallengeStreaksScreenComponent extends Component<Props> {
                     </Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                            Archived Challenge Streaks <FontAwesomeIcon icon={faArchive} size={20} />
+                            Archived Challenge Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedChallengeStreakList
                             getArchivedChallengeStreaks={getArchivedChallengeStreaks}

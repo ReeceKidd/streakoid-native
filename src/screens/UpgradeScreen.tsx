@@ -29,32 +29,32 @@ class UpgradeScreen extends React.Component<NavigationProps> {
         return (
             <ScrollView style={styles.container}>
                 <Spacer />
-                <Text h3 style={{ textAlign: 'center' }}>
-                    Upgrade for:
+                <Text h4 style={{ textAlign: 'center' }}>
+                    {`Upgrade if you're serious about achieving your goals.`}
                 </Text>
                 <Spacer />
 
                 <Text style={{ textAlign: 'center' }}>
                     Unlimited Solo Streaks
-                    <FontAwesomeIcon icon="child" size={20} style={{ color: 'blue' }} />
+                    <FontAwesomeIcon icon="child" style={{ color: 'blue' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
                     Unlimited Team Streaks
-                    <FontAwesomeIcon icon="people-carry" size={20} style={{ color: 'purple' }} />
+                    <FontAwesomeIcon icon="people-carry" style={{ color: 'purple' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
                     Unlimited Challenge Streaks
-                    <FontAwesomeIcon icon="medal" size={20} style={{ color: 'navy' }} />
+                    <FontAwesomeIcon icon="medal" style={{ color: 'navy' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
-                    Priority Support <FontAwesomeIcon icon="life-ring" size={20} style={{ color: 'darkblue' }} />
+                    Priority Support <FontAwesomeIcon icon="life-ring" style={{ color: 'darkblue' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
-                    No ads <FontAwesomeIcon icon="ban" size={20} style={{ color: 'red' }} />
+                    No ads <FontAwesomeIcon icon="ban" style={{ color: 'red' }} />
                 </Text>
                 <Text />
                 <Spacer>

@@ -3,19 +3,27 @@ import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
 import { HamburgerSelector } from '../components/HamburgerSelector';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { leaderboardActions } from '../actions/sharedActions';
 import { Screens } from './Screens';
-import { ListItem, Divider } from 'react-native-elements';
-import { faChild, faPeopleCarry, faMedal, IconDefinition } from '@fortawesome/pro-solid-svg-icons';
+import { ListItem } from 'react-native-elements';
+import {
+    faChild,
+    faPeopleCarry,
+    faMedal,
+    IconDefinition,
+    faUserFriends,
+    faGlobe,
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getSoloStreaksLeaderboard: bindActionCreators(leaderboardActions.getSoloStreakLeaderboard, dispatch),
     getTeamStreaksLeaderboard: bindActionCreators(leaderboardActions.getTeamStreakLeaderboard, dispatch),
     getChallengeStreaksLeaderboard: bindActionCreators(leaderboardActions.getChallengeStreakLeaderboard, dispatch),
+    getGlobalUserLeaderboard: bindActionCreators(leaderboardActions.getGlobalUserLeaderboard, dispatch),
+    getFollowingLeaderboard: bindActionCreators(leaderboardActions.getFollowingLeaderboard, dispatch),
 });
 
 interface NavigationProps {
@@ -39,6 +47,8 @@ class LeaderboardsScreenComponent extends Component<Props> {
     };
 
     static LeaderboardsMenuOptions: LeaderboardMenuOption[] = [
+        { name: 'Following', screen: Screens.FollowingLeaderboard, icon: faUserFriends },
+        { name: 'Global', screen: Screens.GlobalUserLeaderboard, icon: faGlobe },
         { name: 'Solo Streak', screen: Screens.SoloStreakLeaderboard, icon: faChild },
         { name: 'Team Streak', screen: Screens.TeamStreakLeaderboard, icon: faPeopleCarry },
         { name: 'Challenge Streak', screen: Screens.ChallengeStreakLeaderboard, icon: faMedal },
@@ -61,14 +71,13 @@ class LeaderboardsScreenComponent extends Component<Props> {
                     renderItem={({ item }) => {
                         return (
                             <>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate(item.screen)}>
-                                    <ListItem
-                                        leftIcon={<FontAwesomeIcon icon={item.icon} />}
-                                        title={item.name}
-                                        chevron
-                                    />
-                                </TouchableOpacity>
-                                <Divider />
+                                <ListItem
+                                    leftIcon={<FontAwesomeIcon icon={item.icon} />}
+                                    title={item.name}
+                                    chevron
+                                    onPress={() => this.props.navigation.navigate(item.screen)}
+                                    bottomDivider
+                                />
                             </>
                         );
                     }}

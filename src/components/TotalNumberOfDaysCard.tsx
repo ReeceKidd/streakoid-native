@@ -11,7 +11,7 @@ class TotalNumberOfDaysCard extends Component<TotalNumberOfDaysCardProps> {
         const { totalTimesTracked } = this.props;
         return (
             <Card>
-                <FontAwesomeIcon icon={faStamp} size={20} />
+                <FontAwesomeIcon icon={faStamp} />
                 <Text h4 style={{ textAlign: 'center' }}>
                     {totalTimesTracked}
                 </Text>

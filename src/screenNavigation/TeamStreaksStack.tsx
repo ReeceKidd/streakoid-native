@@ -23,7 +23,7 @@ const TeamStreakStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Team Streaks',
-            tabBarIcon: <FontAwesomeIcon icon={faPeopleCarry} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faPeopleCarry} />,
         },
     },
 );

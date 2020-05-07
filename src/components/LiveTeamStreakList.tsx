@@ -5,7 +5,6 @@ import { ListItem, Divider, Text, Avatar } from 'react-native-elements';
 
 import { Spacer } from './Spacer';
 import { TeamMemberStreakTaskButton } from './TeamMemberStreakTaskButton';
-import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
 import {
     PopulatedTeamStreakWithClientData,
@@ -182,16 +181,6 @@ class LiveTeamStreakList extends Component<Props> {
         );
     }
 
-    renderEmptyState(): JSX.Element {
-        return (
-            <NavigationLink
-                navigation={this.props.navigation}
-                text="No team streaks found. Add one"
-                screen={Screens.CreateTeamStreak}
-            />
-        );
-    }
-
     render(): JSX.Element {
         const {
             teamStreaks,
@@ -210,7 +199,10 @@ class LiveTeamStreakList extends Component<Props> {
                     }}
                 />
                 {totalNumberOfTeamStreaks === 0 && !getMultipleLiveTeamStreaksIsLoading ? (
-                    <TouchableOpacity onPress={() => NavigationService.navigate(Screens.CreateTeamStreak)}>
+                    <TouchableOpacity
+                        onPress={() => NavigationService.navigate(Screens.CreateTeamStreak)}
+                        style={{ marginTop: 5 }}
+                    >
                         <Text style={{ color: 'blue' }}>{`No team streaks. Create one`}</Text>
                     </TouchableOpacity>
                 ) : null}

@@ -13,7 +13,7 @@ class LongestStreakCard extends Component<LongestStreakCardProps> {
         const { longestStreak } = this.props;
         return (
             <Card>
-                <FontAwesomeIcon icon={faCrown} size={20} />
+                <FontAwesomeIcon icon={faCrown} />
                 <Text h4 style={{ textAlign: 'center' }}>
                     {longestStreak}
                 </Text>

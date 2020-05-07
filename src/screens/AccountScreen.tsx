@@ -89,11 +89,11 @@ class AccountScreenComponent extends React.Component<Props> {
         return {
             title: 'Account',
             headerLeft: () => <HamburgerSelector navigation={navigation} />,
-            drawerIcon: () => <FontAwesomeIcon icon={faCog} size={20} />,
+            drawerIcon: () => <FontAwesomeIcon icon={faCog} />,
             headerRight: username ? (
                 <Button
                     type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} size={20} />}
+                    icon={<FontAwesomeIcon icon={faShareAlt} />}
                     onPress={async () => {
                         await Share.share({
                             message: `View my Streakoid profile at ${streakoidUrl}/${RouterCategories.users}/${username}`,
@@ -147,7 +147,7 @@ class AccountScreenComponent extends React.Component<Props> {
 
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Following <FontAwesomeIcon icon={faUser} size={20} /> {`${currentUser.following.length} `}
+                            Following <FontAwesomeIcon icon={faUser} /> {`${currentUser.following.length} `}
                         </Text>
                         {currentUser && currentUser.following && currentUser.following.length > 0 ? (
                             <FlatList
@@ -205,7 +205,7 @@ class AccountScreenComponent extends React.Component<Props> {
                     </Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Followers <FontAwesomeIcon icon={faUser} size={20} /> {`${currentUser.followers.length} `}
+                            Followers <FontAwesomeIcon icon={faUser} /> {`${currentUser.followers.length} `}
                         </Text>
                         {currentUser && currentUser.followers && currentUser.followers.length > 0 ? (
                             <FlatList

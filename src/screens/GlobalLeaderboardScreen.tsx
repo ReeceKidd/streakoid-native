@@ -15,20 +15,20 @@ import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
 
 const mapStateToProps = (state: AppState) => {
-    const challengeStreakLeaderboard = state && state.leaderboards && state.leaderboards.challengeStreakLeaderboard;
-    const getChallengeStreakLeaderboardIsLoading =
-        state && state.leaderboards && state.leaderboards.getChallengeStreakLeaderboardIsLoading;
-    const getChallengeStreakLeaderboardErrorMessage =
-        state && state.leaderboards && state.leaderboards.getChallengeStreakLeaderboardErrorMessage;
+    const globalUserLeaderboard = state && state.leaderboards && state.leaderboards.globalUserLeaderboard;
+    const getGlobalUserLeaderboardIsLoading =
+        state && state.leaderboards && state.leaderboards.getGlobalUserLeaderboardIsLoading;
+    const getGlobalUserLeaderboardErrorMessage =
+        state && state.leaderboards && state.leaderboards.getGlobalUserLeaderboardErrorMessage;
     return {
-        challengeStreakLeaderboard,
-        getChallengeStreakLeaderboardIsLoading,
-        getChallengeStreakLeaderboardErrorMessage,
+        globalUserLeaderboard,
+        getGlobalUserLeaderboardIsLoading,
+        getGlobalUserLeaderboardErrorMessage,
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    getChallengeStreaksLeaderboard: bindActionCreators(leaderboardActions.getChallengeStreakLeaderboard, dispatch),
+    getGlobalUserLeaderboard: bindActionCreators(leaderboardActions.getGlobalUserLeaderboard, dispatch),
 });
 
 interface NavigationProps {
@@ -37,22 +37,23 @@ interface NavigationProps {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class ChallengeStreakLeaderboardScreenComponent extends Component<Props> {
-    renderChallengeStreakLeaderboard(): JSX.Element {
-        const { challengeStreakLeaderboard } = this.props;
+class GlobalUserLeaderboardScreenComponent extends Component<Props> {
+    renderGlobalUserLeaderboard(): JSX.Element {
+        const { globalUserLeaderboard } = this.props;
         return (
             <FlatList
-                data={challengeStreakLeaderboard}
-                keyExtractor={(challengeStreakLeaderboardItem) => challengeStreakLeaderboardItem.streakId}
+                data={globalUserLeaderboard}
+                keyExtractor={(user) => user._id}
                 renderItem={({ item, index }) => {
-                    const { currentStreakNumberOfDaysInARow, streakId, challengeName, userProfileImage } = item;
+                    const { _id, username, profileImages, totalStreakCompletes } = item;
+                    const userProfileImage = profileImages.originalImageUrl;
                     return (
                         <>
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
-                                        _id: streakId,
-                                        streakName: challengeName,
+                                    this.props.navigation.navigate(Screens.UserProfile, {
+                                        _id,
+                                        username,
                                     })
                                 }
                             >
@@ -61,11 +62,12 @@ class ChallengeStreakLeaderboardScreenComponent extends Component<Props> {
                                     leftAvatar={{
                                         source: { uri: userProfileImage },
                                     }}
-                                    title={challengeName}
+                                    title={username}
                                     subtitle={
-                                        currentStreakNumberOfDaysInARow !== 1
-                                            ? `${currentStreakNumberOfDaysInARow.toString()} days`
-                                            : `${currentStreakNumberOfDaysInARow.toString()} day`
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <Text>{`Streak completes: `}</Text>
+                                            <Text style={{ fontWeight: 'bold' }}>{`${totalStreakCompletes}`}</Text>
+                                        </View>
                                     }
                                 />
                             </TouchableOpacity>
@@ -78,32 +80,27 @@ class ChallengeStreakLeaderboardScreenComponent extends Component<Props> {
     }
 
     render(): JSX.Element | null {
-        const { getChallengeStreaksLeaderboard, getChallengeStreakLeaderboardIsLoading } = this.props;
+        const { getGlobalUserLeaderboard, getGlobalUserLeaderboardIsLoading } = this.props;
         return (
             <ScrollView>
                 <NavigationEvents
                     onWillFocus={() => {
-                        getChallengeStreaksLeaderboard();
+                        getGlobalUserLeaderboard({});
                     }}
                 />
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold' }}>
-                            Challenge Streak Leaderboard <FontAwesomeIcon icon={faMedal} />
+                            Global User Leaderboard <FontAwesomeIcon icon={faMedal} />
                         </Text>
-                        {getChallengeStreakLeaderboardIsLoading ? (
-                            <ActivityIndicator style={{ marginLeft: 10 }} />
-                        ) : null}
+                        {getGlobalUserLeaderboardIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
                     </View>
-                    {this.renderChallengeStreakLeaderboard()}
+                    {this.renderGlobalUserLeaderboard()}
                 </Spacer>
             </ScrollView>
         );
     }
 }
 
-const ChallengeStreakLeaderboardScreen = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(ChallengeStreakLeaderboardScreenComponent);
-export { ChallengeStreakLeaderboardScreen };
+const GlobalUserLeaderboardScreen = connect(mapStateToProps, mapDispatchToProps)(GlobalUserLeaderboardScreenComponent);
+export { GlobalUserLeaderboardScreen };

@@ -16,7 +16,7 @@ class WhatsappGroupLink extends Component<Props> {
             <Button
                 buttonStyle={{ backgroundColor: 'green' }}
                 title={` ${challengeName}`}
-                icon={<FontAwesomeIcon icon={faWhatsapp} size={20} color="white" />}
+                icon={<FontAwesomeIcon icon={faWhatsapp} color="white" />}
                 onPress={() => {
                     Linking.openURL(whatsappGroupLink);
                 }}

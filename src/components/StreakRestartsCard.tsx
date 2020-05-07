@@ -12,7 +12,7 @@ class StreakRestartsCard extends Component<StreakRestartsCardProps> {
         const { numberOfRestarts } = this.props;
         return (
             <Card>
-                <FontAwesomeIcon icon={faPowerOff} size={20} />
+                <FontAwesomeIcon icon={faPowerOff} />
                 <Text h4 style={{ textAlign: 'center' }}>
                     {numberOfRestarts}
                 </Text>

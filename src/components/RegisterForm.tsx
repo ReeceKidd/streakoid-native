@@ -86,6 +86,7 @@ class RegisterForm extends React.Component<RegisterFormProps> {
                                 autoCapitalize="none"
                                 autoCompleteType="password"
                                 autoCorrect={false}
+                                onSubmitEditing={submitForm}
                             />
                             {errors.password && touched.password ? (
                                 <Text style={styles.errorMessage}>{errors.password}</Text>

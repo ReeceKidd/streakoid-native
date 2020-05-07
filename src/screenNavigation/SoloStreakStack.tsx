@@ -19,7 +19,7 @@ const SoloStreakStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Solo Streaks',
-            tabBarIcon: <FontAwesomeIcon icon={faChild} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faChild} />,
         },
     },
 );

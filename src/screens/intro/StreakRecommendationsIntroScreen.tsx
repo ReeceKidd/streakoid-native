@@ -68,7 +68,7 @@ class StreakRecommendationsIntroScreenComponent extends React.Component<Props> {
                 <Spacer>
                     <Button
                         buttonStyle={{ backgroundColor: 'green' }}
-                        icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" size={20} />}
+                        icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" />}
                         onPress={() => {
                             this.props.getRandomStreakRecommendations();
                         }}

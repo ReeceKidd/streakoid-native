@@ -15,7 +15,7 @@ const ChallengeStreakStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Challenge Streaks',
-            tabBarIcon: <FontAwesomeIcon icon={faMedal} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faMedal} />,
         },
     },
 );

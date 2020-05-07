@@ -13,7 +13,7 @@ const FollowingActivityStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Following',
-            tabBarIcon: <FontAwesomeIcon icon={faUserFriends} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faUserFriends} />,
         },
     },
 );
@@ -25,7 +25,7 @@ const GlobalActivityStack = createStackNavigator(
     {
         navigationOptions: {
             title: 'Global',
-            tabBarIcon: <FontAwesomeIcon icon={faGlobe} size={20} />,
+            tabBarIcon: <FontAwesomeIcon icon={faGlobe} />,
         },
     },
 );
