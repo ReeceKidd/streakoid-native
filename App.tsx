@@ -20,12 +20,15 @@ import {
     userActions,
     authActions,
 } from './src/actions/sharedActions';
-import { ActivityIndicator, Platform, View, Vibration } from 'react-native';
+import { ActivityIndicator, Platform, View, Vibration, Alert } from 'react-native';
 
 import { PushNotificationType } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
 import { Screens } from './src/screens/Screens';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
 import NativePushNotification from 'react-native-push-notification';
+
+import * as Sentry from '@sentry/react-native';
+import RNRestart from 'react-native-restart';
 
 const unauthenticatedSwitchNavigator = createSwitchNavigator({
     auth: AuthBottomTabNavigator,
@@ -74,7 +77,24 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class AppContainerComponent extends React.Component<Props> {
+    componentDidCatch(error: Error) {
+        Sentry.captureException(error);
+        Alert.alert(
+            'Unexpected error',
+            'This error has been forward to the developer. Please restart to continue.',
+            [
+                {
+                    text: 'Restart App',
+                    onPress: () => RNRestart.Restart(),
+                },
+            ],
+            { cancelable: false },
+        );
+    }
     componentDidMount = async () => {
+        Sentry.init({
+            dsn: 'https://db870b837637476b9962d45ba8e6cc23@o387464.ingest.sentry.io/5222763',
+        });
         const { isAuthenticated } = this.props;
         if (isAuthenticated) {
             NativePushNotification.configure({
