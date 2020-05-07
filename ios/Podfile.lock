@@ -68,6 +68,8 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - GoogleAnalytics (3.17.0)
+  - GoogleIDFASupport (3.14.0)
   - JKBigInteger2 (0.0.5)
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
@@ -303,6 +305,11 @@ PODS:
   - RNAnalytics (1.1.1-beta.3):
     - Analytics (~> 3.8)
     - React
+  - RNAnalyticsIntegration-Google-Analytics (1.1.1-beta.3):
+    - Analytics
+    - React
+    - RNAnalytics
+    - Segment-GoogleAnalytics
   - RNAWSCognito (4.2.2):
     - JKBigInteger2 (= 0.0.5)
     - React
@@ -327,6 +334,16 @@ PODS:
     - React
   - RNVectorIcons (6.6.0):
     - React
+  - Segment-GoogleAnalytics (1.3.0):
+    - Analytics (~> 3.0)
+    - Segment-GoogleAnalytics/GoogleIDFASupport (= 1.3.0)
+  - Segment-GoogleAnalytics/Core (1.3.0):
+    - Analytics (~> 3.0)
+    - GoogleAnalytics (~> 3.14)
+  - Segment-GoogleAnalytics/GoogleIDFASupport (1.3.0):
+    - Analytics (~> 3.0)
+    - GoogleIDFASupport (~> 3.14)
+    - Segment-GoogleAnalytics/Core
   - Sentry (4.4.3):
     - Sentry/Core (= 4.4.3)
   - Sentry/Core (4.4.3)
@@ -385,6 +402,7 @@ DEPENDENCIES:
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
+  - "RNAnalyticsIntegration-Google-Analytics (from `../node_modules/@segment/analytics-react-native-google-analytics`)"
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -411,8 +429,11 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - Flipper-RSocket
     - FlipperKit
+    - GoogleAnalytics
+    - GoogleIDFASupport
     - JKBigInteger2
     - OpenSSL-Universal
+    - Segment-GoogleAnalytics
     - Sentry
     - YogaKit
 
@@ -473,6 +494,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNAnalytics:
     :path: "../node_modules/@segment/analytics-react-native"
+  RNAnalyticsIntegration-Google-Analytics:
+    :path: "../node_modules/@segment/analytics-react-native-google-analytics"
   RNAWSCognito:
     :path: "../node_modules/amazon-cognito-identity-js"
   RNCPushNotificationIOS:
@@ -515,6 +538,8 @@ SPEC CHECKSUMS:
   FlipperKit: 6dc9b8f4ef60d9e5ded7f0264db299c91f18832e
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  GoogleIDFASupport: aaf8c10bd429abb1c15349d5252244f5eda8ead1
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
   Permission-Notifications: 6822f14e690684970c26f86eca2e1b06cea1d24d
@@ -540,6 +565,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNAnalytics: 902de613d2ac8c8b6396c555c7fa3868d0478e91
+  RNAnalyticsIntegration-Google-Analytics: f8ac571fb4ada871ec988215784edaaee6bc5637
   RNAWSCognito: c504eb014e28ccc81ef0d28ccb4ac3712964d52b
   RNCPushNotificationIOS: a38f0b8c4f6f5226cd1d8eeb21ab5670f4a09892
   RNDeviceInfo: c3ea4a4d4547740c548cdd1e5a78f9b04e524688
@@ -551,6 +577,7 @@ SPEC CHECKSUMS:
   RNSentry: 370623102247ebea20191b5fb549ecc7a275b324
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
+  Segment-GoogleAnalytics: 227a9a25c62f11853bd4e4b5f31c3cf28ed06f95
   Sentry: 14bdd673870e8cf64932b149fad5bbbf39a9b390
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

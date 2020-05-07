@@ -27,6 +27,7 @@ import { Screens } from './src/screens/Screens';
 import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
 import NativePushNotification from 'react-native-push-notification';
 import analytics from '@segment/analytics-react-native';
+import GoogleAnalytics from '@segment/analytics-react-native-google-analytics';
 
 import * as Sentry from '@sentry/react-native';
 import RNRestart from 'react-native-restart';
@@ -98,6 +99,7 @@ class AppContainerComponent extends React.Component<Props> {
     }
     componentDidMount = async () => {
         analytics.setup('bn5p5VLmYRJ5oWE1z4xkmTGcb3DflWYg', {
+            using: [GoogleAnalytics],
             recordScreenViews: true,
             trackAppLifecycleEvents: true,
             trackAttributionData: true,
