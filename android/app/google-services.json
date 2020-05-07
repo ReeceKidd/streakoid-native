@@ -10,7 +10,7 @@
             "client_info": {
                 "mobilesdk_app_id": "1:392167142636:android:344c27381bd568d38561c9",
                 "android_client_info": {
-                    "package_name": "com.streakoid"
+                    "package_name": "com.streakoid.streakoid"
                 }
             },
             "oauth_client": [

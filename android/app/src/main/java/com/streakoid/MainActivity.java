@@ -1,4 +1,4 @@
-package com.streakoid;
+package com.streakoid.streakoid;
 
 import com.facebook.react.ReactActivity;
 
