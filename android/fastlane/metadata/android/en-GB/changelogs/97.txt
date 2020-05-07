@@ -1,0 +1,3 @@
+Added global leaderboard
+Added following leaderboard
+Updated logo.

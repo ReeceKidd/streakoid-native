@@ -1,0 +1,11 @@
+Streakoid lets you define daily tasks. Which you try to complete for as many days as a row as possible.
+
+The almighty Oid will watch over. Sending you reminders and making sure you're making time for youreself.
+
+You can complete streaks by yourself.
+
+Compete challenge streaks with other users around the globe.
+
+Or you can complete streaks as a team. With a team streak if one of you doesn't do your daily task you all lose your streak. Don't let your team down.
+
+You can view global leaderboards to see how you stack up against the rest of the world.

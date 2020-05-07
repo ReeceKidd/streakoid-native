@@ -31,21 +31,22 @@ platform :android do
   end
 
   desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    increment_version_code   
-    versionCode = File.read("metadata/versionCode").to_i
-    versionCode = versionCode +1
-    versionCodeFile = File.new("metadata/versionCode", "w")
-    versionCodeFile.write(versionCode)
-    versionCodeFile.close
+  lane :release do
+    # Bump version code for uploading
+  increment_version_code   
+  versionCode = File.read("metadata/versionCode").to_i
+  versionCode = versionCode +1
+  versionCodeFile = File.new("metadata/versionCode", "w")
+  versionCodeFile.write(versionCode)
+  versionCodeFile.close
+    
+  versionName ="1.0.#{versionCode}"
+  versionNameFile = File.new("metadata/versionName", "w")
+  versionNameFile.write(versionName)
+  versionNameFile.close
   
-    versionName ="1.0.#{versionCode}"
-    versionNameFile = File.new("metadata/versionName", "w")
-    versionNameFile.write(versionName)
-    versionNameFile.close
-
-    gradle(task: "clean")
-    gradle(task: "bundleRelease", properties: { 'versionCode' => versionCode, 'versionName' => versionName })
-    upload_to_play_store(skip_upload_apk: true)
+  gradle(task: "clean")
+  gradle(task: "bundleRelease", properties: { "versionName" => versionName })
+  upload_to_play_store(skip_upload_apk: true)
   end
 end

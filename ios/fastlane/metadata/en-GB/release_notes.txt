@@ -1,0 +1,2 @@
+Added vibration on complete solo, challenge and team streak. 
+Updated appearance of team streak in team streaks list
