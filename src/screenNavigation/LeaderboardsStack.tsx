@@ -11,9 +11,9 @@ import { GlobalUserLeaderboardScreen } from '../screens/GlobalLeaderboardScreen'
 
 const LeaderboardsStack = createStackNavigator(
     {
+        Leaderboards: LeaderboardsScreen,
         FollowingLeaderboard: FollowingLeaderboardScreen,
         GlobalUserLeaderboard: GlobalUserLeaderboardScreen,
-        Leaderboards: LeaderboardsScreen,
         SoloStreakLeaderboard: SoloStreakLeaderboardScreen,
         TeamStreakLeaderboard: TeamStreakLeaderboardScreen,
         ChallengeStreakLeaderboard: ChallengeStreakLeaderboardScreen,

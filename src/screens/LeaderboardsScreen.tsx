@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
 import { HamburgerSelector } from '../components/HamburgerSelector';
-import { AppActions } from '@streakoid/streakoid-shared/lib';
+import { AppActions, AppState } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { leaderboardActions } from '../actions/sharedActions';
 import { Screens } from './Screens';
@@ -18,6 +18,15 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
+const mapStateToProps = (state: AppState) => {
+    const following = state && state.users && state.users.currentUser && state.users.currentUser.following;
+    const currentUserId = state && state.users && state.users.currentUser && state.users.currentUser._id;
+    const userIds = [...following.map((user) => user.userId), currentUserId];
+    return {
+        userIds,
+    };
+};
+
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getSoloStreaksLeaderboard: bindActionCreators(leaderboardActions.getSoloStreakLeaderboard, dispatch),
     getTeamStreaksLeaderboard: bindActionCreators(leaderboardActions.getTeamStreakLeaderboard, dispatch),
@@ -30,7 +39,7 @@ interface NavigationProps {
     navigation: NavigationScreenProp<NavigationState, NavigationParams>;
 }
 
-type Props = ReturnType<typeof mapDispatchToProps> & NavigationProps;
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 interface LeaderboardMenuOption {
     name: string;
@@ -55,7 +64,14 @@ class LeaderboardsScreenComponent extends Component<Props> {
     ];
 
     render(): JSX.Element | null {
-        const { getSoloStreaksLeaderboard, getTeamStreaksLeaderboard, getChallengeStreaksLeaderboard } = this.props;
+        const {
+            getSoloStreaksLeaderboard,
+            getTeamStreaksLeaderboard,
+            getChallengeStreaksLeaderboard,
+            getGlobalUserLeaderboard,
+            getFollowingLeaderboard,
+            userIds,
+        } = this.props;
         return (
             <>
                 <NavigationEvents
@@ -63,6 +79,8 @@ class LeaderboardsScreenComponent extends Component<Props> {
                         getSoloStreaksLeaderboard();
                         getTeamStreaksLeaderboard();
                         getChallengeStreaksLeaderboard();
+                        getGlobalUserLeaderboard({});
+                        getFollowingLeaderboard({ userIds });
                     }}
                 />
                 <FlatList

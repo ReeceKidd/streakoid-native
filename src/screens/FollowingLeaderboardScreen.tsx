@@ -23,11 +23,12 @@ const mapStateToProps = (state: AppState) => {
         state && state.leaderboards && state.leaderboards.getFollowingLeaderboardErrorMessage;
     const followingIds =
         state && state.users && state.users.currentUser && state.users.currentUser.following.map((user) => user.userId);
+    const currentUserId = state && state.users && state.users.currentUser && state.users.currentUser._id;
     return {
         followingLeaderboard,
         getFollowingLeaderboardIsLoading,
         getFollowingLeaderboardErrorMessage,
-        followingIds,
+        followingIds: [...followingIds, currentUserId],
     };
 };
 
