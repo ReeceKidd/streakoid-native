@@ -18,8 +18,12 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
+    match(
+      type: "appstore",
+      git_url: "https://github.com/ReeceKidd/streakoid-certificates"
+    ) 
     increment_build_number(xcodeproj: "streakoid.xcodeproj")
     build_app(workspace: "streakoid.xcworkspace", scheme: "streakoid")
-    upload_to_app_store
+    deliver(automatic_release: true, force: true)
   end
 end
