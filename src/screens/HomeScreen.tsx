@@ -11,7 +11,7 @@ import {
 import { Text, Button } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
 
 import {
     soloStreakActions,
@@ -35,6 +35,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
 import NativePushNotification from 'react-native-push-notification';
+import * as RNLocalize from 'react-native-localize';
+import { tz } from 'moment-timezone';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -112,6 +114,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getCurrentUser: bindActionCreators(userActions.getCurrentUser, dispatch),
     updateCurrentUser: bindActionCreators(userActions.updateCurrentUser, dispatch),
     updateSoloStreaksTimezones: bindActionCreators(soloStreakActions.updateSoloStreakTimezones, dispatch),
+    updateChallengeStreaksTimezones: bindActionCreators(
+        challengeStreakActions.updateChallengeStreakTimezones,
+        dispatch,
+    ),
     getLiveTeamStreaks: bindActionCreators(teamStreakActions.getLiveTeamStreaks, dispatch),
     getSelectedTeamStreak: bindActionCreators(teamStreakActions.getSelectedTeamStreak, dispatch),
     completeTeamMemberStreakTask: bindActionCreators(
@@ -164,7 +170,33 @@ class HomeScreenComponent extends Component<Props> {
             NavigationService.navigate(Screens.Welcome);
         }
         this.initializePushNotifications();
+        const currentTimezone = RNLocalize.getTimeZone();
+        const { currentUser } = this.props;
+        if (currentUser && currentUser.timezone !== currentTimezone) {
+            this.props.updateCurrentUser({ timezone: currentTimezone });
+            this.displayTimezoneChangeAlert({ oldTimezone: currentUser.timezone, currentTimezone });
+            this.props.updateSoloStreaksTimezones(currentTimezone);
+            this.props.updateChallengeStreaksTimezones(currentTimezone);
+        }
     };
+
+    displayTimezoneChangeAlert({
+        oldTimezone,
+        currentTimezone,
+    }: {
+        oldTimezone: string;
+        currentTimezone: string;
+    }): void {
+        const oldTimezoneOffset = tz(oldTimezone).utcOffset();
+        const currentTimezoneOffset = tz(currentTimezone).utcOffset();
+        const diffInHours = (currentTimezoneOffset - oldTimezoneOffset) / 60;
+
+        const alertMessage = `Your timezone has changed from ${oldTimezone} to ${currentTimezone}. Your solo and challenge streaks will now use this timezone. Time difference is ${
+            diffInHours >= 0 ? `+${diffInHours}` : `${diffInHours}`
+        } hours.`;
+
+        Alert.alert('Timezone change', alertMessage);
+    }
 
     initializePushNotifications = async () => {
         NativePushNotification.cancelAllLocalNotifications();
@@ -174,8 +206,8 @@ class HomeScreenComponent extends Component<Props> {
         if (pushNotifications) {
             if (completeAllStreaksReminder && completeAllStreaksReminder.enabled) {
                 const newExpoId = await this.scheduleDailyPush({
-                    title: 'Complete your streaks!',
-                    body: 'Complete your streaks before Oid finds out',
+                    title: 'Complete streaks reminder',
+                    body: 'Your reminder to complete your streaks for today.',
                     reminderHour: completeAllStreaksReminder.reminderHour,
                     reminderMinute: completeAllStreaksReminder.reminderMinute,
                     data: {

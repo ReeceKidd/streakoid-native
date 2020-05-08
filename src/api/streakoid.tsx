@@ -90,10 +90,14 @@ export const getIdToken = async () => {
 streakodClient.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
         const idToken = await getIdToken();
+        const userTimezone =
+            (store.getState() as any).users &&
+            (store.getState() as any).users.currentUser &&
+            (store.getState() as any).users.currentUser.timezone;
         const timezone = RNLocalize.getTimeZone();
         if (config.baseURL === apiUrl) {
             config.headers.Authorization = idToken;
-            config.headers[SupportedRequestHeaders.Timezone] = timezone || 'Europe/London';
+            config.headers[SupportedRequestHeaders.Timezone] = userTimezone || timezone || 'Europe/London';
         }
 
         return config;
