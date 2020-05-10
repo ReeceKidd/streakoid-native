@@ -18,18 +18,21 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
-    answer = UI.select("Would you like to add a Changelog?", ["Y", "N"])
-    changelog = ask('Type Changelog message:') if answer == "Y"
+    answer = UI.select("Would you like to add a Changelog?", ["y", "n"])
+    changelog = ask('Type Changelog message:') if answer == "y"
     match(
       type: "appstore",
       git_url: "https://github.com/ReeceKidd/streakoid-certificates"
     ) 
     increment_build_number(xcodeproj: "streakoid.xcodeproj")
+    increment_version_number(
+      bump_type: "patch" 
+    )
     build_app(workspace: "streakoid.xcworkspace", scheme: "streakoid")
     deliver(automatic_release: true, force: true)
-    notification(title: "Finished IOS Build", message: "IOS build uploaded.")
+    notification(title: "Finished IOS Build", message: "Finished IOS Build")
   end
   error do |lane, exception, options|
-    notification(title: "IOS Build Failed", message: exception)
+    notification(title: "IOS Build Failed", message: "IOS Build Failed")
     end
 end
