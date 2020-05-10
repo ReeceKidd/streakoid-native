@@ -18,8 +18,6 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
-    answer = UI.select("Would you like to add a Changelog?", ["y", "n"])
-    changelog = ask('Type Changelog message:') if answer == "y"
     match(
       type: "appstore",
       git_url: "https://github.com/ReeceKidd/streakoid-certificates"

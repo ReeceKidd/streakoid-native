@@ -18,7 +18,19 @@ const FreeMemberAndroidDrawer = createDrawerNavigator({
     Upgrade: {
         screen: UpgradeStack,
         navigationOptions: {
-            drawerIcon: <FontAwesomeIcon icon={faStar} style={{ backgroundColor: 'yellow' }} />,
+            drawerIcon: (
+                <FontAwesomeIcon
+                    icon={faStar}
+                    style={{
+                        backgroundColor: 'black',
+                        color: 'yellow',
+                        borderRadius: 100,
+                        width: 50,
+                        height: 50,
+                        padding: 10,
+                    }}
+                />
+            ),
         },
     },
     ...drawerOptions,

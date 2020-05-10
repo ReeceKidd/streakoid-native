@@ -17,6 +17,8 @@ import NavigationService from './NavigationService';
 import { Screens } from './Screens';
 import { faPlus, faArchive } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
+import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
 
 const mapStateToProps = (state: AppState) => {
     const liveChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.liveChallengeStreaks;
@@ -26,7 +28,10 @@ const mapStateToProps = (state: AppState) => {
     const getArchivedChallengeStreaksIsLoading =
         state && state.challengeStreaks && state.challengeStreaks.getArchivedChallengeStreaksIsLoading;
     const totalNumberOfChallengeStreaks = state.challengeStreaks.liveChallengeStreaks.length;
-    const { currentUser } = state.users;
+    const currentUser = state && state.users && state.users.currentUser;
+    const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
+    const isPayingMember =
+        currentUser && currentUser.membershipInformation && currentUser.membershipInformation.isPayingMember;
     return {
         liveChallengeStreaks,
         archivedChallengeStreaks,
@@ -35,6 +40,8 @@ const mapStateToProps = (state: AppState) => {
         timezone: currentUser.timezone,
         totalNumberOfChallengeStreaks,
         currentUser,
+        totalLiveStreaks,
+        isPayingMember,
     };
 };
 
@@ -66,7 +73,14 @@ const styles = StyleSheet.create({
 });
 
 class ChallengeStreaksScreenComponent extends Component<Props> {
-    static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
+    static navigationOptions = ({
+        navigation,
+    }: {
+        navigation: NavigationScreenProp<NavigationState, { isPayingMember: boolean; totalLiveStreaks: number }>;
+    }) => {
+        const isPayingMember = navigation.getParam('isPayingMember');
+        const totalLiveStreaks = navigation.getParam('totalLiveStreaks');
+        const userHasReachedFreeStreakLimit = !isPayingMember && totalLiveStreaks > MAXIMUM_NUMBER_OF_FREE_STREAKS;
         return {
             title: 'Challenge Streaks',
             headerLeft: () => <HamburgerSelector navigation={navigation} />,
@@ -74,11 +88,21 @@ class ChallengeStreaksScreenComponent extends Component<Props> {
                 <Button
                     type="clear"
                     icon={<FontAwesomeIcon icon={faPlus} size={30} />}
-                    onPress={() => NavigationService.navigate(Screens.Challenges)}
+                    onPress={() => {
+                        if (!userHasReachedFreeStreakLimit) {
+                            return NavigationService.navigate(Screens.Challenges);
+                        }
+                        NavigationService.navigate(Screens.Upgrade);
+                    }}
                 />
             ),
         };
     };
+
+    componentDidMount() {
+        const { isPayingMember, totalLiveStreaks } = this.props;
+        this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
+    }
 
     render(): JSX.Element {
         const {
@@ -93,10 +117,18 @@ class ChallengeStreaksScreenComponent extends Component<Props> {
             archivedChallengeStreaks,
             getArchivedChallengeStreaksIsLoading,
             currentUser,
+            isPayingMember,
         } = this.props;
+        const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
         return (
             <ScrollView style={styles.container}>
                 <View>
+                    <View style={{ marginLeft: 15, marginTop: 15 }}>
+                        <MaximumNumberOfFreeStreaksMessage
+                            isPayingMember={isPayingMember}
+                            totalLiveStreaks={totalLiveStreaks}
+                        />
+                    </View>
                     <Spacer>
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}

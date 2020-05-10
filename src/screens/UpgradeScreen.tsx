@@ -7,6 +7,8 @@ import { Linking } from 'react-native';
 import { NavigationScreenProp, NavigationParams, NavigationState } from 'react-navigation';
 import { HamburgerSelector } from '../components/HamburgerSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChild } from '@fortawesome/free-solid-svg-icons';
+import { faPeopleCarry, faMedal, faLifeRing, faBan } from '@fortawesome/pro-solid-svg-icons';
 
 const styles = StyleSheet.create({
     container: {
@@ -36,25 +38,25 @@ class UpgradeScreen extends React.Component<NavigationProps> {
 
                 <Text style={{ textAlign: 'center' }}>
                     Unlimited Solo Streaks
-                    <FontAwesomeIcon icon="child" style={{ color: 'blue' }} />
+                    <FontAwesomeIcon icon={faChild} style={{ color: 'blue' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
                     Unlimited Team Streaks
-                    <FontAwesomeIcon icon="people-carry" style={{ color: 'purple' }} />
+                    <FontAwesomeIcon icon={faPeopleCarry} style={{ color: 'purple' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
                     Unlimited Challenge Streaks
-                    <FontAwesomeIcon icon="medal" style={{ color: 'navy' }} />
+                    <FontAwesomeIcon icon={faMedal} style={{ color: 'navy' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
-                    Priority Support <FontAwesomeIcon icon="life-ring" style={{ color: 'darkblue' }} />
+                    Priority Support <FontAwesomeIcon icon={faLifeRing} style={{ color: 'darkblue' }} />
                 </Text>
                 <Text />
                 <Text style={{ textAlign: 'center' }}>
-                    No ads <FontAwesomeIcon icon="ban" style={{ color: 'red' }} />
+                    No ads <FontAwesomeIcon icon={faBan} style={{ color: 'red' }} />
                 </Text>
                 <Text />
                 <Spacer>

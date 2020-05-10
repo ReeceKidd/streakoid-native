@@ -30,7 +30,6 @@ export enum Screens {
     StreakRecommendationsIntro = 'StreakRecommendationsIntro',
     DailyReminders = 'DailyReminders',
     CreateFirstStreak = 'CreateFirstStreak',
-    StreakLimitReached = 'StreakLimitReached',
     Upgrade = 'Upgrade',
     AddNoteToSoloStreak = 'AddNoteToSoloStreak',
     AddNoteToChallengeStreak = 'AddNoteToChallengeStreak',

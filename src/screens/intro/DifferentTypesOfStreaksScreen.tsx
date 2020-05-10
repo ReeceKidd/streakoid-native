@@ -32,17 +32,17 @@ class DifferentTypesOfStreaksScreen extends React.Component {
                         Complete streaks by yourself, with friends or compete with others across the globe.
                     </Text>
                     <Spacer />
-                    <FontAwesomeIcon icon={faChild} style={{ color: 'blue' }} />
+                    <FontAwesomeIcon icon={faChild} style={{ color: 'blue', alignSelf: 'center' }} />
                     <Text h4> Solo Streaks </Text>
                     <Text>Just for you. Try to get your longest streak.</Text>
                     <Spacer />
-                    <FontAwesomeIcon icon={faPeopleCarry} style={{ color: 'purple' }} />
+                    <FontAwesomeIcon icon={faPeopleCarry} style={{ color: 'purple', alignSelf: 'center' }} />
                     <Text h4>Team Streaks</Text>
                     <Text>
                         You and your friends are in it together. If one person loses the streak you all lose it.
                     </Text>
                     <Spacer />
-                    <FontAwesomeIcon icon={faMedal} style={{ color: 'navy' }} />
+                    <FontAwesomeIcon icon={faMedal} style={{ color: 'navy', alignSelf: 'center' }} />
                     <Text h4> Challenge Streaks</Text>
                     <Text>Complete streaks with others around the globe.</Text>
                 </Spacer>

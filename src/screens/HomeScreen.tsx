@@ -37,6 +37,7 @@ import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
 import NativePushNotification from 'react-native-push-notification';
 import * as RNLocalize from 'react-native-localize';
 import { tz } from 'moment-timezone';
+import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -87,6 +88,8 @@ const mapStateToProps = (state: AppState) => {
     const totalNumberOfTeamStreaks =
         state && state.teamStreaks && state.teamStreaks.liveTeamStreaks && state.teamStreaks.liveTeamStreaks.length;
     const totalNumberOfChallengeStreaks = state.challengeStreaks.liveChallengeStreaks.length;
+    const isPayingMember =
+        currentUser && currentUser.membershipInformation && currentUser.membershipInformation.isPayingMember;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rehydrated = (state as any)._persist.rehydrated;
     return {
@@ -102,6 +105,7 @@ const mapStateToProps = (state: AppState) => {
         totalNumberOfSoloStreaks,
         totalNumberOfTeamStreaks,
         totalNumberOfChallengeStreaks,
+        isPayingMember,
         rehydrated,
     };
 };
@@ -442,6 +446,8 @@ class HomeScreenComponent extends Component<Props> {
     }
 
     render(): JSX.Element {
+        const { currentUser, isPayingMember } = this.props;
+        const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
         return (
             <ScrollView style={styles.container}>
                 <View>
@@ -451,6 +457,12 @@ class HomeScreenComponent extends Component<Props> {
                             this.initializePushNotifications();
                         }}
                     />
+                    <Spacer>
+                        <MaximumNumberOfFreeStreaksMessage
+                            isPayingMember={isPayingMember}
+                            totalLiveStreaks={totalLiveStreaks}
+                        />
+                    </Spacer>
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>
