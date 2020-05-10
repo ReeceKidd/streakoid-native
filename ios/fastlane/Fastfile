@@ -23,9 +23,6 @@ platform :ios do
       git_url: "https://github.com/ReeceKidd/streakoid-certificates"
     ) 
     increment_build_number(xcodeproj: "streakoid.xcodeproj")
-    increment_version_number(
-      bump_type: "patch" 
-    )
     build_app(workspace: "streakoid.xcworkspace", scheme: "streakoid")
     deliver(automatic_release: true, force: true)
     notification(title: "Finished IOS Build", message: "Finished IOS Build")
