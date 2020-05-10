@@ -63,6 +63,22 @@ class LeaderboardsScreenComponent extends Component<Props> {
         { name: 'Challenge Streak', screen: Screens.ChallengeStreakLeaderboard, icon: faMedal },
     ];
 
+    componentDidMount() {
+        const {
+            getSoloStreaksLeaderboard,
+            getTeamStreaksLeaderboard,
+            getChallengeStreaksLeaderboard,
+            getGlobalUserLeaderboard,
+            getFollowingLeaderboard,
+            userIds,
+        } = this.props;
+        getSoloStreaksLeaderboard();
+        getTeamStreaksLeaderboard();
+        getChallengeStreaksLeaderboard();
+        getGlobalUserLeaderboard({});
+        getFollowingLeaderboard({ userIds });
+    }
+
     render(): JSX.Element | null {
         const {
             getSoloStreaksLeaderboard,

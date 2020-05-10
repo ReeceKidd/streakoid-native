@@ -48,9 +48,9 @@ platform :android do
   gradle(task: "clean")
   gradle(task: "bundleRelease", properties: { "versionName" => versionName })
   upload_to_play_store(skip_upload_apk: true)
-  notification(subtitle: "Finished Android Build", message: "Android build uploaded.")
+  notification(title: "Finished Android Build", message: "Finished Android Build")
   end
   error do |lane, exception, options|
-    notification(title: "Android Build Failed", message: exception)
+    notification(title: "Android Build Failed", message: "Android build failed")
     end
 end
