@@ -20,14 +20,14 @@ import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-han
 import { TeamNotes } from '../components/TeamNotes';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { StyleSheet, Picker, View, ActivityIndicator, Share } from 'react-native';
-import { CustomTeamStreakReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
-import { CustomTeamStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
+import { CustomTeamStreakReminderPushNotification } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
+import { CustomTeamStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-models/lib/Models/StreakReminders';
 import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEdit, faShareAlt, faAbacus, faCog, faBell } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
-import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
-import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { faCrown } from '@fortawesome/free-solid-svg-icons';
 

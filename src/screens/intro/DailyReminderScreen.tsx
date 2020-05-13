@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../../actions/sharedActions';
 import { Spacer } from '../../components/Spacer';
 import NativePushNotification from 'react-native-push-notification';
-import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;

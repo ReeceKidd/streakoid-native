@@ -26,14 +26,14 @@ import NativePushNotification from 'react-native-push-notification';
 
 import { YellowBox } from 'react-native';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
-import { CustomSoloStreakReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
-import { CustomSoloStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
+import { CustomSoloStreakReminderPushNotification } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
+import { CustomSoloStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-models/lib/Models/StreakReminders';
 import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEdit, faShareAlt, faBell } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
-import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
-import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 
 YellowBox.ignoreWarnings([

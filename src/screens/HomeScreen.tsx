@@ -27,10 +27,10 @@ import { HamburgerSelector } from '../components/HamburgerSelector';
 import { LiveChallengeStreakList } from '../components/LiveChallengeStreakList';
 import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { PushNotificationType } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
+import { PushNotificationType } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
-import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
-import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
@@ -457,12 +457,14 @@ class HomeScreenComponent extends Component<Props> {
                             this.initializePushNotifications();
                         }}
                     />
-                    <Spacer>
-                        <MaximumNumberOfFreeStreaksMessage
-                            isPayingMember={isPayingMember}
-                            totalLiveStreaks={totalLiveStreaks}
-                        />
-                    </Spacer>
+                    {!isPayingMember ? (
+                        <Spacer>
+                            <MaximumNumberOfFreeStreaksMessage
+                                isPayingMember={isPayingMember}
+                                totalLiveStreaks={totalLiveStreaks}
+                            />
+                        </Spacer>
+                    ) : null}
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>

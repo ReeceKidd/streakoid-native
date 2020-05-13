@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 
 import { noteActions } from '../actions/sharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
-import { AppActions } from '@streakoid/streakoid-shared/lib';
+import { AppActions, AppState } from '@streakoid/streakoid-shared/lib';
 import { connect } from 'react-redux';
 import { Text, Button, ListItem } from 'react-native-elements';
 import { ActivityIndicator, FlatList } from 'react-native';
-import { AppState } from '../store';
 import { NoteWithClientData } from '@streakoid/streakoid-shared/lib/reducers/notesReducer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';

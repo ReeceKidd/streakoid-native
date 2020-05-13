@@ -4,7 +4,7 @@ import { Screens } from '../../screens/Screens';
 import { Text } from 'react-native-elements';
 import { View, StyleSheet } from 'react-native';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
-import ActivityFeedItemTypes from '@streakoid/streakoid-sdk/lib/ActivityFeedItemTypes';
+import ActivityFeedItemTypes from '@streakoid/streakoid-models/lib/Types/ActivityFeedItemTypes';
 
 const styles = StyleSheet.create({
     link: {

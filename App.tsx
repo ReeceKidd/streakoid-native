@@ -20,18 +20,18 @@ import {
     userActions,
     authActions,
 } from './src/actions/sharedActions';
-import { ActivityIndicator, Platform, View, Vibration, Alert } from 'react-native';
+import { ActivityIndicator, Platform, View, Vibration } from 'react-native';
 
-import { PushNotificationType } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
+import { PushNotificationType } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
 import { Screens } from './src/screens/Screens';
-import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
+import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import NativePushNotification from 'react-native-push-notification';
 import analytics from '@segment/analytics-react-native';
 import GoogleAnalytics from '@segment/analytics-react-native-google-analytics';
 
-import * as Sentry from '@sentry/react-native';
-import RNRestart from 'react-native-restart';
 import { enableScreens } from 'react-native-screens';
+import PushNotificationSupportedDeviceTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationSupportedDeviceTypes';
+import { ErrorBoundary } from './ErrorBoundary';
 
 enableScreens();
 
@@ -82,21 +82,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class AppContainerComponent extends React.Component<Props> {
-    componentDidCatch(error: Error) {
-        Sentry.captureException(error);
-        Alert.alert(
-            'Unexpected error',
-            'This error has been forward to the developer. Please restart to continue.',
-            [
-                {
-                    text: 'Restart App',
-                    onPress: () => RNRestart.Restart(),
-                },
-            ],
-            { cancelable: false },
-        );
-        this.props.logoutUser();
-    }
     componentDidMount = async () => {
         analytics.setup('bn5p5VLmYRJ5oWE1z4xkmTGcb3DflWYg', {
             using: [GoogleAnalytics],
@@ -108,15 +93,28 @@ class AppContainerComponent extends React.Component<Props> {
                 collectDeviceId: true,
             },
         });
-        Sentry.init({
-            dsn: 'https://db870b837637476b9962d45ba8e6cc23@o387464.ingest.sentry.io/5222763',
-        });
+
         const { isAuthenticated } = this.props;
         if (isAuthenticated) {
             NativePushNotification.configure({
                 onRegister: (tokenData) => {
                     const { token } = tokenData;
-                    this.props.updateCurrentUser({ pushNotificationToken: token });
+                    const { currentUser } = this.props;
+                    const pushNotificationToken = currentUser && currentUser.pushNotification.token;
+                    const endpointArn = currentUser && currentUser.pushNotification.endpointArn;
+                    if (token === pushNotificationToken && endpointArn) {
+                        return;
+                    }
+                    const deviceType =
+                        Platform.OS === 'ios'
+                            ? PushNotificationSupportedDeviceTypes.ios
+                            : PushNotificationSupportedDeviceTypes.android;
+                    this.props.updateCurrentUser({
+                        pushNotification: {
+                            token: String(token),
+                            deviceType,
+                        },
+                    });
                 },
                 onNotification: (notification) => {
                     if (Platform.OS === 'ios') {
@@ -151,63 +149,67 @@ class AppContainerComponent extends React.Component<Props> {
     }) => {
         if (!userInteraction) {
             Vibration.vibrate(100);
-        }
 
-        if (pushNotification.pushNotificationType == PushNotificationTypes.customSoloStreakReminder) {
-            return NavigationService.navigate(Screens.SoloStreakInfo, {
-                _id: pushNotification.soloStreakId,
-                streakName: pushNotification.soloStreakName,
-            });
-        }
+            if (!pushNotification.pushNotificationType) {
+                return;
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.customChallengeStreakReminder) {
-            return NavigationService.navigate(Screens.ChallengeStreakInfo, {
-                _id: pushNotification.challengeStreakId,
-                streakName: pushNotification.challengeName,
-            });
-        }
+            if (pushNotification.pushNotificationType == PushNotificationTypes.customSoloStreakReminder) {
+                return NavigationService.navigate(Screens.SoloStreakInfo, {
+                    _id: pushNotification.soloStreakId,
+                    streakName: pushNotification.soloStreakName,
+                });
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.customTeamStreakReminder) {
-            return NavigationService.navigate(Screens.TeamStreakInfo, {
-                _id: pushNotification.teamStreakId,
-                streakName: pushNotification.teamStreakName,
-            });
-        }
+            if (pushNotification.pushNotificationType === PushNotificationTypes.customChallengeStreakReminder) {
+                return NavigationService.navigate(Screens.ChallengeStreakInfo, {
+                    _id: pushNotification.challengeStreakId,
+                    streakName: pushNotification.challengeName,
+                });
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.completeAllStreaksReminder) {
-            return NavigationService.navigate(Screens.Home);
-        }
+            if (pushNotification.pushNotificationType === PushNotificationTypes.customTeamStreakReminder) {
+                return NavigationService.navigate(Screens.TeamStreakInfo, {
+                    _id: pushNotification.teamStreakId,
+                    streakName: pushNotification.teamStreakName,
+                });
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.completedTeamStreakUpdate) {
-            return NavigationService.navigate(Screens.TeamStreakInfo, {
-                _id: pushNotification.teamStreakId,
-                streakName: pushNotification.teamStreakName,
-            });
-        }
+            if (pushNotification.pushNotificationType === PushNotificationTypes.completeAllStreaksReminder) {
+                return NavigationService.navigate(Screens.Home);
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.incompletedTeamStreakUpdate) {
-            return NavigationService.navigate(Screens.TeamStreakInfo, {
-                _id: pushNotification.teamStreakId,
-                streakName: pushNotification.teamStreakName,
-            });
-        }
+            if (pushNotification.pushNotificationType === PushNotificationTypes.completedTeamStreakUpdate) {
+                return NavigationService.navigate(Screens.TeamStreakInfo, {
+                    _id: pushNotification.teamStreakId,
+                    streakName: pushNotification.teamStreakName,
+                });
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.addedNoteToTeamStreak) {
-            return NavigationService.navigate(Screens.TeamStreakInfo, {
-                _id: pushNotification.teamStreakId,
-                streakName: pushNotification.teamStreakName,
-            });
-        }
+            if (pushNotification.pushNotificationType === PushNotificationTypes.incompletedTeamStreakUpdate) {
+                return NavigationService.navigate(Screens.TeamStreakInfo, {
+                    _id: pushNotification.teamStreakId,
+                    streakName: pushNotification.teamStreakName,
+                });
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.newFollower) {
-            return NavigationService.navigate(Screens.UserProfile, {
-                _id: pushNotification.followerId,
-                username: pushNotification.followerUsername,
-            });
-        }
+            if (pushNotification.pushNotificationType === PushNotificationTypes.addedNoteToTeamStreak) {
+                return NavigationService.navigate(Screens.TeamStreakInfo, {
+                    _id: pushNotification.teamStreakId,
+                    streakName: pushNotification.teamStreakName,
+                });
+            }
 
-        if (pushNotification.pushNotificationType === PushNotificationTypes.unlockedAchievement) {
-            return NavigationService.navigate(Screens.Account);
+            if (pushNotification.pushNotificationType === PushNotificationTypes.newFollower) {
+                return NavigationService.navigate(Screens.UserProfile, {
+                    _id: pushNotification.followerId,
+                    username: pushNotification.followerUsername,
+                });
+            }
+
+            if (pushNotification.pushNotificationType === PushNotificationTypes.unlockedAchievement) {
+                return NavigationService.navigate(Screens.Account);
+            }
         }
     };
 
@@ -280,7 +282,9 @@ const App = () => (
             }
             persistor={persistor}
         >
-            <AppContainer />
+            <ErrorBoundary>
+                <AppContainer />
+            </ErrorBoundary>
         </PersistGate>
     </Provider>
 );

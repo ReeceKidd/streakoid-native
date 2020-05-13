@@ -26,14 +26,14 @@ import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import {
     CustomChallengeStreakReminder,
     CustomStreakReminder,
-} from '@streakoid/streakoid-sdk/lib/models/StreakReminders';
-import { CustomChallengeStreakReminderPushNotification } from '@streakoid/streakoid-sdk/lib/models/PushNotifications';
+} from '@streakoid/streakoid-models/lib/Models/StreakReminders';
+import { CustomChallengeStreakReminderPushNotification } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
 import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faShareAlt, faBell } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
-import PushNotificationTypes from '@streakoid/streakoid-sdk/lib/PushNotificationTypes';
-import StreakReminderTypes from '@streakoid/streakoid-sdk/lib/StreakReminderTypes';
+import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
+import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 
 const mapStateToProps = (state: AppState) => {
