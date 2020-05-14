@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
 import { Text, ListItem, Button, Card, Divider } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faShareAlt, faUsers, faCalendarCheck, faCrown, faAbacus } from '@fortawesome/pro-solid-svg-icons';
-import { Platform } from 'react-native';
+import {
+    faShareAlt,
+    faUsers,
+    faCalendarCheck,
+    faCrown,
+    faFlame,
+    faCalendarTimes,
+} from '@fortawesome/pro-solid-svg-icons';
 
 import { NavigationScreenProp, NavigationState, FlatList, NavigationEvents, ScrollView } from 'react-navigation';
 import { Spacer } from '../components/Spacer';
@@ -68,7 +74,7 @@ class ChallengeInfoScreenComponent extends Component<Props> {
         };
     };
     joinChallenge(challengeId: string) {
-        this.props.joinChallenge({ challengeId, isAppleDevice: Platform.OS === 'ios' });
+        this.props.joinChallenge({ challengeId });
     }
 
     render(): JSX.Element | null {
@@ -141,6 +147,13 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                 </Text>
                             </Card>
                             <Card>
+                                <FontAwesomeIcon icon={faCalendarTimes} />
+                                <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
+                                <Text h4 style={{ textAlign: 'center' }}>
+                                    {selectedChallenge.totalTimesTracked}
+                                </Text>
+                            </Card>
+                            <Card>
                                 <FontAwesomeIcon icon={faCalendarCheck} />
                                 <Text style={{ textAlign: 'center' }}>Longest Current Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
@@ -152,13 +165,6 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                 <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.longestEverStreakForChallenge}
-                                </Text>
-                            </Card>
-                            <Card>
-                                <FontAwesomeIcon icon={faAbacus} />
-                                <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
-                                <Text h4 style={{ textAlign: 'center' }}>
-                                    {selectedChallenge.totalTimesTracked}
                                 </Text>
                             </Card>
                         </Spacer>
@@ -176,18 +182,6 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                         longestStreak,
                                         totalTimesTracked,
                                     } = item;
-                                    const currentStreakText =
-                                        currentStreak.numberOfDaysInARow !== 1
-                                            ? `${currentStreak.numberOfDaysInARow.toString()} days`
-                                            : `${currentStreak.numberOfDaysInARow.toString()} day`;
-                                    const longestStreakText =
-                                        longestStreak !== 1
-                                            ? `Longest streak: ${longestStreak} days`
-                                            : `Longest streak: ${longestStreak} day`;
-                                    const totalTimesTrackedText =
-                                        totalTimesTracked !== 1
-                                            ? `Total times tracked: ${totalTimesTracked} times`
-                                            : `Total times tracked: ${totalTimesTracked} time`;
                                     return (
                                         <>
                                             <TouchableOpacity
@@ -203,11 +197,43 @@ class ChallengeInfoScreenComponent extends Component<Props> {
                                                         source: { uri: profileImage },
                                                     }}
                                                     title={username}
-                                                    subtitle={currentStreakText}
+                                                    subtitle={
+                                                        <View style={{ flexDirection: 'row' }}>
+                                                            <Text>
+                                                                <FontAwesomeIcon
+                                                                    icon={faCalendarTimes}
+                                                                    style={{
+                                                                        color: totalTimesTracked > 0 ? 'black' : 'grey',
+                                                                    }}
+                                                                />
+                                                                {totalTimesTracked}
+                                                            </Text>
+                                                            <Text style={{ marginLeft: 5 }}>
+                                                                <FontAwesomeIcon
+                                                                    icon={faCrown}
+                                                                    style={{
+                                                                        color: longestStreak > 0 ? 'gold' : 'grey',
+                                                                    }}
+                                                                />
+                                                                {longestStreak}
+                                                            </Text>
+                                                        </View>
+                                                    }
+                                                    rightElement={
+                                                        <Text>
+                                                            <FontAwesomeIcon
+                                                                icon={faFlame}
+                                                                style={{
+                                                                    color:
+                                                                        currentStreak.numberOfDaysInARow > 0
+                                                                            ? 'red'
+                                                                            : 'grey',
+                                                                }}
+                                                            />
+                                                            {currentStreak.numberOfDaysInARow}
+                                                        </Text>
+                                                    }
                                                 ></ListItem>
-                                                <Text>{longestStreakText}</Text>
-                                                <Text>{totalTimesTrackedText}</Text>
-                                                <Spacer />
                                             </TouchableOpacity>
                                             <Divider />
                                         </>
