@@ -15,7 +15,7 @@ import { NavigationLink } from '../components/NavigationLink';
 import { Screens } from './Screens';
 import { NavigationState, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
-import BasicUser from '@streakoid/streakoid-sdk/lib/models/BasicUser';
+import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;

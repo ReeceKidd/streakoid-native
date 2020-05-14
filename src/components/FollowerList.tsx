@@ -6,7 +6,7 @@ import { ListItem, Divider } from 'react-native-elements';
 import { Screens } from '../screens/Screens';
 import { Spacer } from './Spacer';
 import { NavigationLink } from './NavigationLink';
-import BasicUser from '@streakoid/streakoid-sdk/lib/models/BasicUser';
+import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
 
 interface FollowerListProps {
     followerList: BasicUser[];
