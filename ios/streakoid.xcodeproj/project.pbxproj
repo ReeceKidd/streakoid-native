@@ -32,6 +32,7 @@
 		8FE3C45629995F24FC8A7013 /* libPods-streakoid-streakoidTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA298C179AB26E503011A72 /* libPods-streakoid-streakoidTests.a */; };
 		9016ABEE5F93258A3EC60AE4 /* libPods-streakoid-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92743F26684804D047205CCA /* libPods-streakoid-tvOS.a */; };
 		9F3705D7E3C6465081D2C279 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCF7EF74F15B4ABAA56CF745 /* FontAwesome5_Brands.ttf */; };
+		A3986E182470320200457B84 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3986E172470320200457B84 /* File.swift */; };
 		CA864E63DCFD416C88F7C073 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B3A7D35A6D348F88B00A90A /* MaterialIcons.ttf */; };
 		DA185EF83E714BDF80704A60 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83988D25924D46BF91B6C253 /* Foundation.ttf */; };
 		F183D83E5DFF4B99BB15F545 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D72796F131A421B9B816566 /* SimpleLineIcons.ttf */; };
@@ -86,6 +87,8 @@
 		9748C45B5D8C41A1B2528BA1 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		9DBC63257CA54AAC923388EF /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		A1B764579C033C40BE1C7BD4 /* Pods-streakoid-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-streakoid-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-streakoid-tvOS/Pods-streakoid-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		A3986E162470320200457B84 /* streakoid-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "streakoid-Bridging-Header.h"; sourceTree = "<group>"; };
+		A3986E172470320200457B84 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		B26950B13EC245F08C622540 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		B633564AF8FF16BB9C6D36FE /* Pods-streakoid-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-streakoid-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-streakoid-tvOSTests/Pods-streakoid-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B7C87D747EB74DFD9D7AFC9C /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -218,6 +221,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A3986E172470320200457B84 /* File.swift */,
 				13B07FAE1A68108700A75B9A /* streakoid */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* streakoidTests */,
@@ -225,6 +229,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				F4871736C938B95F964C88FC /* Pods */,
 				7368BA8E293A4BEE9B79DAF4 /* Resources */,
+				A3986E162470320200457B84 /* streakoid-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -719,6 +724,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				A3986E182470320200457B84 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -772,6 +778,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89FF50FA5F03CB500F39F078 /* Pods-streakoid-streakoidTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -795,6 +802,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DE710A8B4D2AE4A79465ED19 /* Pods-streakoid-streakoidTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = streakoidTests/Info.plist;
@@ -837,6 +845,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.streakoid.streakoid;
 				PRODUCT_NAME = streakoid;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.streakoid.streakoid";
+				SWIFT_OBJC_BRIDGING_HEADER = "streakoid-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -865,6 +874,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.streakoid.streakoid;
 				PRODUCT_NAME = streakoid;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.streakoid.streakoid";
+				SWIFT_OBJC_BRIDGING_HEADER = "streakoid-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
