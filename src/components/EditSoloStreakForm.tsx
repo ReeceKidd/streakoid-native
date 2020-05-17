@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import juration from 'juration';
 import { Formik, FormikErrors } from 'formik';
 import { View } from 'react-native';
@@ -59,7 +59,7 @@ const validate = (values: FormValues): FormikErrors<FormValues> => {
     return errors;
 };
 
-class EditSoloStreakForm extends React.PureComponent<Props> {
+class EditSoloStreakForm extends PureComponent<Props> {
     onSubmit = ({
         soloStreakId,
         streakName,

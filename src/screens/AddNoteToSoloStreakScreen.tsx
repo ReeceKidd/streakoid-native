@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../store';
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class AddNoteToSoloStreakScreenComponent extends Component<Props> {
+class AddNoteToSoloStreakScreenComponent extends PureComponent<Props> {
     static navigationOptions = {
         title: 'Add note to solo streak',
     };

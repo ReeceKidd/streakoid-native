@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, NavigationEvents } from 'react-navigation';
 
@@ -35,7 +35,7 @@ export interface NavigationProps {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class GlobalActivityScreenComponent extends Component<Props> {
+class GlobalActivityScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
         return {
             title: 'Global Activity',

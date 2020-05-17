@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -29,7 +29,7 @@ interface NavigationProps {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class UsersScreenComponent extends Component<Props> {
+class UsersScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
         return {
             title: 'Users',

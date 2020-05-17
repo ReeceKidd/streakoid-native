@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import * as Yup from 'yup';
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class RegisterForm extends React.Component<RegisterFormProps> {
+class RegisterForm extends PureComponent<RegisterFormProps> {
     render(): JSX.Element {
         const { registerIsLoading } = this.props;
         return (

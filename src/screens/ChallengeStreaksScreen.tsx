@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class ChallengeStreaksScreenComponent extends Component<Props> {
+class ChallengeStreaksScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

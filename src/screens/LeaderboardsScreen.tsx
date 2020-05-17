@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
@@ -47,7 +47,7 @@ interface LeaderboardMenuOption {
     icon: IconDefinition;
 }
 
-class LeaderboardsScreenComponent extends Component<Props> {
+class LeaderboardsScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
         return {
             title: 'Leaderboards',

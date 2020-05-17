@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { Card, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -8,7 +8,7 @@ interface StreakStartDateCardProps {
     createdAt: Date;
 }
 
-class StreakStartDateCard extends Component<StreakStartDateCardProps> {
+class StreakStartDateCard extends PureComponent<StreakStartDateCardProps> {
     render(): JSX.Element {
         const { createdAt } = this.props;
 

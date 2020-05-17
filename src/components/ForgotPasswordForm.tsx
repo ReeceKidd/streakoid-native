@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { View, StyleSheet } from 'react-native';
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class ForgotPasswordForm extends React.PureComponent<ForgotPasswordFormProps> {
+class ForgotPasswordForm extends PureComponent<ForgotPasswordFormProps> {
     onSubmit = (formValues: FormValues): void => {
         const { emailOrUsername } = formValues;
         this.props.forgotPassword(emailOrUsername);

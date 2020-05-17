@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import * as Yup from 'yup';
@@ -28,7 +28,7 @@ const AddNoteFormSchema = Yup.object().shape({
     text: Yup.string().required('Required'),
 });
 
-class AddNoteForm extends React.Component<AddNoteFormProps> {
+class AddNoteForm extends PureComponent<AddNoteFormProps> {
     render(): JSX.Element {
         const { streakId, createNoteIsLoading, streakType } = this.props;
         return (

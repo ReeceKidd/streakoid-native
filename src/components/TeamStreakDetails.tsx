@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ListItem } from 'react-native-elements';
@@ -13,7 +13,7 @@ interface TeamStreakDetailsProps {
     navigate: Function;
 }
 
-class TeamStreakDetails extends Component<TeamStreakDetailsProps> {
+class TeamStreakDetails extends PureComponent<TeamStreakDetailsProps> {
     renderMemberHasCompletedTaskToday(completedToday: boolean) {
         return completedToday ? (
             <FontAwesomeIcon icon={faCheckCircle} color="green" />

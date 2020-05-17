@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class StreakRecommendationsIntroScreenComponent extends React.Component<Props> {
+class StreakRecommendationsIntroScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };

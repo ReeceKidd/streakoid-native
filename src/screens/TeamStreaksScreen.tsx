@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, withNavigationFocus } from 'react-navigation';
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class TeamStreaksScreenComponent extends Component<Props> {
+class TeamStreaksScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

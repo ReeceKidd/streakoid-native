@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text, Avatar } from 'react-native-elements';
@@ -44,7 +44,7 @@ interface NavigationProps {
 
 type Props = LiveTeamStreakListProps & NavigationProps;
 
-class LiveTeamStreakList extends Component<Props> {
+class LiveTeamStreakList extends PureComponent<Props> {
     componentDidUpdate(prevProps: Props) {
         const { userId, getLiveTeamStreaks } = this.props;
         if (prevProps.navigation.isFocused() !== this.props.navigation.isFocused()) {

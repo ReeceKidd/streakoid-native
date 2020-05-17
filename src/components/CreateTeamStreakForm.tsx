@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import juration from 'juration';
 import { Formik, FormikErrors } from 'formik';
 import { View } from 'react-native';
@@ -8,7 +8,6 @@ import { ErrorMessage } from './ErrorMessage';
 import { teamStreakActions, userActions } from '../actions/sharedActions';
 import { FollowerSelector } from './FollowerSelector';
 import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
-import { Platform } from 'react-native';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
 
 interface CreateTeamStreakFormProps {
@@ -57,7 +56,7 @@ const validate = (values: FormValues): FormikErrors<FormValues> => {
     return errors;
 };
 
-class CreateTeamStreakForm extends React.PureComponent<Props> {
+class CreateTeamStreakForm extends PureComponent<Props> {
     onSubmit = ({
         streakName,
         streakDescription,
@@ -78,7 +77,6 @@ class CreateTeamStreakForm extends React.PureComponent<Props> {
             members,
             streakDescription: streakDescription !== '' ? streakDescription : undefined,
             numberOfMinutes,
-            isAppleDevice: Platform.OS === 'ios',
         });
     };
 

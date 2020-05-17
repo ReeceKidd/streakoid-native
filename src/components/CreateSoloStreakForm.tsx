@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import juration from 'juration';
 import { Formik, FormikErrors } from 'formik';
 import { View } from 'react-native';
 import { Spacer } from './Spacer';
 import { Input, Button } from 'react-native-elements';
 import { ErrorMessage } from './ErrorMessage';
-import { Platform } from 'react-native';
 import { soloStreakActions } from '../actions/sharedActions';
 
 interface CreateSoloStreakFormProps {
@@ -46,7 +45,7 @@ const validate = (values: FormValues): FormikErrors<FormValues> => {
     return errors;
 };
 
-class CreateSoloStreakForm extends React.PureComponent<Props> {
+class CreateSoloStreakForm extends PureComponent<Props> {
     onSubmit = ({
         streakName,
         streakDescription,
@@ -65,7 +64,6 @@ class CreateSoloStreakForm extends React.PureComponent<Props> {
             streakName,
             streakDescription: streakDescription !== '' ? streakDescription : undefined,
             numberOfMinutes,
-            isAppleDevice: Platform.OS === 'ios',
         });
     };
 

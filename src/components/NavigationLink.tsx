@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { Screens } from '../screens/Screens';
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class NavigationLink extends Component<Props> {
+class NavigationLink extends PureComponent<Props> {
     render() {
         const { navigation, text, screen } = this.props;
         return (

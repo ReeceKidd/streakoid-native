@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class VerifyUserForm extends React.Component<VerifyUserFormProps> {
+class VerifyUserForm extends PureComponent<VerifyUserFormProps> {
     render(): JSX.Element {
         const { verifyUserIsLoading } = this.props;
         return (

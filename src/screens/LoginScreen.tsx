@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class LoginScreenComponent extends React.Component<Props> {
+class LoginScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = {
         title: 'Login',
         header: null,

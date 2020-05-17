@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ListItem, Button, Text } from 'react-native-elements';
 import {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class StreakRecommendationsScreenComponent extends Component<Props> {
+class StreakRecommendationsScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
         return {
             title: 'Streak Recommendations',

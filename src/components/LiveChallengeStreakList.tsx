@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { ChallengeStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/challengeStreakReducer';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
@@ -28,7 +28,7 @@ interface NavigationProps {
 
 type Props = LiveChallengeStreakListProps & NavigationProps;
 
-class LiveChallengeStreakList extends Component<Props> {
+class LiveChallengeStreakList extends PureComponent<Props> {
     componentDidUpdate(prevProps: Props) {
         const { userId, getLiveChallengeStreaks } = this.props;
         if (prevProps.navigation.isFocused() !== this.props.navigation.isFocused()) {

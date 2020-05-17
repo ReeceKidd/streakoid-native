@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
 
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class ErrorMessage extends Component<ErrorMessageProps> {
+class ErrorMessage extends PureComponent<ErrorMessageProps> {
     render() {
         const { message } = this.props;
         return <Text style={styles.errorMessage}>{message}</Text>;

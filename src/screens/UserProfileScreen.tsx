@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
 import { Text, ListItem, Avatar, Button } from 'react-native-elements';
 import { NavigationScreenProp, NavigationState, FlatList, ScrollView, NavigationEvents } from 'react-navigation';
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class UserProfileScreenComponent extends Component<Props> {
+class UserProfileScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

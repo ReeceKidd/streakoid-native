@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../store';
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class EditSoloStreakScreenComponent extends Component<Props> {
+class EditSoloStreakScreenComponent extends PureComponent<Props> {
     static navigationOptions = {
         title: 'Edit solo streak',
     };

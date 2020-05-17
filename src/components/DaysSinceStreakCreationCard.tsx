@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { Card, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -8,7 +8,7 @@ interface DaysSinceStreakCreationCardProps {
     daysSinceStreakCreation: number;
 }
 
-class DaysSinceStreakCreationCard extends Component<DaysSinceStreakCreationCardProps> {
+class DaysSinceStreakCreationCard extends PureComponent<DaysSinceStreakCreationCardProps> {
     render(): JSX.Element {
         const { daysSinceStreakCreation } = this.props;
         return (

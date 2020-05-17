@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Linking } from 'react-native';
 import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -9,7 +9,7 @@ interface Props {
     challengeName: string;
 }
 
-class WhatsappGroupLink extends Component<Props> {
+class WhatsappGroupLink extends PureComponent<Props> {
     render(): JSX.Element {
         const { whatsappGroupLink, challengeName } = this.props;
         return (

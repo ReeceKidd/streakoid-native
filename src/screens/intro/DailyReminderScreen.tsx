@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-class DailyRemindersScreenComponent extends React.Component<Props> {
+class DailyRemindersScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };

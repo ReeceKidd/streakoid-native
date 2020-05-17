@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
@@ -102,7 +102,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> &
     NavigationProps & { isFocused: boolean };
 
-class TeamStreakInfoScreenComponent extends Component<Props> {
+class TeamStreakInfoScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

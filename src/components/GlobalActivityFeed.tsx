@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { NavigationScreenProp, NavigationParams, NavigationState } from 'react-navigation';
 import { Text, Button } from 'react-native-elements';
@@ -27,7 +27,7 @@ interface GlobalActivityState {
 
 type Props = GlobalActivityFeedProps & NavigationProps;
 
-export class GlobalActivityFeed extends Component<Props, GlobalActivityState> {
+export class GlobalActivityFeed extends PureComponent<Props, GlobalActivityState> {
     state: {
         localGlobalActivityFeedItems: ClientActivityFeedItemType[];
     } = {

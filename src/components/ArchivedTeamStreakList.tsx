@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { PopulatedTeamStreakWithClientData } from '@streakoid/streakoid-shared/lib/reducers/teamStreakReducer';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
@@ -21,7 +21,7 @@ interface NavigationProps {
 
 type Props = ArchivedTeamStreakListProps & NavigationProps;
 
-class ArchivedTeamStreakList extends Component<Props> {
+class ArchivedTeamStreakList extends PureComponent<Props> {
     renderArchivedTeamStreakList(): JSX.Element {
         const { archivedTeamStreaks } = this.props;
         return (

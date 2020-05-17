@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp } from 'react-navigation';
 import { ListItem, Divider } from 'react-native-elements';
@@ -18,7 +18,7 @@ interface NavigationProps {
 
 type Props = FollowerListProps & NavigationProps;
 
-class FollowerList extends Component<Props> {
+class FollowerList extends PureComponent<Props> {
     navigateToFollowerProfile = (username: string) => {
         this.props.navigation.navigate(Screens.UserProfile, {
             username,

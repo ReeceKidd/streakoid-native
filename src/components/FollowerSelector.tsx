@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList, View } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp } from 'react-navigation';
 import { ListItem, Button } from 'react-native-elements';
@@ -23,7 +23,7 @@ interface NavigationProps {
 
 type Props = FollowerSelectorProps & NavigationProps;
 
-class FollowerSelector extends Component<Props> {
+class FollowerSelector extends PureComponent<Props> {
     renderFollowersSelectorOptions(follower: FollowerWithClientData): JSX.Element {
         const { unselectFollower, selectFollower } = this.props;
         return follower.isSelected ? (

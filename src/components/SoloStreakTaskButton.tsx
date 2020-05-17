@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheckCircle, faCircle } from '@fortawesome/pro-light-svg-icons';
@@ -13,7 +13,7 @@ interface SoloStreakTaskButtonProps {
     completeSoloStreakListTaskIsLoading: boolean;
 }
 
-class SoloStreakTaskButton extends Component<SoloStreakTaskButtonProps> {
+class SoloStreakTaskButton extends PureComponent<SoloStreakTaskButtonProps> {
     render(): JSX.Element {
         const {
             completeSoloStreakListTask,

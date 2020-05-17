@@ -81,7 +81,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-class AppContainerComponent extends React.Component<Props> {
+class AppContainerComponent extends React.PureComponent<Props> {
     componentDidMount = async () => {
         analytics.setup('bn5p5VLmYRJ5oWE1z4xkmTGcb3DflWYg', {
             using: [GoogleAnalytics],

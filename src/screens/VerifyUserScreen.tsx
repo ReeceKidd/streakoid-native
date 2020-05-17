@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class VerifyUserScreenComponent extends React.Component<Props> {
+class VerifyUserScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import * as Yup from 'yup';
@@ -25,7 +25,7 @@ const LoginFormSchema = Yup.object().shape({
     password: Yup.string().min(8, 'Too short').required('Required'),
 });
 
-class LoginForm extends React.Component<LoginFormProps> {
+class LoginForm extends PureComponent<LoginFormProps> {
     componentWillUnmount() {
         this.props.clearLoginErrorMessage();
         this.props.clearUpdatePasswordSuccessMessage();

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { noteActions } from '../actions/sharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -34,7 +34,7 @@ interface NotesProps {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NotesProps;
 
-class NotesComponent extends Component<Props> {
+class NotesComponent extends PureComponent<Props> {
     getNotes = (): void => {
         const { userId, subjectId } = this.props;
         const query: { userId?: string; subjectId?: string } = {};

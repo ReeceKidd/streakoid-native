@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Text } from 'react-native-elements';
 import { Linking, Platform, View } from 'react-native';
 import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
@@ -8,7 +8,7 @@ interface MaximumNumberOfFreeStreaksMessageProps {
     isPayingMember: boolean;
 }
 
-class MaximumNumberOfFreeStreaksMessage extends Component<MaximumNumberOfFreeStreaksMessageProps> {
+class MaximumNumberOfFreeStreaksMessage extends PureComponent<MaximumNumberOfFreeStreaksMessageProps> {
     render() {
         const { totalLiveStreaks, isPayingMember } = this.props;
         const maximumNumberOfFreeStreaks = MAXIMUM_NUMBER_OF_FREE_STREAKS;

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class AccountScreenComponent extends React.Component<Props> {
+class AccountScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars } from '@fortawesome/pro-solid-svg-icons';
@@ -8,7 +8,7 @@ interface HamburgerSelectorProps {
     navigation: any;
 }
 
-class HamburgerSelector extends Component<HamburgerSelectorProps> {
+class HamburgerSelector extends PureComponent<HamburgerSelectorProps> {
     render() {
         const { navigation } = this.props;
         return (

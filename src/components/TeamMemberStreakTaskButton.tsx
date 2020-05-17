@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Button } from 'react-native-elements';
 import { Vibration } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -26,7 +26,7 @@ interface TeamStreakTaskButtonProps {
     teamMemberStreakId: string;
 }
 
-class TeamMemberStreakTaskButton extends Component<TeamStreakTaskButtonProps> {
+class TeamMemberStreakTaskButton extends PureComponent<TeamStreakTaskButtonProps> {
     render(): JSX.Element {
         const {
             completeTeamMemberStreakTask,

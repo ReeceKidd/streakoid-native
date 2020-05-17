@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
@@ -37,7 +37,7 @@ interface NavigationProps {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class SoloStreakLeaderboardScreenComponent extends Component<Props> {
+class SoloStreakLeaderboardScreenComponent extends PureComponent<Props> {
     renderSoloStreakLeaderboard(): JSX.Element {
         const { soloStreakLeaderboard } = this.props;
         return (

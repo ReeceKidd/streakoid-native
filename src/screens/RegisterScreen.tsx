@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class RegisterScreenComponent extends React.Component<Props> {
+class RegisterScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };

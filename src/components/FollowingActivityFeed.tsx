@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { NavigationScreenProp, NavigationParams, NavigationState } from 'react-navigation';
 import { Button } from 'react-native-elements';
@@ -30,7 +30,7 @@ interface FollowingActivityState {
     localFollowingActivityFeedItems: ClientActivityFeedItemType[];
 }
 
-export class FollowingActivityFeed extends Component<Props, FollowingActivityState> {
+export class FollowingActivityFeed extends PureComponent<Props, FollowingActivityState> {
     state: {
         localFollowingActivityFeedItems: ClientActivityFeedItemType[];
     } = {

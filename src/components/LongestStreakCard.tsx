@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Card, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCrown } from '@fortawesome/pro-solid-svg-icons';
@@ -8,7 +8,7 @@ interface LongestStreakCardProps {
     longestStreak: number;
 }
 
-class LongestStreakCard extends Component<LongestStreakCardProps> {
+class LongestStreakCard extends PureComponent<LongestStreakCardProps> {
     render(): JSX.Element {
         const { longestStreak } = this.props;
         return (

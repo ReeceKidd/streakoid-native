@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, NavigationEvents, FlatList } from 'react-navigation';
@@ -38,7 +38,7 @@ interface State {
     searchQuery: string;
 }
 
-class ChallengesScreenComponent extends Component<Props, State> {
+class ChallengesScreenComponent extends PureComponent<Props, State> {
     state: State = {
         searchQuery: '',
     };

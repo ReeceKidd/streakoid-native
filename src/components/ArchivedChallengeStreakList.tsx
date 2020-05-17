@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { ArchivedChallengeStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/challengeStreakReducer';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
@@ -20,7 +20,7 @@ interface NavigationProps {
 
 type Props = ArchivedChallengeStreakListProps & NavigationProps;
 
-class ArchivedChallengeStreakList extends Component<Props> {
+class ArchivedChallengeStreakList extends PureComponent<Props> {
     renderArchivedChallengeStreakList(): JSX.Element {
         const { archivedChallengeStreaks } = this.props;
         return (

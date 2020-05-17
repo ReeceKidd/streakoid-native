@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Screens } from '../screens/Screens';
 import { FlatList, TouchableOpacity, View, ActivityIndicator, Platform } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
@@ -34,7 +34,7 @@ interface State {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class UsersListComponent extends Component<Props, State> {
+class UsersListComponent extends PureComponent<Props, State> {
     state: State = {
         searchQuery: '',
     };

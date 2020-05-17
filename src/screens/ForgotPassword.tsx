@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class ForgotPasswordScreenComponent extends React.Component<Props> {
+class ForgotPasswordScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };

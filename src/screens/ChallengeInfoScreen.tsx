@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
 import { Text, ListItem, Button, Card, Divider } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class ChallengeInfoScreenComponent extends Component<Props> {
+class ChallengeInfoScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { View, StyleSheet } from 'react-native';
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class UpdatePasswordForm extends React.PureComponent<UpdatePasswordFormProps> {
+class UpdatePasswordForm extends PureComponent<UpdatePasswordFormProps> {
     onSubmit = (formValues: FormValues): void => {
         const { username } = this.props;
         const { verificationCode, newPassword } = formValues;

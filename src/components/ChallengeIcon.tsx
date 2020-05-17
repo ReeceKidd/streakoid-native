@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
     faFacebook,
@@ -131,7 +131,7 @@ interface ChallengeIconProps {
     color?: string;
 }
 
-class ChallengeIcon extends Component<ChallengeIconProps> {
+class ChallengeIcon extends PureComponent<ChallengeIconProps> {
     render(): JSX.Element | null {
         const { icon, color } = this.props;
         switch (icon) {

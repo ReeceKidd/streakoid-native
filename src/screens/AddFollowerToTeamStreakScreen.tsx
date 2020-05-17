@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../store';
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class AddFollowerToTeamStreakScreenComponent extends Component<Props> {
+class AddFollowerToTeamStreakScreenComponent extends PureComponent<Props> {
     static navigationOptions = {
         title: 'Add follower to team streak',
     };

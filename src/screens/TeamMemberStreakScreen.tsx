@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { AppState } from '../../store';
 
@@ -52,7 +52,7 @@ interface NavigationProps {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class TeamMemberStreakInfoScreenComponent extends Component<Props> {
+class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { ListItem, Text } from 'react-native-elements';
 import { View, Picker, StyleSheet } from 'react-native';
 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class NotificationOptions extends Component<NotificationOptionsProps> {
+class NotificationOptions extends PureComponent<NotificationOptionsProps> {
     componentDidMount = async () => {
         const { currentUser } = this.props;
         const { pushNotifications } = currentUser;

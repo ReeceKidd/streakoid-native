@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import * as Yup from 'yup';
@@ -28,7 +28,7 @@ const ContactUsFormSchema = Yup.object().shape({
     message: Yup.string().required('Required'),
 });
 
-class ContactUsForm extends React.Component<ContactUsFormProps> {
+class ContactUsForm extends PureComponent<ContactUsFormProps> {
     render(): JSX.Element {
         const { sendContactUsEmailIsLoading } = this.props;
         return (

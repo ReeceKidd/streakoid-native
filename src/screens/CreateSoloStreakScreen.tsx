@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { AppState } from '../../store';
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class CreateSoloStreakScreenComponent extends Component<Props> {
+class CreateSoloStreakScreenComponent extends PureComponent<Props> {
     static navigationOptions = {
         title: 'Create solo streak',
         tabBarIcon: <FontAwesomeIcon icon={faPlus} />,

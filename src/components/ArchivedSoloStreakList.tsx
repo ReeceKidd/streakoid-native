@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { ArchivedSoloStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/soloStreakReducer';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
@@ -20,7 +20,7 @@ interface NavigationProps {
 
 type Props = ArchivedSoloStreakListProps & NavigationProps;
 
-class ArchivedSoloStreakList extends Component<Props> {
+class ArchivedSoloStreakList extends PureComponent<Props> {
     renderArchivedSoloStreakList(): JSX.Element {
         const { archivedSoloStreaks } = this.props;
         return (

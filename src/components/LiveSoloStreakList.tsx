@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { SoloStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/soloStreakReducer';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
@@ -28,7 +28,7 @@ interface NavigationProps {
 
 type Props = LiveSoloStreakListProps & NavigationProps;
 
-class LiveSoloStreakList extends Component<Props> {
+class LiveSoloStreakList extends PureComponent<Props> {
     componentDidUpdate(prevProps: Props) {
         const { userId, getLiveSoloStreaks } = this.props;
         if (prevProps.navigation.isFocused() !== this.props.navigation.isFocused()) {

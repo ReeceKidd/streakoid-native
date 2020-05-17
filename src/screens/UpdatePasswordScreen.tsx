@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
@@ -45,7 +45,7 @@ interface NavigationProps {
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class UpdatePasswordPageComponent extends Component<Props> {
+class UpdatePasswordPageComponent extends PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };

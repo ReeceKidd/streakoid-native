@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
 import {
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class HomeScreenComponent extends Component<Props> {
+class HomeScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
         return {
             headerLeft: () => <HamburgerSelector navigation={navigation} />,

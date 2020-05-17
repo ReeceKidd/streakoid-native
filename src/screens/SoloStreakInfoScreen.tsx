@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { AppState } from '../../store';
 
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class SoloStreakInfoScreenComponent extends Component<Props> {
+class SoloStreakInfoScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {

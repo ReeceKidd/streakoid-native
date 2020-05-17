@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FlatList } from 'react-native';
 import {
     getActivityFeedItemContent,
@@ -18,7 +18,7 @@ interface NavigationProps {
     navigation: NavigationScreenProp<NavigationState, NavigationParams>;
 }
 
-class GeneralActivityFeed extends Component<GeneralActivityFeedComponentProps & NavigationProps> {
+class GeneralActivityFeed extends PureComponent<GeneralActivityFeedComponentProps & NavigationProps> {
     render(): JSX.Element {
         const { activityFeedItems } = this.props;
         return (

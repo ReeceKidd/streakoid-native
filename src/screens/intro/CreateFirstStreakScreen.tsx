@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class CreateFirstStreakScreenComponent extends React.Component<Props> {
+class CreateFirstStreakScreenComponent extends React.PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };
