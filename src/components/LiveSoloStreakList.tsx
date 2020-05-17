@@ -29,14 +29,6 @@ interface NavigationProps {
 type Props = LiveSoloStreakListProps & NavigationProps;
 
 class LiveSoloStreakList extends PureComponent<Props> {
-    componentDidUpdate(prevProps: Props) {
-        const { userId, getLiveSoloStreaks } = this.props;
-        if (prevProps.navigation.isFocused() !== this.props.navigation.isFocused()) {
-            if (userId) {
-                getLiveSoloStreaks();
-            }
-        }
-    }
     renderSoloStreakList(): JSX.Element {
         const { userId, liveSoloStreaks, completeSoloStreakListTask, incompleteSoloStreakListTask } = this.props;
         return (

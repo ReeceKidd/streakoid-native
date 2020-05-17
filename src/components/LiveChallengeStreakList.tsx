@@ -29,14 +29,6 @@ interface NavigationProps {
 type Props = LiveChallengeStreakListProps & NavigationProps;
 
 class LiveChallengeStreakList extends PureComponent<Props> {
-    componentDidUpdate(prevProps: Props) {
-        const { userId, getLiveChallengeStreaks } = this.props;
-        if (prevProps.navigation.isFocused() !== this.props.navigation.isFocused()) {
-            if (userId) {
-                getLiveChallengeStreaks();
-            }
-        }
-    }
     renderLiveChallengeStreakList(): JSX.Element {
         const { liveChallengeStreaks, completeChallengeStreakListTask, incompleteChallengeStreakListTask } = this.props;
         return (

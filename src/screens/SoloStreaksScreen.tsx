@@ -5,7 +5,7 @@ import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } f
 import { Button, Text } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState, ActivityIndicator } from 'react-native';
 
 import { soloStreakActions, userActions } from '../actions/sharedActions';
 import { AppState } from '../../store';
@@ -75,10 +75,14 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {
-        navigation: NavigationScreenProp<NavigationState, { isPayingMember: boolean; totalLiveStreaks: number }>;
+        navigation: NavigationScreenProp<
+            NavigationState,
+            { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveSoloStreaksIsLoading: boolean }
+        >;
     }) => {
         const isPayingMember = navigation.getParam('isPayingMember');
         const totalLiveStreaks = navigation.getParam('totalLiveStreaks');
+        const getMultipleLiveSoloStreaksIsLoading = navigation.getParam('getMultipleLiveSoloStreaksIsLoading');
         const userHasReachedFreeStreakLimit = !isPayingMember && totalLiveStreaks > MAXIMUM_NUMBER_OF_FREE_STREAKS;
         return {
             title: 'Solo Streaks',
@@ -94,7 +98,12 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                     }}
                 />
             ),
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
+            headerLeft: () => (
+                <View style={{ flexDirection: 'row' }}>
+                    <HamburgerSelector navigation={navigation} />
+                    {getMultipleLiveSoloStreaksIsLoading ? <ActivityIndicator /> : null}
+                </View>
+            ),
         };
     };
 
@@ -102,6 +111,13 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
+    }
+
+    componentDidUpdate(prevProps: Props) {
+        const { getMultipleLiveSoloStreaksIsLoading } = this.props;
+        if (prevProps.getMultipleLiveSoloStreaksIsLoading !== getMultipleLiveSoloStreaksIsLoading) {
+            this.props.navigation.setParams({ getMultipleLiveSoloStreaksIsLoading });
+        }
     }
 
     componentWillUnmount() {

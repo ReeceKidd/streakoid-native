@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState, ActivityIndicator } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { AppState } from '../../store';
@@ -23,7 +23,7 @@ import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
 const mapStateToProps = (state: AppState) => {
     const liveChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.liveChallengeStreaks;
     const archivedChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.archivedChallengeStreaks;
-    const getLiveChallengeStreaksIsLoading =
+    const getMultipleLiveChallengeStreaksIsLoading =
         state && state.challengeStreaks && state.challengeStreaks.getMultipleLiveChallengeStreaksIsLoading;
     const getArchivedChallengeStreaksIsLoading =
         state && state.challengeStreaks && state.challengeStreaks.getArchivedChallengeStreaksIsLoading;
@@ -35,7 +35,7 @@ const mapStateToProps = (state: AppState) => {
     return {
         liveChallengeStreaks,
         archivedChallengeStreaks,
-        getLiveChallengeStreaksIsLoading,
+        getMultipleLiveChallengeStreaksIsLoading,
         getArchivedChallengeStreaksIsLoading,
         timezone: currentUser.timezone,
         totalNumberOfChallengeStreaks,
@@ -76,14 +76,19 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {
-        navigation: NavigationScreenProp<NavigationState, { isPayingMember: boolean; totalLiveStreaks: number }>;
+        navigation: NavigationScreenProp<
+            NavigationState,
+            { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveChallengeStreaksIsLoading: boolean }
+        >;
     }) => {
         const isPayingMember = navigation.getParam('isPayingMember');
         const totalLiveStreaks = navigation.getParam('totalLiveStreaks');
+        const getMultipleLiveChallengeStreaksIsLoading = navigation.getParam(
+            'getMultipleLiveChallengeStreaksIsLoading',
+        );
         const userHasReachedFreeStreakLimit = !isPayingMember && totalLiveStreaks > MAXIMUM_NUMBER_OF_FREE_STREAKS;
         return {
             title: 'Challenge Streaks',
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
             headerRight: (
                 <Button
                     type="clear"
@@ -96,12 +101,25 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                     }}
                 />
             ),
+            headerLeft: () => (
+                <View style={{ flexDirection: 'row' }}>
+                    <HamburgerSelector navigation={navigation} />
+                    {getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator /> : null}
+                </View>
+            ),
         };
     };
 
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
+    }
+
+    componentDidUpdate(prevProps: Props) {
+        const { getMultipleLiveChallengeStreaksIsLoading } = this.props;
+        if (prevProps.getMultipleLiveChallengeStreaksIsLoading !== getMultipleLiveChallengeStreaksIsLoading) {
+            this.props.navigation.setParams({ getMultipleLiveChallengeStreaksIsLoading });
+        }
     }
 
     componentWillUnmount() {
@@ -122,7 +140,7 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
             completeChallengeStreakListTask,
             incompleteChallengeStreakListTask,
             liveChallengeStreaks,
-            getLiveChallengeStreaksIsLoading,
+            getMultipleLiveChallengeStreaksIsLoading,
             totalNumberOfChallengeStreaks,
             archivedChallengeStreaks,
             getArchivedChallengeStreaksIsLoading,
@@ -145,7 +163,7 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}
                             getLiveChallengeStreaks={getLiveChallengeStreaks}
-                            getMultipleLiveChallengeStreaksIsLoading={getLiveChallengeStreaksIsLoading}
+                            getMultipleLiveChallengeStreaksIsLoading={getMultipleLiveChallengeStreaksIsLoading}
                             completeChallengeStreakListTask={completeChallengeStreakListTask}
                             incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
                             liveChallengeStreaks={liveChallengeStreaks}

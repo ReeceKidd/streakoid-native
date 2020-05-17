@@ -5,7 +5,7 @@ import { NavigationScreenProp, NavigationState, NavigationParams, withNavigation
 import { Button, Text } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState, ActivityIndicator } from 'react-native';
 
 import { teamStreakActions, teamMemberStreakTaskActions } from '../actions/sharedActions';
 import { AppState } from '../../store';
@@ -78,10 +78,14 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
     static navigationOptions = ({
         navigation,
     }: {
-        navigation: NavigationScreenProp<NavigationState, { isPayingMember: boolean; totalLiveStreaks: number }>;
+        navigation: NavigationScreenProp<
+            NavigationState,
+            { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveTeamStreaksIsLoading: boolean }
+        >;
     }) => {
         const isPayingMember = navigation.getParam('isPayingMember');
         const totalLiveStreaks = navigation.getParam('totalLiveStreaks');
+        const getMultipleLiveTeamStreaksIsLoading = navigation.getParam('getMultipleLiveTeamStreaksIsLoading');
         const userHasReachedFreeStreakLimit = !isPayingMember && totalLiveStreaks > MAXIMUM_NUMBER_OF_FREE_STREAKS;
         return {
             title: 'Team Streaks',
@@ -97,7 +101,12 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                     }}
                 />
             ),
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
+            headerLeft: () => (
+                <View style={{ flexDirection: 'row' }}>
+                    <HamburgerSelector navigation={navigation} />
+                    {getMultipleLiveTeamStreaksIsLoading ? <ActivityIndicator /> : null}
+                </View>
+            ),
         };
     };
 
@@ -105,6 +114,13 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
+    }
+
+    componentDidUpdate(prevProps: Props) {
+        const { getMultipleLiveTeamStreaksIsLoading } = this.props;
+        if (prevProps.getMultipleLiveTeamStreaksIsLoading !== getMultipleLiveTeamStreaksIsLoading) {
+            this.props.navigation.setParams({ getMultipleLiveTeamStreaksIsLoading });
+        }
     }
 
     componentWillUnmount() {

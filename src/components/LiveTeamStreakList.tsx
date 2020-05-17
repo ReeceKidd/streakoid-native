@@ -45,14 +45,6 @@ interface NavigationProps {
 type Props = LiveTeamStreakListProps & NavigationProps;
 
 class LiveTeamStreakList extends PureComponent<Props> {
-    componentDidUpdate(prevProps: Props) {
-        const { userId, getLiveTeamStreaks } = this.props;
-        if (prevProps.navigation.isFocused() !== this.props.navigation.isFocused()) {
-            if (userId) {
-                getLiveTeamStreaks();
-            }
-        }
-    }
     goToTeamStreakDetails = (teamStreakId: string): void => {
         const { getTeamStreak } = this.props;
         getTeamStreak(teamStreakId);
