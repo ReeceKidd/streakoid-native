@@ -5,7 +5,7 @@ import { NavigationScreenProp, NavigationState, NavigationParams, withNavigation
 import { Button, Text } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
 
 import { teamStreakActions, teamMemberStreakTaskActions } from '../actions/sharedActions';
 import { AppState } from '../../store';
@@ -104,7 +104,18 @@ class TeamStreaksScreenComponent extends Component<Props> {
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
+        ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
     }
+
+    componentWillUnmount() {
+        ReactNativeAppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState: string) => {
+        if (nextAppState === 'active') {
+            this.props.getLiveTeamStreaks();
+        }
+    };
 
     render(): JSX.Element {
         const {
@@ -125,13 +136,14 @@ class TeamStreaksScreenComponent extends Component<Props> {
         return (
             <View style={styles.container}>
                 <ScrollView>
-                    <View style={{ marginLeft: 15, marginTop: 15 }}>
-                        <MaximumNumberOfFreeStreaksMessage
-                            isPayingMember={isPayingMember}
-                            totalLiveStreaks={totalLiveStreaks}
-                        />
-                    </View>
-
+                    {!isPayingMember ? (
+                        <View style={{ marginLeft: 15, marginTop: 15 }}>
+                            <MaximumNumberOfFreeStreaksMessage
+                                isPayingMember={isPayingMember}
+                                totalLiveStreaks={totalLiveStreaks}
+                            />
+                        </View>
+                    ) : null}
                     <Spacer>
                         <LiveTeamStreakList
                             getTeamStreak={getTeamStreak}

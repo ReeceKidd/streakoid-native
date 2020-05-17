@@ -11,7 +11,14 @@ import {
 import { Text, Button } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Alert } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    ActivityIndicator,
+    TouchableOpacity,
+    Alert,
+    AppState as ReactNativeAppState,
+} from 'react-native';
 
 import {
     soloStreakActions,
@@ -181,6 +188,19 @@ class HomeScreenComponent extends Component<Props> {
             this.displayTimezoneChangeAlert({ oldTimezone: currentUser.timezone, currentTimezone });
             this.props.updateSoloStreaksTimezones(currentTimezone);
             this.props.updateChallengeStreaksTimezones(currentTimezone);
+        }
+        ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
+    };
+
+    componentWillUnmount() {
+        ReactNativeAppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState: string) => {
+        if (nextAppState === 'active') {
+            this.props.getLiveSoloStreaks();
+            this.props.getLiveChallengeStreaks();
+            this.props.getLiveTeamStreaks();
         }
     };
 

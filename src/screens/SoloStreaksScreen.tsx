@@ -5,7 +5,7 @@ import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } f
 import { Button, Text } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
 
 import { soloStreakActions, userActions } from '../actions/sharedActions';
 import { AppState } from '../../store';
@@ -101,7 +101,18 @@ class SoloStreaksScreenComponent extends Component<Props> {
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
+        ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
     }
+
+    componentWillUnmount() {
+        ReactNativeAppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState: string) => {
+        if (nextAppState === 'active') {
+            this.props.getLiveSoloStreaks();
+        }
+    };
 
     render(): JSX.Element {
         const {
@@ -122,12 +133,14 @@ class SoloStreaksScreenComponent extends Component<Props> {
         return (
             <ScrollView style={styles.container}>
                 <View>
-                    <View style={{ marginLeft: 15, marginTop: 15 }}>
-                        <MaximumNumberOfFreeStreaksMessage
-                            isPayingMember={isPayingMember}
-                            totalLiveStreaks={totalLiveStreaks}
-                        />
-                    </View>
+                    {!isPayingMember ? (
+                        <View style={{ marginLeft: 15, marginTop: 15 }}>
+                            <MaximumNumberOfFreeStreaksMessage
+                                isPayingMember={isPayingMember}
+                                totalLiveStreaks={totalLiveStreaks}
+                            />
+                        </View>
+                    ) : null}
                     <Spacer>
                         <LiveSoloStreakList
                             userId={currentUser._id}
