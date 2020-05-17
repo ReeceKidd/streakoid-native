@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { AppState } from '../../store';
@@ -104,6 +104,16 @@ class ChallengeStreaksScreenComponent extends Component<Props> {
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
     }
 
+    componentWillUnmount() {
+        ReactNativeAppState.removeEventListener('change', this._handleAppStateChange);
+    }
+
+    _handleAppStateChange = (nextAppState: string) => {
+        if (nextAppState === 'active') {
+            this.props.getLiveChallengeStreaks();
+        }
+    };
+
     render(): JSX.Element {
         const {
             getLiveChallengeStreaks,
@@ -123,12 +133,14 @@ class ChallengeStreaksScreenComponent extends Component<Props> {
         return (
             <ScrollView style={styles.container}>
                 <View>
-                    <View style={{ marginLeft: 15, marginTop: 15 }}>
-                        <MaximumNumberOfFreeStreaksMessage
-                            isPayingMember={isPayingMember}
-                            totalLiveStreaks={totalLiveStreaks}
-                        />
-                    </View>
+                    {!isPayingMember ? (
+                        <View style={{ marginLeft: 15, marginTop: 15 }}>
+                            <MaximumNumberOfFreeStreaksMessage
+                                isPayingMember={isPayingMember}
+                                totalLiveStreaks={totalLiveStreaks}
+                            />
+                        </View>
+                    ) : null}
                     <Spacer>
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}
