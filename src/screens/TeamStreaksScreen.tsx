@@ -20,6 +20,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faArchive } from '@fortawesome/pro-solid-svg-icons';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
 import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
+import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
+import { ProgressBar } from '../components/ProgressBar';
+import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+
+const getIncompleteTeamStreaks = (state: AppState) => {
+    return (
+        state &&
+        state.teamStreaks &&
+        state.teamStreaks.liveTeamStreaks &&
+        state.teamStreaks.liveTeamStreaks.filter(
+            (teamStreak) => !teamStreak.completedToday && teamStreak.status === StreakStatus.live,
+        )
+    );
+};
 
 const mapStateToProps = (state: AppState) => {
     const liveTeamStreaks = state && state.teamStreaks && state.teamStreaks.liveTeamStreaks;
@@ -33,6 +47,9 @@ const mapStateToProps = (state: AppState) => {
     const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
     const isPayingMember =
         currentUser && currentUser.membershipInformation && currentUser.membershipInformation.isPayingMember;
+    const incompleteTeamStreaks = getIncompleteTeamStreaks(state);
+    const totalNumberOfTeamStreaks =
+        state && state.teamStreaks && state.teamStreaks.liveTeamStreaks && state.teamStreaks.liveTeamStreaks.length;
     return {
         liveTeamStreaks,
         getMultipleLiveTeamStreaksIsLoading,
@@ -42,6 +59,8 @@ const mapStateToProps = (state: AppState) => {
         currentUser,
         totalLiveStreaks,
         isPayingMember,
+        incompleteTeamStreaks,
+        totalNumberOfTeamStreaks,
     };
 };
 
@@ -147,6 +166,8 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
             getMultipleArchivedTeamStreaksIsLoading,
             isPayingMember,
             currentUser,
+            incompleteTeamStreaks,
+            totalNumberOfTeamStreaks,
         } = this.props;
         const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
         return (
@@ -160,7 +181,13 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                             />
                         </View>
                     ) : null}
-                    <Spacer>
+                    <ProgressBar
+                        progress={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteTeamStreaks.length,
+                            numberOfStreaks: totalNumberOfTeamStreaks,
+                        })}
+                    />
+                    <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveTeamStreakList
                             getTeamStreak={getTeamStreak}
                             getLiveTeamStreaks={getLiveTeamStreaks}
@@ -172,9 +199,9 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                             navigation={this.props.navigation}
                             totalNumberOfTeamStreaks={liveTeamStreaks.length}
                         />
-                    </Spacer>
+                    </View>
                     <Spacer>
-                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                        <Text style={{ fontWeight: 'bold' }}>
                             Archived Team Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedTeamStreakList

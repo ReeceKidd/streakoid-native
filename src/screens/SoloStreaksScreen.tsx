@@ -19,6 +19,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus, faArchive } from '@fortawesome/free-solid-svg-icons';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
 import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
+import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+import { ProgressBar } from '../components/ProgressBar';
+import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
+
+const getIncompleteSoloStreaks = (state: AppState) => {
+    return (
+        state &&
+        state.soloStreaks &&
+        state.soloStreaks.liveSoloStreaks &&
+        state.soloStreaks.liveSoloStreaks.filter(
+            (soloStreak) => !soloStreak.completedToday && soloStreak.status === StreakStatus.live,
+        )
+    );
+};
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -34,6 +48,7 @@ const mapStateToProps = (state: AppState) => {
     const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
     const isPayingMember =
         currentUser && currentUser.membershipInformation && currentUser.membershipInformation.isPayingMember;
+    const incompleteSoloStreaks = getIncompleteSoloStreaks(state);
     return {
         currentUser,
         getSoloStreakIsLoading,
@@ -44,6 +59,7 @@ const mapStateToProps = (state: AppState) => {
         totalNumberOfSoloStreaks,
         isPayingMember,
         totalLiveStreaks,
+        incompleteSoloStreaks,
     };
 };
 
@@ -144,6 +160,7 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
             getMultipleArchivedSoloStreaksIsLoading,
             totalNumberOfSoloStreaks,
             isPayingMember,
+            incompleteSoloStreaks,
         } = this.props;
         const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
         return (
@@ -157,7 +174,15 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                             />
                         </View>
                     ) : null}
-                    <Spacer>
+
+                    <ProgressBar
+                        progress={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteSoloStreaks.length,
+                            numberOfStreaks: totalNumberOfSoloStreaks,
+                        })}
+                    />
+
+                    <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveSoloStreakList
                             userId={currentUser._id}
                             navigation={this.props.navigation}
@@ -169,9 +194,9 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                             getMultipleLiveSoloStreaksIsLoading={getMultipleLiveSoloStreaksIsLoading}
                             totalNumberOfSoloStreaks={totalNumberOfSoloStreaks}
                         />
-                    </Spacer>
+                    </View>
                     <Spacer>
-                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                        <Text style={{ fontWeight: 'bold' }}>
                             Archived Solo Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedSoloStreakList

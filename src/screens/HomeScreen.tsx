@@ -46,6 +46,8 @@ import * as RNLocalize from 'react-native-localize';
 import { tz } from 'moment-timezone';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
 import analytics from '@segment/analytics-react-native';
+import { ProgressBar } from '../components/ProgressBar';
+import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -349,18 +351,6 @@ class HomeScreenComponent extends PureComponent<Props> {
         });
     };
 
-    getCompletePercentageForStreaks({
-        numberOfStreaks,
-        numberOfIncompleteStreaks,
-    }: {
-        numberOfStreaks: number;
-        numberOfIncompleteStreaks: number;
-    }): number {
-        const incompletePercentage = (numberOfIncompleteStreaks / numberOfStreaks) * 100;
-        const displayPercentage = 100 - incompletePercentage;
-        return displayPercentage;
-    }
-
     renderIncompleteSoloStreaks(): JSX.Element {
         const {
             currentUser,
@@ -382,6 +372,14 @@ class HomeScreenComponent extends PureComponent<Props> {
                     </TouchableOpacity>
 
                     {getMultipleLiveSoloStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
+                </View>
+                <View style={{ marginTop: 5 }}>
+                    <ProgressBar
+                        progress={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteSoloStreaks.length,
+                            numberOfStreaks: totalNumberOfSoloStreaks,
+                        })}
+                    />
                 </View>
 
                 <LiveSoloStreakList
@@ -420,6 +418,14 @@ class HomeScreenComponent extends PureComponent<Props> {
                     </TouchableOpacity>
                     {getMultipleLiveTeamStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
                 </View>
+                <View style={{ marginTop: 5 }}>
+                    <ProgressBar
+                        progress={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteTeamStreaks.length,
+                            numberOfStreaks: totalNumberOfTeamStreaks,
+                        })}
+                    />
+                </View>
                 <LiveTeamStreakList
                     getTeamStreak={getSelectedTeamStreak}
                     getLiveTeamStreaks={getLiveTeamStreaks}
@@ -455,6 +461,14 @@ class HomeScreenComponent extends PureComponent<Props> {
                         </Text>
                     </TouchableOpacity>
                     {getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
+                </View>
+                <View style={{ marginTop: 5 }}>
+                    <ProgressBar
+                        progress={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteChallengeStreaks.length,
+                            numberOfStreaks: totalNumberOfChallengeStreaks,
+                        })}
+                    />
                 </View>
                 <LiveChallengeStreakList
                     getChallengeStreak={getChallengeStreak}

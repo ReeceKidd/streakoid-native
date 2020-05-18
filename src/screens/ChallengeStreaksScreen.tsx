@@ -19,6 +19,20 @@ import { faPlus, faArchive } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
 import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
+import { ProgressBar } from '../components/ProgressBar';
+import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
+import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+
+const getIncompleteChallengeStreaks = (state: AppState) => {
+    return (
+        state &&
+        state.challengeStreaks &&
+        state.challengeStreaks.liveChallengeStreaks &&
+        state.challengeStreaks.liveChallengeStreaks.filter(
+            (challengeStreak) => !challengeStreak.completedToday && challengeStreak.status === StreakStatus.live,
+        )
+    );
+};
 
 const mapStateToProps = (state: AppState) => {
     const liveChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.liveChallengeStreaks;
@@ -32,6 +46,7 @@ const mapStateToProps = (state: AppState) => {
     const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
     const isPayingMember =
         currentUser && currentUser.membershipInformation && currentUser.membershipInformation.isPayingMember;
+    const incompleteChallengeStreaks = getIncompleteChallengeStreaks(state);
     return {
         liveChallengeStreaks,
         archivedChallengeStreaks,
@@ -42,6 +57,7 @@ const mapStateToProps = (state: AppState) => {
         currentUser,
         totalLiveStreaks,
         isPayingMember,
+        incompleteChallengeStreaks,
     };
 };
 
@@ -146,6 +162,7 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
             getArchivedChallengeStreaksIsLoading,
             currentUser,
             isPayingMember,
+            incompleteChallengeStreaks,
         } = this.props;
         const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
         return (
@@ -159,7 +176,13 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                             />
                         </View>
                     ) : null}
-                    <Spacer>
+                    <ProgressBar
+                        progress={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteChallengeStreaks.length,
+                            numberOfStreaks: totalNumberOfChallengeStreaks,
+                        })}
+                    />
+                    <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}
                             getLiveChallengeStreaks={getLiveChallengeStreaks}
@@ -171,9 +194,9 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                             getChallengeStreak={getChallengeStreak}
                             userId={currentUser._id}
                         />
-                    </Spacer>
+                    </View>
                     <Spacer>
-                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                        <Text style={{ fontWeight: 'bold' }}>
                             Archived Challenge Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedChallengeStreakList
