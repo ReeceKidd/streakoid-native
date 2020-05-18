@@ -12,8 +12,10 @@ import {
 } from '@streakoid/streakoid-shared/lib/reducers/teamStreakReducer';
 import { ErrorMessage } from './ErrorMessage';
 import { teamStreakActions } from '../actions/sharedActions';
-import { getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
+import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import NavigationService from '../screens/NavigationService';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faFlame } from '@fortawesome/pro-solid-svg-icons';
 
 interface LiveTeamStreakListProps {
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
@@ -76,14 +78,19 @@ class LiveTeamStreakList extends PureComponent<Props> {
                         incompleteTeamMemberStreakTaskIsLoading,
                         incompleteTeamMemberStreakTaskErrorMessage,
                     } = teamMemberStreak;
-                    const { _id, streakName, members } = item;
+                    const { _id, streakName, members, pastStreaks, currentStreak, timezone, createdAt } = item;
                     const userIsApartOfStreak = item.members.some((member) => member._id === userId);
-                    const streakCompletionString = getStreakCompletionString({
-                        pastStreaks: item.pastStreaks,
-                        currentStreak: item.currentStreak,
-                        timezone: item.timezone,
-                        createdAt: new Date(item.createdAt),
+                    const streakCompletionInfo = getStreakCompletionInfo({
+                        pastStreaks,
+                        currentStreak,
+                        timezone,
+                        createdAt: new Date(createdAt),
                     });
+                    const daysSinceUserCompletedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+                    const daysSinceUserCreatedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                    const negativeDayValue = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                     const maximumNumberOfTeamMembersToDisplay = 3;
                     return (
                         <View>
@@ -150,8 +157,30 @@ class LiveTeamStreakList extends PureComponent<Props> {
                                         </View>
                                     }
                                     title={item.streakName}
-                                    subtitle={streakCompletionString.string}
-                                    subtitleStyle={{ color: streakCompletionString.error ? 'red' : 'green' }}
+                                    subtitle={
+                                        currentStreak.numberOfDaysInARow > 0 ? (
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Text style={{ fontWeight: 'bold' }}>
+                                                    {currentStreak.numberOfDaysInARow}
+                                                </Text>
+                                                <FontAwesomeIcon icon={faFlame} style={{ color: 'red' }} />
+                                            </View>
+                                        ) : (
+                                            <>
+                                                {negativeDayValue === 0 ? (
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontWeight: 'bold' }}>{negativeDayValue}</Text>
+                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'gray' }} />
+                                                    </View>
+                                                ) : (
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontWeight: 'bold' }}>-{negativeDayValue}</Text>
+                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'blue' }} />
+                                                    </View>
+                                                )}
+                                            </>
+                                        )
+                                    }
                                 />
                             </TouchableOpacity>
 

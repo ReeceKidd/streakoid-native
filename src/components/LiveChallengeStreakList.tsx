@@ -8,8 +8,10 @@ import { ChallengeStreakTaskButton } from './ChallengeStreakTaskButton';
 import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
 import { challengeStreakActions } from '../actions/sharedActions';
-import { getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
+import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { Spacer } from './Spacer';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faFlame } from '@fortawesome/pro-solid-svg-icons';
 
 interface LiveChallengeStreakListProps {
     getChallengeStreak: typeof challengeStreakActions.getChallengeStreak;
@@ -46,12 +48,17 @@ class LiveChallengeStreakList extends PureComponent<Props> {
                         timezone,
                         createdAt,
                     } = item;
-                    const streakCompletionString = getStreakCompletionString({
-                        pastStreaks: pastStreaks,
-                        currentStreak: currentStreak,
-                        timezone: timezone,
+                    const streakCompletionInfo = getStreakCompletionInfo({
+                        pastStreaks,
+                        currentStreak,
+                        timezone,
                         createdAt: new Date(createdAt),
                     });
+                    const daysSinceUserCompletedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+                    const daysSinceUserCreatedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                    const negativeDayValue = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                     return (
                         <View>
                             <TouchableOpacity
@@ -80,9 +87,31 @@ class LiveChallengeStreakList extends PureComponent<Props> {
                                             }
                                         />
                                     }
+                                    rightElement={
+                                        currentStreak.numberOfDaysInARow > 0 ? (
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Text style={{ fontWeight: 'bold' }}>
+                                                    {currentStreak.numberOfDaysInARow}
+                                                </Text>
+                                                <FontAwesomeIcon icon={faFlame} style={{ color: 'red' }} />
+                                            </View>
+                                        ) : (
+                                            <>
+                                                {negativeDayValue === 0 ? (
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontWeight: 'bold' }}>{negativeDayValue}</Text>
+                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'gray' }} />
+                                                    </View>
+                                                ) : (
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontWeight: 'bold' }}>-{negativeDayValue}</Text>
+                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'blue' }} />
+                                                    </View>
+                                                )}
+                                            </>
+                                        )
+                                    }
                                     title={item.challengeName}
-                                    subtitle={streakCompletionString.string}
-                                    subtitleStyle={{ color: streakCompletionString.error ? 'red' : 'green' }}
                                 />
                             </TouchableOpacity>
                             <Divider />
@@ -101,6 +130,7 @@ class LiveChallengeStreakList extends PureComponent<Props> {
             userId,
             getLiveChallengeStreaks,
         } = this.props;
+
         return (
             <>
                 <NavigationEvents

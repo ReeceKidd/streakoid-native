@@ -7,9 +7,11 @@ import { ListItem, Divider, Text } from 'react-native-elements';
 import { SoloStreakTaskButton } from './SoloStreakTaskButton';
 import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
-import { getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
+import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { soloStreakActions } from '../actions/sharedActions';
 import { Spacer } from './Spacer';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faFlame } from '@fortawesome/pro-solid-svg-icons';
 
 interface LiveSoloStreakListProps {
     userId: string;
@@ -46,12 +48,17 @@ class LiveSoloStreakList extends PureComponent<Props> {
                         timezone,
                         createdAt,
                     } = item;
-                    const streakCompletionString = getStreakCompletionString({
+                    const streakCompletionInfo = getStreakCompletionInfo({
                         pastStreaks,
                         currentStreak,
                         timezone,
                         createdAt: new Date(createdAt),
                     });
+                    const daysSinceUserCompletedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+                    const daysSinceUserCreatedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                    const negativeDayValue = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                     return (
                         <>
                             <TouchableOpacity
@@ -78,9 +85,31 @@ class LiveSoloStreakList extends PureComponent<Props> {
                                             completeSoloStreakListTaskIsLoading={completeSoloStreakListTaskIsLoading}
                                         />
                                     }
+                                    rightElement={
+                                        currentStreak.numberOfDaysInARow > 0 ? (
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Text style={{ fontWeight: 'bold' }}>
+                                                    {currentStreak.numberOfDaysInARow}
+                                                </Text>
+                                                <FontAwesomeIcon icon={faFlame} style={{ color: 'red' }} />
+                                            </View>
+                                        ) : (
+                                            <>
+                                                {negativeDayValue === 0 ? (
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontWeight: 'bold' }}>{negativeDayValue}</Text>
+                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'gray' }} />
+                                                    </View>
+                                                ) : (
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Text style={{ fontWeight: 'bold' }}>-{negativeDayValue}</Text>
+                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'blue' }} />
+                                                    </View>
+                                                )}
+                                            </>
+                                        )
+                                    }
                                     title={item.streakName}
-                                    subtitle={streakCompletionString.string}
-                                    subtitleStyle={{ color: streakCompletionString.error ? 'red' : 'green' }}
                                 />
                             </TouchableOpacity>
                             <Divider />

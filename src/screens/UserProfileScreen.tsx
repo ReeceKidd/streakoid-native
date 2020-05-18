@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 're
 import { Text, ListItem, Avatar, Button } from 'react-native-elements';
 import { NavigationScreenProp, NavigationState, FlatList, ScrollView, NavigationEvents } from 'react-navigation';
 import { Spacer } from '../components/Spacer';
-import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
+import { AppState, AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { userActions } from '../actions/sharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -11,7 +11,7 @@ import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Screens } from './Screens';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { streakoidUrl } from '../streakoidUrl';
-import { faShareAlt, faChild, faPeopleCarry, faMedal, faUser } from '@fortawesome/pro-solid-svg-icons';
+import { faShareAlt, faChild, faPeopleCarry, faMedal, faUser, faFlame } from '@fortawesome/pro-solid-svg-icons';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { SoloStreak } from '@streakoid/streakoid-models/lib/Models/SoloStreak';
@@ -155,6 +155,20 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                         data={soloStreaks}
                                         keyExtractor={(soloStreak: SoloStreak) => soloStreak._id}
                                         renderItem={({ item }) => {
+                                            const { pastStreaks, currentStreak, timezone, createdAt } = item;
+                                            const streakCompletionInfo = getStreakCompletionInfo({
+                                                pastStreaks,
+                                                currentStreak,
+                                                timezone,
+                                                createdAt: new Date(createdAt),
+                                            });
+                                            const daysSinceUserCompletedStreak =
+                                                streakCompletionInfo &&
+                                                streakCompletionInfo.daysSinceUserCompletedStreak;
+                                            const daysSinceUserCreatedStreak =
+                                                streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                                            const negativeDayValue =
+                                                daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                                             return (
                                                 <View>
                                                     <TouchableOpacity
@@ -167,7 +181,43 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                                     >
                                                         <ListItem
                                                             title={item.streakName}
-                                                            subtitle={`${item.currentStreak.numberOfDaysInARow} days in a row`}
+                                                            rightElement={
+                                                                currentStreak.numberOfDaysInARow > 0 ? (
+                                                                    <View style={{ flexDirection: 'row' }}>
+                                                                        <Text style={{ fontWeight: 'bold' }}>
+                                                                            {currentStreak.numberOfDaysInARow}
+                                                                        </Text>
+                                                                        <FontAwesomeIcon
+                                                                            icon={faFlame}
+                                                                            style={{ color: 'red' }}
+                                                                        />
+                                                                    </View>
+                                                                ) : (
+                                                                    <>
+                                                                        {negativeDayValue === 0 ? (
+                                                                            <View style={{ flexDirection: 'row' }}>
+                                                                                <Text style={{ fontWeight: 'bold' }}>
+                                                                                    {negativeDayValue}
+                                                                                </Text>
+                                                                                <FontAwesomeIcon
+                                                                                    icon={faFlame}
+                                                                                    style={{ color: 'gray' }}
+                                                                                />
+                                                                            </View>
+                                                                        ) : (
+                                                                            <View style={{ flexDirection: 'row' }}>
+                                                                                <Text style={{ fontWeight: 'bold' }}>
+                                                                                    -{negativeDayValue}
+                                                                                </Text>
+                                                                                <FontAwesomeIcon
+                                                                                    icon={faFlame}
+                                                                                    style={{ color: 'blue' }}
+                                                                                />
+                                                                            </View>
+                                                                        )}
+                                                                    </>
+                                                                )
+                                                            }
                                                         />
                                                     </TouchableOpacity>
                                                 </View>
@@ -192,6 +242,20 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                         renderItem={({ item }) => {
                                             const { _id, streakName, members } = item;
                                             const maximumNumberOfTeamMembersToDisplay = 3;
+                                            const { pastStreaks, currentStreak, timezone, createdAt } = item;
+                                            const streakCompletionInfo = getStreakCompletionInfo({
+                                                pastStreaks,
+                                                currentStreak,
+                                                timezone,
+                                                createdAt: new Date(createdAt),
+                                            });
+                                            const daysSinceUserCompletedStreak =
+                                                streakCompletionInfo &&
+                                                streakCompletionInfo.daysSinceUserCompletedStreak;
+                                            const daysSinceUserCreatedStreak =
+                                                streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                                            const negativeDayValue =
+                                                daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                                             return (
                                                 <View>
                                                     <TouchableOpacity
@@ -204,7 +268,43 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                                     >
                                                         <ListItem
                                                             title={streakName}
-                                                            subtitle={`${item.currentStreak.numberOfDaysInARow} days in a row`}
+                                                            subtitle={
+                                                                currentStreak.numberOfDaysInARow > 0 ? (
+                                                                    <View style={{ flexDirection: 'row' }}>
+                                                                        <Text style={{ fontWeight: 'bold' }}>
+                                                                            {currentStreak.numberOfDaysInARow}
+                                                                        </Text>
+                                                                        <FontAwesomeIcon
+                                                                            icon={faFlame}
+                                                                            style={{ color: 'red' }}
+                                                                        />
+                                                                    </View>
+                                                                ) : (
+                                                                    <>
+                                                                        {negativeDayValue === 0 ? (
+                                                                            <View style={{ flexDirection: 'row' }}>
+                                                                                <Text style={{ fontWeight: 'bold' }}>
+                                                                                    {negativeDayValue}
+                                                                                </Text>
+                                                                                <FontAwesomeIcon
+                                                                                    icon={faFlame}
+                                                                                    style={{ color: 'gray' }}
+                                                                                />
+                                                                            </View>
+                                                                        ) : (
+                                                                            <View style={{ flexDirection: 'row' }}>
+                                                                                <Text style={{ fontWeight: 'bold' }}>
+                                                                                    -{negativeDayValue}
+                                                                                </Text>
+                                                                                <FontAwesomeIcon
+                                                                                    icon={faFlame}
+                                                                                    style={{ color: 'blue' }}
+                                                                                />
+                                                                            </View>
+                                                                        )}
+                                                                    </>
+                                                                )
+                                                            }
                                                             rightElement={
                                                                 <View
                                                                     style={{
@@ -281,6 +381,20 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                         data={challengeStreaks}
                                         keyExtractor={(teamStreak: ChallengeStreak) => teamStreak._id}
                                         renderItem={({ item }) => {
+                                            const { pastStreaks, currentStreak, timezone, createdAt } = item;
+                                            const streakCompletionInfo = getStreakCompletionInfo({
+                                                pastStreaks,
+                                                currentStreak,
+                                                timezone,
+                                                createdAt: new Date(createdAt),
+                                            });
+                                            const daysSinceUserCompletedStreak =
+                                                streakCompletionInfo &&
+                                                streakCompletionInfo.daysSinceUserCompletedStreak;
+                                            const daysSinceUserCreatedStreak =
+                                                streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                                            const negativeDayValue =
+                                                daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                                             return (
                                                 <View>
                                                     <TouchableOpacity
@@ -296,7 +410,43 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                                     >
                                                         <ListItem
                                                             title={item.challengeName}
-                                                            subtitle={`${item.currentStreak.numberOfDaysInARow} days in a row`}
+                                                            rightElement={
+                                                                currentStreak.numberOfDaysInARow > 0 ? (
+                                                                    <View style={{ flexDirection: 'row' }}>
+                                                                        <Text style={{ fontWeight: 'bold' }}>
+                                                                            {currentStreak.numberOfDaysInARow}
+                                                                        </Text>
+                                                                        <FontAwesomeIcon
+                                                                            icon={faFlame}
+                                                                            style={{ color: 'red' }}
+                                                                        />
+                                                                    </View>
+                                                                ) : (
+                                                                    <>
+                                                                        {negativeDayValue === 0 ? (
+                                                                            <View style={{ flexDirection: 'row' }}>
+                                                                                <Text style={{ fontWeight: 'bold' }}>
+                                                                                    {negativeDayValue}
+                                                                                </Text>
+                                                                                <FontAwesomeIcon
+                                                                                    icon={faFlame}
+                                                                                    style={{ color: 'gray' }}
+                                                                                />
+                                                                            </View>
+                                                                        ) : (
+                                                                            <View style={{ flexDirection: 'row' }}>
+                                                                                <Text style={{ fontWeight: 'bold' }}>
+                                                                                    -{negativeDayValue}
+                                                                                </Text>
+                                                                                <FontAwesomeIcon
+                                                                                    icon={faFlame}
+                                                                                    style={{ color: 'blue' }}
+                                                                                />
+                                                                            </View>
+                                                                        )}
+                                                                    </>
+                                                                )
+                                                            }
                                                         />
                                                     </TouchableOpacity>
                                                 </View>
