@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text, Button, Image } from 'react-native-elements';
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class SignUpOnStreakoidScreen extends React.Component {
+class SignUpOnStreakoidScreen extends PureComponent {
     static navigationOptions = {
         header: null,
         title: 'Gain access',

@@ -28,6 +28,7 @@ import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNot
 import NativePushNotification from 'react-native-push-notification';
 import analytics from '@segment/analytics-react-native';
 import GoogleAnalytics from '@segment/analytics-react-native-google-analytics';
+import Mixpanel from '@segment/analytics-react-native-mixpanel';
 
 import { enableScreens } from 'react-native-screens';
 import PushNotificationSupportedDeviceTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationSupportedDeviceTypes';
@@ -84,12 +85,10 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 class AppContainerComponent extends React.PureComponent<Props> {
     componentDidMount = async () => {
         analytics.setup('bn5p5VLmYRJ5oWE1z4xkmTGcb3DflWYg', {
-            using: [GoogleAnalytics],
-            recordScreenViews: true,
+            using: [GoogleAnalytics, Mixpanel],
             trackAppLifecycleEvents: true,
             trackAttributionData: true,
             android: {
-                flushInterval: 60,
                 collectDeviceId: true,
             },
         });

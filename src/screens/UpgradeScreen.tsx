@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { StyleSheet, ScrollView } from 'react-native';
 import { Text, Button } from 'react-native-elements';
@@ -20,7 +20,7 @@ interface NavigationProps {
     navigation: NavigationScreenProp<NavigationState, NavigationParams>;
 }
 
-class UpgradeScreen extends React.Component<NavigationProps> {
+class UpgradeScreen extends PureComponent<NavigationProps> {
     static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
         return {
             headerLeft: () => <HamburgerSelector navigation={navigation} />,

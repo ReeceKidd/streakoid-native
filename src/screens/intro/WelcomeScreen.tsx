@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { Text, Image, Button } from 'react-native-elements';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import NavigationService from '../NavigationService';
 import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
+import { AppState } from '@streakoid/streakoid-shared/lib';
+import { connect } from 'react-redux';
+import analytics from '@segment/analytics-react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,10 +19,26 @@ const styles = StyleSheet.create({
     },
 });
 
-class WelcomeScreen extends React.Component {
+const mapStateToProps = (state: AppState) => {
+    const currentUser = state && state.users && state.users.currentUser;
+    return {
+        currentUser,
+    };
+};
+
+type Props = ReturnType<typeof mapStateToProps>;
+
+class WelcomeScreenComponent extends PureComponent<Props> {
     static navigationOptions = {
         header: null,
     };
+
+    componentDidMount() {
+        const { currentUser } = this.props;
+        if (currentUser && currentUser._id) {
+            analytics.alias(currentUser._id);
+        }
+    }
 
     render(): JSX.Element {
         return (
@@ -47,5 +66,7 @@ class WelcomeScreen extends React.Component {
         );
     }
 }
+
+const WelcomeScreen = connect(mapStateToProps, null)(WelcomeScreenComponent);
 
 export { WelcomeScreen };

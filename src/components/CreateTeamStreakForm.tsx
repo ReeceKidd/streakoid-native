@@ -9,6 +9,7 @@ import { teamStreakActions, userActions } from '../actions/sharedActions';
 import { FollowerSelector } from './FollowerSelector';
 import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
+import { streakoidAnalytics } from '../../streakoidAnalytics';
 
 interface CreateTeamStreakFormProps {
     createTeamStreak: typeof teamStreakActions.createTeamStreak;
@@ -86,6 +87,7 @@ class CreateTeamStreakForm extends PureComponent<Props> {
             <Formik
                 initialValues={{ streakName: '', streakDescription: '', streakDuration: '' }}
                 onSubmit={(values: FormValues): void => {
+                    streakoidAnalytics.createdTeamStreak({ teamStreakName: values.streakName });
                     this.onSubmit(values);
                 }}
                 validate={validate}

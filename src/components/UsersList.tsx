@@ -8,6 +8,7 @@ import { Dispatch, bindActionCreators } from 'redux';
 import { userActions } from '../actions/sharedActions';
 import { connect } from 'react-redux';
 import { FormattedUser } from '@streakoid/streakoid-models/lib/Models/FormattedUser';
+import { streakoidAnalytics } from '../../streakoidAnalytics';
 
 const mapStateToProps = (state: AppState) => {
     const usersList = state && state.users && state.users.usersList;
@@ -78,13 +79,17 @@ class UsersListComponent extends PureComponent<Props, State> {
                                                     title="Follow"
                                                     type="outline"
                                                     loading={item.followUserIsLoading}
-                                                    onPress={() =>
+                                                    onPress={() => {
+                                                        streakoidAnalytics.followedUser({
+                                                            userFollowedId: item._id,
+                                                            userFollowedUsername: item.username,
+                                                        });
                                                         this.props.followUsersListUser({
                                                             userId: item._id,
                                                             username: item.username,
                                                             profileImage,
-                                                        })
-                                                    }
+                                                        });
+                                                    }}
                                                 />
                                             ) : (
                                                 <Button

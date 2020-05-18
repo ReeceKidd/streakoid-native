@@ -3,6 +3,7 @@ import { Button } from 'react-native-elements';
 import { Vibration } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheckCircle, faCircle } from '@fortawesome/pro-light-svg-icons';
+import { streakoidAnalytics } from '../../streakoidAnalytics';
 
 interface TeamStreakTaskButtonProps {
     completeTeamMemberStreakTask: ({
@@ -20,6 +21,7 @@ interface TeamStreakTaskButtonProps {
         teamMemberStreakId: string;
     }) => void;
     teamStreakId: string;
+    teamStreakName: string;
     completedToday: boolean;
     incompleteTeamMemberStreakTaskIsLoading: boolean;
     completeTeamMemberStreakTaskIsLoading: boolean;
@@ -32,6 +34,7 @@ class TeamMemberStreakTaskButton extends PureComponent<TeamStreakTaskButtonProps
             completeTeamMemberStreakTask,
             incompleteTeamMemberStreakTask,
             teamStreakId,
+            teamStreakName,
             teamMemberStreakId,
             completedToday,
             completeTeamMemberStreakTaskIsLoading,
@@ -56,6 +59,7 @@ class TeamMemberStreakTaskButton extends PureComponent<TeamStreakTaskButtonProps
                 icon={<FontAwesomeIcon icon={faCircle} size={25} />}
                 loading={completeTeamMemberStreakTaskIsLoading}
                 onPress={(): void => {
+                    streakoidAnalytics.completedTeamMemberStreak({ teamMemberStreakId, teamStreakId, teamStreakName });
                     Vibration.vibrate(200);
                     completeTeamMemberStreakTask({ teamStreakId, teamMemberStreakId });
                 }}

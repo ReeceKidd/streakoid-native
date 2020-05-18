@@ -3,11 +3,14 @@ import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheckCircle, faCircle } from '@fortawesome/pro-light-svg-icons';
 import { Vibration } from 'react-native';
+import { streakoidAnalytics } from '../../streakoidAnalytics';
 
 interface SoloStreakTaskButtonProps {
     completeSoloStreakListTask: (streakId: string) => void;
     incompleteSoloStreakListTask: (streakId: string) => void;
-    streakId: string;
+    soloStreakId: string;
+    soloStreakName: string;
+    currentStreakNumberOfDaysInARow: number;
     completedToday: boolean;
     incompleteSoloStreakListTaskIsLoading: boolean;
     completeSoloStreakListTaskIsLoading: boolean;
@@ -18,7 +21,9 @@ class SoloStreakTaskButton extends PureComponent<SoloStreakTaskButtonProps> {
         const {
             completeSoloStreakListTask,
             incompleteSoloStreakListTask,
-            streakId,
+            soloStreakId,
+            soloStreakName,
+            currentStreakNumberOfDaysInARow,
             completedToday,
             completeSoloStreakListTaskIsLoading,
             incompleteSoloStreakListTaskIsLoading,
@@ -32,7 +37,7 @@ class SoloStreakTaskButton extends PureComponent<SoloStreakTaskButtonProps> {
                 loading={incompleteSoloStreakListTaskIsLoading}
                 onPress={(): void => {
                     Vibration.vibrate(200);
-                    incompleteSoloStreakListTask(streakId);
+                    incompleteSoloStreakListTask(soloStreakId);
                 }}
             />
         ) : (
@@ -42,8 +47,13 @@ class SoloStreakTaskButton extends PureComponent<SoloStreakTaskButtonProps> {
                 icon={<FontAwesomeIcon icon={faCircle} size={25} />}
                 loading={completeSoloStreakListTaskIsLoading}
                 onPress={(): void => {
+                    streakoidAnalytics.completedSoloStreak({
+                        soloStreakId,
+                        soloStreakName,
+                        currentStreakNumberOfDaysInARow,
+                    });
                     Vibration.vibrate(200);
-                    completeSoloStreakListTask(streakId);
+                    completeSoloStreakListTask(soloStreakId);
                 }}
             />
         );

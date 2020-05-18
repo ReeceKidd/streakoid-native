@@ -68,7 +68,9 @@ class LiveSoloStreakList extends PureComponent<Props> {
                                         <SoloStreakTaskButton
                                             completeSoloStreakListTask={completeSoloStreakListTask}
                                             incompleteSoloStreakListTask={incompleteSoloStreakListTask}
-                                            streakId={_id}
+                                            soloStreakId={_id}
+                                            soloStreakName={item.streakName}
+                                            currentStreakNumberOfDaysInARow={item.currentStreak.numberOfDaysInARow}
                                             completedToday={completedToday}
                                             incompleteSoloStreakListTaskIsLoading={
                                                 incompleteSoloStreakListTaskIsLoading

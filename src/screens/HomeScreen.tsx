@@ -45,6 +45,7 @@ import NativePushNotification from 'react-native-push-notification';
 import * as RNLocalize from 'react-native-localize';
 import { tz } from 'moment-timezone';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
+import analytics from '@segment/analytics-react-native';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -176,6 +177,7 @@ class HomeScreenComponent extends PureComponent<Props> {
 
     componentDidMount = async () => {
         this.props.getCurrentUser();
+
         const { hasCompletedIntroduction } = this.props.currentUser;
         if (!hasCompletedIntroduction) {
             NavigationService.navigate(Screens.Welcome);
@@ -183,6 +185,10 @@ class HomeScreenComponent extends PureComponent<Props> {
         this.initializePushNotifications();
         const currentTimezone = RNLocalize.getTimeZone();
         const { currentUser } = this.props;
+        if (currentUser && currentUser._id) {
+            analytics.alias(currentUser._id);
+            analytics.identify(currentUser._id, { email: currentUser.email, username: currentUser.username });
+        }
         if (currentUser && currentUser.timezone !== currentTimezone) {
             this.props.updateCurrentUser({ timezone: currentTimezone });
             this.displayTimezoneChangeAlert({ oldTimezone: currentUser.timezone, currentTimezone });

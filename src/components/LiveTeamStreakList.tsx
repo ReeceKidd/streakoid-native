@@ -102,6 +102,7 @@ class LiveTeamStreakList extends PureComponent<Props> {
                                             completeTeamMemberStreakTask={completeTeamMemberStreakTask}
                                             incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
                                             teamStreakId={_id}
+                                            teamStreakName={streakName}
                                             teamMemberStreakId={teamMemberStreakId}
                                             completedToday={completedToday}
                                             incompleteTeamMemberStreakTaskIsLoading={

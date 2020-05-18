@@ -22,6 +22,7 @@ import { Screens } from './Screens';
 import { WhatsappGroupLink } from '../components/WhatsappGroupLink';
 import { streakoidUrl } from '../streakoidUrl';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import { streakoidAnalytics } from '../../streakoidAnalytics';
 
 const mapStateToProps = (state: AppState) => {
     const selectedChallenge = state && state.challenges && state.challenges.selectedChallenge;
@@ -125,7 +126,14 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                             <Button
                                 loading={joinChallengeIsLoading}
                                 title="Join challenge"
-                                onPress={() => this.joinChallenge(selectedChallenge._id)}
+                                onPress={() => {
+                                    streakoidAnalytics.joinedChallenge({
+                                        challengeId: selectedChallenge._id,
+                                        challengeName: selectedChallenge.name,
+                                        numberOfMembersInChallenge: selectedChallenge.numberOfMembers,
+                                    });
+                                    this.joinChallenge(selectedChallenge._id);
+                                }}
                             />
                         )}
                         {selectedChallenge.whatsappGroupLink ? (

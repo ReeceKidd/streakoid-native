@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/browser';
 import { Alert } from 'react-native';
 import RNRestart from 'react-native-restart';
 
-export class ErrorBoundary extends React.Component<{ children: unknown }> {
+export class ErrorBoundary extends React.PureComponent<{ children: unknown }> {
     state = { hasError: false };
     static getDerivedStateFromError() {
         return { hasError: true };

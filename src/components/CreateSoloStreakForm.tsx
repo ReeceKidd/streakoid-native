@@ -6,6 +6,7 @@ import { Spacer } from './Spacer';
 import { Input, Button } from 'react-native-elements';
 import { ErrorMessage } from './ErrorMessage';
 import { soloStreakActions } from '../actions/sharedActions';
+import { streakoidAnalytics } from '../../streakoidAnalytics';
 
 interface CreateSoloStreakFormProps {
     createSoloStreak: typeof soloStreakActions.createSoloStreak;
@@ -73,6 +74,7 @@ class CreateSoloStreakForm extends PureComponent<Props> {
             <Formik
                 initialValues={{ streakName: '', streakDescription: '', streakDuration: '' }}
                 onSubmit={(values: FormValues): void => {
+                    streakoidAnalytics.createdSoloStreak({ soloStreakName: values.streakName });
                     this.onSubmit(values);
                 }}
                 validate={validate}

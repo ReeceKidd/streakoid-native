@@ -67,7 +67,10 @@ class LiveChallengeStreakList extends PureComponent<Props> {
                                         <ChallengeStreakTaskButton
                                             completeChallengeStreakListTask={completeChallengeStreakListTask}
                                             incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
-                                            streakId={_id}
+                                            challengeStreakId={_id}
+                                            challengeId={item.challengeId}
+                                            challengeName={item.challengeName}
+                                            currentStreakNumberOfDaysInARow={item.currentStreak.numberOfDaysInARow}
                                             completedToday={completedToday}
                                             incompleteChallengeStreakListTaskIsLoading={
                                                 incompleteChallengeStreakListTaskIsLoading

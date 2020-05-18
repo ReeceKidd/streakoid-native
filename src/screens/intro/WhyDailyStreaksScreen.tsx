@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { Text, Button, Image } from 'react-native-elements';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class WhyDailyStreaksScreen extends React.Component {
+class WhyDailyStreaksScreen extends PureComponent {
     static navigationOptions = {
         header: null,
     };

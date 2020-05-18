@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { Text, Button } from 'react-native-elements';
 import { StyleSheet, View } from 'react-native';
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class WhatIsAStreakScreen extends React.Component {
+class WhatIsAStreakScreen extends PureComponent {
     static navigationOptions = {
         header: null,
     };
