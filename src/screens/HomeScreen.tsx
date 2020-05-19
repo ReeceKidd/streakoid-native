@@ -93,6 +93,8 @@ const mapStateToProps = (state: AppState) => {
     const incompleteSoloStreaks = getIncompleteSoloStreaks(state);
     const incompleteTeamStreaks = getIncompleteTeamStreaks(state);
     const incompleteChallengeStreaks = getIncompleteChallengeStreaks(state);
+    const totalIncompleteStreaks =
+        incompleteSoloStreaks.length + incompleteTeamStreaks.length + incompleteChallengeStreaks.length;
     const totalNumberOfSoloStreaks =
         state && state.soloStreaks && state.soloStreaks.liveSoloStreaks && state.soloStreaks.liveSoloStreaks.length;
     const totalNumberOfTeamStreaks =
@@ -112,6 +114,7 @@ const mapStateToProps = (state: AppState) => {
         getMultipleLiveTeamStreaksIsLoading,
         incompleteChallengeStreaks,
         getMultipleLiveChallengeStreaksIsLoading,
+        totalIncompleteStreaks,
         totalNumberOfSoloStreaks,
         totalNumberOfTeamStreaks,
         totalNumberOfChallengeStreaks,
@@ -376,7 +379,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                 <View style={{ marginTop: 5 }}>
                     <ProgressBar
                         progress={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteSoloStreaks.length,
+                            numberOfIncompleteStreaks: incompleteSoloStreaks && incompleteSoloStreaks.length,
                             numberOfStreaks: totalNumberOfSoloStreaks,
                         })}
                     />
@@ -421,7 +424,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                 <View style={{ marginTop: 5 }}>
                     <ProgressBar
                         progress={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteTeamStreaks.length,
+                            numberOfIncompleteStreaks: incompleteTeamStreaks && incompleteTeamStreaks.length,
                             numberOfStreaks: totalNumberOfTeamStreaks,
                         })}
                     />
@@ -465,7 +468,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                 <View style={{ marginTop: 5 }}>
                     <ProgressBar
                         progress={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteChallengeStreaks.length,
+                            numberOfIncompleteStreaks: incompleteChallengeStreaks && incompleteChallengeStreaks.length,
                             numberOfStreaks: totalNumberOfChallengeStreaks,
                         })}
                     />
@@ -486,7 +489,7 @@ class HomeScreenComponent extends PureComponent<Props> {
     }
 
     render(): JSX.Element {
-        const { currentUser, isPayingMember } = this.props;
+        const { currentUser, isPayingMember, totalIncompleteStreaks } = this.props;
         const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
         return (
             <ScrollView style={styles.container}>
@@ -505,6 +508,12 @@ class HomeScreenComponent extends PureComponent<Props> {
                             />
                         </Spacer>
                     ) : null}
+                    <ProgressBar
+                        progress={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: totalIncompleteStreaks,
+                            numberOfStreaks: totalLiveStreaks,
+                        })}
+                    />
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>

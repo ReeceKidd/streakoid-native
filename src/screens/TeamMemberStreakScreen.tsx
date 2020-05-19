@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { AppState } from '../../store';
 
-import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
+import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import { teamMemberStreakActions } from '../actions/sharedActions';
@@ -25,6 +25,7 @@ import { streakoidUrl } from '../streakoidUrl';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import { faShareAlt } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { StreakFlame } from '../components/StreakFlame';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -80,12 +81,16 @@ class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
 
     render(): JSX.Element | null {
         const { selectedTeamMemberStreak, getTeamMemberStreakIsLoading } = this.props;
-        const streakCompletionString = getStreakCompletionString({
-            pastStreaks: selectedTeamMemberStreak.pastStreaks,
-            currentStreak: selectedTeamMemberStreak.currentStreak,
-            timezone: selectedTeamMemberStreak.timezone,
-            createdAt: new Date(selectedTeamMemberStreak.createdAt),
+        const { pastStreaks, currentStreak, timezone, createdAt } = selectedTeamMemberStreak;
+        const streakCompletionInfo = getStreakCompletionInfo({
+            pastStreaks,
+            currentStreak,
+            timezone,
+            createdAt: new Date(createdAt),
         });
+        const daysSinceUserCompletedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+        const daysSinceUserCreatedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+        const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
         return (
             <>
                 {getTeamMemberStreakIsLoading ? (
@@ -112,9 +117,10 @@ class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
                                 />
                             </TouchableOpacity>
 
-                            <Text h4 h4Style={{ color: streakCompletionString.error ? 'red' : 'green' }}>
-                                {streakCompletionString.string}
-                            </Text>
+                            <StreakFlame
+                                currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                negativeDayStreak={negativeDayStreak}
+                            />
                             {selectedTeamMemberStreak && selectedTeamMemberStreak.teamStreakDescription ? (
                                 <Text h4>
                                     {selectedTeamMemberStreak && selectedTeamMemberStreak.teamStreakDescription}

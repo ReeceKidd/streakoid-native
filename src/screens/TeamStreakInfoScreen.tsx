@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 
-import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
+import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import NativePushNotification from 'react-native-push-notification';
 
@@ -30,6 +30,7 @@ import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNot
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { faCrown } from '@fortawesome/free-solid-svg-icons';
+import { StreakFlame } from '../components/StreakFlame';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -412,12 +413,16 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
         const isCurrentUserAMemberOfTeamStreak = selectedTeamStreak.members.some(
             (member) => member._id === currentUser._id,
         );
-        const streakCompletionString = getStreakCompletionString({
-            pastStreaks: selectedTeamStreak.pastStreaks,
-            currentStreak: selectedTeamStreak.currentStreak,
-            timezone: selectedTeamStreak.timezone,
-            createdAt: new Date(selectedTeamStreak.createdAt),
+        const { pastStreaks, currentStreak, timezone, createdAt } = selectedTeamStreak;
+        const streakCompletionInfo = getStreakCompletionInfo({
+            pastStreaks,
+            currentStreak,
+            timezone,
+            createdAt: new Date(createdAt),
         });
+        const daysSinceUserCompletedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+        const daysSinceUserCreatedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+        const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
         const currentMember = selectedTeamStreak.members.find((member) => member._id == currentUser._id);
         const selectedTeamMemberStreak = currentMember && currentMember.teamMemberStreak;
         return (
@@ -469,9 +474,10 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                             ) : (
                                 <Text style={{ color: 'red' }}>Archived</Text>
                             )}
-                            <Text style={{ color: streakCompletionString.error ? 'red' : 'green' }}>
-                                {streakCompletionString.string}
-                            </Text>
+                            <StreakFlame
+                                currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                negativeDayStreak={negativeDayStreak}
+                            />
                         </Spacer>
                         <TeamStreakDetails
                             selectedTeamStreak={selectedTeamStreak}

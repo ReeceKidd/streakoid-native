@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 
-import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
+import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import NativePushNotification from 'react-native-push-notification';
 
@@ -35,6 +35,7 @@ import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCatego
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+import { StreakFlame } from '../components/StreakFlame';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -409,12 +410,16 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
             deleteArchivedChallengeStreakErrorMessage,
             deleteArchivedChallengeStreakIsLoading,
         } = this.props;
-        const streakCompletionString = getStreakCompletionString({
-            pastStreaks: selectedChallengeStreak.pastStreaks,
-            currentStreak: selectedChallengeStreak.currentStreak,
-            timezone: selectedChallengeStreak.timezone,
-            createdAt: new Date(selectedChallengeStreak.createdAt),
+        const { pastStreaks, currentStreak, timezone, createdAt } = selectedChallengeStreak;
+        const streakCompletionInfo = getStreakCompletionInfo({
+            pastStreaks,
+            currentStreak,
+            timezone,
+            createdAt: new Date(createdAt),
         });
+        const daysSinceUserCompletedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+        const daysSinceUserCreatedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+        const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
         return (
             <ScrollView style={styles.container}>
                 {getChallengeStreakIsLoading ? (
@@ -477,9 +482,10 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                     title={selectedChallengeStreak.username}
                                 />
                             </TouchableOpacity>
-                            <Text style={{ color: streakCompletionString.error ? 'red' : 'green' }}>
-                                {streakCompletionString.string}
-                            </Text>
+                            <StreakFlame
+                                currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                negativeDayStreak={negativeDayStreak}
+                            />
                             <Spacer />
                             {selectedChallengeStreak && selectedChallengeStreak.challengeName ? (
                                 <TouchableOpacity

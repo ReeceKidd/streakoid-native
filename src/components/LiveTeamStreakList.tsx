@@ -14,8 +14,7 @@ import { ErrorMessage } from './ErrorMessage';
 import { teamStreakActions } from '../actions/sharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import NavigationService from '../screens/NavigationService';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faFlame } from '@fortawesome/pro-solid-svg-icons';
+import { StreakFlame } from './StreakFlame';
 
 interface LiveTeamStreakListProps {
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
@@ -90,7 +89,7 @@ class LiveTeamStreakList extends PureComponent<Props> {
                         streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
                     const daysSinceUserCreatedStreak =
                         streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
-                    const negativeDayValue = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
+                    const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                     const maximumNumberOfTeamMembersToDisplay = 3;
                     return (
                         <View>
@@ -158,28 +157,10 @@ class LiveTeamStreakList extends PureComponent<Props> {
                                     }
                                     title={item.streakName}
                                     subtitle={
-                                        currentStreak.numberOfDaysInARow > 0 ? (
-                                            <View style={{ flexDirection: 'row' }}>
-                                                <Text style={{ fontWeight: 'bold' }}>
-                                                    {currentStreak.numberOfDaysInARow}
-                                                </Text>
-                                                <FontAwesomeIcon icon={faFlame} style={{ color: 'red' }} />
-                                            </View>
-                                        ) : (
-                                            <>
-                                                {negativeDayValue === 0 ? (
-                                                    <View style={{ flexDirection: 'row' }}>
-                                                        <Text style={{ fontWeight: 'bold' }}>{negativeDayValue}</Text>
-                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'gray' }} />
-                                                    </View>
-                                                ) : (
-                                                    <View style={{ flexDirection: 'row' }}>
-                                                        <Text style={{ fontWeight: 'bold' }}>-{negativeDayValue}</Text>
-                                                        <FontAwesomeIcon icon={faFlame} style={{ color: 'blue' }} />
-                                                    </View>
-                                                )}
-                                            </>
-                                        )
+                                        <StreakFlame
+                                            currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                            negativeDayStreak={negativeDayStreak}
+                                        />
                                     }
                                 />
                             </TouchableOpacity>

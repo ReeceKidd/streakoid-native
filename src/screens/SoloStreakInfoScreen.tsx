@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { AppState } from '../../store';
 
-import { AppActions, getStreakCompletionString } from '@streakoid/streakoid-shared/lib';
+import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import { soloStreakActions, userActions } from '../actions/sharedActions';
@@ -35,6 +35,7 @@ import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCatego
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+import { StreakFlame } from '../components/StreakFlame';
 
 YellowBox.ignoreWarnings([
     'VirtualizedLists should never be nested', // TODO: Remove when fixed
@@ -400,12 +401,16 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
             deleteArchivedSoloStreakIsLoading,
             deleteArchivedSoloStreakErrorMessage,
         } = this.props;
-        const streakCompletionString = getStreakCompletionString({
-            pastStreaks: selectedSoloStreak.pastStreaks,
-            currentStreak: selectedSoloStreak.currentStreak,
-            timezone: selectedSoloStreak.timezone,
-            createdAt: new Date(selectedSoloStreak.createdAt),
+        const { pastStreaks, currentStreak, timezone, createdAt } = selectedSoloStreak;
+        const streakCompletionInfo = getStreakCompletionInfo({
+            pastStreaks,
+            currentStreak,
+            timezone,
+            createdAt: new Date(createdAt),
         });
+        const daysSinceUserCompletedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+        const daysSinceUserCreatedStreak = streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+        const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
         return (
             <>
                 {getSoloStreakIsLoading ? (
@@ -463,9 +468,10 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                 />
                             </TouchableOpacity>
 
-                            <Text style={{ color: streakCompletionString.error ? 'red' : 'green' }}>
-                                {streakCompletionString.string}
-                            </Text>
+                            <StreakFlame
+                                currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                negativeDayStreak={negativeDayStreak}
+                            />
                             {selectedSoloStreak && selectedSoloStreak.streakDescription ? (
                                 <Text>{selectedSoloStreak && selectedSoloStreak.streakDescription}</Text>
                             ) : null}

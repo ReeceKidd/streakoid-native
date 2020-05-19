@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import * as Progress from 'react-native-progress';
+import { Dimensions } from 'react-native';
 
 interface Props {
     progress: number;
@@ -11,15 +12,20 @@ class ProgressBar extends PureComponent<Props> {
         const green = percent > 50 ? 255 : Math.floor((percent * 2 * 255) / 100);
         return 'rgb(' + red + ',' + green + ',0)';
     }
-    render(): JSX.Element {
+    render(): JSX.Element | null {
         const { progress } = this.props;
+        const barWidth = Dimensions.get('screen').width;
+        if (!progress) {
+            return null;
+        }
         if (progress < 10) {
-            return <Progress.Bar progress={0.1} borderRadius={0} borderColor={'white'} color={this.getColor(10)} />;
+            return <Progress.Bar progress={0.1} width={barWidth} borderColor={'white'} color={this.getColor(10)} />;
         }
         return (
             <Progress.Bar
                 progress={progress / 100}
-                width={null}
+                width={barWidth}
+                useNativeDriver={true}
                 borderColor={'white'}
                 color={this.getColor(progress)}
             />
