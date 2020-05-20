@@ -378,13 +378,13 @@ class HomeScreenComponent extends PureComponent<Props> {
                 </View>
                 <View style={{ marginTop: 5 }}>
                     <ProgressBar
-                        progress={getCompletePercentageForStreaks({
+                        completePercentage={getCompletePercentageForStreaks({
                             numberOfIncompleteStreaks: incompleteSoloStreaks && incompleteSoloStreaks.length,
                             numberOfStreaks: totalNumberOfSoloStreaks,
                         })}
+                        fullScreen={false}
                     />
                 </View>
-
                 <LiveSoloStreakList
                     userId={currentUser._id}
                     navigation={this.props.navigation}
@@ -423,10 +423,11 @@ class HomeScreenComponent extends PureComponent<Props> {
                 </View>
                 <View style={{ marginTop: 5 }}>
                     <ProgressBar
-                        progress={getCompletePercentageForStreaks({
+                        completePercentage={getCompletePercentageForStreaks({
                             numberOfIncompleteStreaks: incompleteTeamStreaks && incompleteTeamStreaks.length,
                             numberOfStreaks: totalNumberOfTeamStreaks,
                         })}
+                        fullScreen={false}
                     />
                 </View>
                 <LiveTeamStreakList
@@ -467,10 +468,11 @@ class HomeScreenComponent extends PureComponent<Props> {
                 </View>
                 <View style={{ marginTop: 5 }}>
                     <ProgressBar
-                        progress={getCompletePercentageForStreaks({
+                        completePercentage={getCompletePercentageForStreaks({
                             numberOfIncompleteStreaks: incompleteChallengeStreaks && incompleteChallengeStreaks.length,
                             numberOfStreaks: totalNumberOfChallengeStreaks,
                         })}
+                        fullScreen={false}
                     />
                 </View>
                 <LiveChallengeStreakList
@@ -500,6 +502,13 @@ class HomeScreenComponent extends PureComponent<Props> {
                             this.initializePushNotifications();
                         }}
                     />
+                    <ProgressBar
+                        completePercentage={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: totalIncompleteStreaks,
+                            numberOfStreaks: totalLiveStreaks,
+                        })}
+                        fullScreen={true}
+                    />
                     {!isPayingMember ? (
                         <Spacer>
                             <MaximumNumberOfFreeStreaksMessage
@@ -508,12 +517,6 @@ class HomeScreenComponent extends PureComponent<Props> {
                             />
                         </Spacer>
                     ) : null}
-                    <ProgressBar
-                        progress={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: totalIncompleteStreaks,
-                            numberOfStreaks: totalLiveStreaks,
-                        })}
-                    />
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>

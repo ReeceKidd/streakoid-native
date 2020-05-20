@@ -9,7 +9,6 @@ import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
 import { challengeStreakActions } from '../actions/sharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
-import { Spacer } from './Spacer';
 import { StreakFlame } from './StreakFlame';
 
 interface LiveChallengeStreakListProps {
@@ -131,9 +130,7 @@ class LiveChallengeStreakList extends PureComponent<Props> {
                     </View>
                 ) : null}
                 {totalNumberOfChallengeStreaks > 0 && liveChallengeStreaks.length === 0 ? (
-                    <Spacer>
-                        <Text style={{ color: '#4caf50' }}>All done for today</Text>
-                    </Spacer>
+                    <Text style={{ color: '#4caf50', marginTop: 5 }}>All done for today</Text>
                 ) : null}
                 {this.renderLiveChallengeStreakList()}
             </>

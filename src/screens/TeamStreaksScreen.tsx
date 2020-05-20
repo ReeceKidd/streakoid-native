@@ -173,6 +173,13 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
         return (
             <View style={styles.container}>
                 <ScrollView>
+                    <ProgressBar
+                        completePercentage={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteTeamStreaks.length,
+                            numberOfStreaks: totalNumberOfTeamStreaks,
+                        })}
+                        fullScreen={true}
+                    />
                     {!isPayingMember ? (
                         <View style={{ marginLeft: 15, marginTop: 15 }}>
                             <MaximumNumberOfFreeStreaksMessage
@@ -181,12 +188,6 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                             />
                         </View>
                     ) : null}
-                    <ProgressBar
-                        progress={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteTeamStreaks.length,
-                            numberOfStreaks: totalNumberOfTeamStreaks,
-                        })}
-                    />
                     <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveTeamStreakList
                             getTeamStreak={getTeamStreak}

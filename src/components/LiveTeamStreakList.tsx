@@ -210,9 +210,7 @@ class LiveTeamStreakList extends PureComponent<Props> {
                     </TouchableOpacity>
                 ) : null}
                 {totalNumberOfTeamStreaks > 0 && teamStreaks.length === 0 ? (
-                    <Spacer>
-                        <Text style={{ color: '#4caf50' }}>All done for today</Text>
-                    </Spacer>
+                    <Text style={{ color: '#4caf50', marginTop: 5 }}>All done for today</Text>
                 ) : null}
                 {this.renderTeamStreaksList()}
             </>

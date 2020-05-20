@@ -168,6 +168,13 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
         return (
             <ScrollView style={styles.container}>
                 <View>
+                    <ProgressBar
+                        completePercentage={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteChallengeStreaks.length,
+                            numberOfStreaks: totalNumberOfChallengeStreaks,
+                        })}
+                        fullScreen={true}
+                    />
                     {!isPayingMember ? (
                         <View style={{ marginLeft: 15, marginTop: 15 }}>
                             <MaximumNumberOfFreeStreaksMessage
@@ -176,12 +183,6 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                             />
                         </View>
                     ) : null}
-                    <ProgressBar
-                        progress={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteChallengeStreaks.length,
-                            numberOfStreaks: totalNumberOfChallengeStreaks,
-                        })}
-                    />
                     <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}

@@ -176,10 +176,11 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                     ) : null}
 
                     <ProgressBar
-                        progress={getCompletePercentageForStreaks({
+                        completePercentage={getCompletePercentageForStreaks({
                             numberOfIncompleteStreaks: incompleteSoloStreaks.length,
                             numberOfStreaks: totalNumberOfSoloStreaks,
                         })}
+                        fullScreen={true}
                     />
 
                     <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>

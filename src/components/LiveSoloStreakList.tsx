@@ -9,7 +9,6 @@ import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { soloStreakActions } from '../actions/sharedActions';
-import { Spacer } from './Spacer';
 import { StreakFlame } from './StreakFlame';
 
 interface LiveSoloStreakListProps {
@@ -128,9 +127,7 @@ class LiveSoloStreakList extends PureComponent<Props> {
                     </View>
                 ) : null}
                 {totalNumberOfSoloStreaks > 0 && liveSoloStreaks.length === 0 ? (
-                    <Spacer>
-                        <Text style={{ color: '#4caf50' }}>All done for today</Text>
-                    </Spacer>
+                    <Text style={{ color: '#4caf50', marginTop: 5 }}>All done for today</Text>
                 ) : null}
                 {this.renderSoloStreakList()}
             </>
