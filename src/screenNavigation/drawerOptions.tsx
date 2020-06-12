@@ -9,9 +9,9 @@ import { faCrown, faHelmetBattle, faRobot, faUser, faCog, faCalendarCheck } from
 import { StreakRecommendationsStack } from './StreakRecommendationsStack';
 import { UsersStack } from './UserStack';
 import { AccountStack } from './AccountStack';
-import { StreakStack } from './StreakStack';
 import { UpgradeStack } from './UpgradeStack';
 import { OnboardingStack } from './OnboardingStack';
+import { StreakBottomTab } from './StreakBottomTab';
 
 const Drawer = createDrawerNavigator();
 
@@ -59,7 +59,7 @@ const homeDrawerScreen = (
         key={0}
         options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} />, title: 'Streaks' }}
         name={Screens.Home}
-        component={StreakStack}
+        component={StreakBottomTab}
     />
 );
 
