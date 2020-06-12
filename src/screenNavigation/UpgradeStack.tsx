@@ -1,19 +1,25 @@
+/* eslint-disable react/display-name */
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faStar } from '@fortawesome/pro-solid-svg-icons';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Screens } from '../screens/Screens';
+import { HamburgerSelector } from '../components/HamburgerSelector';
 import { UpgradeScreen } from '../screens/UpgradeScreen';
 
-const UpgradeStack = createStackNavigator(
-    {
-        Upgrade: UpgradeScreen,
-    },
-    {
-        navigationOptions: {
+export type UpgradeParamList = {
+    Upgrade: undefined;
+};
+
+const Stack = createStackNavigator<UpgradeParamList>();
+
+const UpgradeStackScreen = (
+    <Stack.Screen
+        name={Screens.Upgrade}
+        component={UpgradeScreen}
+        options={() => ({
             title: 'Upgrade',
-            tabBarIcon: <FontAwesomeIcon icon={faStar} />,
-        },
-    },
+            headerLeft: () => <HamburgerSelector />,
+        })}
+    />
 );
 
-export { UpgradeStack };
+export const UpgradeStack = () => <Stack.Navigator>{UpgradeStackScreen}</Stack.Navigator>;

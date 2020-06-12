@@ -1,19 +1,21 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
 import { AppState } from '../../store';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { leaderboardActions } from '../actions/sharedActions';
+import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
 import { NavigationLink } from '../components/NavigationLink';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../StackNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const followingLeaderboard = state && state.leaderboards && state.leaderboards.followingLeaderboard;
@@ -36,13 +38,20 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getFollowingLeaderboard: bindActionCreators(leaderboardActions.getFollowingLeaderboard, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type FollowingLeaderboardScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.FollowingLeaderboard>;
+type FollowingLeaderboardScreenRouteProp = RouteProp<RootStackParamList, Screens.FollowingLeaderboard>;
 
+type NavigationProps = {
+    navigation: FollowingLeaderboardScreenNavigationProp;
+    route: FollowingLeaderboardScreenRouteProp;
+};
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
+    componentDidMount() {
+        const { getFollowingLeaderboard, followingIds } = this.props;
+        getFollowingLeaderboard({ userIds: followingIds });
+    }
     renderFollowingLeaderboard(): JSX.Element {
         const { followingLeaderboard } = this.props;
         return (
@@ -85,14 +94,9 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
     }
 
     render(): JSX.Element | null {
-        const { getFollowingLeaderboard, followingIds, getFollowingLeaderboardIsLoading } = this.props;
+        const { followingIds, getFollowingLeaderboardIsLoading } = this.props;
         return (
             <ScrollView>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getFollowingLeaderboard({ userIds: followingIds });
-                    }}
-                />
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold' }}>
@@ -103,11 +107,7 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
                     {followingIds.length > 0 ? (
                         this.renderFollowingLeaderboard()
                     ) : (
-                        <NavigationLink
-                            navigation={this.props.navigation}
-                            text="You're not following anyone yet. Follow someone."
-                            screen={Screens.Users}
-                        />
+                        <NavigationLink text="You're not following anyone yet" screen={Screens.Users} />
                     )}
                 </Spacer>
             </ScrollView>

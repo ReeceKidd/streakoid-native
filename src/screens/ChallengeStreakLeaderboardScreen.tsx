@@ -1,18 +1,20 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
 import { AppState } from '../../store';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { leaderboardActions } from '../actions/sharedActions';
+import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {
     const challengeStreakLeaderboard = state && state.leaderboards && state.leaderboards.challengeStreakLeaderboard;
@@ -31,13 +33,23 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getChallengeStreaksLeaderboard: bindActionCreators(leaderboardActions.getChallengeStreakLeaderboard, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type ChallengeStreakLeaderboardScreenNavigationProp = StackNavigationProp<
+    RootStackParamList,
+    Screens.ChallengeStreakLeaderboard
+>;
+type ChallengeStreakLeaderboardScreenRouteProp = RouteProp<RootStackParamList, Screens.ChallengeStreakLeaderboard>;
+
+type NavigationProps = {
+    navigation: ChallengeStreakLeaderboardScreenNavigationProp;
+    route: ChallengeStreakLeaderboardScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 class ChallengeStreakLeaderboardScreenComponent extends PureComponent<Props> {
+    componentDidMount() {
+        this.props.getChallengeStreaksLeaderboard();
+    }
     renderChallengeStreakLeaderboard(): JSX.Element {
         const { challengeStreakLeaderboard } = this.props;
         return (
@@ -78,14 +90,9 @@ class ChallengeStreakLeaderboardScreenComponent extends PureComponent<Props> {
     }
 
     render(): JSX.Element | null {
-        const { getChallengeStreaksLeaderboard, getChallengeStreakLeaderboardIsLoading } = this.props;
+        const { getChallengeStreakLeaderboardIsLoading } = this.props;
         return (
             <ScrollView>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getChallengeStreaksLeaderboard();
-                    }}
-                />
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold' }}>

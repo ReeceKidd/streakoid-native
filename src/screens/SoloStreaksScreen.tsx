@@ -1,27 +1,27 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
-import { Button, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, AppState as ReactNativeAppState, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
 
-import { soloStreakActions, userActions } from '../actions/sharedActions';
+import { soloStreakActions, userActions } from '../actions/authenticatedSharedActions';
 import { AppState } from '../../store';
 import { Spacer } from '../components/Spacer';
 import { LiveSoloStreakList } from '../components/LiveSoloStreakList';
-import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { HamburgerSelector } from '../components/HamburgerSelector';
 import { ArchivedSoloStreakList } from '../components/ArchivedSoloStreakList';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlus, faArchive } from '@fortawesome/free-solid-svg-icons';
+import { faArchive } from '@fortawesome/free-solid-svg-icons';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
-import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { ProgressBar } from '../components/ProgressBar';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../StackNavigator';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -72,9 +72,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getArchivedSoloStreaks: bindActionCreators(soloStreakActions.getArchivedSoloStreaks, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type SoloStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.SoloStreaks>;
+type SoloStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.SoloStreaks>;
+
+type NavigationProps = {
+    navigation: SoloStreaksScreenNavigationProp;
+    route: SoloStreaksScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> &
@@ -88,41 +92,6 @@ const styles = StyleSheet.create({
 });
 
 class SoloStreaksScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<
-            NavigationState,
-            { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveSoloStreaksIsLoading: boolean }
-        >;
-    }) => {
-        const isPayingMember = navigation.getParam('isPayingMember');
-        const totalLiveStreaks = navigation.getParam('totalLiveStreaks');
-        const getMultipleLiveSoloStreaksIsLoading = navigation.getParam('getMultipleLiveSoloStreaksIsLoading');
-        const userHasReachedFreeStreakLimit = !isPayingMember && totalLiveStreaks > MAXIMUM_NUMBER_OF_FREE_STREAKS;
-        return {
-            title: 'Solo Streaks',
-            headerRight: (
-                <Button
-                    type="clear"
-                    icon={<FontAwesomeIcon icon={faPlus} size={30} />}
-                    onPress={() => {
-                        if (!userHasReachedFreeStreakLimit) {
-                            return NavigationService.navigate(Screens.CreateSoloStreak);
-                        }
-                        NavigationService.navigate(Screens.Upgrade);
-                    }}
-                />
-            ),
-            headerLeft: () => (
-                <View style={{ flexDirection: 'row' }}>
-                    <HamburgerSelector navigation={navigation} />
-                    {getMultipleLiveSoloStreaksIsLoading ? <ActivityIndicator /> : null}
-                </View>
-            ),
-        };
-    };
-
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
@@ -151,8 +120,6 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
             currentUser,
             liveSoloStreaks,
             getSoloStreak,
-            getLiveSoloStreaks,
-            getArchivedSoloStreaks,
             archivedSoloStreaks,
             completeSoloStreakListTask,
             incompleteSoloStreakListTask,
@@ -188,7 +155,6 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                             userId={currentUser._id}
                             navigation={this.props.navigation}
                             getSoloStreak={getSoloStreak}
-                            getLiveSoloStreaks={getLiveSoloStreaks}
                             completeSoloStreakListTask={completeSoloStreakListTask}
                             incompleteSoloStreakListTask={incompleteSoloStreakListTask}
                             liveSoloStreaks={liveSoloStreaks}
@@ -201,10 +167,8 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                             Archived Solo Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedSoloStreakList
-                            getArchivedSoloStreaks={getArchivedSoloStreaks}
                             archivedSoloStreaks={archivedSoloStreaks}
                             getMultipleArchivedSoloStreaksIsLoading={getMultipleArchivedSoloStreaksIsLoading}
-                            navigation={this.props.navigation}
                         />
                     </Spacer>
                 </View>

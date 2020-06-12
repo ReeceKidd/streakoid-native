@@ -7,30 +7,29 @@ import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared
 import { bindActionCreators, Dispatch } from 'redux';
 import NativePushNotification from 'react-native-push-notification';
 
-import { teamStreakActions, teamMemberStreakTaskActions, userActions } from '../actions/sharedActions';
-import { NavigationScreenProp, NavigationState, NavigationEvents, withNavigationFocus } from 'react-navigation';
+import { teamStreakActions, teamMemberStreakTaskActions, userActions } from '../actions/authenticatedSharedActions';
 import { Text, Button, ListItem, Divider, Card } from 'react-native-elements';
 import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Spacer } from '../components/Spacer';
-import NavigationService from './NavigationService';
 import { Screens } from './Screens';
 import { TeamStreakDetails } from '../components/TeamStreakDetails';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { TeamNotes } from '../components/TeamNotes';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
-import { StyleSheet, Picker, View, ActivityIndicator, Share } from 'react-native';
+import { StyleSheet, Picker, View, ActivityIndicator } from 'react-native';
 import { CustomTeamStreakReminderPushNotification } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
 import { CustomTeamStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-models/lib/Models/StreakReminders';
-import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEdit, faShareAlt, faAbacus, faCog, faBell } from '@fortawesome/pro-solid-svg-icons';
-import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import { faAbacus, faCog, faBell } from '@fortawesome/pro-solid-svg-icons';
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { faCrown } from '@fortawesome/free-solid-svg-icons';
 import { StreakFlame } from '../components/StreakFlame';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../StackNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -89,9 +88,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, { _id: string; streakName: string }>;
-}
+type TeamStreakInfoScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TeamStreakInfo>;
+type TeamStreakInfoScreenRouteProp = RouteProp<RootStackParamList, Screens.TeamStreakInfo>;
+
+type NavigationProps = {
+    navigation: TeamStreakInfoScreenNavigationProp;
+    route: TeamStreakInfoScreenRouteProp;
+};
 
 const styles = StyleSheet.create({
     itemTitle: {
@@ -104,51 +107,13 @@ type Props = ReturnType<typeof mapStateToProps> &
     NavigationProps & { isFocused: boolean };
 
 class TeamStreakInfoScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<
-            NavigationState,
-            { _id: string; streakName: string; userIsApartOfStreak: boolean }
-        >;
-    }) => {
-        const streakId = navigation.getParam('_id');
-        const streakName = navigation.getParam('streakName');
-        const userIsApartOfStreak = navigation.getParam('userIsApartOfStreak');
-        return {
-            title: streakName,
-            headerRight: (
-                <View style={{ flexDirection: 'row' }}>
-                    {userIsApartOfStreak ? (
-                        <Button
-                            type="clear"
-                            icon={<FontAwesomeIcon icon={faEdit} />}
-                            onPress={() => NavigationService.navigate(Screens.EditTeamStreak)}
-                        />
-                    ) : null}
-                    <Button
-                        type="clear"
-                        icon={<FontAwesomeIcon icon={faShareAlt} />}
-                        onPress={async () => {
-                            await Share.share({
-                                message: `View team streak ${streakName} at ${streakoidUrl}/${RouterCategories.teamStreaks}/${streakId}`,
-                                url: `${streakoidUrl}/${RouterCategories.teamStreaks}/${streakId}`,
-                                title: `View Streakoid team streak ${streakName}`,
-                            });
-                        }}
-                    />
-                </View>
-            ),
-        };
-    };
-
     componentDidMount() {
-        this.props.getSelectedTeamStreak(this.props.navigation.getParam('_id'));
+        this.props.getSelectedTeamStreak(this.props.route.params._id);
     }
 
     componentDidUpdate(prevProps: Props) {
-        if (prevProps.navigation.getParam('_id') !== this.props.navigation.getParam('_id')) {
-            this.props.getSelectedTeamStreak(this.props.navigation.getParam('_id'));
+        if (prevProps.route.params._id !== this.props.route.params._id) {
+            this.props.getSelectedTeamStreak(this.props.route.params._id);
         }
     }
 
@@ -212,8 +177,8 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
         reminderMinute: number;
         enabled: boolean;
     }) => {
-        const teamStreakId = this.props.navigation.getParam('_id');
-        const teamStreakName = this.props.navigation.getParam('streakName');
+        const teamStreakId = this.props.route.params._id;
+        const teamStreakName = this.props.route.params.streakName;
         const customStreakReminders = this.props.currentUser.pushNotifications.customStreakReminders;
         const customCompleteTeamMemberStreakReminder = customStreakReminders.find(
             (pushNotification) =>
@@ -396,7 +361,6 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
     render(): JSX.Element | null {
         const {
             currentUser,
-            getSelectedTeamStreak,
             getTeamStreakIsLoading,
             selectedTeamStreak,
             archiveTeamStreakIsLoading,
@@ -408,7 +372,6 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
             deleteArchivedTeamStreakIsLoading,
             deleteArchivedTeamStreakErrorMessage,
         } = this.props;
-        const teamStreakId = this.props.navigation.getParam('_id');
         if (!selectedTeamStreak) return null;
         const isCurrentUserAMemberOfTeamStreak = selectedTeamStreak.members.some(
             (member) => member._id === currentUser._id,
@@ -431,11 +394,6 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                     <LoadingScreenSpinner />
                 ) : (
                     <ScrollView>
-                        <NavigationEvents
-                            onWillFocus={() => {
-                                getSelectedTeamStreak(teamStreakId);
-                            }}
-                        />
                         {selectedTeamMemberStreak && selectedTeamStreak.isCurrentUserApartOfTeamStreak ? (
                             selectedTeamStreak.status === StreakStatus.live ? (
                                 selectedTeamStreak.hasCurrentUserCompletedTaskForTheDay ? (
@@ -489,7 +447,7 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                     <Button
                                         buttonStyle={{ backgroundColor: 'green' }}
                                         title="Add follower"
-                                        onPress={() => NavigationService.navigate(Screens.AddFollowerToTeamStreak)}
+                                        onPress={() => this.props.navigation.push(Screens.AddFollowerToTeamStreak)}
                                     />
                                 </Spacer>
                                 {selectedTeamStreak.status === StreakStatus.live ? (
@@ -511,11 +469,11 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                     <Spacer />
                                     <Button
                                         title="Add note"
-                                        onPress={() => NavigationService.navigate(Screens.AddNoteToTeamStreak)}
+                                        onPress={() => this.props.navigation.push(Screens.AddNoteToTeamStreak)}
                                     />
                                     <TeamNotes
                                         navigation={this.props.navigation}
-                                        subjectId={this.props.navigation.getParam('_id')}
+                                        subjectId={this.props.route.params._id}
                                     />
                                 </Spacer>
                             </>
@@ -563,7 +521,7 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                                 onPress={() =>
                                                     this.props.navigation.navigate(Screens.TeamMemberStreakInfo, {
                                                         _id: item.teamMemberStreak._id,
-                                                        streakName: this.props.navigation.getParam('streakName'),
+                                                        streakName: this.props.route.params.streakName,
                                                     })
                                                 }
                                             >
@@ -642,8 +600,6 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
     }
 }
 
-const TeamStreakInfoScreen = withNavigationFocus(
-    connect(mapStateToProps, mapDispatchToProps)(TeamStreakInfoScreenComponent),
-);
+const TeamStreakInfoScreen = connect(mapStateToProps, mapDispatchToProps)(TeamStreakInfoScreenComponent);
 
 export { TeamStreakInfoScreen };

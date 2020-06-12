@@ -1,36 +1,27 @@
 import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import {
-    NavigationScreenProp,
-    NavigationState,
-    ScrollView,
-    withNavigationFocus,
-    NavigationEvents,
-} from 'react-navigation';
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { AppState } from '../../store';
 import { Button, Avatar, Text, ListItem } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { authActions, userActions } from '../actions/sharedActions';
+import { userActions } from '../actions/authenticatedSharedActions';
+import { authActions } from '../actions/unauthenticatedSharedActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCog, faShareAlt, faUser } from '@fortawesome/pro-solid-svg-icons';
+import { faUser } from '@fortawesome/pro-solid-svg-icons';
 import { NotificationOptions } from '../components/NotificationOptions';
-import { HamburgerSelector } from '../components/HamburgerSelector';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { Screens } from './Screens';
 import { NavigationLink } from '../components/NavigationLink';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
-import { streakoidUrl } from '../streakoidUrl';
-import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 
-import { YellowBox, Share } from 'react-native';
-
-YellowBox.ignoreWarnings([
-    'VirtualizedLists should never be nested', // TODO: Remove when fixed
-]);
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { AccountStrengthProgressBar } from '../components/AccountStrengthProgressBar';
+import { getAccountCompletionPercentage } from '../helpers/getAccountCompletionPercentage';
+import { AccountStackParamList } from '../screenNavigation/AccountStack';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -64,9 +55,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, { username?: string }>;
-}
+type AccountScreenNavigationProp = StackNavigationProp<AccountStackParamList, Screens.Account>;
+type AccountScreenRouteProp = RouteProp<AccountStackParamList, Screens.Account>;
+
+type NavigationProps = {
+    navigation: AccountScreenNavigationProp;
+    route: AccountScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> &
@@ -80,35 +75,10 @@ const styles = StyleSheet.create({
 });
 
 class AccountScreenComponent extends React.PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<NavigationState, { username: string }>;
-    }) => {
-        const username = navigation.getParam('username');
-        return {
-            title: 'Account',
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
-            drawerIcon: () => <FontAwesomeIcon icon={faCog} />,
-            headerRight: username ? (
-                <Button
-                    type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} />}
-                    onPress={async () => {
-                        await Share.share({
-                            message: `View my Streakoid profile at ${streakoidUrl}/${RouterCategories.users}/${username}`,
-                            url: `${streakoidUrl}/${RouterCategories.users}/${username}`,
-                            title: 'View my Streakoid profile',
-                        });
-                    }}
-                />
-            ) : null,
-        };
-    };
-
     componentDidMount() {
+        this.props.getCurrentUser();
         this.props.navigation.setParams({
-            username: this.props.currentUser.username,
+            username: this.props.currentUser.username || '',
         });
     }
 
@@ -120,16 +90,9 @@ class AccountScreenComponent extends React.PureComponent<Props> {
             updatePushNotificationsIsLoading,
             updatePushNotificationsErrorMessage,
         } = this.props;
-
         const profileImage = currentUser && currentUser.profileImages.originalImageUrl;
         return (
             <ScrollView style={styles.container}>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        this.props.getCurrentUser();
-                    }}
-                />
-
                 <View>
                     <Spacer>
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -142,8 +105,24 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                         </View>
                     </Spacer>
                     <Spacer>
-                        <Button title="Logout" onPress={() => logoutUser()} />
+                        <Button
+                            title="Logout"
+                            onPress={() => {
+                                logoutUser();
+                                const parent = this.props.navigation.dangerouslyGetParent();
+                                parent?.navigate(Screens.Landing);
+                            }}
+                        />
                     </Spacer>
+                    {getAccountCompletionPercentage({ currentUser }) < 100 ? (
+                        <View style={{ marginTop: 5, marginLeft: 15 }}>
+                            <Text
+                                onPress={() => this.props.navigation.navigate(Screens.WhatIsYourFirstName)}
+                                style={{ color: 'blue' }}
+                            >{`Improve your account strength`}</Text>
+                        </View>
+                    ) : null}
+                    <AccountStrengthProgressBar currentUser={currentUser} />
 
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>
@@ -196,8 +175,8 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                             <>
                                 <Spacer />
                                 <NavigationLink
-                                    text={`Find someone to follow`}
                                     navigation={this.props.navigation}
+                                    text={`Find someone to follow`}
                                     screen={Screens.Users}
                                 />
                             </>
@@ -270,7 +249,6 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                         <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>
                         <Text />
                         <GeneralActivityFeed
-                            navigation={this.props.navigation}
                             activityFeedItems={
                                 currentUser && currentUser.activityFeed && currentUser.activityFeed.activityFeedItems
                             }
@@ -294,6 +272,6 @@ class AccountScreenComponent extends React.PureComponent<Props> {
     }
 }
 
-const AccountScreen = withNavigationFocus(connect(mapStateToProps, mapDispatchToProps)(AccountScreenComponent));
+const AccountScreen = connect(mapStateToProps, mapDispatchToProps)(AccountScreenComponent);
 
 export { AccountScreen };

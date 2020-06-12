@@ -1,17 +1,19 @@
 import React, { PureComponent } from 'react';
 import { ChallengeStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/challengeStreakReducer';
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text } from 'react-native-elements';
 
 import { ChallengeStreakTaskButton } from './ChallengeStreakTaskButton';
 import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
-import { challengeStreakActions } from '../actions/sharedActions';
+import { challengeStreakActions } from '../actions/authenticatedSharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { StreakFlame } from './StreakFlame';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
 
 interface LiveChallengeStreakListProps {
+    navigation: StackNavigationProp<RootStackParamList>;
     getChallengeStreak: typeof challengeStreakActions.getChallengeStreak;
     getLiveChallengeStreaks: typeof challengeStreakActions.getLiveChallengeStreaks;
     getMultipleLiveChallengeStreaksIsLoading: boolean;
@@ -22,11 +24,7 @@ interface LiveChallengeStreakListProps {
     userId: string;
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
-
-type Props = LiveChallengeStreakListProps & NavigationProps;
+type Props = LiveChallengeStreakListProps;
 
 class LiveChallengeStreakList extends PureComponent<Props> {
     renderLiveChallengeStreakList(): JSX.Element {
@@ -107,19 +105,9 @@ class LiveChallengeStreakList extends PureComponent<Props> {
             liveChallengeStreaks,
             getMultipleLiveChallengeStreaksIsLoading,
             totalNumberOfChallengeStreaks,
-            userId,
-            getLiveChallengeStreaks,
         } = this.props;
-
         return (
             <>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        if (userId) {
-                            getLiveChallengeStreaks();
-                        }
-                    }}
-                />
                 {totalNumberOfChallengeStreaks === 0 && !getMultipleLiveChallengeStreaksIsLoading ? (
                     <View style={{ marginTop: 5 }}>
                         <NavigationLink

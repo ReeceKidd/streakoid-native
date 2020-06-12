@@ -6,7 +6,7 @@ import { AppState } from '../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { noteActions } from '../actions/sharedActions';
+import { noteActions } from '../actions/authenticatedSharedActions';
 import { View, StyleSheet } from 'react-native';
 import { Spacer } from '../components/Spacer';
 import { AddNoteForm } from '../components/AddNoteForm';

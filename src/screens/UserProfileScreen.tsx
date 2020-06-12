@@ -1,23 +1,24 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Text, ListItem, Avatar, Button } from 'react-native-elements';
-import { NavigationScreenProp, NavigationState, FlatList, ScrollView, NavigationEvents } from 'react-navigation';
 import { Spacer } from '../components/Spacer';
 import { AppState, AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
-import { userActions } from '../actions/sharedActions';
+import { userActions } from '../actions/authenticatedSharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Screens } from './Screens';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
-import { streakoidUrl } from '../streakoidUrl';
-import { faShareAlt, faChild, faPeopleCarry, faMedal, faUser } from '@fortawesome/pro-solid-svg-icons';
-import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import { faChild, faPeopleCarry, faMedal, faUser } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { SoloStreak } from '@streakoid/streakoid-models/lib/Models/SoloStreak';
 import { PopulatedTeamStreak } from '@streakoid/streakoid-models/lib/Models/PopulatedTeamStreak';
 import { ChallengeStreak } from '@streakoid/streakoid-models/lib/Models/ChallengeStreak';
 import { StreakFlame } from '../components/StreakFlame';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../StackNavigator';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -37,9 +38,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     unfollowSelectedUser: bindActionCreators(userActions.unfollowSelectedUser, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, { username: string; _id: string }>;
-}
+type UserProfileScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.UserProfile>;
+type UserProfileScreenRouteProp = RouteProp<RootStackParamList, Screens.UserProfile>;
+
+type NavigationProps = {
+    navigation: UserProfileScreenNavigationProp;
+    route: UserProfileScreenRouteProp;
+};
 type Props = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> &
     NavigationProps & { isFocused: boolean };
@@ -52,54 +57,25 @@ const styles = StyleSheet.create({
 });
 
 class UserProfileScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<NavigationState, { username: string }>;
-    }) => {
-        const username = navigation.getParam('username');
-        return {
-            title: username,
-            headerRight: username ? (
-                <Button
-                    type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} />}
-                    onPress={async () => {
-                        await Share.share({
-                            message: `View ${username}'s profile at ${streakoidUrl}/${RouterCategories.users}/${username}`,
-                            url: `${streakoidUrl}/${RouterCategories.users}/${username}`,
-                            title: `View ${username}'s Streakoid profile`,
-                        });
-                    }}
-                />
-            ) : null,
-        };
-    };
-
     componentDidMount() {
-        const username = this.props.navigation.getParam('username');
+        const username = this.props.route.params.username;
         this.props.getUser({ username });
     }
 
     componentDidUpdate(prevProps: Props) {
-        const previousUsername = prevProps.navigation.getParam('username');
-        const newUsername = this.props.navigation.getParam('username');
+        const previousUsername = prevProps.route.params.username;
+        const newUsername = this.props.route.params.username;
         if (previousUsername !== newUsername) {
             this.props.getUser({ username: newUsername });
         }
     }
 
     render(): JSX.Element {
-        const { getUser, selectedUser, getUserIsLoading, currentUser } = this.props;
+        const { selectedUser, getUserIsLoading, currentUser } = this.props;
         const profileImage = selectedUser.profileImages.originalImageUrl;
         const { soloStreaks, teamStreaks, challengeStreaks } = selectedUser;
         return (
             <ScrollView style={styles.container}>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getUser({ username: this.props.navigation.getParam('username') });
-                    }}
-                />
                 {getUserIsLoading ? (
                     <Spacer>
                         <LoadingScreenSpinner />
@@ -177,6 +153,7 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                                             this.props.navigation.navigate(Screens.SoloStreakInfo, {
                                                                 _id: item._id,
                                                                 streakName: item.streakName,
+                                                                isUsersStreak: item.userId === currentUser._id,
                                                             })
                                                         }
                                                     >
@@ -235,6 +212,11 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                                             this.props.navigation.navigate(Screens.TeamStreakInfo, {
                                                                 _id,
                                                                 streakName,
+                                                                userIsApartOfStreak: Boolean(
+                                                                    item.members.find(
+                                                                        (user) => user._id === currentUser._id,
+                                                                    ),
+                                                                ),
                                                             })
                                                         }
                                                     >
@@ -342,13 +324,10 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                                 <View>
                                                     <TouchableOpacity
                                                         onPress={() =>
-                                                            this.props.navigation.navigate(
-                                                                Screens.ChallengeStreakInfo,
-                                                                {
-                                                                    _id: item._id,
-                                                                    streakName: item.challengeName,
-                                                                },
-                                                            )
+                                                            this.props.navigation.navigate(Screens.UserProfile, {
+                                                                _id: item._id,
+                                                                username: item.username,
+                                                            })
                                                         }
                                                     >
                                                         <ListItem
@@ -475,7 +454,6 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>
                             <GeneralActivityFeed
-                                navigation={this.props.navigation}
                                 activityFeedItems={
                                     selectedUser &&
                                     selectedUser.activityFeed &&

@@ -1,18 +1,20 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
 import { AppState } from '../../store';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { leaderboardActions } from '../actions/sharedActions';
+import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {
     const globalUserLeaderboard = state && state.leaderboards && state.leaderboards.globalUserLeaderboard;
@@ -31,13 +33,20 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getGlobalUserLeaderboard: bindActionCreators(leaderboardActions.getGlobalUserLeaderboard, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type GlobalUserLeaderboardScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.GlobalUserLeaderboard>;
+type GlobalUserLeaderboardScreenRouteProp = RouteProp<RootStackParamList, Screens.GlobalUserLeaderboard>;
+
+type NavigationProps = {
+    navigation: GlobalUserLeaderboardScreenNavigationProp;
+    route: GlobalUserLeaderboardScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 class GlobalUserLeaderboardScreenComponent extends PureComponent<Props> {
+    componentDidMount() {
+        this.props.getGlobalUserLeaderboard({ limit: 25 });
+    }
     renderGlobalUserLeaderboard(): JSX.Element {
         const { globalUserLeaderboard } = this.props;
         return (
@@ -80,14 +89,9 @@ class GlobalUserLeaderboardScreenComponent extends PureComponent<Props> {
     }
 
     render(): JSX.Element | null {
-        const { getGlobalUserLeaderboard, getGlobalUserLeaderboardIsLoading } = this.props;
+        const { getGlobalUserLeaderboardIsLoading } = this.props;
         return (
             <ScrollView>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getGlobalUserLeaderboard({});
-                    }}
-                />
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold' }}>

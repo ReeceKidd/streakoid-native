@@ -5,9 +5,8 @@ import { View } from 'react-native';
 import { Spacer } from './Spacer';
 import { Input, Button, Text } from 'react-native-elements';
 import { ErrorMessage } from './ErrorMessage';
-import { teamStreakActions, userActions } from '../actions/sharedActions';
+import { teamStreakActions, userActions } from '../actions/authenticatedSharedActions';
 import { FollowerSelector } from './FollowerSelector';
-import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
 
@@ -27,11 +26,7 @@ interface FormValues {
     streakDuration?: string;
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
-
-type Props = CreateTeamStreakFormProps & NavigationProps;
+type Props = CreateTeamStreakFormProps;
 
 const validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};

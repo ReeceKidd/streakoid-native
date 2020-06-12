@@ -1,38 +1,32 @@
+/* eslint-disable react/display-name */
 import React from 'react';
-import { FollowingActivityScreen } from '../screens/FollowingActivityScreen';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createStackNavigator } from 'react-navigation-stack';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUserFriends, faGlobe } from '@fortawesome/pro-solid-svg-icons';
-import { GlobalActivityScreen } from '../screens/GlobalActivityScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Screens } from '../screens/Screens';
+import { ActivityFeedBottomTab } from './ActivityFeedBottomTab';
+import { HamburgerSelector } from '../components/HamburgerSelector';
+import { UsersStackScreen } from './UserStack';
 
-const FollowingActivityStack = createStackNavigator(
-    {
-        FollowingActivity: FollowingActivityScreen,
-    },
-    {
-        navigationOptions: {
-            title: 'Following',
-            tabBarIcon: <FontAwesomeIcon icon={faUserFriends} />,
-        },
-    },
+export type ActivityFeedStackParamList = {
+    GlobalActivity: undefined;
+    FollowingActivity: undefined;
+    Users: undefined;
+};
+
+const Stack = createStackNavigator<ActivityFeedStackParamList>();
+
+const ActivityFeedBottomTabStackScreen = (
+    <Stack.Screen
+        name={Screens.GlobalActivity}
+        options={{ title: 'Activity Feed', headerLeft: () => <HamburgerSelector /> }}
+        component={ActivityFeedBottomTab}
+    />
 );
 
-const GlobalActivityStack = createStackNavigator(
-    {
-        GlobalActivity: GlobalActivityScreen,
-    },
-    {
-        navigationOptions: {
-            title: 'Global',
-            tabBarIcon: <FontAwesomeIcon icon={faGlobe} />,
-        },
-    },
+const ActivityFeedStack = () => (
+    <Stack.Navigator>
+        {ActivityFeedBottomTabStackScreen}
+        {UsersStackScreen}
+    </Stack.Navigator>
 );
 
-const ActivityBottomTabNavigator = createBottomTabNavigator({
-    FollowingActivity: FollowingActivityStack,
-    GlobalActivity: GlobalActivityStack,
-});
-
-export { ActivityBottomTabNavigator };
+export { ActivityFeedStack };

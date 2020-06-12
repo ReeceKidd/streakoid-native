@@ -1,27 +1,26 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, AppState as ReactNativeAppState, ActivityIndicator } from 'react-native';
-import { Text, Button } from 'react-native-elements';
+import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
+import { Text } from 'react-native-elements';
 
 import { AppState } from '../../store';
 import { Spacer } from '../components/Spacer';
-import { HamburgerSelector } from '../components/HamburgerSelector';
-import { challengeStreakActions } from '../actions/sharedActions';
+import { challengeStreakActions } from '../actions/authenticatedSharedActions';
 import { LiveChallengeStreakList } from '../components/LiveChallengeStreakList';
 import { ArchivedChallengeStreakList } from '../components/ArchivedChallengeStreakList';
-import NavigationService from './NavigationService';
 import { Screens } from './Screens';
-import { faPlus, faArchive } from '@fortawesome/pro-solid-svg-icons';
+import { faArchive } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
-import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
 import { ProgressBar } from '../components/ProgressBar';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const getIncompleteChallengeStreaks = (state: AppState) => {
     return (
@@ -75,9 +74,11 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getArchivedChallengeStreaks: bindActionCreators(challengeStreakActions.getArchivedChallengeStreaks, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type ChallengeStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChallengeStreaks>;
+
+type NavigationProps = {
+    navigation: ChallengeStreaksScreenNavigationProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -89,46 +90,10 @@ const styles = StyleSheet.create({
 });
 
 class ChallengeStreaksScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<
-            NavigationState,
-            { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveChallengeStreaksIsLoading: boolean }
-        >;
-    }) => {
-        const isPayingMember = navigation.getParam('isPayingMember');
-        const totalLiveStreaks = navigation.getParam('totalLiveStreaks');
-        const getMultipleLiveChallengeStreaksIsLoading = navigation.getParam(
-            'getMultipleLiveChallengeStreaksIsLoading',
-        );
-        const userHasReachedFreeStreakLimit = !isPayingMember && totalLiveStreaks > MAXIMUM_NUMBER_OF_FREE_STREAKS;
-        return {
-            title: 'Challenge Streaks',
-            headerRight: (
-                <Button
-                    type="clear"
-                    icon={<FontAwesomeIcon icon={faPlus} size={30} />}
-                    onPress={() => {
-                        if (!userHasReachedFreeStreakLimit) {
-                            return NavigationService.navigate(Screens.Challenges);
-                        }
-                        NavigationService.navigate(Screens.Upgrade);
-                    }}
-                />
-            ),
-            headerLeft: () => (
-                <View style={{ flexDirection: 'row' }}>
-                    <HamburgerSelector navigation={navigation} />
-                    {getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator /> : null}
-                </View>
-            ),
-        };
-    };
-
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
+        this.props.getArchivedChallengeStreaks();
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -151,7 +116,6 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
         const {
             getLiveChallengeStreaks,
-            getArchivedChallengeStreaks,
             getChallengeStreak,
             completeChallengeStreakListTask,
             incompleteChallengeStreakListTask,
@@ -201,10 +165,8 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                             Archived Challenge Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedChallengeStreakList
-                            getArchivedChallengeStreaks={getArchivedChallengeStreaks}
                             archivedChallengeStreaks={archivedChallengeStreaks}
                             getMultipleArchivedChallengeStreaksIsLoading={getArchivedChallengeStreaksIsLoading}
-                            navigation={this.props.navigation}
                         />
                     </Spacer>
                 </View>

@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
-import { HamburgerSelector } from '../components/HamburgerSelector';
 import { AppActions, AppState } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { leaderboardActions } from '../actions/sharedActions';
+import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
 import { ListItem } from 'react-native-elements';
 import {
@@ -17,6 +15,10 @@ import {
     faGlobe,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../StackNavigator';
+import { FlatList } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
     const following = state && state.users && state.users.currentUser && state.users.currentUser.following;
@@ -35,9 +37,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getFollowingLeaderboard: bindActionCreators(leaderboardActions.getFollowingLeaderboard, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type LeaderboardsScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Leaderboards>;
+type LeaderboardsScreenRouteProp = RouteProp<RootStackParamList, Screens.Leaderboards>;
+
+type NavigationProps = {
+    navigation: LeaderboardsScreenNavigationProp;
+    route: LeaderboardsScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -48,13 +54,6 @@ interface LeaderboardMenuOption {
 }
 
 class LeaderboardsScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
-        return {
-            title: 'Leaderboards',
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
-        };
-    };
-
     static LeaderboardsMenuOptions: LeaderboardMenuOption[] = [
         { name: 'Following', screen: Screens.FollowingLeaderboard, icon: faUserFriends },
         { name: 'Global', screen: Screens.GlobalUserLeaderboard, icon: faGlobe },
@@ -75,30 +74,13 @@ class LeaderboardsScreenComponent extends PureComponent<Props> {
         getSoloStreaksLeaderboard();
         getTeamStreaksLeaderboard();
         getChallengeStreaksLeaderboard();
-        getGlobalUserLeaderboard({});
+        getGlobalUserLeaderboard({ limit: 25 });
         getFollowingLeaderboard({ userIds });
     }
 
     render(): JSX.Element | null {
-        const {
-            getSoloStreaksLeaderboard,
-            getTeamStreaksLeaderboard,
-            getChallengeStreaksLeaderboard,
-            getGlobalUserLeaderboard,
-            getFollowingLeaderboard,
-            userIds,
-        } = this.props;
         return (
             <>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getSoloStreaksLeaderboard();
-                        getTeamStreaksLeaderboard();
-                        getChallengeStreaksLeaderboard();
-                        getGlobalUserLeaderboard({});
-                        getFollowingLeaderboard({ userIds });
-                    }}
-                />
                 <FlatList
                     data={LeaderboardsScreenComponent.LeaderboardsMenuOptions}
                     keyExtractor={(leaderboardMenuOption: LeaderboardMenuOption) => leaderboardMenuOption.name}

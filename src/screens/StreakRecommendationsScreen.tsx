@@ -1,27 +1,23 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ListItem, Button, Text } from 'react-native-elements';
-import {
-    FlatList,
-    ScrollView,
-    NavigationEvents,
-    NavigationScreenProp,
-    NavigationState,
-    NavigationParams,
-} from 'react-navigation';
+
 import { Spacer } from '../components/Spacer';
 import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
-import { streakRecommendationActions } from '../actions/sharedActions';
-import { HamburgerSelector } from '../components/HamburgerSelector';
+import { streakRecommendationActions } from '../actions/authenticatedSharedActions';
 import { StreakRecommendationWithClientData } from '@streakoid/streakoid-shared/lib/reducers/streakRecommendationsReducer';
 import { NavigationLink } from '../components/NavigationLink';
 import { Screens } from './Screens';
 import { ChallengeIcon } from '../components/ChallengeIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faRobot, faCheck, faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
+import { faCheck, faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
     const streakRecommendations =
@@ -38,10 +34,7 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    getRandomStreakRecommendations: bindActionCreators(
-        streakRecommendationActions.getRandomStreakRecommendations,
-        dispatch,
-    ),
+    getStreakRecommendations: bindActionCreators(streakRecommendationActions.getStreakRecommendations, dispatch),
     clearGetStreakRecommendationsErrorMessage: bindActionCreators(
         streakRecommendationActions.clearGetStreakRecommendationsErrorMessage,
         dispatch,
@@ -49,9 +42,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     selectStreakRecommendation: bindActionCreators(streakRecommendationActions.selectStreakRecommendation, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type StreakRecommendationsScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.StreakRecommendations>;
+type StreakRecommendationsScreenRouteProp = RouteProp<RootStackParamList, Screens.StreakRecommendations>;
+
+type NavigationProps = {
+    navigation: StreakRecommendationsScreenNavigationProp;
+    route: StreakRecommendationsScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -62,14 +59,9 @@ const styles = StyleSheet.create({
 });
 
 class StreakRecommendationsScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
-        return {
-            title: 'Streak Recommendations',
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
-            drawerIcon: () => <FontAwesomeIcon icon={faRobot} />,
-        };
-    };
-
+    componentDidMount() {
+        this.props.getStreakRecommendations({ random: true, limit: 10, sortedByNumberOfMembers: true });
+    }
     renderStreakSelectButton(streakRecommendation: StreakRecommendationWithClientData): JSX.Element {
         const { hasBeenSelected, _id } = streakRecommendation;
         const streakSelectButton = hasBeenSelected ? (
@@ -87,14 +79,9 @@ class StreakRecommendationsScreenComponent extends PureComponent<Props> {
         return streakSelectButton;
     }
     render(): JSX.Element {
-        const { getRandomStreakRecommendations, getStreakRecommendationsIsLoading, streakRecommendations } = this.props;
+        const { getStreakRecommendations, getStreakRecommendationsIsLoading, streakRecommendations } = this.props;
         return (
             <ScrollView style={styles.container}>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getRandomStreakRecommendations();
-                    }}
-                />
                 <>
                     <Spacer>
                         <View style={{ alignItems: 'center' }}>
@@ -106,7 +93,7 @@ class StreakRecommendationsScreenComponent extends PureComponent<Props> {
                             buttonStyle={{ backgroundColor: 'green' }}
                             icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" />}
                             onPress={() => {
-                                this.props.getRandomStreakRecommendations();
+                                getStreakRecommendations({ random: true, limit: 10, sortedByNumberOfMembers: true });
                             }}
                         />
                     </Spacer>
@@ -137,7 +124,6 @@ class StreakRecommendationsScreenComponent extends PureComponent<Props> {
                         <View style={{ alignItems: 'center' }}>
                             <NavigationLink
                                 text="Streaks are added to your Challenge streaks"
-                                navigation={this.props.navigation}
                                 screen={Screens.ChallengeStreaks}
                             />
                         </View>

@@ -1,26 +1,30 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, FlatList, NavigationEvents } from 'react-navigation';
 
 import { AppState } from '../../store';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { leaderboardActions } from '../actions/sharedActions';
+import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text } from 'react-native-elements';
 import { View, ActivityIndicator } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChild } from '@fortawesome/pro-solid-svg-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {
+    const currentUser = state && state.users && state.users.currentUser;
     const soloStreakLeaderboard = state && state.leaderboards && state.leaderboards.soloStreakLeaderboard;
     const getSoloStreakLeaderboardIsLoading =
         state && state.leaderboards && state.leaderboards.getSoloStreakLeaderboardIsLoading;
     const getSoloStreakLeaderboardErrorMessage =
         state && state.leaderboards && state.leaderboards.getSoloStreakLeaderboardErrorMessage;
     return {
+        currentUser,
         soloStreakLeaderboard,
         getSoloStreakLeaderboardIsLoading,
         getSoloStreakLeaderboardErrorMessage,
@@ -31,15 +35,22 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getSoloStreaksLeaderboard: bindActionCreators(leaderboardActions.getSoloStreakLeaderboard, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type SoloStreakLeaderboardScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.SoloStreakLeaderboard>;
+type SoloStreakLeaderboardScreenRouteProp = RouteProp<RootStackParamList, Screens.SoloStreakLeaderboard>;
+
+type NavigationProps = {
+    navigation: SoloStreakLeaderboardScreenNavigationProp;
+    route: SoloStreakLeaderboardScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 class SoloStreakLeaderboardScreenComponent extends PureComponent<Props> {
+    componentDidMount() {
+        this.props.getSoloStreaksLeaderboard();
+    }
     renderSoloStreakLeaderboard(): JSX.Element {
-        const { soloStreakLeaderboard } = this.props;
+        const { soloStreakLeaderboard, currentUser } = this.props;
         return (
             <FlatList
                 data={soloStreakLeaderboard}
@@ -53,6 +64,7 @@ class SoloStreakLeaderboardScreenComponent extends PureComponent<Props> {
                                     this.props.navigation.navigate(Screens.SoloStreakInfo, {
                                         _id: streakId,
                                         streakName: streakName,
+                                        isUsersStreak: item.username === currentUser.username,
                                     })
                                 }
                             >
@@ -78,14 +90,9 @@ class SoloStreakLeaderboardScreenComponent extends PureComponent<Props> {
     }
 
     render(): JSX.Element | null {
-        const { getSoloStreaksLeaderboard, getSoloStreakLeaderboardIsLoading } = this.props;
+        const { getSoloStreakLeaderboardIsLoading } = this.props;
         return (
             <ScrollView>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getSoloStreaksLeaderboard();
-                    }}
-                />
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>

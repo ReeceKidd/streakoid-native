@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { noteActions } from '../actions/sharedActions';
+import { noteActions } from '../actions/authenticatedSharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { connect } from 'react-redux';
@@ -9,10 +9,11 @@ import { ActivityIndicator, FlatList } from 'react-native';
 import { AppState } from '../../store';
 import { NoteWithClientData } from '@streakoid/streakoid-shared/lib/reducers/notesReducer';
 import { Spacer } from './Spacer';
-import { NavigationEvents, NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { Screens } from '../screens/Screens';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const notes = state && state.notes && state.notes.notes;
@@ -30,11 +31,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
 });
 
 interface NotesProps {
+    navigation: StackNavigationProp<RootStackParamList>;
     subjectId?: string;
-}
-
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
 }
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NotesProps & NavigationProps;
@@ -61,7 +59,6 @@ class NotesComponent extends PureComponent<Props> {
         const { notes, getMultipleNotesIsLoading } = this.props;
         return (
             <>
-                <NavigationEvents onWillFocus={() => this.getNotes()} onWillBlur={() => this.props.clearNotes()} />
                 {!getMultipleNotesIsLoading && notes.length === 0 ? (
                     <Spacer>
                         <Text style={{ color: 'red' }}>{`No notes `}</Text>

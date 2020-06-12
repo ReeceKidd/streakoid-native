@@ -5,12 +5,10 @@ import { AppState } from '../../store';
 import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { soloStreakActions, userActions } from '../actions/sharedActions';
+import { soloStreakActions, userActions } from '../actions/authenticatedSharedActions';
 import { Text, Button, ListItem } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
-import { NavigationScreenProp, NavigationState, NavigationEvents, ScrollView } from 'react-navigation';
 import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
-import NavigationService from './NavigationService';
 import { Screens } from './Screens';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { connect } from 'react-redux';
@@ -21,25 +19,22 @@ import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreati
 import { StreakRestartsCard } from '../components/StreakRestartsCard';
 import { TouchableOpacity } from 'react-native';
 import { IndividualNotes } from '../components/IndividualNotes';
-import { Picker, StyleSheet, View, ActivityIndicator, Share } from 'react-native';
+import { Picker, StyleSheet, View, ActivityIndicator } from 'react-native';
 import NativePushNotification from 'react-native-push-notification';
 
-import { YellowBox } from 'react-native';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { CustomSoloStreakReminderPushNotification } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
 import { CustomSoloStreakReminder, CustomStreakReminder } from '@streakoid/streakoid-models/lib/Models/StreakReminders';
-import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faEdit, faShareAlt, faBell } from '@fortawesome/pro-solid-svg-icons';
-import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import { faBell } from '@fortawesome/pro-solid-svg-icons';
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { StreakFlame } from '../components/StreakFlame';
-
-YellowBox.ignoreWarnings([
-    'VirtualizedLists should never be nested', // TODO: Remove when fixed
-]);
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { RouteProp } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -90,10 +85,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCustomSoloStreakReminder: bindActionCreators(soloStreakActions.updateCustomSoloStreakReminder, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, { _id: string; streakName: string; isUsersStreak: boolean }>;
-}
+type SoloStreakInfoScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.SoloStreakInfo>;
+type SoloStreakInfoScreenRouteProp = RouteProp<RootStackParamList, Screens.SoloStreakInfo>;
 
+type NavigationProps = {
+    navigation: SoloStreakInfoScreenNavigationProp;
+    route: SoloStreakInfoScreenRouteProp;
+};
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
@@ -103,48 +101,13 @@ const styles = StyleSheet.create({
 });
 
 class SoloStreakInfoScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<NavigationState, { _id: string; streakName: string; isUsersStreak: boolean }>;
-    }) => {
-        const soloStreakId = navigation.getParam('_id');
-        const streakName = navigation.getParam('streakName');
-        const isUsersStreak = navigation.getParam('isUsersStreak');
-        return {
-            title: streakName,
-            headerRight: (
-                <View style={{ flexDirection: 'row' }}>
-                    {isUsersStreak ? (
-                        <Button
-                            type="clear"
-                            icon={<FontAwesomeIcon icon={faEdit} />}
-                            onPress={() => NavigationService.navigate(Screens.EditSoloStreak)}
-                        />
-                    ) : null}
-                    <Button
-                        type="clear"
-                        icon={<FontAwesomeIcon icon={faShareAlt} />}
-                        onPress={async () => {
-                            await Share.share({
-                                message: `View solo streak ${streakName} at ${streakoidUrl}/${RouterCategories.soloStreaks}/${soloStreakId}`,
-                                url: `${streakoidUrl}/${RouterCategories.soloStreaks}/${soloStreakId}`,
-                                title: `View Streakoid solo streak ${streakName}`,
-                            });
-                        }}
-                    />
-                </View>
-            ),
-        };
-    };
-
     componentDidMount() {
-        this.props.getSoloStreak(this.props.navigation.getParam('_id'));
+        this.props.getSoloStreak(this.props.route.params._id);
     }
 
     componentDidUpdate(prevProps: Props) {
-        if (prevProps.navigation.getParam('_id') !== this.props.navigation.getParam('_id')) {
-            this.props.getSoloStreak(this.props.navigation.getParam('_id'));
+        if (prevProps.route.params._id !== this.props.route.params._id) {
+            this.props.getSoloStreak(this.props.route.params._id);
         }
     }
 
@@ -208,8 +171,8 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
         reminderMinute: number;
         enabled: boolean;
     }) => {
-        const soloStreakName = this.props.navigation.getParam('streakName');
-        const soloStreakId = this.props.navigation.getParam('_id');
+        const soloStreakName = this.props.route.params.streakName;
+        const soloStreakId = this.props.route.params._id;
         const customStreakReminders = this.props.currentUser.pushNotifications.customStreakReminders;
         const customCompleteSoloStreakReminder = customStreakReminders.find(
             (pushNotification) =>
@@ -417,11 +380,6 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                     <LoadingScreenSpinner />
                 ) : (
                     <ScrollView>
-                        <NavigationEvents
-                            onWillFocus={() => {
-                                this.props.getSoloStreak(this.props.navigation.getParam('_id'));
-                            }}
-                        />
                         {selectedSoloStreak.userId === currentUser._id ? (
                             selectedSoloStreak.status === StreakStatus.live ? (
                                 <Spacer>
@@ -496,10 +454,10 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                     <Spacer>
                                         <Button
                                             title="Add note"
-                                            onPress={() => NavigationService.navigate(Screens.AddNoteToSoloStreak)}
+                                            onPress={() => this.props.navigation.push(Screens.AddNoteToSoloStreak)}
                                         />
                                     </Spacer>
-                                    <IndividualNotes subjectId={this.props.navigation.getParam('_id')} />
+                                    <IndividualNotes subjectId={this.props.route.params._id} />
                                 </>
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
@@ -514,7 +472,6 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                             <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>
                             <Spacer />
                             <GeneralActivityFeed
-                                navigation={this.props.navigation}
                                 activityFeedItems={selectedSoloStreak.activityFeed.activityFeedItems}
                             />
                         </Spacer>

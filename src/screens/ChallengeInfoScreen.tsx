@@ -1,28 +1,22 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, TouchableOpacity, ActivityIndicator, Share } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Text, ListItem, Button, Card, Divider } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {
-    faShareAlt,
-    faUsers,
-    faCalendarCheck,
-    faCrown,
-    faFlame,
-    faCalendarTimes,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faUsers, faCalendarCheck, faCrown, faFlame, faCalendarTimes } from '@fortawesome/pro-solid-svg-icons';
 
-import { NavigationScreenProp, NavigationState, FlatList, NavigationEvents, ScrollView } from 'react-navigation';
 import { Spacer } from '../components/Spacer';
 import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
-import { challengeActions } from '../actions/sharedActions';
+import { challengeActions } from '../actions/authenticatedSharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { ChallengeIcon } from '../components/ChallengeIcon';
 import { Screens } from './Screens';
 import { WhatsappGroupLink } from '../components/WhatsappGroupLink';
-import { streakoidUrl } from '../streakoidUrl';
-import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { RouteProp } from '@react-navigation/native';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
     const selectedChallenge = state && state.challenges && state.challenges.selectedChallenge;
@@ -36,12 +30,15 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     joinChallenge: bindActionCreators(challengeActions.joinChallenge, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, { _id: string; challengeName: string }>;
-}
-type Props = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps> &
-    NavigationProps & { isFocused: boolean };
+type ChallengeInfoScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChallengeInfo>;
+type ChallengeInfoScreenRouteProp = RouteProp<RootStackParamList, Screens.ChallengeInfo>;
+
+type NavigationProps = {
+    navigation: ChallengeInfoScreenNavigationProp;
+    route: ChallengeInfoScreenRouteProp;
+};
+
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
     container: {
@@ -50,48 +47,23 @@ const styles = StyleSheet.create({
 });
 
 class ChallengeInfoScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<NavigationState, { _id: string; challengeName: string }>;
-    }) => {
-        const challengeName = navigation.getParam('challengeName');
-        const challengeId = navigation.getParam('_id');
-        return {
-            title: challengeName,
-            headerRight: challengeName ? (
-                <Button
-                    type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} />}
-                    onPress={async () => {
-                        await Share.share({
-                            message: `Join the ${challengeName} challenge at ${streakoidUrl}/${RouterCategories.challenges}/${challengeId}`,
-                            url: `${streakoidUrl}/${RouterCategories.challenges}/${challengeId}`,
-                            title: `Join the ${challengeName} challenge`,
-                        });
-                    }}
-                />
-            ) : null,
-        };
-    };
+    componentDidMount() {
+        this.props.getChallenge({
+            challengeId: this.props.route.params._id,
+        });
+    }
+
     joinChallenge(challengeId: string) {
         this.props.joinChallenge({ challengeId });
     }
 
     render(): JSX.Element | null {
-        const { getChallenge, selectedChallenge, getSelectedChallengeIsLoading, joinChallengeIsLoading } = this.props;
+        const { selectedChallenge, getSelectedChallengeIsLoading, joinChallengeIsLoading } = this.props;
         if (!selectedChallenge) {
             return null;
         }
         return (
             <ScrollView style={styles.container}>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getChallenge({
-                            challengeId: this.props.navigation.getParam('_id'),
-                        });
-                    }}
-                />
                 {getSelectedChallengeIsLoading ? (
                     <Spacer>
                         <ActivityIndicator />
@@ -106,7 +78,7 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                         >
                             <ChallengeIcon icon={selectedChallenge.icon} color={selectedChallenge.color} />
                             <Text h4 style={{ textAlign: 'center' }}>
-                                {this.props.navigation.getParam('challengeName')}
+                                {this.props.route.params.challengeName}
                             </Text>
                             <Text style={{ textAlign: 'center' }}>{selectedChallenge.description}</Text>
                         </View>
@@ -114,9 +86,9 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                         {selectedChallenge.userIsApartOfChallenge ? (
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
+                                    this.props.navigation.navigate(Screens.ChallengeInfo, {
                                         _id: selectedChallenge.usersChallengeStreakId,
-                                        streakName: this.props.navigation.getParam('challengeName'),
+                                        challengeName: this.props.route.params.challengeName,
                                     })
                                 }
                             >
@@ -194,8 +166,9 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                         <>
                                             <TouchableOpacity
                                                 onPress={() =>
-                                                    this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
+                                                    this.props.navigation.navigate(Screens.ChallengeInfo, {
                                                         _id: challengeStreakId,
+                                                        challengeName: this.props.route.params.challengeName,
                                                     })
                                                 }
                                             >

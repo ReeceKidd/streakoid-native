@@ -1,29 +1,30 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { ArchivedSoloStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/soloStreakReducer';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text } from 'react-native-elements';
 
 import { Screens } from '../screens/Screens';
-import { soloStreakActions } from '../actions/sharedActions';
 import { Spacer } from './Spacer';
+import { NavigationService } from '../../NavigationService';
 
 interface ArchivedSoloStreakListProps {
-    getArchivedSoloStreaks: typeof soloStreakActions.getArchivedSoloStreaks;
     archivedSoloStreaks: ArchivedSoloStreakListItem[];
     getMultipleArchivedSoloStreaksIsLoading: boolean;
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type Props = ArchivedSoloStreakListProps;
 
-type Props = ArchivedSoloStreakListProps & NavigationProps;
-
-class ArchivedSoloStreakList extends PureComponent<Props> {
-    renderArchivedSoloStreakList(): JSX.Element {
-        const { archivedSoloStreaks } = this.props;
-        return (
+const ArchivedSoloStreakList = (props: Props) => {
+    const { archivedSoloStreaks, getMultipleArchivedSoloStreaksIsLoading } = props;
+    return (
+        <>
+            {archivedSoloStreaks.length === 0 && getMultipleArchivedSoloStreaksIsLoading ? <ActivityIndicator /> : null}
+            {archivedSoloStreaks.length === 0 && !getMultipleArchivedSoloStreaksIsLoading ? (
+                <>
+                    <Spacer />
+                    <Text>No Archived Solo Streaks</Text>
+                </>
+            ) : null}
             <FlatList
                 data={archivedSoloStreaks}
                 keyExtractor={(soloStreak: ArchivedSoloStreakListItem) => soloStreak._id}
@@ -33,9 +34,12 @@ class ArchivedSoloStreakList extends PureComponent<Props> {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.SoloStreakInfo, {
-                                        _id,
-                                        streakName,
+                                    NavigationService.navigate({
+                                        screen: Screens.SoloStreakInfo,
+                                        params: {
+                                            _id,
+                                            streakName,
+                                        },
                                     })
                                 }
                             >
@@ -46,26 +50,8 @@ class ArchivedSoloStreakList extends PureComponent<Props> {
                     );
                 }}
             />
-        );
-    }
-    render(): JSX.Element {
-        const { archivedSoloStreaks, getArchivedSoloStreaks, getMultipleArchivedSoloStreaksIsLoading } = this.props;
-        return (
-            <>
-                <NavigationEvents onWillFocus={() => getArchivedSoloStreaks()} />
-                {archivedSoloStreaks.length === 0 && getMultipleArchivedSoloStreaksIsLoading ? (
-                    <ActivityIndicator />
-                ) : null}
-                {archivedSoloStreaks.length === 0 && !getMultipleArchivedSoloStreaksIsLoading ? (
-                    <>
-                        <Spacer />
-                        <Text>No Archived Solo Streaks</Text>
-                    </>
-                ) : null}
-                {this.renderArchivedSoloStreakList()}
-            </>
-        );
-    }
-}
+        </>
+    );
+};
 
 export { ArchivedSoloStreakList };

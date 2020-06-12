@@ -1,20 +1,21 @@
 import React, { PureComponent } from 'react';
 import { SoloStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/soloStreakReducer';
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text } from 'react-native-elements';
 
 import { SoloStreakTaskButton } from './SoloStreakTaskButton';
 import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
-import { soloStreakActions } from '../actions/sharedActions';
+import { soloStreakActions } from '../actions/authenticatedSharedActions';
 import { StreakFlame } from './StreakFlame';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
 
 interface LiveSoloStreakListProps {
+    navigation: StackNavigationProp<RootStackParamList>;
     userId: string;
     getSoloStreak: typeof soloStreakActions.getSoloStreak;
-    getLiveSoloStreaks: typeof soloStreakActions.getLiveSoloStreaks;
     completeSoloStreakListTask: (soloStreakId: string) => void;
     incompleteSoloStreakListTask: (soloStreakId: string) => void;
     liveSoloStreaks: SoloStreakListItem[];
@@ -22,11 +23,7 @@ interface LiveSoloStreakListProps {
     totalNumberOfSoloStreaks: number;
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
-
-type Props = LiveSoloStreakListProps & NavigationProps;
+type Props = LiveSoloStreakListProps;
 
 class LiveSoloStreakList extends PureComponent<Props> {
     renderSoloStreakList(): JSX.Element {
@@ -101,22 +98,9 @@ class LiveSoloStreakList extends PureComponent<Props> {
     }
 
     render(): JSX.Element {
-        const {
-            liveSoloStreaks,
-            totalNumberOfSoloStreaks,
-            getLiveSoloStreaks,
-            userId,
-            getMultipleLiveSoloStreaksIsLoading,
-        } = this.props;
+        const { liveSoloStreaks, totalNumberOfSoloStreaks, getMultipleLiveSoloStreaksIsLoading } = this.props;
         return (
             <>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        if (userId) {
-                            getLiveSoloStreaks();
-                        }
-                    }}
-                />
                 {totalNumberOfSoloStreaks === 0 && !getMultipleLiveSoloStreaksIsLoading ? (
                     <View style={{ marginTop: 5 }}>
                         <NavigationLink

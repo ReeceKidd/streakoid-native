@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, NavigationEvents } from 'react-navigation';
 import { View, StyleSheet } from 'react-native';
 
 import { AppState } from '../../store';
@@ -10,10 +9,13 @@ import { Text } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { authActions } from '../actions/sharedActions';
+import { authActions } from '../actions/unauthenticatedSharedActions';
 import { NavigationLink } from '../components/NavigationLink';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const loginErrorMessage = state && state.auth && state.auth.loginErrorMessage;
@@ -29,9 +31,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     clearUpdatePasswordSuccessMessage: bindActionCreators(authActions.clearUpdatePasswordSuccessMessage, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Login>;
+type LoginScreenRouteProp = RouteProp<RootStackParamList, Screens.Login>;
+
+type NavigationProps = {
+    navigation: LoginScreenNavigationProp;
+    route: LoginScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -59,6 +65,10 @@ class LoginScreenComponent extends React.PureComponent<Props> {
         this.props.clearLoginErrorMessage();
     }
 
+    componentWillUnmount(): void {
+        this.clearMessages();
+    }
+
     render(): JSX.Element {
         const {
             loginUser,
@@ -70,7 +80,6 @@ class LoginScreenComponent extends React.PureComponent<Props> {
         } = this.props;
         return (
             <View style={styles.container}>
-                <NavigationEvents onWillBlur={() => this.clearMessages()} />
                 <Spacer />
                 {updatePasswordSuccessMessage ? (
                     <Text style={{ color: 'green', textAlign: 'center' }}> {updatePasswordSuccessMessage} </Text>
@@ -89,11 +98,7 @@ class LoginScreenComponent extends React.PureComponent<Props> {
                     <Text style={{ color: 'red', textAlign: 'center' }}> {loginErrorMessage} </Text>
                 ) : null}
                 <Spacer>
-                    <NavigationLink
-                        navigation={this.props.navigation}
-                        text="Forgot password"
-                        screen={Screens.ForgotPassword}
-                    />
+                    <NavigationLink text="Forgot password" screen={Screens.ForgotPassword} />
                 </Spacer>
             </View>
         );

@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { Spacer } from './Spacer';
 import { Input, Button } from 'react-native-elements';
 import { ErrorMessage } from './ErrorMessage';
-import { soloStreakActions } from '../actions/sharedActions';
+import { soloStreakActions } from '../actions/authenticatedSharedActions';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
 
 interface CreateSoloStreakFormProps {

@@ -5,7 +5,6 @@ import {
     getActivityFeedItemContent,
     getFormattedCreatedAtString,
 } from '../helpers/activityFeed/getActivityFeedItemContent';
-import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { ListItem, Avatar, Text } from 'react-native-elements';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
 import ActivityFeedItemTypes from '@streakoid/streakoid-models/lib/Types/ActivityFeedItemTypes';
@@ -14,11 +13,7 @@ interface GeneralActivityFeedComponentProps {
     activityFeedItems: ClientActivityFeedItemType[];
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
-
-class GeneralActivityFeed extends PureComponent<GeneralActivityFeedComponentProps & NavigationProps> {
+class GeneralActivityFeed extends PureComponent<GeneralActivityFeedComponentProps> {
     render(): JSX.Element {
         const { activityFeedItems } = this.props;
         return (
@@ -44,7 +39,7 @@ class GeneralActivityFeed extends PureComponent<GeneralActivityFeedComponentProp
                                         }}
                                     />
                                 }
-                                title={getActivityFeedItemContent(this.props.navigation, item)}
+                                title={getActivityFeedItemContent(item)}
                                 subtitle={subtitle ? subtitle : undefined}
                             />
                             <Text style={{ textAlign: 'right', fontSize: 8 }}>

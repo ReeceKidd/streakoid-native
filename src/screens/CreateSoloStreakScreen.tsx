@@ -7,7 +7,7 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { CreateSoloStreakForm } from '../components/CreateSoloStreakForm';
 
-import { soloStreakActions } from '../actions/sharedActions';
+import { soloStreakActions } from '../actions/authenticatedSharedActions';
 import { View, StyleSheet } from 'react-native';
 import { Spacer } from '../components/Spacer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';

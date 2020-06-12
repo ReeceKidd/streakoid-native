@@ -1,29 +1,31 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { ArchivedChallengeStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/challengeStreakReducer';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text } from 'react-native-elements';
-
+import { NavigationService } from '../../NavigationService';
 import { Screens } from '../screens/Screens';
-import { challengeStreakActions } from '../actions/sharedActions';
 import { Spacer } from './Spacer';
 
 interface ArchivedChallengeStreakListProps {
-    getArchivedChallengeStreaks: typeof challengeStreakActions.getArchivedChallengeStreaks;
     archivedChallengeStreaks: ArchivedChallengeStreakListItem[];
     getMultipleArchivedChallengeStreaksIsLoading: boolean;
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type Props = ArchivedChallengeStreakListProps;
 
-type Props = ArchivedChallengeStreakListProps & NavigationProps;
-
-class ArchivedChallengeStreakList extends PureComponent<Props> {
-    renderArchivedChallengeStreakList(): JSX.Element {
-        const { archivedChallengeStreaks } = this.props;
-        return (
+const ArchivedChallengeStreakList = (props: Props) => {
+    const { archivedChallengeStreaks, getMultipleArchivedChallengeStreaksIsLoading } = props;
+    return (
+        <>
+            {archivedChallengeStreaks.length === 0 && getMultipleArchivedChallengeStreaksIsLoading ? (
+                <ActivityIndicator />
+            ) : null}
+            {archivedChallengeStreaks.length === 0 && !getMultipleArchivedChallengeStreaksIsLoading ? (
+                <>
+                    <Spacer />
+                    <Text>No Archived Challenge Streaks</Text>
+                </>
+            ) : null}
             <FlatList
                 data={archivedChallengeStreaks}
                 keyExtractor={(challengeStreak) => challengeStreak._id}
@@ -33,9 +35,12 @@ class ArchivedChallengeStreakList extends PureComponent<Props> {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
-                                        _id,
-                                        challengeName,
+                                    NavigationService.navigate({
+                                        screen: Screens.ChallengeStreakInfo,
+                                        params: {
+                                            _id,
+                                            challengeName,
+                                        },
                                     })
                                 }
                             >
@@ -46,31 +51,8 @@ class ArchivedChallengeStreakList extends PureComponent<Props> {
                     );
                 }}
             />
-        );
-    }
-
-    render(): JSX.Element {
-        const {
-            archivedChallengeStreaks,
-            getArchivedChallengeStreaks,
-            getMultipleArchivedChallengeStreaksIsLoading,
-        } = this.props;
-        return (
-            <>
-                <NavigationEvents onWillFocus={() => getArchivedChallengeStreaks()} />
-                {archivedChallengeStreaks.length === 0 && getMultipleArchivedChallengeStreaksIsLoading ? (
-                    <ActivityIndicator />
-                ) : null}
-                {archivedChallengeStreaks.length === 0 && !getMultipleArchivedChallengeStreaksIsLoading ? (
-                    <>
-                        <Spacer />
-                        <Text>No Archived Challenge Streaks</Text>
-                    </>
-                ) : null}
-                {this.renderArchivedChallengeStreakList()}
-            </>
-        );
-    }
-}
+        </>
+    );
+};
 
 export { ArchivedChallengeStreakList };

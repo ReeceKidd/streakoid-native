@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { ListItem, Text } from 'react-native-elements';
 import { View, Picker, StyleSheet } from 'react-native';
 
-import { userActions } from '../actions/sharedActions';
+import { userActions } from '../actions/authenticatedSharedActions';
 import { Spacer } from './Spacer';
 import { PopulatedCurrentUser } from '@streakoid/streakoid-models/lib/Models/PopulatedCurrentUser';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';

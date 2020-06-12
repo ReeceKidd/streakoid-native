@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text, Avatar } from 'react-native-elements';
 
 import { Spacer } from './Spacer';
@@ -11,10 +10,10 @@ import {
     PopulatedTeamMemberWithClientData,
 } from '@streakoid/streakoid-shared/lib/reducers/teamStreakReducer';
 import { ErrorMessage } from './ErrorMessage';
-import { teamStreakActions } from '../actions/sharedActions';
+import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
-import NavigationService from '../screens/NavigationService';
 import { StreakFlame } from './StreakFlame';
+import { NavigationService } from '../../NavigationService';
 
 interface LiveTeamStreakListProps {
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
@@ -39,20 +38,30 @@ interface LiveTeamStreakListProps {
     totalNumberOfTeamStreaks: number;
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type Props = LiveTeamStreakListProps;
 
-type Props = LiveTeamStreakListProps & NavigationProps;
-
-class LiveTeamStreakList extends PureComponent<Props> {
-    goToTeamStreakDetails = (teamStreakId: string): void => {
-        const { getTeamStreak } = this.props;
-        getTeamStreak(teamStreakId);
-    };
-    renderTeamStreaksList(): JSX.Element {
-        const { completeTeamMemberStreakTask, incompleteTeamMemberStreakTask, teamStreaks, userId } = this.props;
-        return (
+const LiveTeamStreakList = (props: Props) => {
+    const {
+        completeTeamMemberStreakTask,
+        incompleteTeamMemberStreakTask,
+        teamStreaks,
+        totalNumberOfTeamStreaks,
+        getMultipleLiveTeamStreaksIsLoading,
+        userId,
+    } = props;
+    return (
+        <>
+            {totalNumberOfTeamStreaks === 0 && !getMultipleLiveTeamStreaksIsLoading ? (
+                <TouchableOpacity
+                    onPress={() => NavigationService.navigate({ screen: Screens.CreateTeamStreak })}
+                    style={{ marginTop: 5 }}
+                >
+                    <Text style={{ color: 'blue' }}>{`No team streaks. Create one`}</Text>
+                </TouchableOpacity>
+            ) : null}
+            {totalNumberOfTeamStreaks > 0 && teamStreaks.length === 0 ? (
+                <Text style={{ color: '#4caf50', marginTop: 5 }}>All done for today</Text>
+            ) : null}
             <FlatList
                 data={teamStreaks}
                 keyExtractor={(teamStreak: PopulatedTeamStreakWithClientData) => teamStreak._id}
@@ -78,7 +87,7 @@ class LiveTeamStreakList extends PureComponent<Props> {
                         incompleteTeamMemberStreakTaskErrorMessage,
                     } = teamMemberStreak;
                     const { _id, streakName, members, pastStreaks, currentStreak, timezone, createdAt } = item;
-                    const userIsApartOfStreak = item.members.some((member) => member._id === userId);
+                    const userIsApartOfStreak = Boolean(item.members.find((member) => member._id === userId));
                     const streakCompletionInfo = getStreakCompletionInfo({
                         pastStreaks,
                         currentStreak,
@@ -95,10 +104,13 @@ class LiveTeamStreakList extends PureComponent<Props> {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.TeamStreakInfo, {
-                                        _id,
-                                        streakName,
-                                        userIsApartOfStreak,
+                                    NavigationService.navigate({
+                                        screen: Screens.TeamStreakInfo,
+                                        params: {
+                                            _id,
+                                            streakName,
+                                            userIsApartOfStreak,
+                                        },
                                     })
                                 }
                             >
@@ -181,41 +193,8 @@ class LiveTeamStreakList extends PureComponent<Props> {
                     );
                 }}
             />
-        );
-    }
-
-    render(): JSX.Element {
-        const {
-            teamStreaks,
-            totalNumberOfTeamStreaks,
-            getLiveTeamStreaks,
-            getMultipleLiveTeamStreaksIsLoading,
-            userId,
-        } = this.props;
-        return (
-            <>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        if (userId) {
-                            getLiveTeamStreaks();
-                        }
-                    }}
-                />
-                {totalNumberOfTeamStreaks === 0 && !getMultipleLiveTeamStreaksIsLoading ? (
-                    <TouchableOpacity
-                        onPress={() => NavigationService.navigate(Screens.CreateTeamStreak)}
-                        style={{ marginTop: 5 }}
-                    >
-                        <Text style={{ color: 'blue' }}>{`No team streaks. Create one`}</Text>
-                    </TouchableOpacity>
-                ) : null}
-                {totalNumberOfTeamStreaks > 0 && teamStreaks.length === 0 ? (
-                    <Text style={{ color: '#4caf50', marginTop: 5 }}>All done for today</Text>
-                ) : null}
-                {this.renderTeamStreaksList()}
-            </>
-        );
-    }
-}
+        </>
+    );
+};
 
 export { LiveTeamStreakList };

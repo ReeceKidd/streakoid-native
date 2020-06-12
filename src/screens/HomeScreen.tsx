@@ -1,14 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
-import {
-    NavigationScreenProp,
-    NavigationState,
-    NavigationParams,
-    ScrollView,
-    NavigationEvents,
-} from 'react-navigation';
-import { Text, Button } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import {
@@ -26,13 +19,11 @@ import {
     teamStreakActions,
     teamMemberStreakTaskActions,
     challengeStreakActions,
-} from '../actions/sharedActions';
+} from '../actions/authenticatedSharedActions';
 import { AppState } from '../../store';
 import { Spacer } from '../components/Spacer';
 import { LiveSoloStreakList } from '../components/LiveSoloStreakList';
-import { HamburgerSelector } from '../components/HamburgerSelector';
 import { LiveChallengeStreakList } from '../components/LiveChallengeStreakList';
-import NavigationService from './NavigationService';
 import { Screens } from './Screens';
 import { PushNotificationType } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
@@ -48,6 +39,10 @@ import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOf
 import analytics from '@segment/analytics-react-native';
 import { ProgressBar } from '../components/ProgressBar';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { StreakStackParamList } from '../screenNavigation/StreakStack';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -158,13 +153,15 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type HomeScreenNavigationProp = StackNavigationProp<StreakStackParamList, Screens.Home>;
+type HomeScreenRouteProp = RouteProp<StreakStackParamList, Screens.Home>;
 
-type Props = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps> &
-    NavigationProps & { isFocused: boolean };
+type NavigationProps = {
+    navigation: HomeScreenNavigationProp;
+    route: HomeScreenRouteProp;
+};
+
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
     container: {
@@ -174,28 +171,20 @@ const styles = StyleSheet.create({
 });
 
 class HomeScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
-        return {
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
-        };
-    };
-
     componentDidMount = async () => {
         this.props.getCurrentUser();
-
-        const { hasCompletedIntroduction } = this.props.currentUser;
-        if (!hasCompletedIntroduction) {
-            NavigationService.navigate(Screens.Welcome);
-        }
+        this.props.getLiveSoloStreaks();
+        this.props.getLiveChallengeStreaks();
+        this.props.getLiveTeamStreaks();
         this.initializePushNotifications();
         const currentTimezone = RNLocalize.getTimeZone();
         const { currentUser } = this.props;
         if (currentUser && currentUser._id) {
             analytics.alias(currentUser._id);
-            analytics.identify(currentUser._id, { email: currentUser.email, username: currentUser.username });
+            //analytics.identify(currentUser._id, { email: currentUser.email, username: currentUser.username });
         }
         if (currentUser && currentUser.timezone !== currentTimezone) {
-            this.props.updateCurrentUser({ timezone: currentTimezone });
+            this.props.updateCurrentUser({ updateData: { timezone: currentTimezone } });
             this.displayTimezoneChangeAlert({ oldTimezone: currentUser.timezone, currentTimezone });
             this.props.updateSoloStreaksTimezones(currentTimezone);
             this.props.updateChallengeStreaksTimezones(currentTimezone);
@@ -358,7 +347,6 @@ class HomeScreenComponent extends PureComponent<Props> {
         const {
             currentUser,
             getSoloStreak,
-            getLiveSoloStreaks,
             completeSoloStreakListTask,
             incompleteSoloStreakListTask,
             incompleteSoloStreaks,
@@ -368,7 +356,15 @@ class HomeScreenComponent extends PureComponent<Props> {
         return (
             <>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <TouchableOpacity onPress={() => NavigationService.navigate(Screens.SoloStreaks)}>
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.props.navigation.navigate(Screens.SoloStreaks, {
+                                getMultipleLiveSoloStreaksIsLoading: false,
+                                isPayingMember: true,
+                                totalLiveStreaks: 0,
+                            })
+                        }
+                    >
                         <Text style={{ fontWeight: 'bold' }}>
                             Solo Streaks <FontAwesomeIcon icon={faChild} />
                         </Text>
@@ -389,7 +385,6 @@ class HomeScreenComponent extends PureComponent<Props> {
                     userId={currentUser._id}
                     navigation={this.props.navigation}
                     getSoloStreak={getSoloStreak}
-                    getLiveSoloStreaks={getLiveSoloStreaks}
                     completeSoloStreakListTask={completeSoloStreakListTask}
                     incompleteSoloStreakListTask={incompleteSoloStreakListTask}
                     liveSoloStreaks={incompleteSoloStreaks}
@@ -414,7 +409,7 @@ class HomeScreenComponent extends PureComponent<Props> {
         return (
             <>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <TouchableOpacity onPress={() => NavigationService.navigate(Screens.TeamStreaks)}>
+                    <TouchableOpacity onPress={() => this.props.navigation.push(Screens.TeamStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
                             Team Streaks <FontAwesomeIcon icon={faPeopleCarry} />
                         </Text>
@@ -439,7 +434,6 @@ class HomeScreenComponent extends PureComponent<Props> {
                     teamStreaks={incompleteTeamStreaks}
                     userId={userId}
                     totalNumberOfTeamStreaks={totalNumberOfTeamStreaks}
-                    navigation={this.props.navigation}
                 />
             </>
         );
@@ -459,7 +453,7 @@ class HomeScreenComponent extends PureComponent<Props> {
         return (
             <>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <TouchableOpacity onPress={() => NavigationService.navigate(Screens.ChallengeStreaks)}>
+                    <TouchableOpacity onPress={() => this.props.navigation.push(Screens.ChallengeStreaks)}>
                         <Text style={{ fontWeight: 'bold' }}>
                             Challenge Streaks <FontAwesomeIcon icon={faMedal} />
                         </Text>
@@ -496,12 +490,6 @@ class HomeScreenComponent extends PureComponent<Props> {
         return (
             <ScrollView style={styles.container}>
                 <View>
-                    <NavigationEvents
-                        onWillFocus={() => {
-                            this.props.getCurrentUser();
-                            this.initializePushNotifications();
-                        }}
-                    />
                     <ProgressBar
                         completePercentage={getCompletePercentageForStreaks({
                             numberOfIncompleteStreaks: totalIncompleteStreaks,
@@ -520,15 +508,6 @@ class HomeScreenComponent extends PureComponent<Props> {
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>
-                    <Spacer>
-                        <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Need Recommendations?</Text>
-                        <Spacer />
-                        <Button
-                            buttonStyle={{ backgroundColor: 'green' }}
-                            title="Get Recommendations"
-                            onPress={() => NavigationService.navigate(Screens.StreakRecommendations)}
-                        />
-                    </Spacer>
                 </View>
             </ScrollView>
         );

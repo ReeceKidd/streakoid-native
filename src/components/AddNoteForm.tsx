@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Spacer } from './Spacer';
 import { ErrorMessage } from './ErrorMessage';
-import { noteActions } from '../actions/sharedActions';
+import { noteActions } from '../actions/authenticatedSharedActions';
 import StreakTypes from '@streakoid/streakoid-models/lib/Types/StreakTypes';
 
 interface AddNoteToStreakFormProps {

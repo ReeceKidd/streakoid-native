@@ -7,21 +7,22 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Spacer } from './Spacer';
 import { ErrorMessage } from './ErrorMessage';
+import { authActions } from '../actions/unauthenticatedSharedActions';
 
 interface FormValues {
-    emailOrUsername: string;
+    email: string;
     password: string;
 }
 
 interface LoginFormProps {
-    loginUser: ({ emailOrUsername, password }: { emailOrUsername: string; password: string }) => void;
+    loginUser: typeof authActions.loginUser;
     clearLoginErrorMessage: () => void;
     clearUpdatePasswordSuccessMessage: () => void;
     loginIsLoading: boolean;
 }
 
 const LoginFormSchema = Yup.object().shape({
-    emailOrUsername: Yup.string().trim().required('Required'),
+    email: Yup.string().trim().required('Required'),
     password: Yup.string().min(8, 'Too short').required('Required'),
 });
 
@@ -34,9 +35,13 @@ class LoginForm extends PureComponent<LoginFormProps> {
         const { loginIsLoading } = this.props;
         return (
             <Formik
-                initialValues={{ emailOrUsername: '', password: '' }}
-                onSubmit={({ emailOrUsername, password }: FormValues): void => {
-                    this.props.loginUser({ emailOrUsername: emailOrUsername.trim(), password });
+                initialValues={{ email: '', password: '' }}
+                onSubmit={({ email, password }: FormValues): void => {
+                    this.props.loginUser({
+                        emailOrCognitoUsername: email.trim(),
+                        password,
+                        redirectToHomeOnLogin: true,
+                    });
                 }}
                 validationSchema={LoginFormSchema}
             >
@@ -44,17 +49,15 @@ class LoginForm extends PureComponent<LoginFormProps> {
                     <View>
                         <Spacer>
                             <Input
-                                label="Email or username"
-                                nativeID="emailOrUsername"
-                                onChangeText={handleChange('emailOrUsername')}
-                                onBlur={handleBlur('emailOrUsername')}
-                                value={values.emailOrUsername}
+                                label="Email"
+                                nativeID="email"
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                value={values.email}
                                 autoCapitalize="none"
                                 autoCorrect={false}
                             />
-                            {errors.emailOrUsername && touched.emailOrUsername ? (
-                                <ErrorMessage message={errors.emailOrUsername} />
-                            ) : null}
+                            {errors.email && touched.email ? <ErrorMessage message={errors.email} /> : null}
                         </Spacer>
                         <Spacer>
                             <Input

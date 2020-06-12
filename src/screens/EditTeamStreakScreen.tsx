@@ -8,7 +8,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet } from 'react-native';
 
 import { Spacer } from '../components/Spacer';
-import { teamStreakActions } from '../actions/sharedActions';
+import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { EditTeamStreakForm } from '../components/EditTeamStreakForm';
 
 const mapStateToProps = (state: AppState) => {

@@ -8,14 +8,16 @@ import { bindActionCreators, Dispatch } from 'redux';
 
 import { View, StyleSheet } from 'react-native';
 import { Spacer } from '../components/Spacer';
-import { teamStreakActions } from '../actions/sharedActions';
+import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { FlatList } from 'react-native-gesture-handler';
 import { ListItem, Button } from 'react-native-elements';
 import { NavigationLink } from '../components/NavigationLink';
 import { Screens } from './Screens';
-import { NavigationState, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
 import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
+import { RootStackParamList } from '../../StackNavigator';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -27,9 +29,16 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     addFollowerToTeamStreak: bindActionCreators(teamStreakActions.addFollowerToTeamStreak, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type AddFollowerToTeamStreakScreenNavigationProp = StackNavigationProp<
+    RootStackParamList,
+    Screens.AddFollowerToTeamStreak
+>;
+type AddFollowerToTeamStreakScreenRouteProp = RouteProp<RootStackParamList, Screens.AddFollowerToTeamStreak>;
+
+type NavigationProps = {
+    navigation: AddFollowerToTeamStreakScreenNavigationProp;
+    route: AddFollowerToTeamStreakScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -51,6 +60,7 @@ class AddFollowerToTeamStreakScreenComponent extends PureComponent<Props> {
         navigation.navigate(Screens.TeamStreakInfo, {
             _id: selectedTeamStreak._id,
             streakName: selectedTeamStreak.streakName,
+            userIsApartOfStreak: true,
         });
     }
 

@@ -6,13 +6,15 @@ import { AppState } from '../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { teamStreakActions, userActions } from '../actions/sharedActions';
+import { teamStreakActions, userActions } from '../actions/authenticatedSharedActions';
 import { View, StyleSheet } from 'react-native';
 import { Spacer } from '../components/Spacer';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlus } from '@fortawesome/pro-solid-svg-icons';
 import { CreateTeamStreakForm } from '../components/CreateTeamStreakForm';
-import { NavigationScreenProp, NavigationState, NavigationParams, ScrollView } from 'react-navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../StackNavigator';
+import { Screens } from './Screens';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -33,9 +35,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     unselectFollower: bindActionCreators(userActions.unselectFollower, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type CreateTeamStreakScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.CreateTeamStreak>;
+type CreateTeamStreakScreenRouteProp = RouteProp<RootStackParamList, Screens.CreateTeamStreak>;
+
+type NavigationProps = {
+    navigation: CreateTeamStreakScreenNavigationProp;
+    route: CreateTeamStreakScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -47,11 +53,6 @@ const styles = StyleSheet.create({
 });
 
 class CreateTeamStreakScreenComponent extends PureComponent<Props> {
-    static navigationOptions = {
-        title: 'Create team streak',
-        tabBarIcon: <FontAwesomeIcon icon={faPlus} />,
-    };
-
     render(): JSX.Element {
         const {
             createTeamStreak,
@@ -79,7 +80,6 @@ class CreateTeamStreakScreenComponent extends PureComponent<Props> {
                             members={members}
                             createTeamStreakIsLoading={createTeamStreakIsLoading}
                             createTeamStreakErrorMessage={createTeamStreakErrorMessage}
-                            navigation={this.props.navigation}
                         />
                     </Spacer>
                 </View>

@@ -133,7 +133,7 @@ android {
         applicationId "com.streakoid.streakoid"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 120
+        versionCode 123
         versionName "1.0.98"
         multiDexEnabled true
     }

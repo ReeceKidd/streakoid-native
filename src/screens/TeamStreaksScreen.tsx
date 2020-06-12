@@ -1,28 +1,27 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, withNavigationFocus } from 'react-navigation';
-import { Button, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet, AppState as ReactNativeAppState, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, AppState as ReactNativeAppState } from 'react-native';
 
-import { teamStreakActions, teamMemberStreakTaskActions } from '../actions/sharedActions';
+import { teamStreakActions, teamMemberStreakTaskActions } from '../actions/authenticatedSharedActions';
 import { AppState } from '../../store';
-import NavigationService from './NavigationService';
 import { Screens } from './Screens';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
-import { HamburgerSelector } from '../components/HamburgerSelector';
 import { Spacer } from '../components/Spacer';
 import { ArchivedTeamStreakList } from '../components/ArchivedTeamStreakList';
 import { ScrollView } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlus, faArchive } from '@fortawesome/pro-solid-svg-icons';
+import { faArchive } from '@fortawesome/pro-solid-svg-icons';
 import { MaximumNumberOfFreeStreaksMessage } from '../components/MaximumNumberOfFreeStreaksMessage';
-import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
 import { ProgressBar } from '../components/ProgressBar';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
 
 const getIncompleteTeamStreaks = (state: AppState) => {
     return (
@@ -78,13 +77,15 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type TeamStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TeamStreaks>;
+type TeamStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.TeamStreaks>;
 
-type Props = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps> &
-    NavigationProps & { isFocused: true };
+type NavigationProps = {
+    navigation: TeamStreaksScreenNavigationProp;
+    route: TeamStreaksScreenRouteProp;
+};
+
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
     container: {
@@ -94,41 +95,6 @@ const styles = StyleSheet.create({
 });
 
 class TeamStreaksScreenComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<
-            NavigationState,
-            { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveTeamStreaksIsLoading: boolean }
-        >;
-    }) => {
-        const isPayingMember = navigation.getParam('isPayingMember');
-        const totalLiveStreaks = navigation.getParam('totalLiveStreaks');
-        const getMultipleLiveTeamStreaksIsLoading = navigation.getParam('getMultipleLiveTeamStreaksIsLoading');
-        const userHasReachedFreeStreakLimit = !isPayingMember && totalLiveStreaks > MAXIMUM_NUMBER_OF_FREE_STREAKS;
-        return {
-            title: 'Team Streaks',
-            headerRight: (
-                <Button
-                    type="clear"
-                    icon={<FontAwesomeIcon icon={faPlus} size={30} />}
-                    onPress={() => {
-                        if (!userHasReachedFreeStreakLimit) {
-                            return NavigationService.navigate(Screens.CreateTeamStreak);
-                        }
-                        NavigationService.navigate(Screens.Upgrade);
-                    }}
-                />
-            ),
-            headerLeft: () => (
-                <View style={{ flexDirection: 'row' }}>
-                    <HamburgerSelector navigation={navigation} />
-                    {getMultipleLiveTeamStreaksIsLoading ? <ActivityIndicator /> : null}
-                </View>
-            ),
-        };
-    };
-
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
@@ -197,7 +163,6 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                             incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
                             teamStreaks={liveTeamStreaks}
                             userId={userId}
-                            navigation={this.props.navigation}
                             totalNumberOfTeamStreaks={liveTeamStreaks.length}
                         />
                     </View>
@@ -219,6 +184,6 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
     }
 }
 
-const TeamStreaksScreen = withNavigationFocus(connect(mapStateToProps, mapDispatchToProps)(TeamStreaksScreenComponent));
+const TeamStreaksScreen = connect(mapStateToProps, mapDispatchToProps)(TeamStreaksScreenComponent);
 
 export { TeamStreaksScreen };

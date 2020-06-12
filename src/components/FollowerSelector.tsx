@@ -1,12 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FlatList, View } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp } from 'react-navigation';
+import { FlatList, View, Text } from 'react-native';
 import { ListItem, Button } from 'react-native-elements';
 
-import { Screens } from '../screens/Screens';
 import { Spacer } from './Spacer';
-import { NavigationLink } from './NavigationLink';
-import { userActions } from '../actions/sharedActions';
+import { userActions } from '../actions/authenticatedSharedActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/pro-solid-svg-icons';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
@@ -17,11 +14,7 @@ interface FollowerSelectorProps {
     followers: FollowerWithClientData[];
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
-
-type Props = FollowerSelectorProps & NavigationProps;
+type Props = FollowerSelectorProps;
 
 class FollowerSelector extends PureComponent<Props> {
     renderFollowersSelectorOptions(follower: FollowerWithClientData): JSX.Element {
@@ -73,11 +66,7 @@ class FollowerSelector extends PureComponent<Props> {
         return (
             <View>
                 <Spacer>
-                    <NavigationLink
-                        navigation={this.props.navigation}
-                        text="You have no followers yet."
-                        screen={Screens.Users}
-                    />
+                    <Text>{'You have no followers yet'}</Text>
                 </Spacer>
             </View>
         );

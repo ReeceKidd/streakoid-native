@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { PopulatedTeamStreakWithClientData } from '@streakoid/streakoid-shared/lib/reducers/teamStreakReducer';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp, NavigationEvents } from 'react-navigation';
 import { ListItem, Divider, Text } from 'react-native-elements';
 
 import { Screens } from '../screens/Screens';
-import { teamStreakActions } from '../actions/sharedActions';
+import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { Spacer } from './Spacer';
+import { NavigationService } from '../../NavigationService';
 
 interface ArchivedTeamStreakListProps {
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
@@ -15,16 +15,19 @@ interface ArchivedTeamStreakListProps {
     getMultipleArchivedTeamStreaksIsLoading: boolean;
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type Props = ArchivedTeamStreakListProps;
 
-type Props = ArchivedTeamStreakListProps & NavigationProps;
-
-class ArchivedTeamStreakList extends PureComponent<Props> {
-    renderArchivedTeamStreakList(): JSX.Element {
-        const { archivedTeamStreaks } = this.props;
-        return (
+const ArchivedTeamStreakList = (props: Props) => {
+    const { archivedTeamStreaks, getMultipleArchivedTeamStreaksIsLoading } = props;
+    return (
+        <>
+            {archivedTeamStreaks.length === 0 && getMultipleArchivedTeamStreaksIsLoading ? <ActivityIndicator /> : null}
+            {archivedTeamStreaks.length === 0 && !getMultipleArchivedTeamStreaksIsLoading ? (
+                <>
+                    <Spacer />
+                    <Text>No Archived Team Streaks</Text>
+                </>
+            ) : null}
             <FlatList
                 data={archivedTeamStreaks}
                 keyExtractor={(teamStreak: PopulatedTeamStreakWithClientData) => teamStreak._id}
@@ -34,9 +37,12 @@ class ArchivedTeamStreakList extends PureComponent<Props> {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.TeamStreakInfo, {
-                                        _id,
-                                        streakName,
+                                    NavigationService.navigate({
+                                        screen: Screens.TeamStreakInfo,
+                                        params: {
+                                            _id,
+                                            streakName,
+                                        },
                                     })
                                 }
                             >
@@ -47,27 +53,8 @@ class ArchivedTeamStreakList extends PureComponent<Props> {
                     );
                 }}
             />
-        );
-    }
-
-    render(): JSX.Element {
-        const { archivedTeamStreaks, getArchivedTeamStreaks, getMultipleArchivedTeamStreaksIsLoading } = this.props;
-        return (
-            <>
-                <NavigationEvents onWillFocus={() => getArchivedTeamStreaks()} />
-                {archivedTeamStreaks.length === 0 && getMultipleArchivedTeamStreaksIsLoading ? (
-                    <ActivityIndicator />
-                ) : null}
-                {archivedTeamStreaks.length === 0 && !getMultipleArchivedTeamStreaksIsLoading ? (
-                    <>
-                        <Spacer />
-                        <Text>No Archived Team Streaks</Text>
-                    </>
-                ) : null}
-                {this.renderArchivedTeamStreakList()}
-            </>
-        );
-    }
-}
+        </>
+    );
+};
 
 export { ArchivedTeamStreakList };

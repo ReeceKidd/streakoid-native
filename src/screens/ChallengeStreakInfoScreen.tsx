@@ -7,11 +7,10 @@ import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared
 import { bindActionCreators, Dispatch } from 'redux';
 import NativePushNotification from 'react-native-push-notification';
 
-import { challengeStreakActions, userActions } from '../actions/sharedActions';
-import { View, StyleSheet, ActivityIndicator, Picker, Share } from 'react-native';
+import { challengeStreakActions, userActions } from '../actions/authenticatedSharedActions';
+import { View, StyleSheet, ActivityIndicator, Picker } from 'react-native';
 import { Text, Button, ListItem } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
-import { NavigationScreenProp, NavigationState, NavigationEvents } from 'react-navigation';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { LongestStreakCard } from '../components/LongestStreakCard';
 import { StreakStartDateCard } from '../components/StreakStartDateCard';
@@ -20,7 +19,6 @@ import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
 import { StreakRestartsCard } from '../components/StreakRestartsCard';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { Screens } from './Screens';
-import NavigationService from './NavigationService';
 import { IndividualNotes } from '../components/IndividualNotes';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import {
@@ -28,14 +26,15 @@ import {
     CustomStreakReminder,
 } from '@streakoid/streakoid-models/lib/Models/StreakReminders';
 import { CustomChallengeStreakReminderPushNotification } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
-import { streakoidUrl } from '../streakoidUrl';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faShareAlt, faBell } from '@fortawesome/pro-solid-svg-icons';
-import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import { faBell } from '@fortawesome/pro-solid-svg-icons';
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { StreakFlame } from '../components/StreakFlame';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -95,9 +94,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, { _id: string; streakName: string }>;
-}
+type ChallengeStreakInfoScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChallengeStreakInfo>;
+type ChallengeStreakInfoScreenRouteProp = RouteProp<RootStackParamList, Screens.ChallengeStreakInfo>;
+
+type NavigationProps = {
+    navigation: ChallengeStreakInfoScreenNavigationProp;
+    route: ChallengeStreakInfoScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -112,38 +115,13 @@ const styles = StyleSheet.create({
 });
 
 class ChallengeStreakInfoComponent extends PureComponent<Props> {
-    static navigationOptions = ({
-        navigation,
-    }: {
-        navigation: NavigationScreenProp<NavigationState, { _id: string; streakName: string }>;
-    }) => {
-        const streakId = navigation.getParam('_id');
-        const streakName = navigation.getParam('streakName');
-        return {
-            title: streakName,
-            headerRight: (
-                <Button
-                    type="clear"
-                    icon={<FontAwesomeIcon icon={faShareAlt} />}
-                    onPress={async () => {
-                        await Share.share({
-                            message: `View challenge streak ${streakName} at ${streakoidUrl}/${RouterCategories.challengeStreaks}/${streakId}`,
-                            url: `${streakoidUrl}/${RouterCategories.challengeStreaks}/${streakId}`,
-                            title: `View Streakoid challenge streak ${streakName}`,
-                        });
-                    }}
-                />
-            ),
-        };
-    };
-
     componentDidMount() {
-        this.props.getChallengeStreak({ challengeStreakId: this.props.navigation.getParam('_id') });
+        this.props.getChallengeStreak({ challengeStreakId: this.props.route.params._id });
     }
 
     componentDidUpdate(prevProps: Props) {
-        if (prevProps.navigation.getParam('_id') !== this.props.navigation.getParam('_id')) {
-            this.props.getChallengeStreak({ challengeStreakId: this.props.navigation.getParam('_id') });
+        if (prevProps.route.params._id !== this.props.route.params._id) {
+            this.props.getChallengeStreak({ challengeStreakId: this.props.route.params._id });
         }
     }
 
@@ -205,8 +183,8 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
         enabled: boolean;
         challengeId: string;
     }) => {
-        const challengeName = this.props.navigation.getParam('streakName');
-        const challengeStreakId = this.props.navigation.getParam('_id');
+        const challengeName = this.props.route.params.streakName;
+        const challengeStreakId = this.props.route.params._id;
         const customStreakReminders = this.props.currentUser.pushNotifications.customStreakReminders;
         const customCompleteChallengeStreakReminder = customStreakReminders.find(
             (pushNotification) =>
@@ -428,13 +406,6 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                     </Spacer>
                 ) : (
                     <View>
-                        <NavigationEvents
-                            onWillFocus={() => {
-                                this.props.getChallengeStreak({
-                                    challengeStreakId: this.props.navigation.getParam('_id'),
-                                });
-                            }}
-                        />
                         {selectedChallengeStreak.userId === currentUser._id ? (
                             selectedChallengeStreak.status === StreakStatus.live ? (
                                 <Spacer>
@@ -469,9 +440,9 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                             )}
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.props.navigation.navigate(Screens.UserProfile, {
-                                        username: selectedChallengeStreak.username,
+                                    this.props.navigation.push(Screens.UserProfile, {
                                         _id: selectedChallengeStreak.userId,
+                                        username: selectedChallengeStreak.username,
                                     });
                                 }}
                             >
@@ -490,9 +461,9 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                             {selectedChallengeStreak && selectedChallengeStreak.challengeName ? (
                                 <TouchableOpacity
                                     onPress={() => {
-                                        this.props.navigation.navigate(Screens.ChallengeInfo, {
-                                            challengeName: selectedChallengeStreak.challengeName,
+                                        this.props.navigation.push(Screens.ChallengeInfo, {
                                             _id: selectedChallengeStreak.challengeId,
+                                            challengeName: selectedChallengeStreak.challengeName,
                                         });
                                     }}
                                 >
@@ -526,10 +497,10 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                     <Spacer>
                                         <Button
                                             title="Add note"
-                                            onPress={() => NavigationService.navigate(Screens.AddNoteToChallengeStreak)}
+                                            onPress={() => this.props.navigation.push(Screens.AddNoteToChallengeStreak)}
                                         />
                                     </Spacer>
-                                    <IndividualNotes subjectId={this.props.navigation.getParam('_id')} />
+                                    <IndividualNotes subjectId={this.props.route.params._id} />
                                 </>
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
@@ -544,7 +515,6 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>
                             <GeneralActivityFeed
-                                navigation={this.props.navigation}
                                 activityFeedItems={selectedChallengeStreak.activityFeed.activityFeedItems}
                             />
                         </Spacer>
@@ -555,7 +525,7 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                         <Button
                                             onPress={() =>
                                                 this.archiveChallengeStreak({
-                                                    selectedChallengeStreakId: this.props.navigation.getParam('_id'),
+                                                    selectedChallengeStreakId: this.props.route.params._id,
                                                 })
                                             }
                                             buttonStyle={{ backgroundColor: 'red' }}
@@ -569,9 +539,7 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                 <>
                                     <Spacer>
                                         <Button
-                                            onPress={() =>
-                                                restoreArchivedChallengeStreak(this.props.navigation.getParam('_id'))
-                                            }
+                                            onPress={() => restoreArchivedChallengeStreak(this.props.route.params._id)}
                                             buttonStyle={{ backgroundColor: 'green' }}
                                             loading={restoreArchivedChallengeStreakIsLoading}
                                             title="Restore"
@@ -580,9 +548,7 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                     </Spacer>
                                     <Spacer>
                                         <Button
-                                            onPress={() =>
-                                                deleteArchivedChallengeStreak(this.props.navigation.getParam('_id'))
-                                            }
+                                            onPress={() => deleteArchivedChallengeStreak(this.props.route.params._id)}
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={deleteArchivedChallengeStreakIsLoading}
                                             title="Delete"

@@ -7,7 +7,7 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { EditSoloStreakForm } from '../components/EditSoloStreakForm';
 
-import { soloStreakActions } from '../actions/sharedActions';
+import { soloStreakActions } from '../actions/authenticatedSharedActions';
 import { View, StyleSheet } from 'react-native';
 import { Spacer } from '../components/Spacer';
 

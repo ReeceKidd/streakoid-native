@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { noteActions } from '../actions/sharedActions';
+import { noteActions } from '../actions/authenticatedSharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { AppActions, AppState } from '@streakoid/streakoid-shared/lib';
 import { connect } from 'react-redux';
@@ -10,7 +10,6 @@ import { NoteWithClientData } from '@streakoid/streakoid-shared/lib/reducers/not
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/pro-solid-svg-icons';
 import { Spacer } from './Spacer';
-import { NavigationEvents } from 'react-navigation';
 
 const mapStateToProps = (state: AppState) => {
     const notes = state && state.notes && state.notes.notes;
@@ -59,7 +58,6 @@ class NotesComponent extends PureComponent<Props> {
         const { notes, getMultipleNotesIsLoading } = this.props;
         return (
             <>
-                <NavigationEvents onWillFocus={() => this.getNotes()} onWillBlur={() => this.props.clearNotes()} />
                 {!getMultipleNotesIsLoading && notes.length === 0 ? (
                     <Spacer>
                         <Text style={{ color: 'red' }}>{`No notes `}</Text>

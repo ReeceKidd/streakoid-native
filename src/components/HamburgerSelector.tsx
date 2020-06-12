@@ -1,24 +1,16 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Button } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars } from '@fortawesome/pro-solid-svg-icons';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 
-interface HamburgerSelectorProps {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    navigation: any;
-}
-
-class HamburgerSelector extends PureComponent<HamburgerSelectorProps> {
-    render() {
-        const { navigation } = this.props;
-        return (
-            <Button
-                type="clear"
-                icon={<FontAwesomeIcon icon={faBars} size={30} />}
-                onPress={() => navigation.openDrawer()}
-            />
-        );
-    }
-}
-
-export { HamburgerSelector };
+export const HamburgerSelector = () => {
+    const navigation = useNavigation();
+    return (
+        <Button
+            type="clear"
+            icon={<FontAwesomeIcon icon={faBars} size={30} />}
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+        />
+    );
+};

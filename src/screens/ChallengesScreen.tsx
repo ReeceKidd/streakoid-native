@@ -1,22 +1,23 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationState, NavigationParams, NavigationEvents, FlatList } from 'react-navigation';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { View, TouchableOpacity, Platform } from 'react-native';
 
 import { AppState } from '../../store';
 import { Spacer } from '../components/Spacer';
-import { HamburgerSelector } from '../components/HamburgerSelector';
-import { challengeActions } from '../actions/sharedActions';
+import { challengeActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
 import { ListItem, Divider, Text, SearchBar } from 'react-native-elements';
 import { ChallengeIcon } from '../components/ChallengeIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUsers } from '@fortawesome/pro-solid-svg-icons';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import { Challenge } from '@streakoid/streakoid-models/lib/Models/Challenge';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../../StackNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const challengeList = state && state.challenges && state.challenges.challengeList;
@@ -28,9 +29,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getChallenges: bindActionCreators(challengeActions.getChallenges, dispatch),
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type ChallengesScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Challenges>;
+type ChallengesScreenRouteProp = RouteProp<RootStackParamList, Screens.Challenges>;
+
+type NavigationProps = {
+    navigation: ChallengesScreenNavigationProp;
+    route: ChallengesScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
@@ -42,12 +47,10 @@ class ChallengesScreenComponent extends PureComponent<Props, State> {
     state: State = {
         searchQuery: '',
     };
-    static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<NavigationState, {}> }) => {
-        return {
-            title: 'Challenges',
-            headerLeft: () => <HamburgerSelector navigation={navigation} />,
-        };
-    };
+
+    componentDidMount() {
+        this.props.getChallenges({ limit: 20 });
+    }
 
     updateSearch = (searchQuery: string) => {
         this.setState({ searchQuery });
@@ -55,7 +58,7 @@ class ChallengesScreenComponent extends PureComponent<Props, State> {
     };
 
     render(): JSX.Element {
-        const { getChallenges, challengeList } = this.props;
+        const { challengeList } = this.props;
         let platform: 'default' | 'ios' | 'android' = 'default';
         if (Platform.OS === 'ios') {
             platform = 'ios';
@@ -65,11 +68,6 @@ class ChallengesScreenComponent extends PureComponent<Props, State> {
         }
         return (
             <ScrollView>
-                <NavigationEvents
-                    onWillFocus={() => {
-                        getChallenges({ limit: 20 });
-                    }}
-                />
                 <Spacer>
                     <SearchBar
                         platform={platform}
@@ -78,7 +76,7 @@ class ChallengesScreenComponent extends PureComponent<Props, State> {
                         value={this.state.searchQuery}
                         showLoading={this.props.getAllChallengesIsLoading}
                     />
-                    {challengeList.length > 0 ? (
+                    {challengeList && challengeList.length > 0 ? (
                         <FlatList
                             data={challengeList}
                             keyExtractor={(challenge: Challenge) => challenge._id}
@@ -123,6 +121,4 @@ class ChallengesScreenComponent extends PureComponent<Props, State> {
     }
 }
 
-const ChallengesScreen = connect(mapStateToProps, mapDispatchToProps)(ChallengesScreenComponent);
-
-export { ChallengesScreen };
+export const ChallengesScreen = connect(mapStateToProps, mapDispatchToProps)(ChallengesScreenComponent);

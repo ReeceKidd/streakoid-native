@@ -5,6 +5,7 @@ import { Text } from 'react-native-elements';
 import { View, StyleSheet } from 'react-native';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
 import ActivityFeedItemTypes from '@streakoid/streakoid-models/lib/Types/ActivityFeedItemTypes';
+import { NavigationService } from '../../../NavigationService';
 
 const styles = StyleSheet.create({
     link: {
@@ -21,7 +22,7 @@ export const getFormattedCreatedAtString = (activityFeedItemCreatedAt: string) =
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getActivityFeedItemContent = (navigation: any, activityFeedItem: ClientActivityFeedItemType) => {
+export const getActivityFeedItemContent = (activityFeedItem: ClientActivityFeedItemType) => {
     const { username, userId, title } = activityFeedItem;
     if (
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.createdSoloStreak ||
@@ -39,9 +40,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                 <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.UserProfile, {
-                                username,
-                                _id: userId,
+                            NavigationService.navigate({
+                                screen: Screens.UserProfile,
+                                params: {
+                                    username,
+                                    _id: userId,
+                                },
                             })
                         }
                     >
@@ -50,9 +54,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                     <Text>{title}</Text>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.SoloStreakInfo, {
-                                _id: activityFeedItem.soloStreakId,
-                                streakName: activityFeedItem.soloStreakName,
+                            NavigationService.navigate({
+                                screen: Screens.SoloStreakInfo,
+                                params: {
+                                    _id: activityFeedItem.soloStreakId,
+                                    streakName: activityFeedItem.soloStreakName,
+                                },
                             })
                         }
                     >
@@ -73,9 +80,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                 <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.UserProfile, {
-                                username,
-                                _id: userId,
+                            NavigationService.navigate({
+                                screen: Screens.UserProfile,
+                                params: {
+                                    username,
+                                    _id: userId,
+                                },
                             })
                         }
                     >
@@ -84,9 +94,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                     <Text>{title}</Text>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.ChallengeInfo, {
-                                _id: activityFeedItem.challengeId,
-                                challengeName: activityFeedItem.challengeName,
+                            NavigationService.navigate({
+                                screen: Screens.ChallengeInfo,
+                                params: {
+                                    _id: activityFeedItem.challengeId,
+                                    challengeName: activityFeedItem.challengeName,
+                                },
                             })
                         }
                     >
@@ -108,9 +121,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                 <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.UserProfile, {
-                                username,
-                                _id: userId,
+                            NavigationService.navigate({
+                                screen: Screens.UserProfile,
+                                params: {
+                                    username,
+                                    _id: userId,
+                                },
                             })
                         }
                     >
@@ -119,9 +135,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                     <Text>{title}</Text>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.ChallengeStreakInfo, {
-                                _id: activityFeedItem._id,
-                                streakName: activityFeedItem.challengeName,
+                            NavigationService.navigate({
+                                screen: Screens.ChallengeStreakInfo,
+                                params: {
+                                    _id: activityFeedItem._id || '',
+                                    streakName: activityFeedItem.challengeName,
+                                },
                             })
                         }
                     >
@@ -149,9 +168,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                 <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.UserProfile, {
-                                username,
-                                _id: userId,
+                            NavigationService.navigate({
+                                screen: Screens.UserProfile,
+                                params: {
+                                    username,
+                                    _id: userId,
+                                },
                             })
                         }
                     >
@@ -160,9 +182,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                     <Text>{title}</Text>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.TeamStreakInfo, {
-                                _id: activityFeedItem.teamStreakId,
-                                streakName: activityFeedItem.teamStreakName,
+                            NavigationService.navigate({
+                                screen: Screens.TeamStreakInfo,
+                                params: {
+                                    _id: activityFeedItem.teamStreakId,
+                                    streakName: activityFeedItem.teamStreakName,
+                                },
                             })
                         }
                     >
@@ -179,9 +204,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                 <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.UserProfile, {
-                                username,
-                                _id: userId,
+                            NavigationService.navigate({
+                                screen: Screens.UserProfile,
+                                params: {
+                                    username,
+                                    _id: userId,
+                                },
                             })
                         }
                     >
@@ -199,9 +227,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                 <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.UserProfile, {
-                                username,
-                                _id: userId,
+                            NavigationService.navigate({
+                                screen: Screens.UserProfile,
+                                params: {
+                                    username,
+                                    _id: userId,
+                                },
                             })
                         }
                     >
@@ -210,9 +241,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
                     <Text>{title}</Text>
                     <TouchableOpacity
                         onPress={() =>
-                            navigation.navigate(Screens.UserProfile, {
-                                _id: activityFeedItem.userFollowedId,
-                                username: activityFeedItem.userFollowedUsername,
+                            NavigationService.navigate({
+                                screen: Screens.UserProfile,
+                                params: {
+                                    _id: activityFeedItem.userFollowedId,
+                                    username: activityFeedItem.userFollowedUsername,
+                                },
                             })
                         }
                     >
@@ -228,9 +262,12 @@ export const getActivityFeedItemContent = (navigation: any, activityFeedItem: Cl
             <View style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
                 <TouchableOpacity
                     onPress={() =>
-                        navigation.navigate(Screens.UserProfile, {
-                            username,
-                            _id: userId,
+                        NavigationService.navigate({
+                            screen: Screens.UserProfile,
+                            params: {
+                                username,
+                                _id: userId,
+                            },
                         })
                     }
                 >

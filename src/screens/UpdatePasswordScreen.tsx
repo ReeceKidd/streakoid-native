@@ -3,13 +3,16 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
-import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 
 import { AppState } from '../../store';
 import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
 import { Spacer } from '../components/Spacer';
-import { authActions } from '../actions/sharedActions';
+import { authActions } from '../actions/unauthenticatedSharedActions';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
+import { Screens } from './Screens';
+import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {
     const username = state && state.auth && state.auth.username;
@@ -39,9 +42,13 @@ const styles = StyleSheet.create({
     },
 });
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
+type UpdatePasswordScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.UpdatePassword>;
+type UpdatePasswordScreenRouteProp = RouteProp<RootStackParamList, Screens.UpdatePassword>;
+
+type NavigationProps = {
+    navigation: UpdatePasswordScreenNavigationProp;
+    route: UpdatePasswordScreenRouteProp;
+};
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 

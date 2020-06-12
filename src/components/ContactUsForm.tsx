@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Spacer } from './Spacer';
 import { ErrorMessage } from './ErrorMessage';
-import { emailActions } from '../actions/sharedActions';
+import { emailActions } from '../actions/authenticatedSharedActions';
 
 interface ContactUsToStreakFormProps {
     sendContactUsEmail: typeof emailActions.sendContactUsEmail;

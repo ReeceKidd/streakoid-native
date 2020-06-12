@@ -1,27 +1,26 @@
 import React, { PureComponent } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import { NavigationState, NavigationParams, NavigationScreenProp } from 'react-navigation';
 import { ListItem, Divider } from 'react-native-elements';
 
 import { Screens } from '../screens/Screens';
 import { Spacer } from './Spacer';
 import { NavigationLink } from './NavigationLink';
 import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../StackNavigator';
 
 interface FollowerListProps {
+    navigation: StackNavigationProp<RootStackParamList>;
     followerList: BasicUser[];
 }
 
-interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
-}
-
-type Props = FollowerListProps & NavigationProps;
+type Props = FollowerListProps;
 
 class FollowerList extends PureComponent<Props> {
-    navigateToFollowerProfile = (username: string) => {
+    navigateToFollowerProfile = ({ username, _id }: { username: string; _id: string }) => {
         this.props.navigation.navigate(Screens.UserProfile, {
             username,
+            _id,
         });
     };
     renderUsersList(): JSX.Element {
@@ -36,7 +35,7 @@ class FollowerList extends PureComponent<Props> {
                         <View>
                             <TouchableOpacity
                                 onPress={() => {
-                                    this.navigateToFollowerProfile(item.username);
+                                    this.navigateToFollowerProfile({ username: item.username, _id: item.userId });
                                 }}
                             >
                                 <ListItem
@@ -57,11 +56,7 @@ class FollowerList extends PureComponent<Props> {
         return (
             <View>
                 <Spacer>
-                    <NavigationLink
-                        navigation={this.props.navigation}
-                        text="No followers found. Add one."
-                        screen={Screens.Users}
-                    />
+                    <NavigationLink text="No followers found. Add one." screen={Screens.Users} />
                 </Spacer>
             </View>
         );
