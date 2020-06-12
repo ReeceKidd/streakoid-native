@@ -353,6 +353,7 @@ class HomeScreenComponent extends PureComponent<Props> {
             getLiveChallengeStreaks,
             getMultipleLiveChallengeStreaksIsLoading,
             userId,
+            navigation,
         } = this.props;
         return (
             <>
@@ -381,7 +382,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                     incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
                     liveChallengeStreaks={incompleteChallengeStreaks}
                     totalNumberOfChallengeStreaks={totalNumberOfChallengeStreaks}
-                    navigation={this.props.navigation}
+                    navigation={navigation}
                     userId={userId}
                 />
             </>
@@ -427,6 +428,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                     teamStreaks={incompleteTeamStreaks}
                     userId={userId}
                     totalNumberOfTeamStreaks={totalNumberOfTeamStreaks}
+                    navigation={this.props.navigation}
                 />
             </>
         );
@@ -472,13 +474,13 @@ class HomeScreenComponent extends PureComponent<Props> {
                 </View>
                 <LiveSoloStreakList
                     userId={currentUser._id}
-                    navigation={this.props.navigation}
                     getSoloStreak={getSoloStreak}
                     completeSoloStreakListTask={completeSoloStreakListTask}
                     incompleteSoloStreakListTask={incompleteSoloStreakListTask}
                     liveSoloStreaks={incompleteSoloStreaks}
                     getMultipleLiveSoloStreaksIsLoading={getMultipleLiveSoloStreaksIsLoading}
                     totalNumberOfSoloStreaks={totalNumberOfSoloStreaks}
+                    navigation={this.props.navigation}
                 />
             </>
         );

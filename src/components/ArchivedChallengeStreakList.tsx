@@ -2,11 +2,13 @@ import React from 'react';
 import { ArchivedChallengeStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/challengeStreakReducer';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
 import { ListItem, Divider, Text } from 'react-native-elements';
-import { NavigationService } from '../../NavigationService';
 import { Screens } from '../screens/Screens';
 import { Spacer } from './Spacer';
+import { ChallengeStreaksStackParamList } from '../screenNavigation/ChallengeStreaksStack';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface ArchivedChallengeStreakListProps {
+    navigation: StackNavigationProp<ChallengeStreaksStackParamList>;
     archivedChallengeStreaks: ArchivedChallengeStreakListItem[];
     getMultipleArchivedChallengeStreaksIsLoading: boolean;
 }
@@ -14,7 +16,7 @@ interface ArchivedChallengeStreakListProps {
 type Props = ArchivedChallengeStreakListProps;
 
 const ArchivedChallengeStreakList = (props: Props) => {
-    const { archivedChallengeStreaks, getMultipleArchivedChallengeStreaksIsLoading } = props;
+    const { navigation, archivedChallengeStreaks, getMultipleArchivedChallengeStreaksIsLoading } = props;
     return (
         <>
             {archivedChallengeStreaks.length === 0 && getMultipleArchivedChallengeStreaksIsLoading ? (
@@ -35,12 +37,9 @@ const ArchivedChallengeStreakList = (props: Props) => {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    NavigationService.navigate({
-                                        screen: Screens.ChallengeStreakInfo,
-                                        params: {
-                                            _id,
-                                            challengeName,
-                                        },
+                                    navigation.navigate(Screens.ChallengeStreakInfo, {
+                                        _id,
+                                        streakName: challengeName,
                                     })
                                 }
                             >

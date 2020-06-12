@@ -5,9 +5,11 @@ import { ListItem, Divider, Text } from 'react-native-elements';
 
 import { Screens } from '../screens/Screens';
 import { Spacer } from './Spacer';
-import { NavigationService } from '../../NavigationService';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { SoloStreakStackParamsList } from '../screenNavigation/SoloStreaksStack';
 
 interface ArchivedSoloStreakListProps {
+    navigation: StackNavigationProp<SoloStreakStackParamsList>;
     archivedSoloStreaks: ArchivedSoloStreakListItem[];
     getMultipleArchivedSoloStreaksIsLoading: boolean;
 }
@@ -15,7 +17,7 @@ interface ArchivedSoloStreakListProps {
 type Props = ArchivedSoloStreakListProps;
 
 const ArchivedSoloStreakList = (props: Props) => {
-    const { archivedSoloStreaks, getMultipleArchivedSoloStreaksIsLoading } = props;
+    const { navigation, archivedSoloStreaks, getMultipleArchivedSoloStreaksIsLoading } = props;
     return (
         <>
             {archivedSoloStreaks.length === 0 && getMultipleArchivedSoloStreaksIsLoading ? <ActivityIndicator /> : null}
@@ -34,12 +36,10 @@ const ArchivedSoloStreakList = (props: Props) => {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    NavigationService.navigate({
-                                        screen: Screens.SoloStreakInfo,
-                                        params: {
-                                            _id,
-                                            streakName,
-                                        },
+                                    navigation.navigate(Screens.SoloStreakInfo, {
+                                        _id,
+                                        streakName,
+                                        isUsersStreak: true,
                                     })
                                 }
                             >

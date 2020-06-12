@@ -20,7 +20,12 @@ import { VerifyEmailScreen } from '../screens/registration/VerifyEmailScreen';
 import { CompletedRegistrationScreen } from '../screens/registration/CompletedRegistrationScreen';
 import { ChooseAPasswordScreen } from '../screens/registration/ChooseAPasswordScreen';
 import { CompletedCustomizationScreen } from '../screens/accountCreation.tsx/CompletedCustomizationScreen';
-import { UsersProfileStackScreen } from './UserStack';
+import { UsersProfileStackScreen, UsersStack, UserStackParamList } from './UserStack';
+import { SoloStreaksStack, SoloStreakStackParamsList } from './SoloStreaksStack';
+import { TeamStreaksStack, TeamStreakStackParamList } from './TeamStreaksStack';
+import { ChallengeStreaksStack, ChallengeStreaksStackParamList } from './ChallengeStreaksStack';
+import { ChallengesStack, ChallengeStackParamList } from './ChallengesStack';
+import { StreakStack } from './StreakStack';
 
 export type AccountStackParamList = {
     Account: { username: string };
@@ -37,7 +42,14 @@ export type AccountStackParamList = {
     UserProfile: { _id: string; username: string };
 };
 
-const Stack = createStackNavigator<AccountStackParamList>();
+const Stack = createStackNavigator<
+    AccountStackParamList &
+        SoloStreakStackParamsList &
+        TeamStreakStackParamList &
+        ChallengeStreaksStackParamList &
+        ChallengeStackParamList &
+        UserStackParamList
+>();
 
 const AccountStackScreen = (
     <Stack.Screen
@@ -150,6 +162,12 @@ const AccountStack = () => (
         {CompletedRegistrationStackScreen}
         {CompletedCustomizationStackScreen}
         {UsersProfileStackScreen}
+        {StreakStack}
+        {SoloStreaksStack}
+        {TeamStreaksStack}
+        {ChallengeStreaksStack}
+        {ChallengesStack}
+        {UsersStack}
     </Stack.Navigator>
 );
 

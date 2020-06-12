@@ -6,9 +6,11 @@ import { ListItem, Divider, Text } from 'react-native-elements';
 import { Screens } from '../screens/Screens';
 import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { Spacer } from './Spacer';
-import { NavigationService } from '../../NavigationService';
+import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface ArchivedTeamStreakListProps {
+    navigation: StackNavigationProp<TeamStreakStackParamList>;
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
     getArchivedTeamStreaks: typeof teamStreakActions.getArchivedTeamStreaks;
     archivedTeamStreaks: PopulatedTeamStreakWithClientData[];
@@ -18,7 +20,7 @@ interface ArchivedTeamStreakListProps {
 type Props = ArchivedTeamStreakListProps;
 
 const ArchivedTeamStreakList = (props: Props) => {
-    const { archivedTeamStreaks, getMultipleArchivedTeamStreaksIsLoading } = props;
+    const { navigation, archivedTeamStreaks, getMultipleArchivedTeamStreaksIsLoading } = props;
     return (
         <>
             {archivedTeamStreaks.length === 0 && getMultipleArchivedTeamStreaksIsLoading ? <ActivityIndicator /> : null}
@@ -37,12 +39,10 @@ const ArchivedTeamStreakList = (props: Props) => {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    NavigationService.navigate({
-                                        screen: Screens.TeamStreakInfo,
-                                        params: {
-                                            _id,
-                                            streakName,
-                                        },
+                                    navigation.navigate(Screens.TeamStreakInfo, {
+                                        _id,
+                                        streakName,
+                                        userIsApartOfStreak: true,
                                     })
                                 }
                             >

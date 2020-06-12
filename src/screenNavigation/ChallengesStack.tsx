@@ -12,7 +12,7 @@ import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCatego
 import { ChallengesScreen } from '../screens/ChallengesScreen';
 import { ChallengeInfoScreen } from '../screens/ChallengeInfoScreen';
 
-type ChallengeStackParamList = {
+export type ChallengeStackParamList = {
     Challenges: undefined;
     ChallengeInfo: { _id: string; challengeName: string };
 };

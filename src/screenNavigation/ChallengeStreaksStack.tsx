@@ -18,7 +18,7 @@ export type ChallengeStreaksStackParamList = {
     ChallengeStreaks: {
         isPayingMember: boolean;
         totalLiveStreaks: number;
-        getMultipleLiveChallengeStreaksStackIsLoading: boolean;
+        getMultipleLiveChallengeStreaksIsLoading: boolean;
     };
     ChallengeStreakInfo: { _id: string; streakName: string };
     AddNoteToChallengeStreak: undefined;
@@ -29,7 +29,7 @@ const Stack = createStackNavigator<ChallengeStreaksStackParamList>();
 export const ChallengeStreaksStackScreen = (
     <Stack.Screen
         name={Screens.ChallengeStreaks}
-        initialParams={{ getMultipleLiveChallengeStreaksStackIsLoading: false, totalLiveStreaks: 0 }}
+        initialParams={{ getMultipleLiveChallengeStreaksIsLoading: false, totalLiveStreaks: 0 }}
         component={ChallengeStreaksScreen}
         options={({ route, navigation }) => ({
             title: 'Challenge Streaks',
@@ -53,7 +53,7 @@ export const ChallengeStreaksStackScreen = (
             headerLeft: () => (
                 <View style={{ flexDirection: 'row' }}>
                     <HamburgerSelector />
-                    {route.params.getMultipleLiveChallengeStreaksStackIsLoading ? <ActivityIndicator /> : null}
+                    {route.params.getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator /> : null}
                 </View>
             ),
         })}

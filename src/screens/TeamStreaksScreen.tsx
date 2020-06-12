@@ -21,7 +21,7 @@ import { ProgressBar } from '../components/ProgressBar';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
 
 const getIncompleteTeamStreaks = (state: AppState) => {
     return (
@@ -77,8 +77,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-type TeamStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TeamStreaks>;
-type TeamStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.TeamStreaks>;
+type TeamStreaksScreenNavigationProp = StackNavigationProp<TeamStreakStackParamList, Screens.TeamStreaks>;
+type TeamStreaksScreenRouteProp = RouteProp<TeamStreakStackParamList, Screens.TeamStreaks>;
 
 type NavigationProps = {
     navigation: TeamStreaksScreenNavigationProp;
@@ -97,6 +97,8 @@ const styles = StyleSheet.create({
 class TeamStreaksScreenComponent extends PureComponent<Props> {
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
+        this.props.getLiveTeamStreaks();
+        this.props.getArchivedTeamStreaks();
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
     }
@@ -156,6 +158,7 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                     ) : null}
                     <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveTeamStreakList
+                            navigation={this.props.navigation}
                             getTeamStreak={getTeamStreak}
                             getLiveTeamStreaks={getLiveTeamStreaks}
                             getMultipleLiveTeamStreaksIsLoading={getMultipleLiveTeamStreaksIsLoading}
@@ -171,11 +174,11 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                             Archived Team Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedTeamStreakList
+                            navigation={this.props.navigation}
                             getTeamStreak={getTeamStreak}
                             getArchivedTeamStreaks={getArchivedTeamStreaks}
                             archivedTeamStreaks={archivedTeamStreaks}
                             getMultipleArchivedTeamStreaksIsLoading={getMultipleArchivedTeamStreaksIsLoading}
-                            navigation={this.props.navigation}
                         />
                     </Spacer>
                 </ScrollView>

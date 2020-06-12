@@ -28,10 +28,14 @@ import {
 import { Screens } from '../screens/Screens';
 import { HomeScreen } from '../screens/HomeScreen';
 import { HamburgerSelector } from '../components/HamburgerSelector';
+import { ChallengesStack, ChallengeStackParamList } from './ChallengesStack';
+import { UsersStack, UserStackParamList } from './UserStack';
 
-type StreakStackParamList = { Home: undefined } & SoloStreakStackParamsList &
+export type StreakStackParamList = { Home: undefined } & SoloStreakStackParamsList &
     ChallengeStreaksStackParamList &
-    TeamStreakStackParamList;
+    TeamStreakStackParamList &
+    ChallengeStackParamList &
+    UserStackParamList;
 
 const Stack = createStackNavigator<StreakStackParamList>();
 
@@ -64,6 +68,8 @@ const StreakStack = () => (
         {AddNoteToSoloStreakStackScreen}
         {AddNoteToChallengeStreaksStackScreen}
         {AddNoteToTeamTeamStreakStackScreen}
+        {ChallengesStack}
+        {UsersStack}
     </Stack.Navigator>
 );
 

@@ -10,10 +10,10 @@ import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { soloStreakActions } from '../actions/authenticatedSharedActions';
 import { StreakFlame } from './StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { SoloStreakStackParamsList } from '../screenNavigation/SoloStreaksStack';
 
 interface LiveSoloStreakListProps {
-    navigation: StackNavigationProp<RootStackParamList>;
+    navigation: StackNavigationProp<SoloStreakStackParamsList>;
     userId: string;
     getSoloStreak: typeof soloStreakActions.getSoloStreak;
     completeSoloStreakListTask: (soloStreakId: string) => void;

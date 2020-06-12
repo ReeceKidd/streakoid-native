@@ -8,7 +8,7 @@ export const getAccountCompletionPercentage = ({ currentUser }: { currentUser: P
     if (currentUser.lastName) {
         completionPercentage += 20;
     }
-    if (currentUser.onboarding.whyDoYouWantToBuildNewHabitsChoice) {
+    if (currentUser.onboarding && currentUser.onboarding.whyDoYouWantToBuildNewHabitsChoice) {
         completionPercentage += 20;
     }
     if (currentUser.hasUsernameBeenCustomized) {

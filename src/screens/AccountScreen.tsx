@@ -252,6 +252,7 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                             activityFeedItems={
                                 currentUser && currentUser.activityFeed && currentUser.activityFeed.activityFeedItems
                             }
+                            navigation={this.props.navigation}
                         />
                     </Spacer>
                     <Spacer>

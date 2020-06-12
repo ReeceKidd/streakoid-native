@@ -131,7 +131,11 @@ class FollowingActivityScreenComponent extends PureComponent<Props, FollowingAct
                         </View>
                     ) : null}
                     {getFollowingActivityFeedIsLoading ? <ActivityIndicator /> : null}
-                    <GeneralActivityFeed activityFeedItems={this.state.localFollowingActivityFeedItems} />
+                    <GeneralActivityFeed
+                        activityFeedItems={this.state.localFollowingActivityFeedItems}
+                        navigation={this.props.navigation}
+                        currentUserId={this.props.currentUser._id}
+                    />
                     {followingActivityFeed.length >= totalFollowingActivityFeedItems ? null : (
                         <Spacer>
                             <Spacer />

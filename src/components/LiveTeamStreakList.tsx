@@ -13,9 +13,11 @@ import { ErrorMessage } from './ErrorMessage';
 import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { StreakFlame } from './StreakFlame';
-import { NavigationService } from '../../NavigationService';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
 
 interface LiveTeamStreakListProps {
+    navigation: StackNavigationProp<TeamStreakStackParamList>;
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
     getLiveTeamStreaks: typeof teamStreakActions.getLiveTeamStreaks;
     completeTeamMemberStreakTask: ({
@@ -48,12 +50,13 @@ const LiveTeamStreakList = (props: Props) => {
         totalNumberOfTeamStreaks,
         getMultipleLiveTeamStreaksIsLoading,
         userId,
+        navigation,
     } = props;
     return (
         <>
             {totalNumberOfTeamStreaks === 0 && !getMultipleLiveTeamStreaksIsLoading ? (
                 <TouchableOpacity
-                    onPress={() => NavigationService.navigate({ screen: Screens.CreateTeamStreak })}
+                    onPress={() => navigation.navigate(Screens.CreateTeamStreak)}
                     style={{ marginTop: 5 }}
                 >
                     <Text style={{ color: 'blue' }}>{`No team streaks. Create one`}</Text>
@@ -104,13 +107,10 @@ const LiveTeamStreakList = (props: Props) => {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    NavigationService.navigate({
-                                        screen: Screens.TeamStreakInfo,
-                                        params: {
-                                            _id,
-                                            streakName,
-                                            userIsApartOfStreak,
-                                        },
+                                    navigation.navigate(Screens.TeamStreakInfo, {
+                                        _id,
+                                        streakName,
+                                        userIsApartOfStreak,
                                     })
                                 }
                             >

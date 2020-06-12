@@ -20,8 +20,8 @@ import { ProgressBar } from '../components/ProgressBar';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
 import { ScrollView } from 'react-native-gesture-handler';
+import { SoloStreakStackParamsList } from '../screenNavigation/SoloStreaksStack';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -72,8 +72,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getArchivedSoloStreaks: bindActionCreators(soloStreakActions.getArchivedSoloStreaks, dispatch),
 });
 
-type SoloStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.SoloStreaks>;
-type SoloStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.SoloStreaks>;
+type SoloStreaksScreenNavigationProp = StackNavigationProp<SoloStreakStackParamsList, Screens.SoloStreaks>;
+type SoloStreaksScreenRouteProp = RouteProp<SoloStreakStackParamsList, Screens.SoloStreaks>;
 
 type NavigationProps = {
     navigation: SoloStreaksScreenNavigationProp;
@@ -93,6 +93,8 @@ const styles = StyleSheet.create({
 
 class SoloStreaksScreenComponent extends PureComponent<Props> {
     componentDidMount() {
+        this.props.getLiveSoloStreaks();
+        this.props.getArchivedSoloStreaks();
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
@@ -167,6 +169,7 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                             Archived Solo Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedSoloStreakList
+                            navigation={this.props.navigation}
                             archivedSoloStreaks={archivedSoloStreaks}
                             getMultipleArchivedSoloStreaksIsLoading={getMultipleArchivedSoloStreaksIsLoading}
                         />

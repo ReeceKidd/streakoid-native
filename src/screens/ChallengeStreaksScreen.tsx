@@ -19,8 +19,8 @@ import { ProgressBar } from '../components/ProgressBar';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ChallengeStreaksStackParamList } from '../screenNavigation/ChallengeStreaksStack';
 
 const getIncompleteChallengeStreaks = (state: AppState) => {
     return (
@@ -74,7 +74,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getArchivedChallengeStreaks: bindActionCreators(challengeStreakActions.getArchivedChallengeStreaks, dispatch),
 });
 
-type ChallengeStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChallengeStreaks>;
+type ChallengeStreaksScreenNavigationProp = StackNavigationProp<
+    ChallengeStreaksStackParamList,
+    Screens.ChallengeStreaks
+>;
 
 type NavigationProps = {
     navigation: ChallengeStreaksScreenNavigationProp;
@@ -99,7 +102,9 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
     componentDidUpdate(prevProps: Props) {
         const { getMultipleLiveChallengeStreaksIsLoading } = this.props;
         if (prevProps.getMultipleLiveChallengeStreaksIsLoading !== getMultipleLiveChallengeStreaksIsLoading) {
-            this.props.navigation.setParams({ getMultipleLiveChallengeStreaksIsLoading });
+            this.props.navigation.setParams({
+                getMultipleLiveChallengeStreaksIsLoading: getMultipleLiveChallengeStreaksIsLoading,
+            });
         }
     }
 
@@ -165,6 +170,7 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                             Archived Challenge Streaks <FontAwesomeIcon icon={faArchive} />
                         </Text>
                         <ArchivedChallengeStreakList
+                            navigation={this.props.navigation}
                             archivedChallengeStreaks={archivedChallengeStreaks}
                             getMultipleArchivedChallengeStreaksIsLoading={getArchivedChallengeStreaksIsLoading}
                         />

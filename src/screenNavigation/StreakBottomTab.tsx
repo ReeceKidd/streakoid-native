@@ -35,7 +35,7 @@ const ChallengeStreaksTabScreen = (
         name={Screens.ChallengeStreaks}
         component={ChallengeStreaksStack}
         options={() => ({
-            title: 'Challenge Streaks',
+            title: 'Challenge',
             tabBarIcon: () => <FontAwesomeIcon icon={faMedal} />,
         })}
     />
@@ -46,7 +46,7 @@ const TeamStreaksTabScreen = (
         name={Screens.TeamStreaks}
         component={TeamStreaksStack}
         options={() => ({
-            title: 'Team Streaks',
+            title: 'Team',
             tabBarIcon: () => <FontAwesomeIcon icon={faPeopleCarry} />,
         })}
     />
@@ -57,7 +57,7 @@ const SoloStreaksTabScreen = (
         name={Screens.SoloStreaks}
         component={SoloStreaksStack}
         options={() => ({
-            title: 'Solo Streaks',
+            title: 'Solo',
             tabBarIcon: () => <FontAwesomeIcon icon={faChild} />,
         })}
     />

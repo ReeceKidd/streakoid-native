@@ -11,6 +11,9 @@ import { activityFeedItemActions } from '../actions/authenticatedSharedActions';
 import { Text, Button } from 'react-native-elements';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { ActivityIndicator } from 'react-native';
+import { Screens } from './Screens';
+import { ActivityFeedStackParamList } from '../screenNavigation/ActivityFeedStack';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -29,7 +32,12 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getGlobalActivityFeedItems: bindActionCreators(activityFeedItemActions.getGlobalActivityFeedItems, dispatch),
 });
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type GlobalActivityScreenNavigationProp = StackNavigationProp<ActivityFeedStackParamList, Screens.GlobalActivity>;
+
+type NavigationProps = {
+    navigation: GlobalActivityScreenNavigationProp;
+};
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 interface GlobalActivityState {
     localGlobalActivityFeedItems: ClientActivityFeedItemType[];
@@ -91,7 +99,12 @@ class GlobalActivityScreenComponent extends PureComponent<Props, GlobalActivityS
     };
 
     render(): JSX.Element | null {
-        const { globalActivityFeed, getGlobalActivityFeedLoading, totalGlobalActivityFeedItems } = this.props;
+        const {
+            globalActivityFeed,
+            getGlobalActivityFeedLoading,
+            totalGlobalActivityFeedItems,
+            currentUser,
+        } = this.props;
 
         return (
             <ScrollView>
@@ -100,7 +113,11 @@ class GlobalActivityScreenComponent extends PureComponent<Props, GlobalActivityS
                         <Text style={{ color: 'red' }}>{`No activity `}</Text>
                     ) : null}
                     {getGlobalActivityFeedLoading ? <ActivityIndicator /> : null}
-                    <GeneralActivityFeed activityFeedItems={this.state.localGlobalActivityFeedItems} />
+                    <GeneralActivityFeed
+                        activityFeedItems={this.state.localGlobalActivityFeedItems}
+                        navigation={this.props.navigation}
+                        currentUserId={currentUser._id}
+                    />
                     {globalActivityFeed.length >= totalGlobalActivityFeedItems ? null : (
                         <Spacer>
                             <Spacer />

@@ -8,14 +8,32 @@ import {
 import { ListItem, Avatar, Text } from 'react-native-elements';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
 import ActivityFeedItemTypes from '@streakoid/streakoid-models/lib/Types/ActivityFeedItemTypes';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ChallengeStreaksStackParamList } from '../screenNavigation/ChallengeStreaksStack';
+import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
+import { SoloStreakStackParamsList } from '../screenNavigation/SoloStreaksStack';
+import { UserStackParamList } from '../screenNavigation/UserStack';
+import { ChallengeStackParamList } from '../screenNavigation/ChallengesStack';
+import { AccountStackParamList } from '../screenNavigation/AccountStack';
+import { StreakStackParamList } from '../screenNavigation/StreakStack';
+
+export type GeneralActivityFeedStackParamList = AccountStackParamList &
+    ChallengeStreaksStackParamList &
+    TeamStreakStackParamList &
+    StreakStackParamList &
+    SoloStreakStackParamsList &
+    ChallengeStackParamList &
+    UserStackParamList;
 
 interface GeneralActivityFeedComponentProps {
+    currentUserId: string;
+    navigation: StackNavigationProp<GeneralActivityFeedStackParamList>;
     activityFeedItems: ClientActivityFeedItemType[];
 }
 
 class GeneralActivityFeed extends PureComponent<GeneralActivityFeedComponentProps> {
     render(): JSX.Element {
-        const { activityFeedItems } = this.props;
+        const { activityFeedItems, currentUserId } = this.props;
         return (
             <FlatList
                 data={activityFeedItems}
@@ -39,7 +57,11 @@ class GeneralActivityFeed extends PureComponent<GeneralActivityFeedComponentProp
                                         }}
                                     />
                                 }
-                                title={getActivityFeedItemContent(item)}
+                                title={getActivityFeedItemContent({
+                                    activityFeedItem: item,
+                                    navigation: this.props.navigation,
+                                    currentUserId,
+                                })}
                                 subtitle={subtitle ? subtitle : undefined}
                             />
                             <Text style={{ textAlign: 'right', fontSize: 8 }}>
