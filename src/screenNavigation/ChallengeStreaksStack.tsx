@@ -12,6 +12,7 @@ import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCatego
 import { streakoidUrl } from '../streakoidUrl';
 import { ChallengeStreakInfoScreen } from '../screens/ChallengeStreakInfoScreen';
 import { ChallengeStreaksScreen } from '../screens/ChallengeStreaksScreen';
+import { AddNoteToChallengeStreakScreen } from '../screens/AddNoteToChallengeStreakScreen';
 
 export type ChallengeStreaksStackParamList = {
     ChallengeStreaks: {
@@ -20,11 +21,12 @@ export type ChallengeStreaksStackParamList = {
         getMultipleLiveChallengeStreaksStackIsLoading: boolean;
     };
     ChallengeStreakInfo: { _id: string; streakName: string };
+    AddNoteToChallengeStreak: undefined;
 };
 
 const Stack = createStackNavigator<ChallengeStreaksStackParamList>();
 
-const ChallengeStreaksStackScreen = (
+export const ChallengeStreaksStackScreen = (
     <Stack.Screen
         name={Screens.ChallengeStreaks}
         initialParams={{ getMultipleLiveChallengeStreaksStackIsLoading: false, totalLiveStreaks: 0 }}
@@ -58,7 +60,7 @@ const ChallengeStreaksStackScreen = (
     />
 );
 
-const ChallengeStreakInfoStackScreen = (
+export const ChallengeStreakInfoStackScreen = (
     <Stack.Screen
         name={Screens.ChallengeStreakInfo}
         component={ChallengeStreakInfoScreen}
@@ -79,6 +81,10 @@ const ChallengeStreakInfoStackScreen = (
             ),
         })}
     />
+);
+
+export const AddNoteToChallengeStreaksStackScreen = (
+    <Stack.Screen name={Screens.AddNoteToChallengeStreak} component={AddNoteToChallengeStreakScreen} />
 );
 
 const ChallengeStreaksStack = () => (

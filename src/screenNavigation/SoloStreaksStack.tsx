@@ -14,20 +14,23 @@ import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCatego
 import { streakoidUrl } from '../streakoidUrl';
 import { CreateSoloStreakScreen } from '../screens/CreateSoloStreakScreen';
 import { EditSoloStreakScreen } from '../screens/EditSoloStreakScreen';
+import { AddNoteToSoloStreakScreen } from '../screens/AddNoteToSoloStreakScreen';
 
 export type SoloStreakStackParamsList = {
     SoloStreaks: { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveSoloStreaksIsLoading: boolean };
     SoloStreakInfo: { _id: string; streakName: string; isUsersStreak: boolean };
     CreateSoloStreak: undefined;
     EditSoloStreak: undefined;
+    AddNoteToSoloStreak: undefined;
 };
 
 const Stack = createStackNavigator<SoloStreakStackParamsList>();
 
-const SoloStreakStackScreen = (
+export const SoloStreakStackScreen = (
     <Stack.Screen
         name={Screens.SoloStreaks}
         component={SoloStreaksScreen}
+        initialParams={{ isPayingMember: false, totalLiveStreaks: 0, getMultipleLiveSoloStreaksIsLoading: false }}
         options={({ route, navigation }) => ({
             title: 'Solo Streaks',
             headerRight: () => {
@@ -56,7 +59,7 @@ const SoloStreakStackScreen = (
     />
 );
 
-const SoloStreakInfoStackScreen = (
+export const SoloStreakInfoStackScreen = (
     <Stack.Screen
         name={Screens.SoloStreakInfo}
         component={SoloStreakInfoScreen}
@@ -88,9 +91,17 @@ const SoloStreakInfoStackScreen = (
     />
 );
 
-const CreateSoloStreakStackScreen = <Stack.Screen name={Screens.CreateSoloStreak} component={CreateSoloStreakScreen} />;
+export const CreateSoloStreakStackScreen = (
+    <Stack.Screen name={Screens.CreateSoloStreak} component={CreateSoloStreakScreen} />
+);
 
-const EditSoloStreakStackScreen = <Stack.Screen name={Screens.EditSoloStreak} component={EditSoloStreakScreen} />;
+export const EditSoloStreakStackScreen = (
+    <Stack.Screen name={Screens.EditSoloStreak} component={EditSoloStreakScreen} />
+);
+
+export const AddNoteToSoloStreakStackScreen = (
+    <Stack.Screen name={Screens.AddNoteToSoloStreak} component={AddNoteToSoloStreakScreen} />
+);
 
 const SoloStreaksStack = () => (
     <Stack.Navigator>
@@ -98,6 +109,7 @@ const SoloStreaksStack = () => (
         {SoloStreakInfoStackScreen}
         {CreateSoloStreakStackScreen}
         {EditSoloStreakStackScreen}
+        {AddNoteToSoloStreakStackScreen}
     </Stack.Navigator>
 );
 

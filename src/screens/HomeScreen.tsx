@@ -343,6 +343,95 @@ class HomeScreenComponent extends PureComponent<Props> {
         });
     };
 
+    renderIncompleteChallengeStreaks(): JSX.Element {
+        const {
+            completeChallengeStreakListTask,
+            incompleteChallengeStreakListTask,
+            incompleteChallengeStreaks,
+            totalNumberOfChallengeStreaks,
+            getChallengeStreak,
+            getLiveChallengeStreaks,
+            getMultipleLiveChallengeStreaksIsLoading,
+            userId,
+        } = this.props;
+        return (
+            <>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.push(Screens.ChallengeStreaks)}>
+                        <Text style={{ fontWeight: 'bold' }}>
+                            Challenge Streaks <FontAwesomeIcon icon={faMedal} />
+                        </Text>
+                    </TouchableOpacity>
+                    {getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
+                </View>
+                <View style={{ marginTop: 5 }}>
+                    <ProgressBar
+                        completePercentage={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteChallengeStreaks && incompleteChallengeStreaks.length,
+                            numberOfStreaks: totalNumberOfChallengeStreaks,
+                        })}
+                        fullScreen={false}
+                    />
+                </View>
+                <LiveChallengeStreakList
+                    getChallengeStreak={getChallengeStreak}
+                    getLiveChallengeStreaks={getLiveChallengeStreaks}
+                    getMultipleLiveChallengeStreaksIsLoading={getMultipleLiveChallengeStreaksIsLoading}
+                    completeChallengeStreakListTask={completeChallengeStreakListTask}
+                    incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
+                    liveChallengeStreaks={incompleteChallengeStreaks}
+                    totalNumberOfChallengeStreaks={totalNumberOfChallengeStreaks}
+                    navigation={this.props.navigation}
+                    userId={userId}
+                />
+            </>
+        );
+    }
+
+    renderIncompleteTeamStreaks(): JSX.Element {
+        const {
+            getSelectedTeamStreak,
+            getLiveTeamStreaks,
+            getMultipleLiveTeamStreaksIsLoading,
+            completeTeamMemberStreakTask,
+            incompleteTeamMemberStreakTask,
+            incompleteTeamStreaks,
+            userId,
+            totalNumberOfTeamStreaks,
+        } = this.props;
+        return (
+            <>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.push(Screens.TeamStreaks)}>
+                        <Text style={{ fontWeight: 'bold' }}>
+                            Team Streaks <FontAwesomeIcon icon={faPeopleCarry} />
+                        </Text>
+                    </TouchableOpacity>
+                    {getMultipleLiveTeamStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
+                </View>
+                <View style={{ marginTop: 5 }}>
+                    <ProgressBar
+                        completePercentage={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteTeamStreaks && incompleteTeamStreaks.length,
+                            numberOfStreaks: totalNumberOfTeamStreaks,
+                        })}
+                        fullScreen={false}
+                    />
+                </View>
+                <LiveTeamStreakList
+                    getTeamStreak={getSelectedTeamStreak}
+                    getLiveTeamStreaks={getLiveTeamStreaks}
+                    getMultipleLiveTeamStreaksIsLoading={getMultipleLiveTeamStreaksIsLoading}
+                    completeTeamMemberStreakTask={completeTeamMemberStreakTask}
+                    incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
+                    teamStreaks={incompleteTeamStreaks}
+                    userId={userId}
+                    totalNumberOfTeamStreaks={totalNumberOfTeamStreaks}
+                />
+            </>
+        );
+    }
+
     renderIncompleteSoloStreaks(): JSX.Element {
         const {
             currentUser,
@@ -395,95 +484,6 @@ class HomeScreenComponent extends PureComponent<Props> {
         );
     }
 
-    renderIncompleteTeamStreaks(): JSX.Element {
-        const {
-            getSelectedTeamStreak,
-            getLiveTeamStreaks,
-            getMultipleLiveTeamStreaksIsLoading,
-            completeTeamMemberStreakTask,
-            incompleteTeamMemberStreakTask,
-            incompleteTeamStreaks,
-            userId,
-            totalNumberOfTeamStreaks,
-        } = this.props;
-        return (
-            <>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.push(Screens.TeamStreaks)}>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            Team Streaks <FontAwesomeIcon icon={faPeopleCarry} />
-                        </Text>
-                    </TouchableOpacity>
-                    {getMultipleLiveTeamStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
-                </View>
-                <View style={{ marginTop: 5 }}>
-                    <ProgressBar
-                        completePercentage={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteTeamStreaks && incompleteTeamStreaks.length,
-                            numberOfStreaks: totalNumberOfTeamStreaks,
-                        })}
-                        fullScreen={false}
-                    />
-                </View>
-                <LiveTeamStreakList
-                    getTeamStreak={getSelectedTeamStreak}
-                    getLiveTeamStreaks={getLiveTeamStreaks}
-                    getMultipleLiveTeamStreaksIsLoading={getMultipleLiveTeamStreaksIsLoading}
-                    completeTeamMemberStreakTask={completeTeamMemberStreakTask}
-                    incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
-                    teamStreaks={incompleteTeamStreaks}
-                    userId={userId}
-                    totalNumberOfTeamStreaks={totalNumberOfTeamStreaks}
-                />
-            </>
-        );
-    }
-
-    renderIncompleteChallengeStreaks(): JSX.Element {
-        const {
-            completeChallengeStreakListTask,
-            incompleteChallengeStreakListTask,
-            incompleteChallengeStreaks,
-            totalNumberOfChallengeStreaks,
-            getChallengeStreak,
-            getLiveChallengeStreaks,
-            getMultipleLiveChallengeStreaksIsLoading,
-            userId,
-        } = this.props;
-        return (
-            <>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.push(Screens.ChallengeStreaks)}>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            Challenge Streaks <FontAwesomeIcon icon={faMedal} />
-                        </Text>
-                    </TouchableOpacity>
-                    {getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
-                </View>
-                <View style={{ marginTop: 5 }}>
-                    <ProgressBar
-                        completePercentage={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteChallengeStreaks && incompleteChallengeStreaks.length,
-                            numberOfStreaks: totalNumberOfChallengeStreaks,
-                        })}
-                        fullScreen={false}
-                    />
-                </View>
-                <LiveChallengeStreakList
-                    getChallengeStreak={getChallengeStreak}
-                    getLiveChallengeStreaks={getLiveChallengeStreaks}
-                    getMultipleLiveChallengeStreaksIsLoading={getMultipleLiveChallengeStreaksIsLoading}
-                    completeChallengeStreakListTask={completeChallengeStreakListTask}
-                    incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
-                    liveChallengeStreaks={incompleteChallengeStreaks}
-                    totalNumberOfChallengeStreaks={totalNumberOfChallengeStreaks}
-                    navigation={this.props.navigation}
-                    userId={userId}
-                />
-            </>
-        );
-    }
-
     render(): JSX.Element {
         const { currentUser, isPayingMember, totalIncompleteStreaks } = this.props;
         const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
@@ -505,9 +505,9 @@ class HomeScreenComponent extends PureComponent<Props> {
                             />
                         </Spacer>
                     ) : null}
-                    <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
-                    <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>
+                    <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
+                    <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
                 </View>
             </ScrollView>
         );

@@ -32,7 +32,7 @@ export type TeamStreakStackParamList = {
 
 const Stack = createStackNavigator<TeamStreakStackParamList>();
 
-const TeamStreaksStackScreen = (
+export const TeamStreaksStackScreen = (
     <Stack.Screen
         name={Screens.TeamStreaks}
         component={TeamStreaksScreen}
@@ -65,7 +65,7 @@ const TeamStreaksStackScreen = (
     />
 );
 
-const TeamStreakInfoStackScreen = (
+export const TeamStreakInfoStackScreen = (
     <Stack.Screen
         name={Screens.TeamStreakInfo}
         component={TeamStreakInfoScreen}
@@ -97,7 +97,7 @@ const TeamStreakInfoStackScreen = (
     />
 );
 
-const CreateTeamTeamStreakStackScreen = (
+export const CreateTeamTeamStreakStackScreen = (
     <Stack.Screen
         name={Screens.CreateTeamStreak}
         component={CreateTeamStreakScreen}
@@ -107,9 +107,11 @@ const CreateTeamTeamStreakStackScreen = (
     />
 );
 
-const EditTeamTeamStreakStackScreen = <Stack.Screen name={Screens.EditTeamStreak} component={EditTeamStreakScreen} />;
+export const EditTeamTeamStreakStackScreen = (
+    <Stack.Screen name={Screens.EditTeamStreak} component={EditTeamStreakScreen} />
+);
 
-const AddFollowerToTeamTeamStreakStackScreen = (
+export const AddFollowerToTeamTeamStreakStackScreen = (
     <Stack.Screen
         name={Screens.AddFollowerToTeamStreak}
         component={AddFollowerToTeamStreakScreen}
@@ -119,7 +121,7 @@ const AddFollowerToTeamTeamStreakStackScreen = (
     />
 );
 
-const TeamMemberStreakInfoStackScreen = (
+export const TeamMemberStreakInfoStackScreen = (
     <Stack.Screen
         name={Screens.TeamMemberStreakInfo}
         component={TeamMemberStreakInfoScreen}
@@ -142,7 +144,7 @@ const TeamMemberStreakInfoStackScreen = (
     />
 );
 
-const AddNoteToTeamTeamStreakStackScreen = (
+export const AddNoteToTeamTeamStreakStackScreen = (
     <Stack.Screen name={Screens.AddNoteToTeamStreak} component={AddNoteToTeamStreakScreen} />
 );
 
