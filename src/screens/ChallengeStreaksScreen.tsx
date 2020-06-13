@@ -20,7 +20,7 @@ import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentag
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ChallengeStreaksStackParamList } from '../screenNavigation/ChallengeStreaksStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const getIncompleteChallengeStreaks = (state: AppState) => {
     return (
@@ -74,10 +74,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getArchivedChallengeStreaks: bindActionCreators(challengeStreakActions.getArchivedChallengeStreaks, dispatch),
 });
 
-type ChallengeStreaksScreenNavigationProp = StackNavigationProp<
-    ChallengeStreaksStackParamList,
-    Screens.ChallengeStreaks
->;
+type ChallengeStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChallengeStreaks>;
 
 type NavigationProps = {
     navigation: ChallengeStreaksScreenNavigationProp;

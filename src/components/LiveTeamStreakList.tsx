@@ -14,10 +14,10 @@ import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { StreakFlame } from './StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface LiveTeamStreakListProps {
-    navigation: StackNavigationProp<TeamStreakStackParamList>;
+    navigation: StackNavigationProp<RootStackParamList, Screens.Home | Screens.TeamStreaks>;
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
     getLiveTeamStreaks: typeof teamStreakActions.getLiveTeamStreaks;
     completeTeamMemberStreakTask: ({

@@ -12,7 +12,7 @@ import NativePushNotification from 'react-native-push-notification';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TutorialStackParamList } from '../../screenNavigation/TutorialStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
     },
 });
 
-type DailyRemindersScreenNavigationProp = StackNavigationProp<TutorialStackParamList, Screens.DailyReminders>;
-type DailyRemindersScreenRouteProp = RouteProp<TutorialStackParamList, Screens.DailyReminders>;
+type DailyRemindersScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.DailyReminders>;
+type DailyRemindersScreenRouteProp = RouteProp<RootStackParamList, Screens.DailyReminders>;
 
 type NavigationProps = {
     navigation: DailyRemindersScreenNavigationProp;

@@ -7,10 +7,12 @@ import { faCheckCircle, faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 import { PopulatedTeamStreak } from '@streakoid/streakoid-models/lib/Models/PopulatedTeamStreak';
 import { PopulatedTeamMember } from '@streakoid/streakoid-models/lib/Models/PopulatedTeamMember';
 import { Screens } from '../screens/Screens';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface TeamStreakDetailsProps {
     selectedTeamStreak: PopulatedTeamStreak;
-    navigate: Function;
+    navigation: StackNavigationProp<RootStackParamList>;
 }
 
 class TeamStreakDetails extends PureComponent<TeamStreakDetailsProps> {
@@ -33,7 +35,7 @@ class TeamStreakDetails extends PureComponent<TeamStreakDetailsProps> {
                         <View>
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigate(Screens.UserProfile, {
+                                    this.props.navigation.navigate(Screens.UserProfile, {
                                         username,
                                         _id,
                                     })

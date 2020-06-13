@@ -13,7 +13,7 @@ import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { Text } from 'react-native-elements';
 import { ChooseAUsernameForm } from '../../components/ChooseAUsernameForm';
-import { AccountStackParamList } from '../../screenNavigation/AccountStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const updateUsernameAttributeErrorMessage = state && state.auth && state.auth.updateUsernameAttributeErrorMessage;
@@ -30,7 +30,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-type ChooseAUsernameScreenNavigationProp = StackNavigationProp<AccountStackParamList, Screens.ChooseAUsername>;
+type ChooseAUsernameScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChooseAUsername>;
 
 type NavigationProps = {
     navigation: ChooseAUsernameScreenNavigationProp;

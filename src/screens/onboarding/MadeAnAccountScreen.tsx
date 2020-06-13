@@ -15,7 +15,7 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { authActions } from '../../actions/unauthenticatedSharedActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LoadingScreenSpinner } from '../../components/LoadingScreenSpinner';
-import { OnboardingStackParamList } from '../../screenNavigation/OnboardingStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const isAuthenticated = state && state.auth && state.auth.isAuthenticated;
@@ -40,7 +40,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     registerWithUserIdentifier: bindActionCreators(authActions.registerWithUserIdentifier, dispatch),
     loginUser: bindActionCreators(authActions.loginUser, dispatch),
 });
-type MadeAnAccountScreenNavigationProp = StackNavigationProp<OnboardingStackParamList, Screens.MadeAnAccount>;
+type MadeAnAccountScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.MadeAnAccount>;
 
 type NavigationProps = {
     navigation: MadeAnAccountScreenNavigationProp;

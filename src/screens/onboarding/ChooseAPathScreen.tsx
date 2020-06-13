@@ -15,7 +15,7 @@ import { Spacer } from '../../components/Spacer';
 import { FlatList } from 'react-native-gesture-handler';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { OnboardingStackParamList } from '../../screenNavigation/OnboardingStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const selectedChallengeStreak = state && state.challengeStreaks && state.challengeStreaks.selectedChallengeStreak;
@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUser: bindActionCreators(userActions.updateCurrentUser, dispatch),
 });
 
-type ChooseAPathScreenNavigationProp = StackNavigationProp<OnboardingStackParamList, Screens.ChooseAPath>;
+type ChooseAPathScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChooseAPath>;
 
 type NavigationProps = {
     navigation: ChooseAPathScreenNavigationProp;

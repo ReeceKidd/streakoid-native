@@ -10,10 +10,10 @@ import { challengeStreakActions } from '../actions/authenticatedSharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { StreakFlame } from './StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ChallengeStreaksStackParamList } from '../screenNavigation/ChallengeStreaksStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface LiveChallengeStreakListProps {
-    navigation: StackNavigationProp<ChallengeStreaksStackParamList>;
+    navigation: StackNavigationProp<RootStackParamList, Screens.Home | Screens.ChallengeStreaks>;
     getChallengeStreak: typeof challengeStreakActions.getChallengeStreak;
     getLiveChallengeStreaks: typeof challengeStreakActions.getLiveChallengeStreaks;
     getMultipleLiveChallengeStreaksIsLoading: boolean;

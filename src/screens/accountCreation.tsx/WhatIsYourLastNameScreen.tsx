@@ -12,7 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { WhatIsYourLastNameForm } from '../../components/WhatIsYourLastNameForm';
-import { AccountStackParamList } from '../../screenNavigation/AccountStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUser: bindActionCreators(userActions.updateCurrentUser, dispatch),
 });
 
-type WhatIsYourLastNameScreenProp = StackNavigationProp<AccountStackParamList, Screens.WhatIsYourLastName>;
+type WhatIsYourLastNameScreenProp = StackNavigationProp<RootStackParamList, Screens.WhatIsYourLastName>;
 
 type NavigationProps = {
     navigation: WhatIsYourLastNameScreenProp;

@@ -11,7 +11,7 @@ import { ChallengeIcon } from '../../components/ChallengeIcon';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
-import { TutorialStackParamList } from '../../screenNavigation/TutorialStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const streakRecommendations =
@@ -37,10 +37,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
 });
 
 type StreakRecommendationsIntroScreenNavigationProp = StackNavigationProp<
-    TutorialStackParamList,
+    RootStackParamList,
     Screens.StreakRecommendationsIntro
 >;
-type StreakRecommendationsIntroScreenRouteProp = RouteProp<TutorialStackParamList, Screens.StreakRecommendationsIntro>;
+type StreakRecommendationsIntroScreenRouteProp = RouteProp<RootStackParamList, Screens.StreakRecommendationsIntro>;
 
 type NavigationProps = {
     navigation: StreakRecommendationsIntroScreenNavigationProp;

@@ -6,7 +6,7 @@ import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { OnboardingStackParamList } from '../screenNavigation/OnboardingStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const styles = StyleSheet.create({
     container: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type LandingScreenNavigationProp = StackNavigationProp<OnboardingStackParamList, Screens.Landing>;
+type LandingScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Landing>;
 
 type Props = {
     navigation: LandingScreenNavigationProp;

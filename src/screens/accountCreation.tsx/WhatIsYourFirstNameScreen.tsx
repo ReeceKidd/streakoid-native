@@ -13,7 +13,7 @@ import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { Text } from 'react-native-elements';
 import { WhatIsYourFirstNameForm } from '../../components/WhatIsYourFirstNameForm';
-import { AccountStackParamList } from '../../screenNavigation/AccountStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUser: bindActionCreators(userActions.updateCurrentUser, dispatch),
 });
 
-type WhatIsYourFirstNameScreenProp = StackNavigationProp<AccountStackParamList, Screens.WhatIsYourFirstName>;
+type WhatIsYourFirstNameScreenProp = StackNavigationProp<RootStackParamList, Screens.WhatIsYourFirstName>;
 
 type NavigationProps = {
     navigation: WhatIsYourFirstNameScreenProp;

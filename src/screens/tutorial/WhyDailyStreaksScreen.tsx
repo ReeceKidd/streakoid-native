@@ -6,7 +6,7 @@ import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { TutorialStackParamList } from '../../screenNavigation/TutorialStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     },
 });
 
-type WhyDailyStreaksScreenNavigationProp = StackNavigationProp<TutorialStackParamList, Screens.WhyDailyStreaks>;
-type WhyDailyStreaksScreenRouteProp = RouteProp<TutorialStackParamList, Screens.WhyDailyStreaks>;
+type WhyDailyStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.WhyDailyStreaks>;
+type WhyDailyStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.WhyDailyStreaks>;
 
 type NavigationProps = {
     navigation: WhyDailyStreaksScreenNavigationProp;

@@ -6,6 +6,7 @@ import { View, StyleSheet } from 'react-native';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
 import ActivityFeedItemTypes from '@streakoid/streakoid-models/lib/Types/ActivityFeedItemTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const styles = StyleSheet.create({
     link: {
@@ -30,7 +31,7 @@ export const getActivityFeedItemContent = ({
     currentUserId: string;
     activityFeedItem: ClientActivityFeedItemType;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    navigation: StackNavigationProp<any>;
+    navigation: StackNavigationProp<RootStackParamList, Screens.FollowingActivity>;
 }) => {
     const { username, userId, title } = activityFeedItem;
     if (

@@ -8,7 +8,7 @@ import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icon
 import { Spacer } from '../../components/Spacer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { TutorialStackParamList } from '../../screenNavigation/TutorialStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
 });
 
 type DifferentTypesOfStreaksScreenNavigationProp = StackNavigationProp<
-    TutorialStackParamList,
+    RootStackParamList,
     Screens.DifferentTypesOfStreaks
 >;
-type DifferentTypesOfStreaksScreenRouteProp = RouteProp<TutorialStackParamList, Screens.DifferentTypesOfStreaks>;
+type DifferentTypesOfStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.DifferentTypesOfStreaks>;
 
 type NavigationProps = {
     navigation: DifferentTypesOfStreaksScreenNavigationProp;

@@ -4,11 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Screens } from '../screens/Screens';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCalendarCheck, faPeopleCarry } from '@fortawesome/pro-solid-svg-icons';
-import { StreakStack } from './StreakStack';
 import { faMedal, faChild } from '@fortawesome/free-solid-svg-icons';
-import { TeamStreaksStack } from './TeamStreaksStack';
-import { ChallengeStreaksStack } from './ChallengeStreaksStack';
-import { SoloStreaksStack } from './SoloStreaksStack';
+import { streakStack, challengeStreakStack, teamStreakStack, soloStreakStack } from './RootNavigator';
 
 export type StreakTabParamList = {
     Home: undefined;
@@ -22,7 +19,7 @@ const Tab = createBottomTabNavigator<StreakTabParamList>();
 const StreakTabScreen = (
     <Tab.Screen
         name={Screens.Home}
-        component={StreakStack}
+        component={streakStack}
         options={() => ({
             title: 'Streaks',
             tabBarIcon: () => <FontAwesomeIcon icon={faCalendarCheck} />,
@@ -33,7 +30,7 @@ const StreakTabScreen = (
 const ChallengeStreaksTabScreen = (
     <Tab.Screen
         name={Screens.ChallengeStreaks}
-        component={ChallengeStreaksStack}
+        component={challengeStreakStack}
         options={() => ({
             title: 'Challenge',
             tabBarIcon: () => <FontAwesomeIcon icon={faMedal} />,
@@ -44,7 +41,7 @@ const ChallengeStreaksTabScreen = (
 const TeamStreaksTabScreen = (
     <Tab.Screen
         name={Screens.TeamStreaks}
-        component={TeamStreaksStack}
+        component={teamStreakStack}
         options={() => ({
             title: 'Team',
             tabBarIcon: () => <FontAwesomeIcon icon={faPeopleCarry} />,
@@ -55,7 +52,7 @@ const TeamStreaksTabScreen = (
 const SoloStreaksTabScreen = (
     <Tab.Screen
         name={Screens.SoloStreaks}
-        component={SoloStreaksStack}
+        component={soloStreakStack}
         options={() => ({
             title: 'Solo',
             tabBarIcon: () => <FontAwesomeIcon icon={faChild} />,

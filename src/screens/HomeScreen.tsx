@@ -42,7 +42,7 @@ import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentag
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StreakStackParamList } from '../screenNavigation/StreakStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -153,8 +153,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
 });
 
-type HomeScreenNavigationProp = StackNavigationProp<StreakStackParamList, Screens.Home>;
-type HomeScreenRouteProp = RouteProp<StreakStackParamList, Screens.Home>;
+type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Home>;
+type HomeScreenRouteProp = RouteProp<RootStackParamList, Screens.Home>;
 
 type NavigationProps = {
     navigation: HomeScreenNavigationProp;

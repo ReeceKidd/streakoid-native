@@ -14,7 +14,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { faUserCrown, faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { NavigationService } from '../../../NavigationService';
-import { TutorialStackParamList } from '../../screenNavigation/TutorialStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const createSoloStreakIsLoading = state && state.soloStreaks && state.soloStreaks.createSoloStreakIsLoading;
@@ -30,8 +30,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUser: bindActionCreators(userActions.updateCurrentUser, dispatch),
 });
 
-type TutorialCompleteScreenNavigationProp = StackNavigationProp<TutorialStackParamList, Screens.TutorialComplete>;
-type TutorialCompleteScreenRouteProp = RouteProp<TutorialStackParamList, Screens.TutorialComplete>;
+type TutorialCompleteScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TutorialComplete>;
+type TutorialCompleteScreenRouteProp = RouteProp<RootStackParamList, Screens.TutorialComplete>;
 
 type NavigationProps = {
     navigation: TutorialCompleteScreenNavigationProp;

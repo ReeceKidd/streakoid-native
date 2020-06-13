@@ -10,10 +10,10 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { activityFeedItemActions } from '../actions/authenticatedSharedActions';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ActivityFeedStackParamList } from '../screenNavigation/ActivityFeedStack';
 import { Screens } from './Screens';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { Text, Button } from 'react-native-elements';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-type FollowingActivityScreenNavigationProp = StackNavigationProp<ActivityFeedStackParamList, Screens.FollowingActivity>;
+type FollowingActivityScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.FollowingActivity>;
 
 type NavigationProps = {
     navigation: FollowingActivityScreenNavigationProp;

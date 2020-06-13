@@ -30,7 +30,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Screens } from '../Screens';
 import { authActions } from '../../actions/unauthenticatedSharedActions';
-import { AccountStackParamList } from '../../screenNavigation/AccountStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const isAuthenticated = state && state.auth && state.auth.isAuthenticated;
@@ -47,10 +47,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
 });
 
 type WhyDoYouWantToBuildHabitsScreenNavigationProp = StackNavigationProp<
-    AccountStackParamList,
+    RootStackParamList,
     Screens.WhyDoYouWantToBuildHabits
 >;
-type WhyDoYouWantToBuildHabitsScreenRouteProp = RouteProp<AccountStackParamList, Screens.WhyDoYouWantToBuildHabits>;
+type WhyDoYouWantToBuildHabitsScreenRouteProp = RouteProp<RootStackParamList, Screens.WhyDoYouWantToBuildHabits>;
 
 type NavigationProps = {
     navigation: WhyDoYouWantToBuildHabitsScreenNavigationProp;

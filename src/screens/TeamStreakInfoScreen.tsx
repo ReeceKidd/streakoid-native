@@ -29,7 +29,7 @@ import { faCrown } from '@fortawesome/free-solid-svg-icons';
 import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
+import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -88,8 +88,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-type TeamStreakInfoScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TeamStreakInfo>;
-type TeamStreakInfoScreenRouteProp = RouteProp<RootStackParamList, Screens.TeamStreakInfo>;
+type TeamStreakInfoScreenNavigationProp = StackNavigationProp<TeamStreakStackParamList, Screens.TeamStreakInfo>;
+type TeamStreakInfoScreenRouteProp = RouteProp<TeamStreakStackParamList, Screens.TeamStreakInfo>;
 
 type NavigationProps = {
     navigation: TeamStreakInfoScreenNavigationProp;
@@ -437,10 +437,7 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                 negativeDayStreak={negativeDayStreak}
                             />
                         </Spacer>
-                        <TeamStreakDetails
-                            selectedTeamStreak={selectedTeamStreak}
-                            navigate={this.props.navigation.navigate}
-                        />
+                        <TeamStreakDetails selectedTeamStreak={selectedTeamStreak} navigation={this.props.navigation} />
                         {isCurrentUserAMemberOfTeamStreak ? (
                             <>
                                 <Spacer>

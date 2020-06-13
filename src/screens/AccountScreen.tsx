@@ -21,7 +21,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AccountStrengthProgressBar } from '../components/AccountStrengthProgressBar';
 import { getAccountCompletionPercentage } from '../helpers/getAccountCompletionPercentage';
-import { AccountStackParamList } from '../screenNavigation/AccountStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -55,8 +55,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
 });
 
-type AccountScreenNavigationProp = StackNavigationProp<AccountStackParamList, Screens.Account>;
-type AccountScreenRouteProp = RouteProp<AccountStackParamList, Screens.Account>;
+type AccountScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Account>;
+type AccountScreenRouteProp = RouteProp<RootStackParamList, Screens.Account>;
 
 type NavigationProps = {
     navigation: AccountScreenNavigationProp;
@@ -253,6 +253,7 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                                 currentUser && currentUser.activityFeed && currentUser.activityFeed.activityFeedItems
                             }
                             navigation={this.props.navigation}
+                            currentUserId={currentUser._id}
                         />
                     </Spacer>
                     <Spacer>

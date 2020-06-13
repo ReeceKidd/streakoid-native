@@ -9,25 +9,12 @@ import { ListItem, Avatar, Text } from 'react-native-elements';
 import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/activityFeed/ClientActivityFeedItem';
 import ActivityFeedItemTypes from '@streakoid/streakoid-models/lib/Types/ActivityFeedItemTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { ChallengeStreaksStackParamList } from '../screenNavigation/ChallengeStreaksStack';
-import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
-import { SoloStreakStackParamsList } from '../screenNavigation/SoloStreaksStack';
-import { UserStackParamList } from '../screenNavigation/UserStack';
-import { ChallengeStackParamList } from '../screenNavigation/ChallengesStack';
-import { AccountStackParamList } from '../screenNavigation/AccountStack';
-import { StreakStackParamList } from '../screenNavigation/StreakStack';
-
-export type GeneralActivityFeedStackParamList = AccountStackParamList &
-    ChallengeStreaksStackParamList &
-    TeamStreakStackParamList &
-    StreakStackParamList &
-    SoloStreakStackParamsList &
-    ChallengeStackParamList &
-    UserStackParamList;
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { Screens } from '../screens/Screens';
 
 interface GeneralActivityFeedComponentProps {
     currentUserId: string;
-    navigation: StackNavigationProp<GeneralActivityFeedStackParamList>;
+    navigation: StackNavigationProp<RootStackParamList, Screens.FollowingActivity>;
     activityFeedItems: ClientActivityFeedItemType[];
 }
 

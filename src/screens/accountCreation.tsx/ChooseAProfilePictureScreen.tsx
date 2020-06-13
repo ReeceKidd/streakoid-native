@@ -12,7 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { Avatar } from 'react-native-elements';
-import { AccountStackParamList } from '../../screenNavigation/AccountStack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const uploadProfileImageIsLoading = state && state.users && state.users.uploadProfileImageIsLoading;
@@ -38,10 +38,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
         dispatch,
     ),
 });
-type ChooseAProfilePictureScreenNavigationProp = StackNavigationProp<
-    AccountStackParamList,
-    Screens.ChooseAProfilePicture
->;
+type ChooseAProfilePictureScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChooseAProfilePicture>;
 
 type NavigationProps = {
     navigation: ChooseAProfilePictureScreenNavigationProp;

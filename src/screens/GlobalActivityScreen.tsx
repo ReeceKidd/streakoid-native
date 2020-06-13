@@ -12,8 +12,8 @@ import { Text, Button } from 'react-native-elements';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { ActivityIndicator } from 'react-native';
 import { Screens } from './Screens';
-import { ActivityFeedStackParamList } from '../screenNavigation/ActivityFeedStack';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -32,7 +32,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getGlobalActivityFeedItems: bindActionCreators(activityFeedItemActions.getGlobalActivityFeedItems, dispatch),
 });
 
-type GlobalActivityScreenNavigationProp = StackNavigationProp<ActivityFeedStackParamList, Screens.GlobalActivity>;
+type GlobalActivityScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.GlobalActivity>;
 
 type NavigationProps = {
     navigation: GlobalActivityScreenNavigationProp;
