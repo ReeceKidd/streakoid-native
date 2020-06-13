@@ -21,7 +21,6 @@ import { VerifyEmailScreen } from '../screens/registration/VerifyEmailScreen';
 import { ChooseAPasswordScreen } from '../screens/registration/ChooseAPasswordScreen';
 import { CompletedRegistrationScreen } from '../screens/registration/CompletedRegistrationScreen';
 import { CompletedCustomizationScreen } from '../screens/accountCreation.tsx/CompletedCustomizationScreen';
-import { ActivityFeedBottomTab } from './ActivityFeedBottomTab';
 import { ChallengesScreen } from '../screens/ChallengesScreen';
 import { ChallengeInfoScreen } from '../screens/ChallengeInfoScreen';
 import { ChallengeStreaksScreen } from '../screens/ChallengeStreaksScreen';
@@ -64,6 +63,8 @@ import { TutorialCompleteScreen } from '../screens/tutorial/TutorialCompleteScre
 import { UpgradeScreen } from '../screens/UpgradeScreen';
 import { UsersScreen } from '../screens/UsersScreen';
 import { UserProfileScreen } from '../screens/UserProfileScreen';
+import { FollowingActivityScreen } from '../screens/FollowingActivityScreen';
+import { GlobalActivityScreen } from '../screens/GlobalActivityScreen';
 
 export type RootStackParamList = {
     Home: undefined;
@@ -240,11 +241,26 @@ const CompletedCustomizationStackScreen = (
         component={CompletedCustomizationScreen}
     />
 );
-const ActivityFeedBottomTabStackScreen = (
+
+const FollowingActivityStackScreen = (
+    <Stack.Screen
+        name={Screens.FollowingActivity}
+        component={FollowingActivityScreen}
+        options={() => ({
+            title: 'Following Activity',
+            headerLeft: () => <HamburgerSelector />,
+        })}
+    />
+);
+
+const GlobalActivityStackScreen = (
     <Stack.Screen
         name={Screens.GlobalActivity}
-        options={{ title: 'Activity Feed', headerLeft: () => <HamburgerSelector /> }}
-        component={ActivityFeedBottomTab}
+        component={GlobalActivityScreen}
+        options={() => ({
+            title: 'Global Activity ',
+            headerLeft: () => <HamburgerSelector />,
+        })}
     />
 );
 
@@ -700,7 +716,8 @@ export const getStackScreens = () => {
             {ChooseAPasswordStackScreen}
             {CompletedRegistrationStackScreen}
             {CompletedCustomizationStackScreen}
-            {ActivityFeedBottomTabStackScreen}
+            {FollowingActivityStackScreen}
+            {GlobalActivityStackScreen}
             {ChallengesStackScreen}
             {ChallengeInfoStackScreen}
             {ChallengeStreaksStackScreen}
@@ -772,4 +789,10 @@ export const upgradeStack = () => (
 );
 export const landingStack = () => (
     <Stack.Navigator initialRouteName={Screens.Landing}>{getStackScreens()}</Stack.Navigator>
+);
+export const followingActivityFeedStack = () => (
+    <Stack.Navigator initialRouteName={Screens.FollowingActivity}>{getStackScreens()}</Stack.Navigator>
+);
+export const globalActivityFeedStack = () => (
+    <Stack.Navigator initialRouteName={Screens.GlobalActivity}>{getStackScreens()}</Stack.Navigator>
 );

@@ -2,10 +2,17 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCrown, faHelmetBattle, faRobot, faUser, faCog, faCalendarCheck } from '@fortawesome/pro-solid-svg-icons';
+import {
+    faCrown,
+    faHelmetBattle,
+    faRobot,
+    faUser,
+    faCog,
+    faCalendarCheck,
+    faUserFriends,
+} from '@fortawesome/pro-solid-svg-icons';
 import { StreakBottomTab } from './StreakBottomTab';
 
-import { Screens } from '../screens/Screens';
 import {
     challengeStack,
     leaderboardsStack,
@@ -15,43 +22,56 @@ import {
     upgradeStack,
     landingStack,
 } from './RootNavigator';
+import { ActivityFeedBottomTab } from './ActivityFeedBottomTab';
 
 const Drawer = createDrawerNavigator();
 
+export enum DrawerScreens {
+    Streaks = 'Streaks',
+    Landing = 'Landing',
+    Upgrade = 'Upgrade',
+    Challenges = 'Challenges',
+    Leaderboards = 'Leaderboards',
+    ActivityFeed = 'ActivityFeed',
+    Recommendations = 'Recommendations',
+    Users = 'Users',
+    Account = 'Account',
+}
+
 const sharedDrawerOptions = [
     <Drawer.Screen
-        key={1}
+        key={DrawerScreens.Challenges}
         options={{ title: 'Challenges', drawerIcon: () => <FontAwesomeIcon icon={faCrown} /> }}
-        name={Screens.Challenges}
+        name={DrawerScreens.Challenges}
         component={challengeStack}
     />,
     <Drawer.Screen
-        key={2}
-        name={Screens.Leaderboards}
+        key={DrawerScreens.Leaderboards}
+        name={DrawerScreens.Leaderboards}
         options={{ title: 'Leaderboards', drawerIcon: () => <FontAwesomeIcon icon={faHelmetBattle} /> }}
         component={leaderboardsStack}
     />,
-    // <Drawer.Screen
-    //     key={3}
-    //     name={Screens.GlobalActivity}
-    //     options={{ title: 'Activity Feed', drawerIcon: () => <FontAwesomeIcon icon={faUserFriends} /> }}
-    //     component={ActivityFeedStack}
-    // />,
     <Drawer.Screen
-        key={4}
-        name={Screens.StreakRecommendations}
+        key={DrawerScreens.ActivityFeed}
+        name={DrawerScreens.ActivityFeed}
+        options={{ title: 'Activity Feed', drawerIcon: () => <FontAwesomeIcon icon={faUserFriends} /> }}
+        component={ActivityFeedBottomTab}
+    />,
+    <Drawer.Screen
+        key={DrawerScreens.Recommendations}
+        name={DrawerScreens.Recommendations}
         options={{ title: 'Recommendations', drawerIcon: () => <FontAwesomeIcon icon={faRobot} /> }}
         component={streakRecommendationsStack}
     />,
     <Drawer.Screen
-        key={5}
-        name={Screens.Users}
+        key={DrawerScreens.Users}
+        name={DrawerScreens.Users}
         options={{ title: 'Users', drawerIcon: () => <FontAwesomeIcon icon={faUser} /> }}
         component={usersStack}
     />,
     <Drawer.Screen
-        key={6}
-        name={Screens.Account}
+        key={DrawerScreens.Account}
+        name={DrawerScreens.Account}
         options={{ title: 'Account', drawerIcon: () => <FontAwesomeIcon icon={faCog} /> }}
         component={accountStack}
     />,
@@ -59,9 +79,9 @@ const sharedDrawerOptions = [
 
 const homeDrawerScreen = (
     <Drawer.Screen
-        key={0}
+        key={DrawerScreens.Streaks}
         options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} />, title: 'Streaks' }}
-        name={Screens.Home}
+        name={DrawerScreens.Streaks}
         component={StreakBottomTab}
     />
 );
@@ -77,9 +97,9 @@ export const getDrawerOptions = ({
         return [
             homeDrawerScreen,
             <Drawer.Screen
-                key={0}
+                key={DrawerScreens.Upgrade}
                 options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} /> }}
-                name={Screens.Upgrade}
+                name={DrawerScreens.Upgrade}
                 component={upgradeStack}
             />,
             ...sharedDrawerOptions,
@@ -89,16 +109,16 @@ export const getDrawerOptions = ({
     }
     return [
         <Drawer.Screen
-            key={0}
+            key={DrawerScreens.Landing}
             options={{ drawerIcon: () => null, title: undefined, drawerLabel: () => null }}
-            name={Screens.Landing}
+            name={DrawerScreens.Landing}
             component={landingStack}
         />,
         homeDrawerScreen,
         <Drawer.Screen
-            key={0}
+            key={DrawerScreens.Upgrade}
             options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} /> }}
-            name={Screens.Upgrade}
+            name={DrawerScreens.Upgrade}
             component={upgradeStack}
         />,
         ...sharedDrawerOptions,
