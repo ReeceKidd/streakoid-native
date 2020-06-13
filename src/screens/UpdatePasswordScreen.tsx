@@ -8,7 +8,7 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { AppState } from '../../store';
 import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
 import { Spacer } from '../components/Spacer';
-import { authActions } from '../actions/unauthenticatedSharedActions';
+import { authActions } from '../actions/authActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../StackNavigator';
 import { Screens } from './Screens';

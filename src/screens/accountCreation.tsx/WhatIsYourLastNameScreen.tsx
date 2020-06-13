@@ -46,6 +46,7 @@ class WhatIsYourLastNameScreenComponent extends PureComponent<Props> {
                     <WhatIsYourLastNameForm
                         updateCurrentUser={updateCurrentUser}
                         currentLastName={currentUser.lastName}
+                        navigation={this.props.navigation}
                     />
                 </Spacer>
             </View>

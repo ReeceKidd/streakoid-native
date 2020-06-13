@@ -88,7 +88,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { select
                         size="large"
                         rounded
                     />
-                    <form className="form-group files" encType="multipart/form-data">
+                    {/* <form className="form-group files" encType="multipart/form-data">
                         <input
                             type="file"
                             name="image"
@@ -96,7 +96,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { select
                             multiple={false}
                             onChange={this.onChangeHandler}
                         />
-                    </form>
+                    </form> */}
                 </Spacer>
             </View>
         );

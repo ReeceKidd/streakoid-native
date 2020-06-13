@@ -7,12 +7,14 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Spacer } from './Spacer';
 import { userActions } from '../actions/authenticatedSharedActions';
-import { NavigationService } from '../../NavigationService';
 import { Screens } from '../screens/Screens';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface WhatIsYourFirstNameFormProps {
     updateCurrentUser: typeof userActions.updateCurrentUser;
     currentFirstName: string | undefined;
+    navigation: StackNavigationProp<RootStackParamList, Screens.WhatIsYourFirstName>;
 }
 
 interface FormValues {
@@ -38,7 +40,7 @@ class WhatIsYourFirstNameForm extends PureComponent<WhatIsYourFirstNameFormProps
                 initialValues={{ firstName: currentFirstName ? currentFirstName : '' }}
                 onSubmit={({ firstName }: FormValues): void => {
                     this.props.updateCurrentUser({ updateData: { firstName } });
-                    NavigationService.navigate({ screen: Screens.WhatIsYourLastName });
+                    this.props.navigation.navigate(Screens.WhatIsYourLastName);
                 }}
                 validationSchema={WhatIsYourFirstNameFormSchema}
             >
@@ -46,7 +48,7 @@ class WhatIsYourFirstNameForm extends PureComponent<WhatIsYourFirstNameFormProps
                     <View>
                         <Spacer>
                             <Input
-                                label="firstName"
+                                label={'What is your first name?'}
                                 nativeID="firstName"
                                 onChangeText={handleChange('firstName')}
                                 onBlur={handleBlur('firstName')}

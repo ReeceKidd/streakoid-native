@@ -7,7 +7,7 @@ import { ForgotPasswordForm } from '../components/ForgotPasswordForm';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
-import { authActions } from '../actions/unauthenticatedSharedActions';
+import { authActions } from '../actions/authActions';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';

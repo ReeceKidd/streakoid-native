@@ -7,13 +7,12 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import { View, StyleSheet } from 'react-native';
-import { authActions } from '../../actions/unauthenticatedSharedActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
-import { Text } from 'react-native-elements';
 import { ChooseAUsernameForm } from '../../components/ChooseAUsernameForm';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { authActions } from '../../actions/authActions';
 
 const mapStateToProps = (state: AppState) => {
     const updateUsernameAttributeErrorMessage = state && state.auth && state.auth.updateUsernameAttributeErrorMessage;
@@ -58,7 +57,6 @@ class ChooseAUsernameScreenComponent extends PureComponent<Props> {
         return (
             <View style={styles.container}>
                 <Spacer>
-                    <Text>{'This username uniquely identifies you.'}</Text>
                     <ChooseAUsernameForm
                         updateUsernameAttribute={updateUsernameAttribute}
                         updateUsernameAttributeIsLoading={updateUsernameAttributeIsLoading}

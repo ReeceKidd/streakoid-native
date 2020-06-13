@@ -10,11 +10,11 @@ import ClientActivityFeedItemType from '@streakoid/streakoid-shared/lib/helpers/
 import ActivityFeedItemTypes from '@streakoid/streakoid-models/lib/Types/ActivityFeedItemTypes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
-import { Screens } from '../screens/Screens';
 
 interface GeneralActivityFeedComponentProps {
     currentUserId: string;
-    navigation: StackNavigationProp<RootStackParamList, Screens.FollowingActivity>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    navigation: StackNavigationProp<RootStackParamList, any>;
     activityFeedItems: ClientActivityFeedItemType[];
 }
 

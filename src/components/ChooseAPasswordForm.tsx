@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import { Formik } from 'formik';
 import { Spacer } from './Spacer';
-import { authActions } from '../actions/unauthenticatedSharedActions';
+import { authActions } from '../actions/authActions';
 
 interface ChooseAPasswordFormProps {
     updateUserPassword: typeof authActions.updateUserPassword;

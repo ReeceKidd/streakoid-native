@@ -8,7 +8,7 @@ export const navigationRef = React.createRef();
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const navigate = ({ screen, params }: { screen: Screens; params?: Record<any, any> }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    navigationRef && navigationRef.current && (navigationRef.current as any).navigate('Drawer', { screen }, params);
+    navigationRef && navigationRef.current && (navigationRef.current as any).navigate(screen, params);
 };
 
 const openDrawer = () => {

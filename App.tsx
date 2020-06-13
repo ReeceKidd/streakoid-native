@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider, connect } from 'react-redux';
@@ -19,6 +20,7 @@ import PushNotificationSupportedDeviceTypes from '@streakoid/streakoid-models/li
 import { userActions } from './src/actions/authenticatedSharedActions';
 import { NavigationContainer } from '@react-navigation/native';
 import { getDrawerMenu } from './src/screenNavigation/DrawerMenu';
+import { navigationRef } from './NavigationService';
 
 enableScreens();
 
@@ -109,7 +111,7 @@ const MyTheme = {
 
 const App = () => (
     <Provider store={store}>
-        <NavigationContainer theme={MyTheme}>
+        <NavigationContainer ref={navigationRef as any} theme={MyTheme}>
             <PersistGate
                 loading={
                     <View

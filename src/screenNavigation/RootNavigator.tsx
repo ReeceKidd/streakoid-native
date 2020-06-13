@@ -181,7 +181,7 @@ const WhyDoYouWantToBuildHabitsStackScreen = (
 const WhatIsYourFirstNameStackScreen = (
     <Stack.Screen
         name={Screens.WhatIsYourFirstName}
-        options={{ title: 'What is your first name?', headerLeft: () => null }}
+        options={{ headerShown: false }}
         component={WhatIsYourFirstNameScreen}
     />
 );
@@ -189,17 +189,13 @@ const WhatIsYourFirstNameStackScreen = (
 const WhatIsYourLastNameStackScreen = (
     <Stack.Screen
         name={Screens.WhatIsYourLastName}
-        options={{ title: 'What is your last name?', headerLeft: () => null }}
+        options={{ headerShown: false }}
         component={WhatIsYourLastNameScreen}
     />
 );
 
 const ChooseAUsernameStackScreen = (
-    <Stack.Screen
-        name={Screens.ChooseAUsername}
-        options={{ title: 'Choose a username', headerLeft: () => null }}
-        component={ChooseAUsernameScreen}
-    />
+    <Stack.Screen name={Screens.ChooseAUsername} options={{ headerShown: false }} component={ChooseAUsernameScreen} />
 );
 
 const ChooseAProfilePictureStackScreen = (

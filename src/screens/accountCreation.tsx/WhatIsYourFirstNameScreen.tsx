@@ -11,7 +11,6 @@ import { userActions } from '../../actions/authenticatedSharedActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
-import { Text } from 'react-native-elements';
 import { WhatIsYourFirstNameForm } from '../../components/WhatIsYourFirstNameForm';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
@@ -44,10 +43,10 @@ class WhatIsYourFirstNameScreenComponent extends PureComponent<Props> {
         return (
             <View style={styles.container}>
                 <Spacer>
-                    <Text>{'What is your first name?'}</Text>
                     <WhatIsYourFirstNameForm
                         updateCurrentUser={updateCurrentUser}
                         currentFirstName={currentUser.firstName}
+                        navigation={this.props.navigation}
                     />
                 </Spacer>
             </View>

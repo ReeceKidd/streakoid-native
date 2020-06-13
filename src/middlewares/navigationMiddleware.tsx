@@ -16,6 +16,8 @@ import {
     NAVIGATE_TO_SPECIFIC_CHALLENGE_STREAK,
     NAVIGATE_TO_WELCOME,
     NAVIGATE_TO_STREAK_LIMIT_REACHED,
+    NAVIGATE_TO_CHOOSE_PASSWORD,
+    NAVIGATE_TO_CHOOSE_A_PROFILE_PICTURE,
 } from '@streakoid/streakoid-shared/lib/actions/types';
 import { Screens } from '../screens/Screens';
 import { NavigationService } from '../../NavigationService';
@@ -51,6 +53,15 @@ const navigationMiddleware = (store: any) => (next: any) => (action: AppActions)
 
         case NAVIGATE_TO_WELCOME:
             return NavigationService.navigate({ screen: Screens.Welcome });
+
+        case NAVIGATE_TO_STREAK_LIMIT_REACHED:
+            return NavigationService.navigate({ screen: Screens.Upgrade });
+
+        case NAVIGATE_TO_CHOOSE_PASSWORD:
+            return NavigationService.navigate({ screen: Screens.ChooseAPassword });
+
+        case NAVIGATE_TO_CHOOSE_A_PROFILE_PICTURE:
+            return NavigationService.navigate({ screen: Screens.ChooseAProfilePicture });
     }
 
     const result = next(action);

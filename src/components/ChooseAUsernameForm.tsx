@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import { Formik } from 'formik';
 import { Spacer } from './Spacer';
-import { authActions } from '../actions/unauthenticatedSharedActions';
+import { authActions } from '../actions/authActions';
 
 interface FormValues {
     username: string;
@@ -26,18 +26,17 @@ const ChooseAUsernameFormSchema = Yup.object().shape({
 const styles = StyleSheet.create({
     errorMessage: {
         color: 'red',
-        textAlign: 'center',
     },
 });
 
 class ChooseAUsernameForm extends PureComponent<ChooseAUsernameFormProps> {
     render(): JSX.Element {
-        const { updateUsernameAttributeIsLoading } = this.props;
+        const { updateUsernameAttributeIsLoading, updateUsernameAttributeErrorMessage, currentUsername } = this.props;
         return (
             <Formik
-                initialValues={{ username: '', email: '', password: '' }}
+                initialValues={{ username: currentUsername || '', email: '', password: '' }}
                 onSubmit={({ username }: FormValues): void => {
-                    this.props.updateUsernameAttribute({ username, navigateToChooseAProfilePicture: false });
+                    this.props.updateUsernameAttribute({ username, navigateToChooseAProfilePicture: true });
                 }}
                 validationSchema={ChooseAUsernameFormSchema}
             >
@@ -45,7 +44,7 @@ class ChooseAUsernameForm extends PureComponent<ChooseAUsernameFormProps> {
                     <View>
                         <Spacer>
                             <Input
-                                label="Username"
+                                label="Choose a username"
                                 nativeID="username"
                                 onChangeText={handleChange('username')}
                                 onBlur={handleBlur('username')}
@@ -54,8 +53,12 @@ class ChooseAUsernameForm extends PureComponent<ChooseAUsernameFormProps> {
                                 autoCompleteType="username"
                                 autoCorrect={false}
                             />
+                            <Spacer />
                             {errors.username && touched.username ? (
                                 <Text style={styles.errorMessage}>{errors.username}</Text>
+                            ) : null}
+                            {updateUsernameAttributeErrorMessage && touched.username ? (
+                                <Text style={styles.errorMessage}>{updateUsernameAttributeErrorMessage}</Text>
                             ) : null}
                         </Spacer>
                         <Spacer>

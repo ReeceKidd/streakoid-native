@@ -8,7 +8,7 @@ import { Button, Avatar, Text, ListItem } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { userActions } from '../actions/authenticatedSharedActions';
-import { authActions } from '../actions/unauthenticatedSharedActions';
+import { authActions } from '../actions/authActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUser } from '@fortawesome/pro-solid-svg-icons';
 import { NotificationOptions } from '../components/NotificationOptions';
@@ -105,14 +105,8 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                         </View>
                     </Spacer>
                     <Spacer>
-                        <Button
-                            title="Logout"
-                            onPress={() => {
-                                logoutUser();
-                                const parent = this.props.navigation.dangerouslyGetParent();
-                                parent?.navigate(Screens.Landing);
-                            }}
-                        />
+                        <Text h2>{currentUser.firstName}</Text>
+                        <Text h2>{currentUser.lastName}</Text>
                     </Spacer>
                     {getAccountCompletionPercentage({ currentUser }) < 100 ? (
                         <View style={{ marginTop: 5, marginLeft: 15 }}>
@@ -266,6 +260,16 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                             updateCurrentUserPushNotifications={updateCurrentUserPushNotifications}
                             currentUser={currentUser}
                             updatePushNotificationsIsLoading={updatePushNotificationsIsLoading}
+                        />
+                    </Spacer>
+                    <Spacer>
+                        <Button
+                            title="Logout"
+                            onPress={() => {
+                                logoutUser();
+                                const parent = this.props.navigation.dangerouslyGetParent();
+                                parent?.navigate(Screens.Landing);
+                            }}
                         />
                     </Spacer>
                 </View>

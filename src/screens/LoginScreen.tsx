@@ -9,13 +9,13 @@ import { Text } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { authActions } from '../actions/unauthenticatedSharedActions';
+import { authActions } from '../actions/authActions';
 import { NavigationLink } from '../components/NavigationLink';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const loginErrorMessage = state && state.auth && state.auth.loginErrorMessage;
@@ -98,7 +98,11 @@ class LoginScreenComponent extends React.PureComponent<Props> {
                     <Text style={{ color: 'red', textAlign: 'center' }}> {loginErrorMessage} </Text>
                 ) : null}
                 <Spacer>
-                    <NavigationLink text="Forgot password" screen={Screens.ForgotPassword} />
+                    <NavigationLink
+                        text="Forgot password"
+                        screen={Screens.ForgotPassword}
+                        navigation={this.props.navigation}
+                    />
                 </Spacer>
             </View>
         );

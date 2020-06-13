@@ -31,7 +31,7 @@ export const getActivityFeedItemContent = ({
     currentUserId: string;
     activityFeedItem: ClientActivityFeedItemType;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    navigation: StackNavigationProp<RootStackParamList, Screens.FollowingActivity>;
+    navigation: StackNavigationProp<RootStackParamList, any>;
 }) => {
     const { username, userId, title } = activityFeedItem;
     if (
