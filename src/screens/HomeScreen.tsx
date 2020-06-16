@@ -37,6 +37,7 @@ import {
     faLifeRing,
     faUserCrown,
     IconDefinition,
+    faExclamation,
 } from '@fortawesome/pro-solid-svg-icons';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
 import NativePushNotification from 'react-native-push-notification';
@@ -50,6 +51,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import UserTypes from '@streakoid/streakoid-models/lib/Types/UserTypes';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -530,6 +532,17 @@ class HomeScreenComponent extends PureComponent<Props> {
                         })}
                         fullScreen={true}
                     />
+                    {currentUser.userType === UserTypes.temporary ? (
+                        <ListItem
+                            containerStyle={{ backgroundColor: 'yellow' }}
+                            leftIcon={<FontAwesomeIcon icon={faExclamation} />}
+                            title={'To login again you need to register an email and password.'}
+                            chevron={true}
+                            onPress={() => {
+                                this.props.navigation.navigate(Screens.WhatIsYourEmail);
+                            }}
+                        />
+                    ) : null}
                     {!isPayingMember ? (
                         <Spacer>
                             <MaximumNumberOfFreeStreaksMessage
