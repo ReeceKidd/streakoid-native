@@ -2,15 +2,17 @@ import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import { AppState } from '../../store';
 import { Button, Avatar, Text, ListItem } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
-import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { userActions } from '../actions/authenticatedSharedActions';
+import { AppActions, getIdToken } from '@streakoid/streakoid-shared/lib';
+import { userActions, profilePictureActions } from '../actions/authenticatedSharedActions';
 import { authActions } from '../actions/authActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUser } from '@fortawesome/pro-solid-svg-icons';
+import { faUser, faUserCrown } from '@fortawesome/pro-solid-svg-icons';
 import { NotificationOptions } from '../components/NotificationOptions';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { Screens } from './Screens';
@@ -22,6 +24,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { AccountStrengthProgressBar } from '../components/AccountStrengthProgressBar';
 import { getAccountCompletionPercentage } from '../helpers/getAccountCompletionPercentage';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { apiUrl } from '../api/authenticatedStreakoid';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/SupportedRequestHeaders';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -53,6 +58,11 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUser: bindActionCreators(userActions.updateCurrentUser, dispatch),
     unfollowUsersListUser: bindActionCreators(userActions.unfollowUsersListUser, dispatch),
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
+    uploadProfileImage: bindActionCreators(profilePictureActions.mobileUploadProfileImage, dispatch),
+    clearUploadProfileImageMessages: bindActionCreators(
+        profilePictureActions.clearUploadProfileImageMessages,
+        dispatch,
+    ),
 });
 
 type AccountScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Account>;
@@ -74,13 +84,68 @@ const styles = StyleSheet.create({
     },
 });
 
-class AccountScreenComponent extends React.PureComponent<Props> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            photo: null,
+        };
+    }
     componentDidMount() {
         this.props.getCurrentUser();
         this.props.navigation.setParams({
             username: this.props.currentUser.username || '',
         });
+        this.props.clearUploadProfileImageMessages();
     }
+
+    handleChoosePhoto = () => {
+        const options = {
+            noData: true,
+        };
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.uri) {
+                this.setState({ photo: response });
+                this.uploadPhoto();
+            }
+        });
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    uploadPhoto = async () => {
+        // eslint-disable-next-line no-undef
+        const formData = new FormData();
+        const { photo } = this.state;
+
+        formData.append('image', photo);
+
+        const url = `${apiUrl}/v1/${RouterCategories.profileImages}`;
+
+        const idToken = await getIdToken();
+        const timezone = this.props.currentUser.timezone;
+
+        const uploadProfilePictureFunction = () =>
+            RNFetchBlob.fetch(
+                'POST',
+                url,
+                {
+                    [SupportedRequestHeaders.Authorization]: idToken || '',
+                    [SupportedRequestHeaders.Timezone]: timezone,
+                    'Content-Type': 'multipart/form-data',
+                },
+                [
+                    {
+                        name: 'image',
+                        filename: photo.fileName,
+                        type: 'image/jpeg',
+                        data: RNFetchBlob.wrap(photo.uri),
+                    },
+                ],
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ) as any;
+        this.props.uploadProfileImage({ uploadProfilePictureFunction });
+    };
 
     render(): JSX.Element {
         const {
@@ -98,25 +163,31 @@ class AccountScreenComponent extends React.PureComponent<Props> {
                         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <Avatar
                                 renderPlaceholderContent={<ActivityIndicator />}
-                                source={{ uri: profileImage }}
+                                source={{ uri: (this.state.photo && this.state.photo.uri) || profileImage }}
                                 size="large"
                                 rounded
+                                onPress={() => this.handleChoosePhoto()}
                             />
                         </View>
                     </Spacer>
+                    <View style={{ flexDirection: 'row', marginLeft: 15 }}>
+                        <Text style={{ marginRight: 5 }}>{currentUser.firstName}</Text>
+                        <Text>{currentUser.lastName}</Text>
+                    </View>
                     <Spacer>
-                        <Text h2>{currentUser.firstName}</Text>
-                        <Text h2>{currentUser.lastName}</Text>
+                        <Text style={{ fontWeight: 'bold' }}>
+                            {`Account strength`} <FontAwesomeIcon icon={faUserCrown} />
+                        </Text>
                     </Spacer>
-                    {getAccountCompletionPercentage({ currentUser }) < 100 ? (
-                        <View style={{ marginTop: 5, marginLeft: 15 }}>
+                    <AccountStrengthProgressBar currentUser={currentUser} />
+                    <Spacer>
+                        {getAccountCompletionPercentage({ currentUser }) < 100 ? (
                             <Text
                                 onPress={() => this.props.navigation.navigate(Screens.WhatIsYourFirstName)}
                                 style={{ color: 'blue' }}
                             >{`Improve your account strength`}</Text>
-                        </View>
-                    ) : null}
-                    <AccountStrengthProgressBar currentUser={currentUser} />
+                        ) : null}
+                    </Spacer>
 
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>

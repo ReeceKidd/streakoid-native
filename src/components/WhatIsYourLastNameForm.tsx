@@ -40,7 +40,7 @@ class WhatIsYourLastNameForm extends PureComponent<WhatIsYourLastNameFormProps> 
                 initialValues={{ lastName: currentLastName ? currentLastName : '' }}
                 onSubmit={({ lastName }: FormValues): void => {
                     this.props.updateCurrentUser({ updateData: { lastName } });
-                    this.props.navigation.navigate(Screens.ChooseAUsername);
+                    this.props.navigation.navigate(Screens.WhyDoYouWantToBuildHabits);
                 }}
                 validationSchema={WhatIsYourLastNameFormSchema}
             >

@@ -9,25 +9,32 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet } from 'react-native';
 import { noteActions } from '../../actions/authenticatedSharedActions';
 import { Spacer } from '../../components/Spacer';
-import { Text } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { Screens } from '../Screens';
+import { AccountStrengthProgressBar } from '../../components/AccountStrengthProgressBar';
 
 const mapStateToProps = (state: AppState) => {
-    const selectedChallengeStreak = state && state.challengeStreaks && state.challengeStreaks.selectedChallengeStreak;
-    const challengeStreakId = selectedChallengeStreak && selectedChallengeStreak._id;
-    const createNoteIsLoading = state && state.notes && state.notes.createNoteIsLoading;
-    const createNoteErrorMessage = state && state.notes && state.notes.createNoteErrorMessage;
+    const currentUser = state && state.users && state.users.currentUser;
     return {
-        challengeStreakId,
-        selectedChallengeStreak,
-        createNoteIsLoading,
-        createNoteErrorMessage,
+        currentUser,
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     createNote: bindActionCreators(noteActions.createNote, dispatch),
 });
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+type CompletedCustomizationScreenNavigationProp = StackNavigationProp<
+    RootStackParamList,
+    Screens.CompletedCustomization
+>;
+
+type NavigationProps = {
+    navigation: CompletedCustomizationScreenNavigationProp;
+};
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
     container: {
@@ -38,10 +45,21 @@ const styles = StyleSheet.create({
 
 class CompletedCustomizationScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
+        const { currentUser } = this.props;
         return (
             <View style={styles.container}>
+                <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <Text>{`Well done! Your account is now customized.`}</Text>
+                    <Spacer />
+                    <Spacer>
+                        <Button
+                            title="Back to Account"
+                            onPress={() =>
+                                this.props.navigation.navigate(Screens.Account, { username: currentUser.username })
+                            }
+                        />
+                    </Spacer>
                 </Spacer>
             </View>
         );

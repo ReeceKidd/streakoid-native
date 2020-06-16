@@ -17,8 +17,8 @@ import { ChallengeStreak } from '@streakoid/streakoid-models/lib/Models/Challeng
 import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -459,6 +459,8 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                     selectedUser.activityFeed &&
                                     selectedUser.activityFeed.activityFeedItems
                                 }
+                                navigation={this.props.navigation}
+                                currentUserId={currentUser._id}
                             />
                         </Spacer>
                         <View />

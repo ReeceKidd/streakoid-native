@@ -1,5 +1,9 @@
-import React, { PureComponent, ChangeEvent } from 'react';
+/* eslint-disable no-undef */
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import ImagePicker from 'react-native-image-picker';
+import { Button, Text } from 'react-native-elements';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import { AppState } from '../../../store';
 
@@ -13,6 +17,10 @@ import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { Avatar } from 'react-native-elements';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { apiUrl, getIdToken } from '../../api/authenticatedStreakoid';
+import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
+import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/SupportedRequestHeaders';
+import { AccountStrengthProgressBar } from '../../components/AccountStrengthProgressBar';
 
 const mapStateToProps = (state: AppState) => {
     const uploadProfileImageIsLoading = state && state.users && state.users.uploadProfileImageIsLoading;
@@ -32,7 +40,7 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getUser: bindActionCreators(userActions.getUser, dispatch),
-    uploadProfileImage: bindActionCreators(profilePictureActions.uploadProfileImage, dispatch),
+    uploadProfileImage: bindActionCreators(profilePictureActions.mobileUploadProfileImage, dispatch),
     clearUploadProfileImageMessages: bindActionCreators(
         profilePictureActions.clearUploadProfileImageMessages,
         dispatch,
@@ -52,51 +60,87 @@ const styles = StyleSheet.create({
     },
 });
 
-class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { selectedFile: File | null }> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo: any }> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            selectedFile: null,
+            photo: null,
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount() {
         this.props.clearUploadProfileImageMessages();
     }
-    onChangeHandler = (event: ChangeEvent<HTMLInputElement>): void => {
-        this.setState({
-            selectedFile: event && event.target && event.target.files && event.target.files[0],
+
+    handleChoosePhoto = () => {
+        const options = {
+            noData: true,
+        };
+        ImagePicker.launchImageLibrary(options, (response) => {
+            if (response.uri) {
+                this.setState({ photo: response });
+                this.uploadPhoto();
+            }
         });
     };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    uploadImage = async (): Promise<void> => {
-        // eslint-disable-next-line no-undef
+    uploadPhoto = async () => {
         const formData = new FormData();
-        if (this.state.selectedFile) {
-            formData.append('image', this.state.selectedFile);
-            this.props.uploadProfileImage({ formData });
-        }
+        const { photo } = this.state;
+
+        formData.append('image', photo);
+
+        const url = `${apiUrl}/v1/${RouterCategories.profileImages}`;
+
+        const idToken = await getIdToken();
+        const timezone = this.props.currentUser.timezone;
+
+        const uploadProfilePictureFunction = () =>
+            RNFetchBlob.fetch(
+                'POST',
+                url,
+                {
+                    [SupportedRequestHeaders.Authorization]: idToken || '',
+                    [SupportedRequestHeaders.Timezone]: timezone,
+                    'Content-Type': 'multipart/form-data',
+                },
+                [
+                    {
+                        name: 'image',
+                        filename: photo.fileName,
+                        type: 'image/jpeg',
+                        data: RNFetchBlob.wrap(photo.uri),
+                    },
+                ],
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ) as any;
+        this.props.uploadProfileImage({ uploadProfilePictureFunction });
     };
     render(): JSX.Element {
-        const { profileImage } = this.props;
+        const { currentUser, profileImage, uploadProfileImageIsLoading, uploadProfileImageErrorMessage } = this.props;
         return (
             <View style={styles.container}>
+                <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
-                    <Avatar
-                        renderPlaceholderContent={<ActivityIndicator />}
-                        source={{ uri: profileImage }}
-                        size="large"
-                        rounded
-                    />
-                    {/* <form className="form-group files" encType="multipart/form-data">
-                        <input
-                            type="file"
-                            name="image"
-                            className="form-control"
-                            multiple={false}
-                            onChange={this.onChangeHandler}
+                    <Text style={{ fontWeight: 'bold' }}> Choose your profile picture </Text>
+                    <View style={{ alignItems: 'center', marginTop: 10, marginBottom: 10 }}>
+                        <Avatar
+                            renderPlaceholderContent={<ActivityIndicator />}
+                            source={{ uri: (this.state.photo && this.state.photo.uri) || profileImage }}
+                            size="large"
+                            rounded
+                            onPress={() => this.handleChoosePhoto()}
                         />
-                    </form> */}
+                    </View>
+
+                    <Button
+                        title="Next"
+                        loading={uploadProfileImageIsLoading}
+                        onPress={() => this.props.navigation.navigate(Screens.CompletedCustomization)}
+                    ></Button>
+                    {uploadProfileImageErrorMessage ? <Text>{uploadProfileImageErrorMessage}</Text> : null}
                 </Spacer>
             </View>
         );

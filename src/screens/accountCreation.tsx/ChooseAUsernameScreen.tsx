@@ -13,6 +13,7 @@ import { Spacer } from '../../components/Spacer';
 import { ChooseAUsernameForm } from '../../components/ChooseAUsernameForm';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 import { authActions } from '../../actions/authActions';
+import { AccountStrengthProgressBar } from '../../components/AccountStrengthProgressBar';
 
 const mapStateToProps = (state: AppState) => {
     const updateUsernameAttributeErrorMessage = state && state.auth && state.auth.updateUsernameAttributeErrorMessage;
@@ -56,6 +57,7 @@ class ChooseAUsernameScreenComponent extends PureComponent<Props> {
         } = this.props;
         return (
             <View style={styles.container}>
+                <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <ChooseAUsernameForm
                         updateUsernameAttribute={updateUsernameAttribute}

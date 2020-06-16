@@ -29,8 +29,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Screens } from '../Screens';
-import { authActions } from '../../actions/unauthenticatedSharedActions';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { authActions } from '../../actions/authActions';
+import { AccountStrengthProgressBar } from '../../components/AccountStrengthProgressBar';
 
 const mapStateToProps = (state: AppState) => {
     const isAuthenticated = state && state.auth && state.auth.isAuthenticated;
@@ -74,6 +75,7 @@ class WhyDoYouWantToBuildHabitsScreenComponent extends PureComponent<Props> {
         }
     }
     render(): JSX.Element {
+        const { currentUser } = this.props;
         const job = { _id: '1', type: WhyDoYouWantToBuildNewHabitsTypes.job, icon: faBriefcase, color: 'black' };
         const selfImprovement = {
             _id: '2',
@@ -141,6 +143,7 @@ class WhyDoYouWantToBuildHabitsScreenComponent extends PureComponent<Props> {
         ];
         return (
             <View style={styles.container}>
+                <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>{'Why do you want to build new habits?'}</Text>
@@ -163,7 +166,7 @@ class WhyDoYouWantToBuildHabitsScreenComponent extends PureComponent<Props> {
                                                 },
                                             },
                                         });
-                                        this.props.navigation.navigate(Screens.CompletedCustomization);
+                                        this.props.navigation.navigate(Screens.ChooseAUsername);
                                     }}
                                 />
                             );

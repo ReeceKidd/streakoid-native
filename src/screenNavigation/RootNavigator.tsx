@@ -69,9 +69,9 @@ import { GlobalActivityScreen } from '../screens/GlobalActivityScreen';
 export type RootStackParamList = {
     Home: undefined;
     [Screens.Account]: { username: string };
-    [Screens.WhyDoYouWantToBuildHabits]: undefined;
     WhatIsYourFirstName: undefined;
     WhatIsYourLastName: undefined;
+    WhyDoYouWantToBuildHabits: undefined;
     ChooseAUsername: undefined;
     ChooseAProfilePicture: undefined;
     WhatIsYourEmail: undefined;
@@ -233,7 +233,7 @@ const CompletedRegistrationStackScreen = (
 const CompletedCustomizationStackScreen = (
     <Stack.Screen
         name={Screens.CompletedCustomization}
-        options={{ headerShown: false }}
+        options={{ title: 'All done!', headerLeft: () => <HamburgerSelector /> }}
         component={CompletedCustomizationScreen}
     />
 );

@@ -13,6 +13,7 @@ import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { WhatIsYourFirstNameForm } from '../../components/WhatIsYourFirstNameForm';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { AccountStrengthProgressBar } from '../../components/AccountStrengthProgressBar';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -42,6 +43,7 @@ class WhatIsYourFirstNameScreenComponent extends PureComponent<Props> {
         const { updateCurrentUser, currentUser } = this.props;
         return (
             <View style={styles.container}>
+                <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <WhatIsYourFirstNameForm
                         updateCurrentUser={updateCurrentUser}
