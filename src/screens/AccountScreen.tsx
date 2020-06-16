@@ -8,7 +8,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { AppState } from '../../store';
 import { Button, Avatar, Text, ListItem } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
-import { AppActions, getIdToken } from '@streakoid/streakoid-shared/lib';
+import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { userActions, profilePictureActions } from '../actions/authenticatedSharedActions';
 import { authActions } from '../actions/authActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -27,6 +27,7 @@ import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { apiUrl } from '../api/authenticatedStreakoid';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/SupportedRequestHeaders';
+import { ProfileImages } from '@streakoid/streakoid-models/lib/Models/ProfileImages';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -40,6 +41,9 @@ const mapStateToProps = (state: AppState) => {
         state && state.users && state.users.currentUser.updatePushNotificationsIsLoading;
     const updatePushNotificationsErrorMessage =
         state && state.users && state.users.currentUser.updatePushNotificationsErrorMessage;
+    const uploadProfileImageErrorMessage = state && state.users && state.users.uploadProfileImageErrorMessage;
+    const uploadProfileImageSuccessMessage = state && state.users && state.users.uploadProfileImageSuccessMessage;
+    const idToken = state && state.auth && state.auth.idToken;
     return {
         selectedUser,
         currentUser,
@@ -49,6 +53,9 @@ const mapStateToProps = (state: AppState) => {
         getLiveChallengeStreaksIsLoading,
         updatePushNotificationsIsLoading,
         updatePushNotificationsErrorMessage,
+        uploadProfileImageErrorMessage,
+        uploadProfileImageSuccessMessage,
+        idToken,
     };
 };
 
@@ -59,6 +66,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     unfollowUsersListUser: bindActionCreators(userActions.unfollowUsersListUser, dispatch),
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
     uploadProfileImage: bindActionCreators(profilePictureActions.mobileUploadProfileImage, dispatch),
+    defineUploadProfileImageErrorMessage: bindActionCreators(
+        profilePictureActions.defineUploadProfileImageFailError,
+        dispatch,
+    ),
     clearUploadProfileImageMessages: bindActionCreators(
         profilePictureActions.clearUploadProfileImageMessages,
         dispatch,
@@ -114,6 +125,7 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     uploadPhoto = async () => {
+        const { idToken } = this.props;
         // eslint-disable-next-line no-undef
         const formData = new FormData();
         const { photo } = this.state;
@@ -122,11 +134,10 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
 
         const url = `${apiUrl}/v1/${RouterCategories.profileImages}`;
 
-        const idToken = await getIdToken();
         const timezone = this.props.currentUser.timezone;
 
-        const uploadProfilePictureFunction = () =>
-            RNFetchBlob.fetch(
+        try {
+            const result = await RNFetchBlob.fetch(
                 'POST',
                 url,
                 {
@@ -142,9 +153,13 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                         data: RNFetchBlob.wrap(photo.uri),
                     },
                 ],
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ) as any;
-        this.props.uploadProfileImage({ uploadProfilePictureFunction });
+            );
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            this.props.uploadProfileImage({ profileImages: result.data as ProfileImages });
+        } catch (err) {
+            this.props.defineUploadProfileImageErrorMessage(err.message);
+        }
     };
 
     render(): JSX.Element {
@@ -154,6 +169,8 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
             currentUser,
             updatePushNotificationsIsLoading,
             updatePushNotificationsErrorMessage,
+            uploadProfileImageErrorMessage,
+            uploadProfileImageSuccessMessage,
         } = this.props;
         const profileImage = currentUser && currentUser.profileImages.originalImageUrl;
         return (
@@ -168,6 +185,12 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                 rounded
                                 onPress={() => this.handleChoosePhoto()}
                             />
+                            {uploadProfileImageErrorMessage ? (
+                                <Text style={{ color: 'red' }}>{uploadProfileImageErrorMessage}</Text>
+                            ) : null}
+                            {uploadProfileImageSuccessMessage ? (
+                                <Text style={{ color: 'green' }}>{uploadProfileImageErrorMessage}</Text>
+                            ) : null}
                         </View>
                     </Spacer>
                     <View style={{ flexDirection: 'row', marginLeft: 15 }}>
@@ -180,14 +203,15 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                         </Text>
                     </Spacer>
                     <AccountStrengthProgressBar currentUser={currentUser} />
-                    <Spacer>
-                        {getAccountCompletionPercentage({ currentUser }) < 100 ? (
+
+                    {getAccountCompletionPercentage({ currentUser }) < 100 ? (
+                        <Spacer>
                             <Text
                                 onPress={() => this.props.navigation.navigate(Screens.WhatIsYourFirstName)}
                                 style={{ color: 'blue' }}
                             >{`Improve your account strength`}</Text>
-                        ) : null}
-                    </Spacer>
+                        </Spacer>
+                    ) : null}
 
                     <Spacer>
                         <Text style={{ fontWeight: 'bold' }}>
@@ -338,8 +362,6 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                             title="Logout"
                             onPress={() => {
                                 logoutUser();
-                                const parent = this.props.navigation.dangerouslyGetParent();
-                                parent?.navigate(Screens.Landing);
                             }}
                         />
                     </Spacer>

@@ -20,7 +20,6 @@ import {
     usersStack,
     accountStack,
     upgradeStack,
-    landingStack,
 } from './RootNavigator';
 import { ActivityFeedBottomTab } from './ActivityFeedBottomTab';
 
@@ -86,14 +85,8 @@ const homeDrawerScreen = (
     />
 );
 
-export const getDrawerOptions = ({
-    isAuthenticated,
-    isPayingMember,
-}: {
-    isAuthenticated: boolean;
-    isPayingMember: boolean;
-}) => {
-    if (isAuthenticated && !isPayingMember)
+export const getDrawerOptions = ({ isPayingMember }: { isPayingMember: boolean }) => {
+    if (!isPayingMember)
         return [
             homeDrawerScreen,
             <Drawer.Screen
@@ -104,23 +97,6 @@ export const getDrawerOptions = ({
             />,
             ...sharedDrawerOptions,
         ];
-    if (isAuthenticated && isPayingMember) {
-        return [homeDrawerScreen, ...sharedDrawerOptions];
-    }
-    return [
-        <Drawer.Screen
-            key={DrawerScreens.Landing}
-            options={{ drawerIcon: () => null, title: undefined, drawerLabel: () => null }}
-            name={DrawerScreens.Landing}
-            component={landingStack}
-        />,
-        homeDrawerScreen,
-        <Drawer.Screen
-            key={DrawerScreens.Upgrade}
-            options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} /> }}
-            name={DrawerScreens.Upgrade}
-            component={upgradeStack}
-        />,
-        ...sharedDrawerOptions,
-    ];
+
+    return [homeDrawerScreen, ...sharedDrawerOptions];
 };

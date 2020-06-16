@@ -12,10 +12,10 @@ import { Screens } from '../Screens';
 import uuid from 'react-native-uuid';
 import { Dispatch, bindActionCreators } from 'redux';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { authActions } from '../../actions/unauthenticatedSharedActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LoadingScreenSpinner } from '../../components/LoadingScreenSpinner';
-import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { authActions } from '../../actions/authActions';
+import { UnauthenticatedStackParamList } from '../../screenNavigation/UnauthenticatedStack';
 
 const mapStateToProps = (state: AppState) => {
     const isAuthenticated = state && state.auth && state.auth.isAuthenticated;
@@ -40,7 +40,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     registerWithUserIdentifier: bindActionCreators(authActions.registerWithUserIdentifier, dispatch),
     loginUser: bindActionCreators(authActions.loginUser, dispatch),
 });
-type MadeAnAccountScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.MadeAnAccount>;
+type MadeAnAccountScreenNavigationProp = StackNavigationProp<UnauthenticatedStackParamList, Screens.MadeAnAccount>;
 
 type NavigationProps = {
     navigation: MadeAnAccountScreenNavigationProp;
@@ -95,8 +95,8 @@ class MadeAnAccountScreenComponent extends PureComponent<Props> {
                                     emailOrCognitoUsername: username,
                                     password: temporaryPassword,
                                     redirectToHomeOnLogin: false,
+                                    redirectToChooseAPathOnLogin: true,
                                 });
-                                this.props.navigation.navigate(Screens.ChooseAPath);
                             }}
                         />
                     </Spacer>

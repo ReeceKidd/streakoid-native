@@ -10,7 +10,6 @@ import { SESSION_EXPIRED } from '@streakoid/streakoid-shared/lib/actions/types';
 import * as RNLocalize from 'react-native-localize';
 import { awsCognitoAuth } from '../awsCongitoAuth';
 
-//export const apiUrl = 'http://dfcfa2eb3055.ngrok.io';
 export const apiUrl = 'https://qz6l18dx09.execute-api.eu-west-1.amazonaws.com/dev';
 
 export const streakoidAuthenticatedClient = streakoidAxiosClientFactory(apiUrl, londonTimezone);

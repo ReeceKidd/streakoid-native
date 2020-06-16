@@ -34,12 +34,6 @@ import { TeamStreakLeaderboardScreen } from '../screens/TeamStreakLeaderboardScr
 import { ChallengeStreakLeaderboardScreen } from '../screens/ChallengeStreakLeaderboardScreen';
 import { FollowingLeaderboardScreen } from '../screens/FollowingLeaderboardScreen';
 import { GlobalUserLeaderboardScreen } from '../screens/GlobalLeaderboardScreen';
-import { LandingScreen } from '../screens/LandingScreen';
-import { MadeAnAccountScreen } from '../screens/onboarding/MadeAnAccountScreen';
-import { ChooseAPathScreen } from '../screens/onboarding/ChooseAPathScreen';
-import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
-import { LoginScreen } from '../screens/LoginScreen';
-import { UpdatePasswordScreen } from '../screens/UpdatePasswordScreen';
 import { SoloStreaksScreen } from '../screens/SoloStreaksScreen';
 import { SoloStreakInfoScreen } from '../screens/SoloStreakInfoScreen';
 import { CreateSoloStreakScreen } from '../screens/CreateSoloStreakScreen';
@@ -67,69 +61,71 @@ import { FollowingActivityScreen } from '../screens/FollowingActivityScreen';
 import { GlobalActivityScreen } from '../screens/GlobalActivityScreen';
 
 export type RootStackParamList = {
-    Home: undefined;
+    [Screens.Home]: undefined;
     [Screens.Account]: { username: string };
-    WhatIsYourFirstName: undefined;
-    WhatIsYourLastName: undefined;
-    WhyDoYouWantToBuildHabits: undefined;
-    ChooseAUsername: undefined;
-    ChooseAProfilePicture: undefined;
-    WhatIsYourEmail: undefined;
-    VerifyEmail: undefined;
-    ChooseAPassword: undefined;
-    CompletedRegistration: undefined;
-    CompletedCustomization: undefined;
-    GlobalActivity: undefined;
-    FollowingActivity: undefined;
-    Challenges: undefined;
-    ChallengeInfo: { _id: string; challengeName: string };
-    ChallengeStreaks: {
+    [Screens.WhatIsYourFirstName]: undefined;
+    [Screens.WhatIsYourLastName]: undefined;
+    [Screens.WhyDoYouWantToBuildHabits]: undefined;
+    [Screens.ChooseAUsername]: undefined;
+    [Screens.ChooseAProfilePicture]: undefined;
+    [Screens.WhatIsYourEmail]: undefined;
+    [Screens.VerifyEmail]: undefined;
+    [Screens.ChooseAPassword]: undefined;
+    [Screens.CompletedRegistration]: undefined;
+    [Screens.CompletedCustomization]: undefined;
+    [Screens.GlobalActivity]: undefined;
+    [Screens.FollowingActivity]: undefined;
+    [Screens.Challenges]: undefined;
+    [Screens.ChallengeInfo]: { _id: string; challengeName: string };
+    [Screens.ChallengeStreaks]: {
         isPayingMember: boolean;
         totalLiveStreaks: number;
         getMultipleLiveChallengeStreaksIsLoading: boolean;
     };
-    ChallengeStreakInfo: { _id: string; streakName: string };
-    AddNoteToChallengeStreak: undefined;
-    Leaderboards: undefined;
-    SoloStreakLeaderboard: undefined;
-    TeamStreakLeaderboard: undefined;
-    ChallengeStreakLeaderboard: undefined;
-    FollowingLeaderboard: undefined;
-    GlobalUserLeaderboard: undefined;
-    //Onboarding
-    Landing: undefined;
-    MadeAnAccount: undefined;
-    ChooseAPath: undefined;
-    Login: undefined;
-    ForgotPassword: undefined;
-    UpdatePassword: undefined;
+    [Screens.ChallengeStreakInfo]: { _id: string; streakName: string };
+    [Screens.AddNoteToChallengeStreak]: undefined;
+    [Screens.Leaderboards]: undefined;
+    [Screens.SoloStreakLeaderboard]: undefined;
+    [Screens.TeamStreakLeaderboard]: undefined;
+    [Screens.ChallengeStreakLeaderboard]: undefined;
+    [Screens.FollowingLeaderboard]: undefined;
+    [Screens.GlobalUserLeaderboard]: undefined;
     //Solo Streak
-    SoloStreaks: { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveSoloStreaksIsLoading: boolean };
-    SoloStreakInfo: { _id: string; streakName: string; isUsersStreak: boolean };
-    CreateSoloStreak: undefined;
-    EditSoloStreak: undefined;
-    AddNoteToSoloStreak: undefined;
-    StreakRecommendations: undefined;
+    [Screens.SoloStreaks]: {
+        isPayingMember: boolean;
+        totalLiveStreaks: number;
+        getMultipleLiveSoloStreaksIsLoading: boolean;
+    };
+    [Screens.SoloStreakInfo]: { _id: string; streakName: string; isUsersStreak: boolean };
+    [Screens.CreateSoloStreak]: undefined;
+    [Screens.EditSoloStreak]: undefined;
+    [Screens.AddNoteToSoloStreak]: undefined;
+    [Screens.StreakRecommendations]: undefined;
     //TeamStreak
-    TeamStreaks: { isPayingMember: boolean; totalLiveStreaks: number; getMultipleLiveTeamStreaksIsLoading: boolean };
-    TeamStreakInfo: { _id: string; streakName: string; userIsApartOfStreak: boolean };
-    CreateTeamStreak: undefined;
-    EditTeamStreak: undefined;
-    AddFollowerToTeamStreak: undefined;
-    TeamMemberStreakInfo: { _id: string; streakName: string };
-    AddNoteToTeamStreak: undefined;
+    [Screens.TeamStreaks]: {
+        isPayingMember: boolean;
+        totalLiveStreaks: number;
+        getMultipleLiveTeamStreaksIsLoading: boolean;
+    };
+    [Screens.TeamStreakInfo]: { _id: string; streakName: string; userIsApartOfStreak: boolean };
+    [Screens.CreateTeamStreak]: undefined;
+    [Screens.EditTeamStreak]: undefined;
+    [Screens.AddFollowerToTeamStreak]: undefined;
+    [Screens.TeamMemberStreakInfo]: { _id: string; streakName: string };
+    [Screens.AddNoteToTeamStreak]: undefined;
     //Tutorial
-    WhatIsAStreak: undefined;
-    WhyDailyStreaks: undefined;
-    DifferentTypesOfStreaks: undefined;
-    StreakRecommendationsIntro: undefined;
-    DailyReminders: undefined;
-    TutorialComplete: undefined;
+    [Screens.WhatIsAStreak]: undefined;
+    [Screens.WhyDailyStreaks]: undefined;
+    [Screens.DifferentTypesOfStreaks]: undefined;
+    [Screens.StreakRecommendationsIntro]: undefined;
+    [Screens.DailyReminders]: undefined;
+    [Screens.TutorialComplete]: undefined;
     //Upgrade
-    Upgrade: undefined;
+    [Screens.Upgrade]: undefined;
     //Users
-    Users: undefined;
-    UserProfile: { _id: string; username: string };
+    [Screens.Users]: undefined;
+    [Screens.UserProfile]: { _id: string; username: string };
+    [Screens.ChooseAPath]: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -382,28 +378,6 @@ const FollowingLeaderboardStackScreen = (
 const GlobalUserLeaderboardStackScreen = (
     <Stack.Screen name={Screens.GlobalUserLeaderboard} component={GlobalUserLeaderboardScreen} />
 );
-
-const LandingStackScreen = (
-    <Stack.Screen name={Screens.Landing} options={{ headerShown: false }} component={LandingScreen} />
-);
-
-const MadeAnAccountStackScreen = (
-    <Stack.Screen
-        name={Screens.MadeAnAccount}
-        options={{ title: 'Your temporary account', headerLeft: () => null }}
-        component={MadeAnAccountScreen}
-    />
-);
-
-const ChooseAPathStackScreen = (
-    <Stack.Screen name={Screens.ChooseAPath} options={{ headerShown: false }} component={ChooseAPathScreen} />
-);
-
-const ForgotPasswordStackScreen = <Stack.Screen name={Screens.ForgotPassword} component={ForgotPasswordScreen} />;
-
-const LoginStackScreen = <Stack.Screen name={Screens.Login} options={{ headerShown: false }} component={LoginScreen} />;
-
-const UpdatePasswordStackScreen = <Stack.Screen name={Screens.UpdatePassword} component={UpdatePasswordScreen} />;
 
 const SoloStreakStackScreen = (
     <Stack.Screen
@@ -725,12 +699,6 @@ export const getStackScreens = () => {
             {ChallengeStreakLeaderboardStackScreen}
             {FollowingLeaderboardStackScreen}
             {GlobalUserLeaderboardStackScreen}
-            {LandingStackScreen}
-            {MadeAnAccountStackScreen}
-            {ChooseAPathStackScreen}
-            {ForgotPasswordStackScreen}
-            {LoginStackScreen}
-            {UpdatePasswordStackScreen}
             {SoloStreakStackScreen}
             {SoloStreakInfoStackScreen}
             {CreateSoloStreakStackScreen}
@@ -782,9 +750,6 @@ export const accountStack = () => (
 );
 export const upgradeStack = () => (
     <Stack.Navigator initialRouteName={Screens.Upgrade}>{getStackScreens()}</Stack.Navigator>
-);
-export const landingStack = () => (
-    <Stack.Navigator initialRouteName={Screens.Landing}>{getStackScreens()}</Stack.Navigator>
 );
 export const followingActivityFeedStack = () => (
     <Stack.Navigator initialRouteName={Screens.FollowingActivity}>{getStackScreens()}</Stack.Navigator>

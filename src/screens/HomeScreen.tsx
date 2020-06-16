@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import { connect } from 'react-redux';
-import { Text } from 'react-native-elements';
+import { Text, ListItem } from 'react-native-elements';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import {
@@ -30,7 +30,14 @@ import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChild, faPeopleCarry, faMedal } from '@fortawesome/pro-solid-svg-icons';
+import {
+    faChild,
+    faPeopleCarry,
+    faMedal,
+    faLifeRing,
+    faUserCrown,
+    IconDefinition,
+} from '@fortawesome/pro-solid-svg-icons';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
 import NativePushNotification from 'react-native-push-notification';
 import * as RNLocalize from 'react-native-localize';
@@ -41,7 +48,7 @@ import { ProgressBar } from '../components/ProgressBar';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
@@ -489,6 +496,30 @@ class HomeScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
         const { currentUser, isPayingMember, totalIncompleteStreaks } = this.props;
         const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
+        const confused = {
+            _id: '1',
+            link: Screens.WhatIsAStreak,
+            name: 'Tutorial',
+            subtitle: `If you're confused about Streakoid.`,
+            icon: faLifeRing,
+            color: 'red',
+        };
+        const customizeYourAccount = {
+            _id: '2',
+            link: Screens.WhatIsYourFirstName,
+            name: 'Customize your account',
+            subtitle: 'Make your account your own',
+            icon: faUserCrown,
+            color: 'gold',
+        };
+        const pathOptions: {
+            _id: string;
+            link: Screens;
+            name: string;
+            subtitle: string;
+            icon: IconDefinition;
+            color: string;
+        }[] = [confused, customizeYourAccount];
         return (
             <ScrollView style={styles.container}>
                 <View>
@@ -510,6 +541,29 @@ class HomeScreenComponent extends PureComponent<Props> {
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
+                    <Spacer>
+                        <FlatList
+                            data={pathOptions}
+                            keyExtractor={(option) => option._id}
+                            renderItem={({ item }) => {
+                                return (
+                                    <ListItem
+                                        leftIcon={<FontAwesomeIcon icon={item.icon} color={item.color} />}
+                                        title={item.name}
+                                        subtitle={item.subtitle}
+                                        chevron={true}
+                                        onPress={() => {
+                                            this.props.updateCurrentUser({
+                                                updateData: { hasCompletedOnboarding: true },
+                                            });
+                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                            this.props.navigation.navigate(item.link as any);
+                                        }}
+                                    />
+                                );
+                            }}
+                        />
+                    </Spacer>
                 </View>
             </ScrollView>
         );

@@ -21,6 +21,7 @@ import { userActions } from './src/actions/authenticatedSharedActions';
 import { NavigationContainer } from '@react-navigation/native';
 import { getDrawerMenu } from './src/screenNavigation/DrawerMenu';
 import { navigationRef } from './NavigationService';
+import { UnauthenticatedStackNavigator } from './src/screenNavigation/UnauthenticatedStack';
 
 enableScreens();
 
@@ -92,7 +93,8 @@ class AppContainerComponent extends React.PureComponent<Props> {
 
     render() {
         const { isAuthenticated, isPayingMember } = this.props;
-        return getDrawerMenu({ isAuthenticated, isPayingMember });
+        const drawerMenu = getDrawerMenu({ isPayingMember });
+        return isAuthenticated ? drawerMenu : <UnauthenticatedStackNavigator />;
     }
 }
 

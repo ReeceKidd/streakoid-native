@@ -17,7 +17,7 @@ import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
 import { Avatar } from 'react-native-elements';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
-import { apiUrl, getIdToken } from '../../api/authenticatedStreakoid';
+import { apiUrl } from '../../api/authenticatedStreakoid';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/SupportedRequestHeaders';
 import { AccountStrengthProgressBar } from '../../components/AccountStrengthProgressBar';
@@ -29,12 +29,14 @@ const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
     const profileImages = currentUser && currentUser.profileImages;
     const profileImage = profileImages && profileImages.originalImageUrl;
+    const idToken = state && state.auth && state.auth.idToken;
     return {
         uploadProfileImageIsLoading,
         uploadProfileImageErrorMessage,
         uploadProfileImageSuccessMessage,
         profileImage,
         currentUser,
+        idToken,
     };
 };
 
@@ -87,6 +89,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     uploadPhoto = async () => {
+        const { idToken } = this.props;
         const formData = new FormData();
         const { photo } = this.state;
 
@@ -94,29 +97,27 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
 
         const url = `${apiUrl}/v1/${RouterCategories.profileImages}`;
 
-        const idToken = await getIdToken();
         const timezone = this.props.currentUser.timezone;
 
-        const uploadProfilePictureFunction = () =>
-            RNFetchBlob.fetch(
-                'POST',
-                url,
+        const profileImages = (await RNFetchBlob.fetch(
+            'POST',
+            url,
+            {
+                [SupportedRequestHeaders.Authorization]: idToken || '',
+                [SupportedRequestHeaders.Timezone]: timezone,
+                'Content-Type': 'multipart/form-data',
+            },
+            [
                 {
-                    [SupportedRequestHeaders.Authorization]: idToken || '',
-                    [SupportedRequestHeaders.Timezone]: timezone,
-                    'Content-Type': 'multipart/form-data',
+                    name: 'image',
+                    filename: photo.fileName,
+                    type: 'image/jpeg',
+                    data: RNFetchBlob.wrap(photo.uri),
                 },
-                [
-                    {
-                        name: 'image',
-                        filename: photo.fileName,
-                        type: 'image/jpeg',
-                        data: RNFetchBlob.wrap(photo.uri),
-                    },
-                ],
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ) as any;
-        this.props.uploadProfileImage({ uploadProfilePictureFunction });
+            ],
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        )) as any;
+        this.props.uploadProfileImage({ profileImages });
     };
     render(): JSX.Element {
         const { currentUser, profileImage, uploadProfileImageIsLoading, uploadProfileImageErrorMessage } = this.props;

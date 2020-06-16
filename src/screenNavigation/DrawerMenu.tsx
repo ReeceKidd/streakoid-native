@@ -4,10 +4,6 @@ import { getDrawerOptions } from './drawerOptions';
 
 const Drawer = createDrawerNavigator();
 
-export const getDrawerMenu = ({
-    isAuthenticated,
-    isPayingMember,
-}: {
-    isAuthenticated: boolean;
-    isPayingMember: boolean;
-}) => <Drawer.Navigator>{getDrawerOptions({ isAuthenticated, isPayingMember })}</Drawer.Navigator>;
+export const getDrawerMenu = ({ isPayingMember }: { isPayingMember: boolean }) => (
+    <Drawer.Navigator>{getDrawerOptions({ isPayingMember })}</Drawer.Navigator>
+);
