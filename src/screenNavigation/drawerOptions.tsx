@@ -85,8 +85,14 @@ const homeDrawerScreen = (
     />
 );
 
-export const getDrawerOptions = ({ isPayingMember }: { isPayingMember: boolean }) => {
-    if (!isPayingMember)
+export const getDrawerOptions = ({
+    isPayingMember,
+    platformIsIOS,
+}: {
+    isPayingMember: boolean;
+    platformIsIOS: boolean;
+}) => {
+    if (!isPayingMember && !platformIsIOS)
         return [
             homeDrawerScreen,
             <Drawer.Screen

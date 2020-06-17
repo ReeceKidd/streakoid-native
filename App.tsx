@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider, connect } from 'react-redux';
 
 import { store, persistor, AppState } from './store';
+import { ErrorBoundary } from './ErrorBoundary';
 
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -93,7 +94,7 @@ class AppContainerComponent extends React.PureComponent<Props> {
 
     render() {
         const { isAuthenticated, isPayingMember } = this.props;
-        const drawerMenu = getDrawerMenu({ isPayingMember });
+        const drawerMenu = getDrawerMenu({ isPayingMember, platformIsIOS: Platform.OS === 'ios' });
         return isAuthenticated ? drawerMenu : <UnauthenticatedStackNavigator />;
     }
 }
@@ -132,9 +133,9 @@ const App = () => (
                 }
                 persistor={persistor}
             >
-                {/* <ErrorBoundary> */}
-                <AppContainer />
-                {/* </ErrorBoundary> */}
+                <ErrorBoundary>
+                    <AppContainer />
+                </ErrorBoundary>
             </PersistGate>
         </NavigationContainer>
     </Provider>
