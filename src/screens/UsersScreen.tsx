@@ -10,11 +10,11 @@ import { Spacer } from '../components/Spacer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from './Screens';
 import { RouteProp } from '@react-navigation/native';
-import { UserStackParamList } from '../screenNavigation/UserStack';
 import { SearchBar, ListItem, Button, Divider } from 'react-native-elements';
 import { Platform, View, ActivityIndicator } from 'react-native';
 import { FormattedUserWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -34,8 +34,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     unfollowUsersListUser: bindActionCreators(userActions.unfollowUsersListUser, dispatch),
 });
 
-type UsersScreenNavigationProp = StackNavigationProp<UserStackParamList, Screens.Users>;
-type UsersScreenRouteProp = RouteProp<UserStackParamList, Screens.Users>;
+type UsersScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Users>;
+type UsersScreenRouteProp = RouteProp<RootStackParamList, Screens.Users>;
 
 type NavigationProps = {
     navigation: UsersScreenNavigationProp;
@@ -54,6 +54,7 @@ class UsersScreenComponent extends PureComponent<Props, State> {
     };
     componentDidMount() {
         this.props.getCurrentUser();
+        this.props.getUsers({ limit: 5 });
     }
     updateSearch = (searchQuery: string) => {
         this.setState({ searchQuery });

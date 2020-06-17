@@ -360,19 +360,35 @@ const LeaderboardsStackScreen = (
 );
 
 const SoloStreakLeaderboardStackScreen = (
-    <Stack.Screen name={Screens.SoloStreakLeaderboard} component={SoloStreakLeaderboardScreen} />
+    <Stack.Screen
+        name={Screens.SoloStreakLeaderboard}
+        options={{ title: '' }}
+        component={SoloStreakLeaderboardScreen}
+    />
 );
 const TeamStreakLeaderboardStackScreen = (
-    <Stack.Screen name={Screens.TeamStreakLeaderboard} component={TeamStreakLeaderboardScreen} />
+    <Stack.Screen
+        name={Screens.TeamStreakLeaderboard}
+        options={{ title: '' }}
+        component={TeamStreakLeaderboardScreen}
+    />
 );
 const ChallengeStreakLeaderboardStackScreen = (
-    <Stack.Screen name={Screens.ChallengeStreakLeaderboard} component={ChallengeStreakLeaderboardScreen} />
+    <Stack.Screen
+        name={Screens.ChallengeStreakLeaderboard}
+        options={{ title: '' }}
+        component={ChallengeStreakLeaderboardScreen}
+    />
 );
 const FollowingLeaderboardStackScreen = (
-    <Stack.Screen name={Screens.FollowingLeaderboard} component={FollowingLeaderboardScreen} />
+    <Stack.Screen name={Screens.FollowingLeaderboard} options={{ title: '' }} component={FollowingLeaderboardScreen} />
 );
 const GlobalUserLeaderboardStackScreen = (
-    <Stack.Screen name={Screens.GlobalUserLeaderboard} component={GlobalUserLeaderboardScreen} />
+    <Stack.Screen
+        name={Screens.GlobalUserLeaderboard}
+        options={{ title: '' }}
+        component={GlobalUserLeaderboardScreen}
+    />
 );
 
 const SoloStreakStackScreen = (
