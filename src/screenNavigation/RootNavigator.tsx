@@ -456,7 +456,13 @@ const SoloStreakInfoStackScreen = (
     />
 );
 
-const CreateSoloStreakStackScreen = <Stack.Screen name={Screens.CreateSoloStreak} component={CreateSoloStreakScreen} />;
+const CreateSoloStreakStackScreen = (
+    <Stack.Screen
+        name={Screens.CreateSoloStreak}
+        options={{ title: 'Create Solo streak' }}
+        component={CreateSoloStreakScreen}
+    />
+);
 
 const EditSoloStreakStackScreen = <Stack.Screen name={Screens.EditSoloStreak} component={EditSoloStreakScreen} />;
 

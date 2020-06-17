@@ -7,11 +7,15 @@ import { Input, Button } from 'react-native-elements';
 import { ErrorMessage } from './ErrorMessage';
 import { soloStreakActions } from '../actions/authenticatedSharedActions';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Screens } from '../screens/Screens';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface CreateSoloStreakFormProps {
     createSoloStreak: typeof soloStreakActions.createSoloStreak;
     createSoloStreakIsLoading: boolean;
     createSoloStreakErrorMessage: string;
+    navigation: StackNavigationProp<RootStackParamList, Screens.CreateSoloStreak>;
 }
 
 interface FormValues {
@@ -61,11 +65,12 @@ class CreateSoloStreakForm extends PureComponent<Props> {
             convertedNaturalLanguageTimeSeconds && convertedNaturalLanguageTimeSeconds > 0
                 ? convertedNaturalLanguageTimeSeconds / 60
                 : undefined;
-        return this.props.createSoloStreak({
+        this.props.createSoloStreak({
             streakName,
             streakDescription: streakDescription !== '' ? streakDescription : undefined,
             numberOfMinutes,
         });
+        this.props.navigation.pop();
     };
 
     render(): JSX.Element {

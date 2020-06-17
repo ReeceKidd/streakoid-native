@@ -9,6 +9,9 @@ import { teamStreakActions, userActions } from '../actions/authenticatedSharedAc
 import { FollowerSelector } from './FollowerSelector';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { Screens } from '../screens/Screens';
 
 interface CreateTeamStreakFormProps {
     createTeamStreak: typeof teamStreakActions.createTeamStreak;
@@ -18,6 +21,7 @@ interface CreateTeamStreakFormProps {
     members: { memberId: string }[];
     createTeamStreakErrorMessage: string;
     createTeamStreakIsLoading: boolean;
+    navigation: StackNavigationProp<RootStackParamList, Screens.CreateTeamStreak>;
 }
 
 interface FormValues {
@@ -74,6 +78,7 @@ class CreateTeamStreakForm extends PureComponent<Props> {
             streakDescription: streakDescription !== '' ? streakDescription : undefined,
             numberOfMinutes,
         });
+        this.props.navigation.pop();
     };
 
     render(): JSX.Element {

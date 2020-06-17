@@ -29,7 +29,7 @@ import { faCrown } from '@fortawesome/free-solid-svg-icons';
 import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -88,8 +88,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-type TeamStreakInfoScreenNavigationProp = StackNavigationProp<TeamStreakStackParamList, Screens.TeamStreakInfo>;
-type TeamStreakInfoScreenRouteProp = RouteProp<TeamStreakStackParamList, Screens.TeamStreakInfo>;
+type TeamStreakInfoScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TeamStreakInfo>;
+type TeamStreakInfoScreenRouteProp = RouteProp<RootStackParamList, Screens.TeamStreakInfo>;
 
 type NavigationProps = {
     navigation: TeamStreakInfoScreenNavigationProp;
@@ -546,6 +546,7 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                             <GeneralActivityFeed
                                 navigation={this.props.navigation}
                                 activityFeedItems={selectedTeamStreak.activityFeed.activityFeedItems}
+                                currentUserId={this.props.currentUser._id}
                             />
                         </Spacer>
                         <Text h3 h3Style={{ textAlign: 'center' }}>
@@ -557,9 +558,12 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                 <>
                                     <Spacer>
                                         <Button
-                                            onPress={() =>
-                                                this.archiveTeamStreak({ selectedTeamStreakId: selectedTeamStreak._id })
-                                            }
+                                            onPress={() => {
+                                                this.archiveTeamStreak({
+                                                    selectedTeamStreakId: selectedTeamStreak._id,
+                                                });
+                                                this.props.navigation.pop();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={archiveTeamStreakIsLoading}
                                             title="Archive"
@@ -571,7 +575,10 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                 <>
                                     <Spacer>
                                         <Button
-                                            onPress={() => restoreArchivedTeamStreak(selectedTeamStreak._id)}
+                                            onPress={() => {
+                                                restoreArchivedTeamStreak(selectedTeamStreak._id);
+                                                this.props.navigation.pop();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'green' }}
                                             loading={restoreArchivedTeamStreakIsLoading}
                                             title="Restore"
@@ -580,7 +587,10 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                     </Spacer>
                                     <Spacer>
                                         <Button
-                                            onPress={() => deleteArchivedTeamStreak(selectedTeamStreak._id)}
+                                            onPress={() => {
+                                                deleteArchivedTeamStreak(selectedTeamStreak._id);
+                                                this.props.navigation.pop();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={deleteArchivedTeamStreakIsLoading}
                                             title="Delete"

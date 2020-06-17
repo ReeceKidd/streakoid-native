@@ -7,9 +7,7 @@ import {
     NAVIGATE_TO_HOME,
     NAVIGATE_TO_LOGIN,
     NAVIGATE_TO_UPDATE_PASSWORD,
-    NAVIGATE_TO_SOLO_STREAKS,
     NAVIGATE_TO_SPECIFIC_SOLO_STREAK,
-    NAVIGATE_TO_TEAM_STREAKS,
     NAVIGATE_TO_SPECIFIC_TEAM_STREAK,
     NAVIGATE_TO_CHALLENGE_STREAKS,
     NAVIGATE_TO_SPECIFIC_CHALLENGE_STREAK,
@@ -34,14 +32,8 @@ const navigationMiddleware = (store: any) => (next: any) => (action: AppActions)
         case NAVIGATE_TO_UPDATE_PASSWORD:
             return NavigationService.navigate({ screen: Screens.UpdatePassword });
 
-        case NAVIGATE_TO_SOLO_STREAKS:
-            return NavigationService.navigate({ screen: Screens.SoloStreaks });
-
         case NAVIGATE_TO_SPECIFIC_SOLO_STREAK:
             return NavigationService.navigate({ screen: Screens.SoloStreakInfo, params: { _id: action.payload } });
-
-        case NAVIGATE_TO_TEAM_STREAKS:
-            return NavigationService.navigate({ screen: Screens.TeamStreaks });
 
         case NAVIGATE_TO_SPECIFIC_TEAM_STREAK:
             return NavigationService.navigate({ screen: Screens.TeamStreakInfo, params: { _id: action.payload } });

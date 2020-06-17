@@ -80,6 +80,7 @@ class CreateTeamStreakScreenComponent extends PureComponent<Props> {
                             members={members}
                             createTeamStreakIsLoading={createTeamStreakIsLoading}
                             createTeamStreakErrorMessage={createTeamStreakErrorMessage}
+                            navigation={this.props.navigation}
                         />
                     </Spacer>
                 </View>

@@ -482,9 +482,12 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                 <>
                                     <Spacer>
                                         <Button
-                                            onPress={() =>
-                                                this.archiveSoloStreak({ selectedSoloStreakId: selectedSoloStreak._id })
-                                            }
+                                            onPress={() => {
+                                                this.archiveSoloStreak({
+                                                    selectedSoloStreakId: selectedSoloStreak._id,
+                                                });
+                                                this.props.navigation.pop();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={archiveSoloStreakIsLoading}
                                             title="Archive"
@@ -496,7 +499,10 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                 <>
                                     <Spacer>
                                         <Button
-                                            onPress={() => restoreArchivedSoloStreak(selectedSoloStreak._id)}
+                                            onPress={() => {
+                                                restoreArchivedSoloStreak(selectedSoloStreak._id);
+                                                this.props.navigation.pop();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'green' }}
                                             loading={restoreArchivedSoloStreakIsLoading}
                                             title="Restore"
@@ -504,7 +510,10 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                     </Spacer>
                                     <Spacer>
                                         <Button
-                                            onPress={() => deleteArchivedSoloStreak(selectedSoloStreak._id)}
+                                            onPress={() => {
+                                                deleteArchivedSoloStreak(selectedSoloStreak._id);
+                                                this.props.navigation.pop();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={deleteArchivedSoloStreakIsLoading}
                                             title="Delete"

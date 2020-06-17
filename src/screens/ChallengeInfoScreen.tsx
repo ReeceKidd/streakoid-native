@@ -84,16 +84,18 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                         </View>
                         <Spacer></Spacer>
                         {selectedChallenge.userIsApartOfChallenge ? (
-                            <TouchableOpacity
+                            <ListItem
+                                leftIcon={<FontAwesomeIcon icon={faCalendarCheck} />}
+                                title={'Track this habit'}
+                                subtitle={'Challenges are added to your challenge streaks'}
+                                chevron={true}
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.ChallengeInfo, {
+                                    this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
                                         _id: selectedChallenge.usersChallengeStreakId,
-                                        challengeName: this.props.route.params.challengeName,
+                                        streakName: selectedChallenge.name,
                                     })
                                 }
-                            >
-                                <Text style={{ textAlign: 'center', color: 'blue' }}>Track this challenge</Text>
-                            </TouchableOpacity>
+                            />
                         ) : (
                             <Button
                                 loading={joinChallengeIsLoading}

@@ -12,6 +12,9 @@ import { View, StyleSheet } from 'react-native';
 import { Spacer } from '../components/Spacer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus } from '@fortawesome/pro-solid-svg-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { Screens } from './Screens';
 
 const mapStateToProps = (state: AppState) => {
     const createSoloStreakIsLoading = state && state.soloStreaks && state.soloStreaks.createSoloStreakIsLoading;
@@ -26,7 +29,12 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     createSoloStreak: bindActionCreators(soloStreakActions.createSoloStreak, dispatch),
 });
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type CreateSoloStreakScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.CreateSoloStreak>;
+
+type NavigationProps = {
+    navigation: CreateSoloStreakScreenNavigationProp;
+};
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
     container: {
@@ -50,6 +58,7 @@ class CreateSoloStreakScreenComponent extends PureComponent<Props> {
                         createSoloStreak={createSoloStreak}
                         createSoloStreakIsLoading={createSoloStreakIsLoading}
                         createSoloStreakErrorMessage={createSoloStreakErrorMessage}
+                        navigation={this.props.navigation}
                     />
                 </Spacer>
             </View>
