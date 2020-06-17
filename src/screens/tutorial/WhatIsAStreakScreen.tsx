@@ -8,7 +8,7 @@ import { faBook, faBrain, faWeight } from '@fortawesome/pro-solid-svg-icons';
 import { Spacer } from '../../components/Spacer';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../../StackNavigator';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 
 const styles = StyleSheet.create({
     container: {

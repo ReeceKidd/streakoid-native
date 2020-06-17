@@ -95,7 +95,6 @@ class MadeAnAccountScreenComponent extends PureComponent<Props> {
                                     emailOrCognitoUsername: username,
                                     password: temporaryPassword,
                                     redirectToHomeOnLogin: false,
-                                    redirectToChooseAPathOnLogin: true,
                                 });
                             }}
                         />

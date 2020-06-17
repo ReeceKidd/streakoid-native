@@ -6,10 +6,10 @@ import { ListItem, Divider, Text } from 'react-native-elements';
 import { Screens } from '../screens/Screens';
 import { Spacer } from './Spacer';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { SoloStreakStackParamsList } from '../screenNavigation/SoloStreaksStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface ArchivedSoloStreakListProps {
-    navigation: StackNavigationProp<SoloStreakStackParamsList>;
+    navigation: StackNavigationProp<RootStackParamList>;
     archivedSoloStreaks: ArchivedSoloStreakListItem[];
     getMultipleArchivedSoloStreaksIsLoading: boolean;
 }

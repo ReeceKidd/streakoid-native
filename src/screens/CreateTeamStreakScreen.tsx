@@ -12,7 +12,7 @@ import { Spacer } from '../components/Spacer';
 import { CreateTeamStreakForm } from '../components/CreateTeamStreakForm';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { Screens } from './Screens';
 import { ScrollView } from 'react-native-gesture-handler';
 

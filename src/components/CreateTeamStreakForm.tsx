@@ -139,7 +139,6 @@ class CreateTeamStreakForm extends PureComponent<Props> {
                                 selectFollower={selectFollower}
                                 unselectFollower={unselectFollower}
                                 followers={followers}
-                                navigation={this.props.navigation}
                             />
                         </Spacer>
                         <Spacer>

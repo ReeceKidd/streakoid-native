@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { UnauthenticatedStackParamList } from '../screenNavigation/UnauthenticatedStack';
 
 const mapStateToProps = (state: AppState) => {
     const loginErrorMessage = state && state.auth && state.auth.loginErrorMessage;
@@ -31,8 +31,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     clearUpdatePasswordSuccessMessage: bindActionCreators(authActions.clearUpdatePasswordSuccessMessage, dispatch),
 });
 
-type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Login>;
-type LoginScreenRouteProp = RouteProp<RootStackParamList, Screens.Login>;
+type LoginScreenNavigationProp = StackNavigationProp<UnauthenticatedStackParamList, Screens.Login>;
+type LoginScreenRouteProp = RouteProp<UnauthenticatedStackParamList, Screens.Login>;
 
 type NavigationProps = {
     navigation: LoginScreenNavigationProp;
@@ -101,7 +101,8 @@ class LoginScreenComponent extends React.PureComponent<Props> {
                     <NavigationLink
                         text="Forgot password"
                         screen={Screens.ForgotPassword}
-                        navigation={this.props.navigation}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        navigation={this.props.navigation as any}
                     />
                 </Spacer>
             </View>

@@ -15,9 +15,9 @@ import { NavigationLink } from '../components/NavigationLink';
 import { Screens } from './Screens';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
 import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
-import { RootStackParamList } from '../../StackNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -98,7 +98,8 @@ class AddFollowerToTeamStreakScreenComponent extends PureComponent<Props> {
             <View>
                 <Spacer>
                     <NavigationLink
-                        navigation={this.props.navigation}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        navigation={this.props.navigation as any}
                         text="No followers not already in team streak found. Add one."
                         screen={Screens.Users}
                     />

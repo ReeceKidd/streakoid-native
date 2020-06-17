@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {

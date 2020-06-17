@@ -21,7 +21,7 @@ import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
@@ -119,6 +119,7 @@ class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
                             <GeneralActivityFeed
                                 navigation={this.props.navigation}
                                 activityFeedItems={selectedTeamMemberStreak.activityFeed.activityFeedItems}
+                                currentUserId={this.props.currentUser._id}
                             />
                         </Spacer>
                     </ScrollView>

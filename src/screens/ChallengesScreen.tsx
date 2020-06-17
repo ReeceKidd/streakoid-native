@@ -17,7 +17,7 @@ import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import { Challenge } from '@streakoid/streakoid-models/lib/Models/Challenge';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const challengeList = state && state.challenges && state.challenges.challengeList;

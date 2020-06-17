@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation';
 import { Screens } from '../screens/Screens';
 import { Text } from 'react-native-elements';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface NavigationLinkProps {
     text: string;
@@ -10,7 +11,8 @@ interface NavigationLinkProps {
 }
 
 interface NavigationProps {
-    navigation: NavigationScreenProp<NavigationState, NavigationParams>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    navigation: StackNavigationProp<RootStackParamList, any>;
 }
 
 type Props = NavigationLinkProps & NavigationProps;
@@ -25,7 +27,8 @@ class NavigationLink extends PureComponent<Props> {
     render() {
         const { navigation, text, screen } = this.props;
         return (
-            <TouchableOpacity onPress={() => navigation.navigate(screen)}>
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            <TouchableOpacity onPress={() => navigation.navigate(screen as any)}>
                 <Text style={styles.link}>{text}</Text>
             </TouchableOpacity>
         );

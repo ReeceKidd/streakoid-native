@@ -15,7 +15,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { NavigationLink } from '../components/NavigationLink';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const followingLeaderboard = state && state.leaderboards && state.leaderboards.followingLeaderboard;
@@ -107,7 +107,12 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
                     {followingIds.length > 0 ? (
                         this.renderFollowingLeaderboard()
                     ) : (
-                        <NavigationLink text="You're not following anyone yet" screen={Screens.Users} />
+                        <NavigationLink
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            navigation={this.props.navigation as any}
+                            text="You're not following anyone yet"
+                            screen={Screens.Users}
+                        />
                     )}
                 </Spacer>
             </ScrollView>

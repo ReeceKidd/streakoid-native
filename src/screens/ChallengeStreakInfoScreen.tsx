@@ -33,7 +33,7 @@ import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakRem
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { RouteProp } from '@react-navigation/native';
 
 const mapStateToProps = (state: AppState) => {
@@ -516,6 +516,8 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                             <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>
                             <GeneralActivityFeed
                                 activityFeedItems={selectedChallengeStreak.activityFeed.activityFeedItems}
+                                navigation={this.props.navigation}
+                                currentUserId={currentUser._id}
                             />
                         </Spacer>
                         {selectedChallengeStreak.userId === currentUser._id ? (

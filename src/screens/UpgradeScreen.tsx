@@ -10,7 +10,7 @@ import { faPeopleCarry, faMedal, faLifeRing, faBan } from '@fortawesome/pro-soli
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Screens } from './Screens';
-import { UpgradeParamList } from '../screenNavigation/UpgradeStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const styles = StyleSheet.create({
     container: {
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     },
 });
 
-type UpgradeScreenNavigationProp = StackNavigationProp<UpgradeParamList, Screens.Upgrade>;
-type UpgradeScreenRouteProp = RouteProp<UpgradeParamList, Screens.Upgrade>;
+type UpgradeScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Upgrade>;
+type UpgradeScreenRouteProp = RouteProp<RootStackParamList, Screens.Upgrade>;
 
 type NavigationProps = {
     navigation: UpgradeScreenNavigationProp;

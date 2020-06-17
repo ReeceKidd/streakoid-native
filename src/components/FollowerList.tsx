@@ -7,10 +7,11 @@ import { Spacer } from './Spacer';
 import { NavigationLink } from './NavigationLink';
 import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface FollowerListProps {
-    navigation: StackNavigationProp<RootStackParamList>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    navigation: StackNavigationProp<RootStackParamList, any>;
     followerList: BasicUser[];
 }
 
@@ -56,7 +57,11 @@ class FollowerList extends PureComponent<Props> {
         return (
             <View>
                 <Spacer>
-                    <NavigationLink text="No followers found. Add one." screen={Screens.Users} />
+                    <NavigationLink
+                        navigation={this.props.navigation}
+                        text="No followers found. Add one."
+                        screen={Screens.Users}
+                    />
                 </Spacer>
             </View>
         );

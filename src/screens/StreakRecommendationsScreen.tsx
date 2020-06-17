@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
@@ -123,6 +123,8 @@ class StreakRecommendationsScreenComponent extends PureComponent<Props> {
                     <Spacer>
                         <View style={{ alignItems: 'center' }}>
                             <NavigationLink
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                navigation={this.props.navigation as any}
                                 text="Streaks are added to your Challenge streaks"
                                 screen={Screens.ChallengeStreaks}
                             />

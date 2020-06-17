@@ -17,7 +17,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { FlatList } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
@@ -91,7 +91,8 @@ class LeaderboardsScreenComponent extends PureComponent<Props> {
                                     leftIcon={<FontAwesomeIcon icon={item.icon} />}
                                     title={item.name}
                                     chevron
-                                    onPress={() => this.props.navigation.navigate(item.screen)}
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    onPress={() => this.props.navigation.navigate(item.screen as any)}
                                     bottomDivider
                                 />
                             </>

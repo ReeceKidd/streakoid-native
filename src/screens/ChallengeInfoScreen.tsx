@@ -14,7 +14,7 @@ import { Screens } from './Screens';
 import { WhatsappGroupLink } from '../components/WhatsappGroupLink';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
 

@@ -11,8 +11,8 @@ import { authActions } from '../actions/authActions';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../../StackNavigator';
 import { Screens } from './Screens';
+import { UnauthenticatedStackParamList } from '../screenNavigation/UnauthenticatedStack';
 
 const mapStateToProps = (state: AppState) => {
     const forgotPasswordErrorMessage = state && state.auth && state.auth.forgotPasswordErrorMessage;
@@ -26,8 +26,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     clearForgotPasswordErrorMessage: bindActionCreators(authActions.clearForgotPasswordErrorMessage, dispatch),
 });
 
-type ForgotPasswordScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ForgotPassword>;
-type ForgotPasswordScreenRouteProp = RouteProp<RootStackParamList, Screens.ForgotPassword>;
+type ForgotPasswordScreenNavigationProp = StackNavigationProp<UnauthenticatedStackParamList, Screens.ForgotPassword>;
+type ForgotPasswordScreenRouteProp = RouteProp<UnauthenticatedStackParamList, Screens.ForgotPassword>;
 
 type NavigationProps = {
     navigation: ForgotPasswordScreenNavigationProp;

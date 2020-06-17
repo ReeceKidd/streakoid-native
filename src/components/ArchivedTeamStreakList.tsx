@@ -6,11 +6,11 @@ import { ListItem, Divider, Text } from 'react-native-elements';
 import { Screens } from '../screens/Screens';
 import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { Spacer } from './Spacer';
-import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface ArchivedTeamStreakListProps {
-    navigation: StackNavigationProp<TeamStreakStackParamList>;
+    navigation: StackNavigationProp<RootStackParamList>;
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
     getArchivedTeamStreaks: typeof teamStreakActions.getArchivedTeamStreaks;
     archivedTeamStreaks: PopulatedTeamStreakWithClientData[];

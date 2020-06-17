@@ -4,11 +4,11 @@ import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-nativ
 import { ListItem, Divider, Text } from 'react-native-elements';
 import { Screens } from '../screens/Screens';
 import { Spacer } from './Spacer';
-import { ChallengeStreaksStackParamList } from '../screenNavigation/ChallengeStreaksStack';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface ArchivedChallengeStreakListProps {
-    navigation: StackNavigationProp<ChallengeStreaksStackParamList>;
+    navigation: StackNavigationProp<RootStackParamList>;
     archivedChallengeStreaks: ArchivedChallengeStreakListItem[];
     getMultipleArchivedChallengeStreaksIsLoading: boolean;
 }
