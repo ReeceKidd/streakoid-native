@@ -12,7 +12,7 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { userActions, profilePictureActions } from '../actions/authenticatedSharedActions';
 import { authActions } from '../actions/authActions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUser, faUserCrown } from '@fortawesome/pro-solid-svg-icons';
+import { faUser, faUserCrown, faStarExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { NotificationOptions } from '../components/NotificationOptions';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { Screens } from './Screens';
@@ -205,12 +205,15 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                     <AccountStrengthProgressBar currentUser={currentUser} />
 
                     {getAccountCompletionPercentage({ currentUser }) < 100 ? (
-                        <Spacer>
-                            <Text
-                                onPress={() => this.props.navigation.navigate(Screens.WhatIsYourFirstName)}
-                                style={{ color: 'blue' }}
-                            >{`Improve your account strength`}</Text>
-                        </Spacer>
+                        <ListItem
+                            containerStyle={{ backgroundColor: 'yellow' }}
+                            leftIcon={<FontAwesomeIcon icon={faStarExclamation} />}
+                            title={'Improve your account strength'}
+                            chevron={true}
+                            onPress={() => {
+                                this.props.navigation.navigate(Screens.WhatIsYourFirstName);
+                            }}
+                        />
                     ) : null}
 
                     <Spacer>

@@ -32,9 +32,9 @@ import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakRem
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -473,6 +473,8 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                             <Spacer />
                             <GeneralActivityFeed
                                 activityFeedItems={selectedSoloStreak.activityFeed.activityFeedItems}
+                                navigation={this.props.navigation}
+                                currentUserId={this.props.currentUser._id}
                             />
                         </Spacer>
                         {selectedSoloStreak.userId === currentUser._id ? (

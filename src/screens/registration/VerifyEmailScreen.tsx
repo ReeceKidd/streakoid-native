@@ -7,23 +7,23 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import { View, StyleSheet } from 'react-native';
-import { noteActions } from '../../actions/authenticatedSharedActions';
+import { authActions } from '../../actions/authActions';
+import { VerifyEmailForm } from '../../components/VerifyEmailForm';
+import { Spacer } from '../../components/Spacer';
+import { Text } from 'react-native-elements';
+import { RegistrationProgressBar } from '../../components/RegistrationProgressBar';
 
 const mapStateToProps = (state: AppState) => {
-    const selectedChallengeStreak = state && state.challengeStreaks && state.challengeStreaks.selectedChallengeStreak;
-    const challengeStreakId = selectedChallengeStreak && selectedChallengeStreak._id;
-    const createNoteIsLoading = state && state.notes && state.notes.createNoteIsLoading;
-    const createNoteErrorMessage = state && state.notes && state.notes.createNoteErrorMessage;
-    return {
-        challengeStreakId,
-        selectedChallengeStreak,
-        createNoteIsLoading,
-        createNoteErrorMessage,
-    };
+    const currentUser = state && state.users && state.users.currentUser;
+    const email = state && state.users && state.users.currentUser && state.users.currentUser.email;
+    const verifyEmailErrorMessage = state && state.auth && state.auth.verifyEmailErrorMessage;
+    const verifyEmailIsLoading = state && state.auth && state.auth.verifyEmailIsLoading;
+    return { currentUser, email, verifyEmailErrorMessage, verifyEmailIsLoading };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    createNote: bindActionCreators(noteActions.createNote, dispatch),
+    verifyEmail: bindActionCreators(authActions.verifyEmail, dispatch),
+    clearVerifyEmailErrorMessage: bindActionCreators(authActions.clearVerifyUserErrorMessage, dispatch),
 });
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -35,8 +35,24 @@ const styles = StyleSheet.create({
 });
 
 class VerifyEmailScreenComponent extends PureComponent<Props> {
+    componentDidMount() {
+        this.props.clearVerifyEmailErrorMessage();
+    }
     render(): JSX.Element {
-        return <View style={styles.container}></View>;
+        const { verifyEmail, email, currentUser, verifyEmailErrorMessage, verifyEmailIsLoading } = this.props;
+        return (
+            <View style={styles.container}>
+                <Spacer>
+                    <RegistrationProgressBar currentUser={currentUser} />
+                    <Text style={{ fontWeight: 'bold' }}>{`Enter the verification code we sent to: ${email}`}</Text>
+                    <VerifyEmailForm
+                        verifyEmail={verifyEmail}
+                        verifyEmailErrorMessage={verifyEmailErrorMessage}
+                        verifyEmailIsLoading={verifyEmailIsLoading}
+                    />
+                </Spacer>
+            </View>
+        );
     }
 }
 

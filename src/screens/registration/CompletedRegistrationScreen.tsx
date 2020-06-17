@@ -3,29 +3,31 @@ import { connect } from 'react-redux';
 
 import { AppState } from '../../../store';
 
-import { AppActions } from '@streakoid/streakoid-shared/lib';
-import { bindActionCreators, Dispatch } from 'redux';
-
 import { View, StyleSheet } from 'react-native';
-import { noteActions } from '../../actions/authenticatedSharedActions';
+import { Spacer } from '../../components/Spacer';
+import { Text, ListItem } from 'react-native-elements';
+import { Screens } from '../Screens';
+import { faUserCrown, faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { FlatList } from 'react-native-gesture-handler';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { RegistrationProgressBar } from '../../components/RegistrationProgressBar';
 
 const mapStateToProps = (state: AppState) => {
-    const selectedChallengeStreak = state && state.challengeStreaks && state.challengeStreaks.selectedChallengeStreak;
-    const challengeStreakId = selectedChallengeStreak && selectedChallengeStreak._id;
-    const createNoteIsLoading = state && state.notes && state.notes.createNoteIsLoading;
-    const createNoteErrorMessage = state && state.notes && state.notes.createNoteErrorMessage;
+    const currentUser = state && state.users && state.users.currentUser;
     return {
-        challengeStreakId,
-        selectedChallengeStreak,
-        createNoteIsLoading,
-        createNoteErrorMessage,
+        currentUser,
     };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    createNote: bindActionCreators(noteActions.createNote, dispatch),
-});
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type CompletedRegistrationScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.CompletedRegistration>;
+
+type NavigationProps = {
+    navigation: CompletedRegistrationScreenNavigationProp;
+};
+
+type Props = ReturnType<typeof mapStateToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
     container: {
@@ -36,10 +38,54 @@ const styles = StyleSheet.create({
 
 class CompletedRegistrationScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
-        return <View style={styles.container}></View>;
+        const { currentUser } = this.props;
+        const customizeYourAccount = {
+            _id: '1',
+            link: Screens.WhatIsYourFirstName,
+            name: 'Customize your account',
+            subtitle: 'Make your account your own',
+            icon: faUserCrown,
+            color: 'gold',
+        };
+        const readyToTakeOnTheWorld = {
+            _id: '2',
+            link: Screens.Home,
+            name: 'Ready to go',
+            subtitle: 'Start building habits',
+            icon: faRocketLaunch,
+            color: 'blue',
+        };
+        const pathOptions = [customizeYourAccount, readyToTakeOnTheWorld];
+        return (
+            <View style={styles.container}>
+                <RegistrationProgressBar currentUser={currentUser} />
+                <Spacer>
+                    <Text>You can now log in on all devices.</Text>
+                    <FlatList
+                        data={pathOptions}
+                        keyExtractor={(option) => option._id}
+                        renderItem={({ item }) => {
+                            return (
+                                <ListItem
+                                    leftIcon={<FontAwesomeIcon icon={item.icon} color={item.color} />}
+                                    title={item.name}
+                                    subtitle={item.subtitle}
+                                    chevron={true}
+                                    onPress={() =>
+                                        this.props.navigation.navigate(
+                                            (item.link as Screens.WhatIsYourFirstName) || Screens.Home,
+                                        )
+                                    }
+                                />
+                            );
+                        }}
+                    />
+                </Spacer>
+            </View>
+        );
     }
 }
 
-const CompletedRegistrationScreen = connect(mapStateToProps, mapDispatchToProps)(CompletedRegistrationScreenComponent);
+const CompletedRegistrationScreen = connect(mapStateToProps)(CompletedRegistrationScreenComponent);
 
 export { CompletedRegistrationScreen };

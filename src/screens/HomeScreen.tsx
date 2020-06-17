@@ -30,15 +30,7 @@ import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {
-    faChild,
-    faPeopleCarry,
-    faMedal,
-    faLifeRing,
-    faUserCrown,
-    IconDefinition,
-    faExclamation,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faChild, faPeopleCarry, faMedal, faLifeRing, faExclamation } from '@fortawesome/pro-solid-svg-icons';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
 import NativePushNotification from 'react-native-push-notification';
 import * as RNLocalize from 'react-native-localize';
@@ -49,7 +41,7 @@ import { ProgressBar } from '../components/ProgressBar';
 import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentageForStreaks';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import UserTypes from '@streakoid/streakoid-models/lib/Types/UserTypes';
 
@@ -106,6 +98,7 @@ const mapStateToProps = (state: AppState) => {
     const totalNumberOfChallengeStreaks = state.challengeStreaks.liveChallengeStreaks.length;
     const isPayingMember =
         currentUser && currentUser.membershipInformation && currentUser.membershipInformation.isPayingMember;
+    const hasCompletedTutorial = currentUser && currentUser.hasCompletedTutorial;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rehydrated = (state as any)._persist.rehydrated;
     return {
@@ -123,6 +116,7 @@ const mapStateToProps = (state: AppState) => {
         totalNumberOfTeamStreaks,
         totalNumberOfChallengeStreaks,
         isPayingMember,
+        hasCompletedTutorial,
         rehydrated,
     };
 };
@@ -498,30 +492,6 @@ class HomeScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
         const { currentUser, isPayingMember, totalIncompleteStreaks } = this.props;
         const totalLiveStreaks = currentUser && currentUser.totalLiveStreaks;
-        const confused = {
-            _id: '1',
-            link: Screens.WhatIsAStreak,
-            name: 'Tutorial',
-            subtitle: `If you're confused about Streakoid.`,
-            icon: faLifeRing,
-            color: 'red',
-        };
-        const customizeYourAccount = {
-            _id: '2',
-            link: Screens.WhatIsYourFirstName,
-            name: 'Customize your account',
-            subtitle: 'Make your account your own',
-            icon: faUserCrown,
-            color: 'gold',
-        };
-        const pathOptions: {
-            _id: string;
-            link: Screens;
-            name: string;
-            subtitle: string;
-            icon: IconDefinition;
-            color: string;
-        }[] = [confused, customizeYourAccount];
         return (
             <ScrollView style={styles.container}>
                 <View>
@@ -536,7 +506,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                         <ListItem
                             containerStyle={{ backgroundColor: 'yellow' }}
                             leftIcon={<FontAwesomeIcon icon={faExclamation} />}
-                            title={'To login again you need to register an email and password.'}
+                            title={'To login you need to register an email and password.'}
                             chevron={true}
                             onPress={() => {
                                 this.props.navigation.navigate(Screens.WhatIsYourEmail);
@@ -555,25 +525,15 @@ class HomeScreenComponent extends PureComponent<Props> {
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
                     <Spacer>
-                        <FlatList
-                            data={pathOptions}
-                            keyExtractor={(option) => option._id}
-                            renderItem={({ item }) => {
-                                return (
-                                    <ListItem
-                                        leftIcon={<FontAwesomeIcon icon={item.icon} color={item.color} />}
-                                        title={item.name}
-                                        subtitle={item.subtitle}
-                                        chevron={true}
-                                        onPress={() => {
-                                            this.props.updateCurrentUser({
-                                                updateData: { hasCompletedOnboarding: true },
-                                            });
-                                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                            this.props.navigation.navigate(item.link as any);
-                                        }}
-                                    />
-                                );
+                        <ListItem
+                            leftIcon={<FontAwesomeIcon icon={faLifeRing} color={'red'} />}
+                            title={'Confused? Go to the tutorial'}
+                            chevron={true}
+                            onPress={() => {
+                                this.props.updateCurrentUser({
+                                    updateData: { hasCompletedTutorial: true },
+                                });
+                                this.props.navigation.navigate(Screens.WhatIsAStreak);
                             }}
                         />
                     </Spacer>

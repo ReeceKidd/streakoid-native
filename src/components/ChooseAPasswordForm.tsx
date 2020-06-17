@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
 });
 
-class RegisterForm extends PureComponent<ChooseAPasswordFormProps> {
+class ChooseAPasswordForm extends PureComponent<ChooseAPasswordFormProps> {
     render(): JSX.Element {
         return (
             <Formik
@@ -37,7 +37,6 @@ class RegisterForm extends PureComponent<ChooseAPasswordFormProps> {
                     this.props.updateUserPassword({
                         newPassword: password,
                         oldPassword: this.props.oldPassword,
-                        isPartOfRegistration: true,
                     });
                 }}
                 validationSchema={ChooseAPasswordFormSchema}
@@ -46,7 +45,7 @@ class RegisterForm extends PureComponent<ChooseAPasswordFormProps> {
                     <View>
                         <Spacer>
                             <Input
-                                label="Password"
+                                label="Choose your password"
                                 nativeID="password"
                                 secureTextEntry={true}
                                 onChangeText={handleChange('password')}
@@ -71,4 +70,4 @@ class RegisterForm extends PureComponent<ChooseAPasswordFormProps> {
     }
 }
 
-export { RegisterForm };
+export { ChooseAPasswordForm };

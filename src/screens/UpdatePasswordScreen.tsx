@@ -10,9 +10,9 @@ import { UpdatePasswordForm } from '../components/UpdatePasswordForm';
 import { Spacer } from '../components/Spacer';
 import { authActions } from '../actions/authActions';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../StackNavigator';
 import { Screens } from './Screens';
 import { RouteProp } from '@react-navigation/native';
+import { UnauthenticatedStackParamList } from '../screenNavigation/UnauthenticatedStack';
 
 const mapStateToProps = (state: AppState) => {
     const username = state && state.auth && state.auth.username;
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     },
 });
 
-type UpdatePasswordScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.UpdatePassword>;
-type UpdatePasswordScreenRouteProp = RouteProp<RootStackParamList, Screens.UpdatePassword>;
+type UpdatePasswordScreenNavigationProp = StackNavigationProp<UnauthenticatedStackParamList, Screens.UpdatePassword>;
+type UpdatePasswordScreenRouteProp = RouteProp<UnauthenticatedStackParamList, Screens.UpdatePassword>;
 
 type NavigationProps = {
     navigation: UpdatePasswordScreenNavigationProp;

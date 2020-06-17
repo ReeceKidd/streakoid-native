@@ -203,11 +203,7 @@ const ChooseAProfilePictureStackScreen = (
 );
 
 const WhatIsYourEmailStackScreen = (
-    <Stack.Screen
-        name={Screens.WhatIsYourEmail}
-        options={{ title: 'What is your email?', headerLeft: () => null }}
-        component={WhatIsYourEmailScreen}
-    />
+    <Stack.Screen name={Screens.WhatIsYourEmail} options={{ headerShown: false }} component={WhatIsYourEmailScreen} />
 );
 
 const VerifyEmailStackScreen = (
@@ -221,7 +217,7 @@ const ChooseAPasswordStackScreen = (
 const CompletedRegistrationStackScreen = (
     <Stack.Screen
         name={Screens.CompletedRegistration}
-        options={{ headerShown: false }}
+        options={{ headerLeft: () => <HamburgerSelector />, title: 'Completed registration' }}
         component={CompletedRegistrationScreen}
     />
 );

@@ -7,24 +7,24 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import { View, StyleSheet } from 'react-native';
-import { noteActions } from '../../actions/authenticatedSharedActions';
+import { authActions } from '../../actions/authActions';
+import { ChooseAPasswordForm } from '../../components/ChooseAPasswordForm';
+import { Spacer } from '../../components/Spacer';
+import { RegistrationProgressBar } from '../../components/RegistrationProgressBar';
 
 const mapStateToProps = (state: AppState) => {
-    const selectedChallengeStreak = state && state.challengeStreaks && state.challengeStreaks.selectedChallengeStreak;
-    const challengeStreakId = selectedChallengeStreak && selectedChallengeStreak._id;
-    const createNoteIsLoading = state && state.notes && state.notes.createNoteIsLoading;
-    const createNoteErrorMessage = state && state.notes && state.notes.createNoteErrorMessage;
-    return {
-        challengeStreakId,
-        selectedChallengeStreak,
-        createNoteIsLoading,
-        createNoteErrorMessage,
-    };
+    const currentUser = state && state.users && state.users.currentUser;
+    const temporaryPassword =
+        state && state.users && state.users.currentUser && state.users.currentUser.temporaryPassword;
+    const updatePasswordErrorMessage = state && state.auth && state.auth.updatePasswordErrorMessage;
+    return { currentUser, temporaryPassword, updatePasswordErrorMessage };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    createNote: bindActionCreators(noteActions.createNote, dispatch),
+    updateUserPassword: bindActionCreators(authActions.updateUserPassword, dispatch),
+    clearUpdateUserPasswordErrorMessage: bindActionCreators(authActions.clearUpdateUserPasswordErrorMessage, dispatch),
 });
+
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 const styles = StyleSheet.create({
@@ -36,7 +36,15 @@ const styles = StyleSheet.create({
 
 class ChooseAPasswordScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
-        return <View style={styles.container}></View>;
+        const { updateUserPassword, currentUser, temporaryPassword } = this.props;
+        return (
+            <View style={styles.container}>
+                <RegistrationProgressBar currentUser={currentUser} />
+                <Spacer>
+                    <ChooseAPasswordForm updateUserPassword={updateUserPassword} oldPassword={temporaryPassword} />
+                </Spacer>
+            </View>
+        );
     }
 }
 

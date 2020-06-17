@@ -17,6 +17,8 @@ import {
     NAVIGATE_TO_STREAK_LIMIT_REACHED,
     NAVIGATE_TO_CHOOSE_PASSWORD,
     NAVIGATE_TO_CHOOSE_A_PROFILE_PICTURE,
+    NAVIGATE_TO_COMPLETED_REGISTRATION,
+    NAVIGATE_TO_VERIFY_EMAIL,
 } from '@streakoid/streakoid-shared/lib/actions/types';
 import { Screens } from '../screens/Screens';
 import { NavigationService } from '../../NavigationService';
@@ -61,6 +63,12 @@ const navigationMiddleware = (store: any) => (next: any) => (action: AppActions)
 
         case NAVIGATE_TO_CHOOSE_A_PROFILE_PICTURE:
             return NavigationService.navigate({ screen: Screens.ChooseAProfilePicture });
+
+        case NAVIGATE_TO_COMPLETED_REGISTRATION:
+            return NavigationService.navigate({ screen: Screens.CompletedRegistration });
+
+        case NAVIGATE_TO_VERIFY_EMAIL:
+            return NavigationService.navigate({ screen: Screens.VerifyEmail });
     }
 
     const result = next(action);

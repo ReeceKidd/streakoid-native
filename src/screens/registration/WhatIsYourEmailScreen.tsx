@@ -7,25 +7,36 @@ import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
 import { View, StyleSheet } from 'react-native';
-import { noteActions } from '../../actions/authenticatedSharedActions';
+import { authActions } from '../../actions/authActions';
+import { Spacer } from '../../components/Spacer';
+import { WhatIsYourEmailForm } from '../../components/WhatIsYourEmailForm';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../screenNavigation/RootNavigator';
+import { Screens } from '../Screens';
+import { RegistrationProgressBar } from '../../components/RegistrationProgressBar';
 
 const mapStateToProps = (state: AppState) => {
-    const selectedChallengeStreak = state && state.challengeStreaks && state.challengeStreaks.selectedChallengeStreak;
-    const challengeStreakId = selectedChallengeStreak && selectedChallengeStreak._id;
-    const createNoteIsLoading = state && state.notes && state.notes.createNoteIsLoading;
-    const createNoteErrorMessage = state && state.notes && state.notes.createNoteErrorMessage;
-    return {
-        challengeStreakId,
-        selectedChallengeStreak,
-        createNoteIsLoading,
-        createNoteErrorMessage,
-    };
+    const currentUser = state && state.users && state.users.currentUser;
+    const updateUserEmailAttributeErrorMessage = state && state.auth && state.auth.updateEmailAttributeErrorMessage;
+    const updateUserEmailAttributeIsLoading = state && state.auth && state.auth.updateEmailAttributeIsLoading;
+    return { currentUser, updateUserEmailAttributeErrorMessage, updateUserEmailAttributeIsLoading };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    createNote: bindActionCreators(noteActions.createNote, dispatch),
+    updateUserEmailAttribute: bindActionCreators(authActions.updateUserEmailAttribute, dispatch),
+    clearUpdateUserEmailAttributeErrorMessage: bindActionCreators(
+        authActions.clearUpdateUserEmailAttribueErrorMessage,
+        dispatch,
+    ),
 });
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+type WhatIsYourEmailScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.WhatIsYourEmail>;
+
+type NavigationProps = {
+    navigation: WhatIsYourEmailScreenNavigationProp;
+};
+
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
 const styles = StyleSheet.create({
     container: {
@@ -35,8 +46,29 @@ const styles = StyleSheet.create({
 });
 
 class WhatIsYourEmailScreenComponent extends PureComponent<Props> {
+    componentDidMount() {
+        this.props.clearUpdateUserEmailAttributeErrorMessage();
+    }
     render(): JSX.Element {
-        return <View style={styles.container}></View>;
+        const {
+            updateUserEmailAttribute,
+            currentUser,
+            updateUserEmailAttributeErrorMessage,
+            updateUserEmailAttributeIsLoading,
+        } = this.props;
+        return (
+            <View style={styles.container}>
+                <Spacer>
+                    <RegistrationProgressBar currentUser={currentUser} />
+                    <WhatIsYourEmailForm
+                        updateUserEmailAttribute={updateUserEmailAttribute}
+                        updateUserEmailAttributeErrorMessage={updateUserEmailAttributeErrorMessage}
+                        updateUserEmailAttributeIsLoading={updateUserEmailAttributeIsLoading}
+                        navigation={this.props.navigation}
+                    />
+                </Spacer>
+            </View>
+        );
     }
 }
 

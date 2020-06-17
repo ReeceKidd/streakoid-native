@@ -21,7 +21,7 @@ import { getCompletePercentageForStreaks } from '../helpers/getCompletePercentag
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SoloStreakStackParamsList } from '../screenNavigation/SoloStreaksStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -72,8 +72,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getArchivedSoloStreaks: bindActionCreators(soloStreakActions.getArchivedSoloStreaks, dispatch),
 });
 
-type SoloStreaksScreenNavigationProp = StackNavigationProp<SoloStreakStackParamsList, Screens.SoloStreaks>;
-type SoloStreaksScreenRouteProp = RouteProp<SoloStreakStackParamsList, Screens.SoloStreaks>;
+type SoloStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.SoloStreaks>;
+type SoloStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.SoloStreaks>;
 
 type NavigationProps = {
     navigation: SoloStreaksScreenNavigationProp;
@@ -135,6 +135,13 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
         return (
             <ScrollView style={styles.container}>
                 <View>
+                    <ProgressBar
+                        completePercentage={getCompletePercentageForStreaks({
+                            numberOfIncompleteStreaks: incompleteSoloStreaks.length,
+                            numberOfStreaks: totalNumberOfSoloStreaks,
+                        })}
+                        fullScreen={true}
+                    />
                     {!isPayingMember ? (
                         <View style={{ marginLeft: 15, marginTop: 15 }}>
                             <MaximumNumberOfFreeStreaksMessage
@@ -143,14 +150,6 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                             />
                         </View>
                     ) : null}
-
-                    <ProgressBar
-                        completePercentage={getCompletePercentageForStreaks({
-                            numberOfIncompleteStreaks: incompleteSoloStreaks.length,
-                            numberOfStreaks: totalNumberOfSoloStreaks,
-                        })}
-                        fullScreen={true}
-                    />
 
                     <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveSoloStreakList
