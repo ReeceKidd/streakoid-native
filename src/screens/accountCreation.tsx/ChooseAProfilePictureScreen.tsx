@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { Button, Text } from 'react-native-elements';
 import RNFetchBlob from 'rn-fetch-blob';
+import { View, StyleSheet, ActivityIndicator, SafeAreaView, Platform } from 'react-native';
 
 import { AppState } from '../../../store';
 
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native';
 import { userActions, profilePictureActions } from '../../actions/authenticatedSharedActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
@@ -99,6 +99,8 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
 
         const timezone = this.props.currentUser.timezone;
 
+        const uri = Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', '');
+
         const profileImages = (await RNFetchBlob.fetch(
             'POST',
             url,
@@ -112,7 +114,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
                     name: 'image',
                     filename: photo.fileName,
                     type: 'image/jpeg',
-                    data: RNFetchBlob.wrap(photo.uri),
+                    data: RNFetchBlob.wrap(uri),
                 },
             ],
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
