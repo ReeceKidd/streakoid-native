@@ -135,7 +135,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
                             onPress={() => this.handleChoosePhoto()}
                         />
                     </View>
-
+                    <Spacer />
                     <Button
                         title="Next"
                         loading={uploadProfileImageIsLoading}

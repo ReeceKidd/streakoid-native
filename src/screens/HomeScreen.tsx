@@ -30,7 +30,14 @@ import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
 import StreakReminderTypes from '@streakoid/streakoid-models/lib/Types/StreakReminderTypes';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChild, faPeopleCarry, faMedal, faLifeRing, faExclamation } from '@fortawesome/pro-solid-svg-icons';
+import {
+    faChild,
+    faPeopleCarry,
+    faMedal,
+    faLifeRing,
+    faExclamation,
+    faUserCrown,
+} from '@fortawesome/pro-solid-svg-icons';
 import { LiveTeamStreakList } from '../components/LiveTeamStreakList';
 import NativePushNotification from 'react-native-push-notification';
 import * as RNLocalize from 'react-native-localize';
@@ -44,6 +51,7 @@ import { RouteProp } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import UserTypes from '@streakoid/streakoid-models/lib/Types/UserTypes';
+import { getAccountCompletionPercentage } from '../helpers/getAccountCompletionPercentage';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (
@@ -524,8 +532,9 @@ class HomeScreenComponent extends PureComponent<Props> {
                     <Spacer>{this.renderIncompleteChallengeStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteTeamStreaks()}</Spacer>
                     <Spacer>{this.renderIncompleteSoloStreaks()}</Spacer>
-                    <Spacer>
+                    {!currentUser.hasCompletedTutorial ? (
                         <ListItem
+                            style={{ marginTop: 10 }}
                             leftIcon={<FontAwesomeIcon icon={faLifeRing} color={'red'} />}
                             title={'Confused? Go to the tutorial'}
                             chevron={true}
@@ -536,7 +545,18 @@ class HomeScreenComponent extends PureComponent<Props> {
                                 this.props.navigation.navigate(Screens.WhatIsAStreak);
                             }}
                         />
-                    </Spacer>
+                    ) : null}
+                    {getAccountCompletionPercentage({ currentUser }) < 100 ? (
+                        <ListItem
+                            style={{ marginTop: 10 }}
+                            leftIcon={<FontAwesomeIcon icon={faUserCrown} color={'gold'} />}
+                            title={'Customize your account'}
+                            chevron={true}
+                            onPress={() => {
+                                this.props.navigation.navigate(Screens.WhatIsYourFirstName);
+                            }}
+                        />
+                    ) : null}
                 </View>
             </ScrollView>
         );

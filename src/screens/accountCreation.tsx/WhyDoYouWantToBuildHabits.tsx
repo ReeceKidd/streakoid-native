@@ -145,10 +145,7 @@ class WhyDoYouWantToBuildHabitsScreenComponent extends PureComponent<Props> {
             <View style={styles.container}>
                 <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
-                    <Spacer>
-                        <Text style={{ fontWeight: 'bold' }}>{'Why do you want to build new habits?'}</Text>
-                    </Spacer>
-
+                    <Text style={{ fontWeight: 'bold' }}>{'Why do you want to build new habits?'}</Text>
                     <FlatList
                         data={reasonsToBuildNewHabits}
                         keyExtractor={(option) => option._id}
