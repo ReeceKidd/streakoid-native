@@ -6,7 +6,7 @@ import { AppState } from '../../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { authActions } from '../../actions/authActions';
 import { Spacer } from '../../components/Spacer';
 import { WhatIsYourEmailForm } from '../../components/WhatIsYourEmailForm';
@@ -57,7 +57,7 @@ class WhatIsYourEmailScreenComponent extends PureComponent<Props> {
             updateUserEmailAttributeIsLoading,
         } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Spacer>
                     <RegistrationProgressBar currentUser={currentUser} />
                     <WhatIsYourEmailForm
@@ -67,7 +67,7 @@ class WhatIsYourEmailScreenComponent extends PureComponent<Props> {
                         navigation={this.props.navigation}
                     />
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

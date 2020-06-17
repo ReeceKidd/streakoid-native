@@ -71,11 +71,8 @@ class CompletedRegistrationScreenComponent extends PureComponent<Props> {
                                     title={item.name}
                                     subtitle={item.subtitle}
                                     chevron={true}
-                                    onPress={() =>
-                                        this.props.navigation.navigate(
-                                            (item.link as Screens.WhatIsYourFirstName) || Screens.Home,
-                                        )
-                                    }
+                                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                    onPress={() => this.props.navigation.navigate(item.link as any)}
                                 />
                             );
                         }}

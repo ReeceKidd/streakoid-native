@@ -6,7 +6,7 @@ import { AppState } from '../../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { authActions } from '../../actions/authActions';
 import { VerifyEmailForm } from '../../components/VerifyEmailForm';
 import { Spacer } from '../../components/Spacer';
@@ -41,7 +41,7 @@ class VerifyEmailScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
         const { verifyEmail, email, currentUser, verifyEmailErrorMessage, verifyEmailIsLoading } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Spacer>
                     <RegistrationProgressBar currentUser={currentUser} />
                     <Text style={{ fontWeight: 'bold' }}>{`Enter the verification code we sent to: ${email}`}</Text>
@@ -51,7 +51,7 @@ class VerifyEmailScreenComponent extends PureComponent<Props> {
                         verifyEmailIsLoading={verifyEmailIsLoading}
                     />
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

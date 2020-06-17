@@ -10,7 +10,7 @@ import { AppState } from '../../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, SafeAreaView } from 'react-native';
 import { userActions, profilePictureActions } from '../../actions/authenticatedSharedActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
@@ -122,7 +122,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
     render(): JSX.Element {
         const { currentUser, profileImage, uploadProfileImageIsLoading, uploadProfileImageErrorMessage } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <Text style={{ fontWeight: 'bold' }}> Choose your profile picture </Text>
@@ -143,7 +143,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
                     ></Button>
                     {uploadProfileImageErrorMessage ? <Text>{uploadProfileImageErrorMessage}</Text> : null}
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

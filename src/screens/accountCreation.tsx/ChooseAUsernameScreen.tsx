@@ -6,7 +6,7 @@ import { AppState } from '../../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
 import { Spacer } from '../../components/Spacer';
@@ -56,7 +56,7 @@ class ChooseAUsernameScreenComponent extends PureComponent<Props> {
             currentUser,
         } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <ChooseAUsernameForm
@@ -66,7 +66,7 @@ class ChooseAUsernameScreenComponent extends PureComponent<Props> {
                         currentUsername={currentUser.username}
                     />
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

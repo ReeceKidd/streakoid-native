@@ -6,7 +6,7 @@ import { AppState } from '../../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { authActions } from '../../actions/authActions';
 import { ChooseAPasswordForm } from '../../components/ChooseAPasswordForm';
 import { Spacer } from '../../components/Spacer';
@@ -38,12 +38,12 @@ class ChooseAPasswordScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
         const { updateUserPassword, currentUser, temporaryPassword } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <RegistrationProgressBar currentUser={currentUser} />
                 <Spacer>
                     <ChooseAPasswordForm updateUserPassword={updateUserPassword} oldPassword={temporaryPassword} />
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

@@ -6,7 +6,7 @@ import { AppState } from '../../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { userActions } from '../../actions/authenticatedSharedActions';
 import WhyDoYouWantToBuildNewHabitsTypes from '@streakoid/streakoid-models/lib/Types/WhyDoYouWantToBuildNewHabitsTypes';
 import {
@@ -142,7 +142,7 @@ class WhyDoYouWantToBuildHabitsScreenComponent extends PureComponent<Props> {
             other,
         ];
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <Text style={{ fontWeight: 'bold' }}>{'Why do you want to build new habits?'}</Text>
@@ -170,7 +170,7 @@ class WhyDoYouWantToBuildHabitsScreenComponent extends PureComponent<Props> {
                         }}
                     />
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

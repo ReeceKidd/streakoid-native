@@ -6,7 +6,7 @@ import { AppState } from '../../../store';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { View, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { userActions } from '../../actions/authenticatedSharedActions';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Screens } from '../Screens';
@@ -42,7 +42,7 @@ class WhatIsYourFirstNameScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
         const { updateCurrentUser, currentUser } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <AccountStrengthProgressBar currentUser={currentUser} />
                 <Spacer>
                     <WhatIsYourFirstNameForm
@@ -51,7 +51,7 @@ class WhatIsYourFirstNameScreenComponent extends PureComponent<Props> {
                         navigation={this.props.navigation}
                     />
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

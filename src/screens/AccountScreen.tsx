@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, SafeAreaView } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -173,200 +173,204 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
         } = this.props;
         const profileImage = currentUser && currentUser.profileImages.originalImageUrl;
         return (
-            <ScrollView style={styles.container}>
-                <View>
-                    <Spacer>
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Avatar
-                                renderPlaceholderContent={<ActivityIndicator />}
-                                source={{ uri: (this.state.photo && this.state.photo.uri) || profileImage }}
-                                size="large"
-                                rounded
-                                onPress={() => this.handleChoosePhoto()}
-                            />
-                            {uploadProfileImageErrorMessage ? (
-                                <Text style={{ color: 'red' }}>{uploadProfileImageErrorMessage}</Text>
-                            ) : null}
-                            {uploadProfileImageSuccessMessage ? (
-                                <Text style={{ color: 'green' }}>{uploadProfileImageErrorMessage}</Text>
-                            ) : null}
+            <SafeAreaView style={styles.container}>
+                <ScrollView>
+                    <View>
+                        <Spacer>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                <Avatar
+                                    renderPlaceholderContent={<ActivityIndicator />}
+                                    source={{ uri: (this.state.photo && this.state.photo.uri) || profileImage }}
+                                    size="large"
+                                    rounded
+                                    onPress={() => this.handleChoosePhoto()}
+                                />
+                                {uploadProfileImageErrorMessage ? (
+                                    <Text style={{ color: 'red' }}>{uploadProfileImageErrorMessage}</Text>
+                                ) : null}
+                                {uploadProfileImageSuccessMessage ? (
+                                    <Text style={{ color: 'green' }}>{uploadProfileImageErrorMessage}</Text>
+                                ) : null}
+                            </View>
+                        </Spacer>
+                        <View style={{ flexDirection: 'row', marginLeft: 15 }}>
+                            <Text style={{ marginRight: 5 }}>{currentUser.firstName}</Text>
+                            <Text>{currentUser.lastName}</Text>
                         </View>
-                    </Spacer>
-                    <View style={{ flexDirection: 'row', marginLeft: 15 }}>
-                        <Text style={{ marginRight: 5 }}>{currentUser.firstName}</Text>
-                        <Text>{currentUser.lastName}</Text>
-                    </View>
-                    <Spacer>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            {`Account strength`} <FontAwesomeIcon icon={faUserCrown} />
-                        </Text>
-                    </Spacer>
-                    <AccountStrengthProgressBar currentUser={currentUser} />
+                        <Spacer>
+                            <Text style={{ fontWeight: 'bold' }}>
+                                {`Account strength`} <FontAwesomeIcon icon={faUserCrown} />
+                            </Text>
+                        </Spacer>
+                        <AccountStrengthProgressBar currentUser={currentUser} />
 
-                    {getAccountCompletionPercentage({ currentUser }) < 100 ? (
-                        <ListItem
-                            containerStyle={{ backgroundColor: 'yellow' }}
-                            leftIcon={<FontAwesomeIcon icon={faStarExclamation} />}
-                            title={'Improve your account strength'}
-                            chevron={true}
-                            onPress={() => {
-                                this.props.navigation.navigate(Screens.WhatIsYourFirstName);
-                            }}
-                        />
-                    ) : null}
+                        {getAccountCompletionPercentage({ currentUser }) < 100 ? (
+                            <ListItem
+                                containerStyle={{ backgroundColor: 'yellow' }}
+                                leftIcon={<FontAwesomeIcon icon={faStarExclamation} />}
+                                title={'Improve your account strength'}
+                                chevron={true}
+                                onPress={() => {
+                                    this.props.navigation.navigate(Screens.WhatIsYourFirstName);
+                                }}
+                            />
+                        ) : null}
 
-                    <Spacer>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            Following <FontAwesomeIcon icon={faUser} /> {`${currentUser.following.length} `}
-                        </Text>
-                        {currentUser && currentUser.following && currentUser.following.length > 0 ? (
-                            <FlatList
-                                data={currentUser.following}
-                                keyExtractor={(following) => following.userId}
-                                renderItem={({ item }) => {
-                                    return (
-                                        <>
-                                            <View>
-                                                <TouchableOpacity
-                                                    onPress={() =>
-                                                        this.props.navigation.navigate(Screens.UserProfile, {
-                                                            username: item.username,
-                                                            _id: item.userId,
-                                                        })
-                                                    }
-                                                >
-                                                    <ListItem
-                                                        leftAvatar={{
-                                                            source: { uri: item.profileImage },
-                                                            renderPlaceholderContent: <ActivityIndicator />,
-                                                        }}
-                                                        title={item.username}
-                                                        rightElement={
-                                                            <Button
-                                                                title="Unfollow"
-                                                                type="outline"
-                                                                loading={item.unfollowUserIsLoading}
-                                                                onPress={() =>
-                                                                    this.props.unfollowUsersListUser({
-                                                                        userId: item.userId,
-                                                                        username: item.username,
-                                                                        profileImage,
-                                                                    })
-                                                                }
-                                                            />
+                        <Spacer>
+                            <Text style={{ fontWeight: 'bold' }}>
+                                Following <FontAwesomeIcon icon={faUser} /> {`${currentUser.following.length} `}
+                            </Text>
+                            {currentUser && currentUser.following && currentUser.following.length > 0 ? (
+                                <FlatList
+                                    data={currentUser.following}
+                                    keyExtractor={(following) => following.userId}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <>
+                                                <View>
+                                                    <TouchableOpacity
+                                                        onPress={() =>
+                                                            this.props.navigation.navigate(Screens.UserProfile, {
+                                                                username: item.username,
+                                                                _id: item.userId,
+                                                            })
                                                         }
-                                                    />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </>
-                                    );
+                                                    >
+                                                        <ListItem
+                                                            leftAvatar={{
+                                                                source: { uri: item.profileImage },
+                                                                renderPlaceholderContent: <ActivityIndicator />,
+                                                            }}
+                                                            title={item.username}
+                                                            rightElement={
+                                                                <Button
+                                                                    title="Unfollow"
+                                                                    type="outline"
+                                                                    loading={item.unfollowUserIsLoading}
+                                                                    onPress={() =>
+                                                                        this.props.unfollowUsersListUser({
+                                                                            userId: item.userId,
+                                                                            username: item.username,
+                                                                            profileImage,
+                                                                        })
+                                                                    }
+                                                                />
+                                                            }
+                                                        />
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </>
+                                        );
+                                    }}
+                                />
+                            ) : (
+                                <>
+                                    <Spacer />
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.Users)}>
+                                        <Text style={{ color: 'blue' }}>{`Find someone to follow`}</Text>
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                        </Spacer>
+                        <Spacer>
+                            <Text style={{ fontWeight: 'bold' }}>
+                                Followers <FontAwesomeIcon icon={faUser} /> {`${currentUser.followers.length} `}
+                            </Text>
+                            {currentUser && currentUser.followers && currentUser.followers.length > 0 ? (
+                                <FlatList
+                                    data={currentUser.followers}
+                                    keyExtractor={(follower) => follower.userId}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <>
+                                                <View>
+                                                    <TouchableOpacity
+                                                        onPress={() =>
+                                                            this.props.navigation.navigate(Screens.UserProfile, {
+                                                                username: item.username,
+                                                                _id: item.userId,
+                                                            })
+                                                        }
+                                                    >
+                                                        <ListItem
+                                                            leftAvatar={{
+                                                                source: { uri: item.profileImage },
+                                                                renderPlaceholderContent: <ActivityIndicator />,
+                                                            }}
+                                                            title={item.username}
+                                                        />
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </>
+                                        );
+                                    }}
+                                />
+                            ) : (
+                                <>
+                                    <Spacer />
+                                    <Text>{`You do not have any followers yet.`}</Text>
+                                </>
+                            )}
+                        </Spacer>
+                        <Spacer>
+                            <Text style={{ fontWeight: 'bold' }}>Achievements</Text>
+                            {currentUser && currentUser.achievements && currentUser.achievements.length > 0 ? (
+                                <FlatList
+                                    data={currentUser.achievements}
+                                    keyExtractor={(achievement) => achievement._id}
+                                    renderItem={({ item }) => {
+                                        return (
+                                            <>
+                                                <View>
+                                                    <ListItem title={item.name} subtitle={item.description} />
+                                                </View>
+                                            </>
+                                        );
+                                    }}
+                                />
+                            ) : (
+                                <>
+                                    <Spacer />
+                                    <Text>{`You do not have any achievements yet.`}</Text>
+                                </>
+                            )}
+                        </Spacer>
+                        <Spacer>
+                            <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>
+                            <Text />
+                            <GeneralActivityFeed
+                                activityFeedItems={
+                                    currentUser &&
+                                    currentUser.activityFeed &&
+                                    currentUser.activityFeed.activityFeedItems
+                                }
+                                navigation={this.props.navigation}
+                                currentUserId={currentUser._id}
+                            />
+                        </Spacer>
+                        <Spacer>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={{ fontWeight: 'bold' }}> Push Notifications </Text>
+                                {updatePushNotificationsIsLoading ? <ActivityIndicator /> : null}
+                            </View>
+                            <NotificationOptions
+                                updatePushNotificationsErrorMessage={updatePushNotificationsErrorMessage}
+                                updateCurrentUserPushNotifications={updateCurrentUserPushNotifications}
+                                currentUser={currentUser}
+                                updatePushNotificationsIsLoading={updatePushNotificationsIsLoading}
+                            />
+                        </Spacer>
+                        <Spacer>
+                            <Button
+                                title="Logout"
+                                onPress={() => {
+                                    logoutUser();
                                 }}
                             />
-                        ) : (
-                            <>
-                                <Spacer />
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.Users)}>
-                                    <Text style={{ color: 'blue' }}>{`Find someone to follow`}</Text>
-                                </TouchableOpacity>
-                            </>
-                        )}
-                    </Spacer>
-                    <Spacer>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            Followers <FontAwesomeIcon icon={faUser} /> {`${currentUser.followers.length} `}
-                        </Text>
-                        {currentUser && currentUser.followers && currentUser.followers.length > 0 ? (
-                            <FlatList
-                                data={currentUser.followers}
-                                keyExtractor={(follower) => follower.userId}
-                                renderItem={({ item }) => {
-                                    return (
-                                        <>
-                                            <View>
-                                                <TouchableOpacity
-                                                    onPress={() =>
-                                                        this.props.navigation.navigate(Screens.UserProfile, {
-                                                            username: item.username,
-                                                            _id: item.userId,
-                                                        })
-                                                    }
-                                                >
-                                                    <ListItem
-                                                        leftAvatar={{
-                                                            source: { uri: item.profileImage },
-                                                            renderPlaceholderContent: <ActivityIndicator />,
-                                                        }}
-                                                        title={item.username}
-                                                    />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </>
-                                    );
-                                }}
-                            />
-                        ) : (
-                            <>
-                                <Spacer />
-                                <Text>{`You do not have any followers yet.`}</Text>
-                            </>
-                        )}
-                    </Spacer>
-                    <Spacer>
-                        <Text style={{ fontWeight: 'bold' }}>Achievements</Text>
-                        {currentUser && currentUser.achievements && currentUser.achievements.length > 0 ? (
-                            <FlatList
-                                data={currentUser.achievements}
-                                keyExtractor={(achievement) => achievement._id}
-                                renderItem={({ item }) => {
-                                    return (
-                                        <>
-                                            <View>
-                                                <ListItem title={item.name} subtitle={item.description} />
-                                            </View>
-                                        </>
-                                    );
-                                }}
-                            />
-                        ) : (
-                            <>
-                                <Spacer />
-                                <Text>{`You do not have any achievements yet.`}</Text>
-                            </>
-                        )}
-                    </Spacer>
-                    <Spacer>
-                        <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>
-                        <Text />
-                        <GeneralActivityFeed
-                            activityFeedItems={
-                                currentUser && currentUser.activityFeed && currentUser.activityFeed.activityFeedItems
-                            }
-                            navigation={this.props.navigation}
-                            currentUserId={currentUser._id}
-                        />
-                    </Spacer>
-                    <Spacer>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontWeight: 'bold' }}> Push Notifications </Text>
-                            {updatePushNotificationsIsLoading ? <ActivityIndicator /> : null}
-                        </View>
-                        <NotificationOptions
-                            updatePushNotificationsErrorMessage={updatePushNotificationsErrorMessage}
-                            updateCurrentUserPushNotifications={updateCurrentUserPushNotifications}
-                            currentUser={currentUser}
-                            updatePushNotificationsIsLoading={updatePushNotificationsIsLoading}
-                        />
-                    </Spacer>
-                    <Spacer>
-                        <Button
-                            title="Logout"
-                            onPress={() => {
-                                logoutUser();
-                            }}
-                        />
-                    </Spacer>
-                </View>
-            </ScrollView>
+                        </Spacer>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
         );
     }
 }
