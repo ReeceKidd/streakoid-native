@@ -4,7 +4,6 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import { ListItem, Divider, Text } from 'react-native-elements';
 
 import { SoloStreakTaskButton } from './SoloStreakTaskButton';
-import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { soloStreakActions } from '../actions/authenticatedSharedActions';
@@ -103,11 +102,9 @@ class LiveSoloStreakList extends PureComponent<Props> {
             <>
                 {totalNumberOfSoloStreaks === 0 && !getMultipleLiveSoloStreaksIsLoading ? (
                     <View style={{ marginTop: 5 }}>
-                        <NavigationLink
-                            navigation={this.props.navigation}
-                            text="No solo streaks found. Add one"
-                            screen={Screens.CreateSoloStreak}
-                        />
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.CreateSoloStreak)}>
+                            <Text style={{ color: 'blue' }}>{`No solo streaks found. Add one`}</Text>
+                        </TouchableOpacity>
                     </View>
                 ) : null}
                 {totalNumberOfSoloStreaks > 0 && liveSoloStreaks.length === 0 ? (

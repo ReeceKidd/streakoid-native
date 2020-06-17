@@ -16,7 +16,6 @@ import { faUser, faUserCrown, faStarExclamation } from '@fortawesome/pro-solid-s
 import { NotificationOptions } from '../components/NotificationOptions';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { Screens } from './Screens';
-import { NavigationLink } from '../components/NavigationLink';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 
 import { RouteProp } from '@react-navigation/native';
@@ -266,11 +265,9 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                         ) : (
                             <>
                                 <Spacer />
-                                <NavigationLink
-                                    navigation={this.props.navigation}
-                                    text={`Find someone to follow`}
-                                    screen={Screens.Users}
-                                />
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.Users)}>
+                                    <Text style={{ color: 'blue' }}>{`Find someone to follow`}</Text>
+                                </TouchableOpacity>
                             </>
                         )}
                     </Spacer>

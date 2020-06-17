@@ -10,12 +10,12 @@ import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { authActions } from '../actions/authActions';
-import { NavigationLink } from '../components/NavigationLink';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UnauthenticatedStackParamList } from '../screenNavigation/UnauthenticatedStack';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const mapStateToProps = (state: AppState) => {
     const loginErrorMessage = state && state.auth && state.auth.loginErrorMessage;
@@ -44,7 +44,6 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         marginBottom: 20,
     },
 });
@@ -98,12 +97,9 @@ class LoginScreenComponent extends React.PureComponent<Props> {
                     <Text style={{ color: 'red', textAlign: 'center' }}> {loginErrorMessage} </Text>
                 ) : null}
                 <Spacer>
-                    <NavigationLink
-                        text="Forgot password"
-                        screen={Screens.ForgotPassword}
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        navigation={this.props.navigation as any}
-                    />
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.ForgotPassword)}>
+                        <Text style={{ color: 'blue' }}>{`Forgot password`}</Text>
+                    </TouchableOpacity>
                 </Spacer>
             </View>
         );

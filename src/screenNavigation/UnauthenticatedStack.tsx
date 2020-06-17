@@ -30,7 +30,13 @@ const MadeAnAccountStackScreen = (
     />
 );
 
-const ForgotPasswordStackScreen = <Stack.Screen name={Screens.ForgotPassword} component={ForgotPasswordScreen} />;
+const ForgotPasswordStackScreen = (
+    <Stack.Screen
+        name={Screens.ForgotPassword}
+        options={{ title: 'Forgot password' }}
+        component={ForgotPasswordScreen}
+    />
+);
 
 const LoginStackScreen = <Stack.Screen name={Screens.Login} options={{ headerShown: false }} component={LoginScreen} />;
 

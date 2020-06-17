@@ -4,7 +4,6 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import { ListItem, Divider, Text } from 'react-native-elements';
 
 import { ChallengeStreakTaskButton } from './ChallengeStreakTaskButton';
-import { NavigationLink } from './NavigationLink';
 import { Screens } from '../screens/Screens';
 import { challengeStreakActions } from '../actions/authenticatedSharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
@@ -110,11 +109,9 @@ class LiveChallengeStreakList extends PureComponent<Props> {
             <>
                 {totalNumberOfChallengeStreaks === 0 && !getMultipleLiveChallengeStreaksIsLoading ? (
                     <View style={{ marginTop: 5 }}>
-                        <NavigationLink
-                            navigation={this.props.navigation}
-                            text="No challenge streaks found. Join one"
-                            screen={Screens.Challenges}
-                        />
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.Challenges)}>
+                            <Text style={{ color: 'blue' }}>{`No challenge streaks found. Join one`}</Text>
+                        </TouchableOpacity>
                     </View>
                 ) : null}
                 {totalNumberOfChallengeStreaks > 0 && liveChallengeStreaks.length === 0 ? (

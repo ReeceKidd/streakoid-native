@@ -5,13 +5,13 @@ import { AppState } from '../../store';
 
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
+import { Text } from 'react-native-elements';
 
 import { View, StyleSheet } from 'react-native';
 import { Spacer } from '../components/Spacer';
 import { teamStreakActions } from '../actions/authenticatedSharedActions';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ListItem, Button } from 'react-native-elements';
-import { NavigationLink } from '../components/NavigationLink';
 import { Screens } from './Screens';
 import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
 import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
@@ -97,12 +97,11 @@ class AddFollowerToTeamStreakScreenComponent extends PureComponent<Props> {
         return (
             <View>
                 <Spacer>
-                    <NavigationLink
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        navigation={this.props.navigation as any}
-                        text="No followers not already in team streak found. Add one."
-                        screen={Screens.Users}
-                    />
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.Users)}>
+                        <Text
+                            style={{ color: 'blue' }}
+                        >{`No followers not already in team streak found. Add one.`}</Text>
+                    </TouchableOpacity>
                 </Spacer>
             </View>
         );

@@ -39,7 +39,6 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         marginBottom: 20,
     },
     link: {
@@ -48,10 +47,6 @@ const styles = StyleSheet.create({
 });
 
 class ForgotPasswordScreenComponent extends React.PureComponent<Props> {
-    static navigationOptions = {
-        header: null,
-    };
-
     componentDidMount(): void {
         this.props.clearForgotPasswordErrorMessage();
     }
@@ -60,13 +55,6 @@ class ForgotPasswordScreenComponent extends React.PureComponent<Props> {
         const { forgotPassword, forgotPasswordErrorMessage, forgotPasswordIsLoading } = this.props;
         return (
             <View style={styles.container}>
-                <Spacer />
-                <Spacer>
-                    <Text h3 style={{ textAlign: 'center' }}>
-                        Forgot Password
-                    </Text>
-                    <Text style={{ textAlign: 'center' }}> Please enter your email or username </Text>
-                </Spacer>
                 <ForgotPasswordForm forgotPassword={forgotPassword} forgotPasswordIsLoading={forgotPasswordIsLoading} />
                 <Spacer />
                 {forgotPasswordErrorMessage ? (

@@ -12,7 +12,6 @@ import { ListItem, Divider, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
-import { NavigationLink } from '../components/NavigationLink';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
@@ -107,12 +106,9 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
                     {followingIds.length > 0 ? (
                         this.renderFollowingLeaderboard()
                     ) : (
-                        <NavigationLink
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            navigation={this.props.navigation as any}
-                            text="You're not following anyone yet"
-                            screen={Screens.Users}
-                        />
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.Users)}>
+                            <Text style={{ color: 'blue' }}>{`You're not following anyone yet.`}</Text>
+                        </TouchableOpacity>
                     )}
                 </Spacer>
             </ScrollView>
