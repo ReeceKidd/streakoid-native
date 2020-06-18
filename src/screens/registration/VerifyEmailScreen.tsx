@@ -44,7 +44,9 @@ class VerifyEmailScreenComponent extends PureComponent<Props> {
             <SafeAreaView style={styles.container}>
                 <Spacer>
                     <RegistrationProgressBar currentUser={currentUser} />
-                    <Text style={{ fontWeight: 'bold' }}>{`Enter the verification code we sent to: ${email}`}</Text>
+                    <Text
+                        style={{ fontWeight: 'bold', marginLeft: 15 }}
+                    >{`Enter the verification code we sent to: ${email}`}</Text>
                     <VerifyEmailForm
                         verifyEmail={verifyEmail}
                         verifyEmailErrorMessage={verifyEmailErrorMessage}

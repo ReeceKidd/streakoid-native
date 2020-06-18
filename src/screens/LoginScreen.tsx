@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 
 import { AppState } from '../../store';
 import { LoginForm } from '../components/LoginForm';
@@ -78,7 +78,7 @@ class LoginScreenComponent extends React.PureComponent<Props> {
             updatePasswordSuccessMessage,
         } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Spacer />
                 {updatePasswordSuccessMessage ? (
                     <Text style={{ color: 'green', textAlign: 'center' }}> {updatePasswordSuccessMessage} </Text>
@@ -101,7 +101,7 @@ class LoginScreenComponent extends React.PureComponent<Props> {
                         <Text style={{ color: 'blue' }}>{`Forgot password`}</Text>
                     </TouchableOpacity>
                 </Spacer>
-            </View>
+            </SafeAreaView>
         );
     }
 }

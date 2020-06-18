@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     Alert,
     AppState as ReactNativeAppState,
+    Platform,
 } from 'react-native';
 
 import {
@@ -514,14 +515,14 @@ class HomeScreenComponent extends PureComponent<Props> {
                         <ListItem
                             containerStyle={{ backgroundColor: 'yellow' }}
                             leftIcon={<FontAwesomeIcon icon={faExclamation} />}
-                            title={'To login you need to register an email and password.'}
+                            title={'To login again you need to register an email and password.'}
                             chevron={true}
                             onPress={() => {
                                 this.props.navigation.navigate(Screens.WhatIsYourEmail);
                             }}
                         />
                     ) : null}
-                    {!isPayingMember ? (
+                    {!isPayingMember && Platform.OS !== 'ios' ? (
                         <Spacer>
                             <MaximumNumberOfFreeStreaksMessage
                                 isPayingMember={isPayingMember}

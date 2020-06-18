@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import { Button, Image, Text } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
@@ -24,7 +24,7 @@ type Props = {
 class LandingScreen extends PureComponent<Props> {
     render(): JSX.Element {
         return (
-            <ScrollView style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Spacer />
                 <View style={{ alignItems: 'center' }}>
                     <Image source={OID_IMAGE} style={{ width: 200, height: 200 }} />
@@ -56,7 +56,7 @@ class LandingScreen extends PureComponent<Props> {
                         }}
                     ></Button>
                 </Spacer>
-            </ScrollView>
+            </SafeAreaView>
         );
     }
 }

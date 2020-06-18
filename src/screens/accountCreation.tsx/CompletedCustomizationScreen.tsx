@@ -14,6 +14,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../screenNavigation/RootNavigator';
 import { Screens } from '../Screens';
 import { AccountStrengthProgressBar } from '../../components/AccountStrengthProgressBar';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faRocketLaunch } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -52,7 +54,11 @@ class CompletedCustomizationScreenComponent extends PureComponent<Props> {
                 <Spacer>
                     <Text>{`Well done! Your account is now customized.`}</Text>
                     <Spacer>
-                        <Button title="Finish" onPress={() => this.props.navigation.popToTop()} />
+                        <Button
+                            title=" Finish"
+                            icon={<FontAwesomeIcon icon={faRocketLaunch} color="white" />}
+                            onPress={() => this.props.navigation.popToTop()}
+                        />
                     </Spacer>
                 </Spacer>
             </View>
