@@ -51,7 +51,7 @@ import { RouteProp } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import UserTypes from '@streakoid/streakoid-models/lib/Types/UserTypes';
-import { getAccountCompletionPercentage } from '../helpers/getAccountCompletionPercentage';
+import { getAccountCompletionPercentage } from '@streakoid/streakoid-shared/lib/helpers/progress/getAccountCompletionPercentage';
 
 const getIncompleteSoloStreaks = (state: AppState) => {
     return (

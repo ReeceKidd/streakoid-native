@@ -9,7 +9,6 @@ import {
     NAVIGATE_TO_UPDATE_PASSWORD,
     NAVIGATE_TO_SPECIFIC_SOLO_STREAK,
     NAVIGATE_TO_SPECIFIC_TEAM_STREAK,
-    NAVIGATE_TO_CHALLENGE_STREAKS,
     NAVIGATE_TO_SPECIFIC_CHALLENGE_STREAK,
     NAVIGATE_TO_WELCOME,
     NAVIGATE_TO_STREAK_LIMIT_REACHED,
@@ -37,9 +36,6 @@ const navigationMiddleware = (store: any) => (next: any) => (action: AppActions)
 
         case NAVIGATE_TO_SPECIFIC_TEAM_STREAK:
             return NavigationService.navigate({ screen: Screens.TeamStreakInfo, params: { _id: action.payload } });
-
-        case NAVIGATE_TO_CHALLENGE_STREAKS:
-            return NavigationService.navigate({ screen: Screens.ChallengeStreaks });
 
         case NAVIGATE_TO_SPECIFIC_CHALLENGE_STREAK:
             return NavigationService.navigate({ screen: Screens.ChallengeStreakInfo, params: { _id: action.payload } });

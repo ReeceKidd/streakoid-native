@@ -3,7 +3,7 @@ import React from 'react';
 import { PopulatedCurrentUser } from '@streakoid/streakoid-models/lib/Models/PopulatedCurrentUser';
 import { ProgressBar } from './ProgressBar';
 import { Spacer } from './Spacer';
-import { getRegistrationCompletionPercentage } from '../helpers/getRegistrationCompletionPercentage';
+import { getRegistrationCompletionPercentage } from '@streakoid/streakoid-shared/lib/helpers/progress/getRegistrationCompletionPercentage';
 
 interface RegistrationProgressBarProps {
     currentUser: PopulatedCurrentUser;

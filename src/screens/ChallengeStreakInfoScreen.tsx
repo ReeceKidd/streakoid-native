@@ -541,7 +541,10 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                 <>
                                     <Spacer>
                                         <Button
-                                            onPress={() => restoreArchivedChallengeStreak(this.props.route.params._id)}
+                                            onPress={() => {
+                                                restoreArchivedChallengeStreak(this.props.route.params._id);
+                                                this.props.navigation.goBack();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'green' }}
                                             loading={restoreArchivedChallengeStreakIsLoading}
                                             title="Restore"
@@ -550,7 +553,10 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                     </Spacer>
                                     <Spacer>
                                         <Button
-                                            onPress={() => deleteArchivedChallengeStreak(this.props.route.params._id)}
+                                            onPress={() => {
+                                                deleteArchivedChallengeStreak(this.props.route.params._id);
+                                                this.props.navigation.goBack();
+                                            }}
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={deleteArchivedChallengeStreakIsLoading}
                                             title="Delete"

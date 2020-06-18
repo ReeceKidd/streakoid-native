@@ -21,12 +21,12 @@ import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { AccountStrengthProgressBar } from '../components/AccountStrengthProgressBar';
-import { getAccountCompletionPercentage } from '../helpers/getAccountCompletionPercentage';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { apiUrl } from '../api/authenticatedStreakoid';
 import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCategories';
 import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/SupportedRequestHeaders';
 import { ProfileImages } from '@streakoid/streakoid-models/lib/Models/ProfileImages';
+import { getAccountCompletionPercentage } from '@streakoid/streakoid-shared/lib/helpers/progress/getAccountCompletionPercentage';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
