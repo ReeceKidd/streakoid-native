@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 
-import { StyleSheet, ScrollView, ActivityIndicator, View } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import { Button, Image, Text } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { UnauthenticatedStackParamList } from '../screenNavigation/UnauthenticatedStack';
+import { OID_IMAGE } from '../images';
 
 const styles = StyleSheet.create({
     container: {
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     },
 });
 
-type LandingScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.Landing>;
+type LandingScreenNavigationProp = StackNavigationProp<UnauthenticatedStackParamList, Screens.Landing>;
 
 type Props = {
     navigation: LandingScreenNavigationProp;
@@ -26,11 +27,7 @@ class LandingScreen extends PureComponent<Props> {
             <ScrollView style={styles.container}>
                 <Spacer />
                 <View style={{ alignItems: 'center' }}>
-                    <Image
-                        source={{ uri: 'https://streakoid-images.s3-eu-west-1.amazonaws.com/icon.png' }}
-                        style={{ width: 200, height: 200 }}
-                        PlaceholderContent={<ActivityIndicator />}
-                    />
+                    <Image source={OID_IMAGE} style={{ width: 200, height: 200 }} />
                 </View>
                 <Spacer>
                     <Text h2 style={{ textAlign: 'center' }}>
@@ -38,7 +35,7 @@ class LandingScreen extends PureComponent<Props> {
                     </Text>
                 </Spacer>
                 <Spacer>
-                    <Text style={{ textAlign: 'center' }}>Build daily habits with people around the globe.</Text>
+                    <Text style={{ textAlign: 'center' }}>Build daily habits with others.</Text>
                 </Spacer>
                 <Spacer />
                 <Spacer>

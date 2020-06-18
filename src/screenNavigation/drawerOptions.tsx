@@ -40,38 +40,50 @@ export enum DrawerScreens {
 const sharedDrawerOptions = [
     <Drawer.Screen
         key={DrawerScreens.Challenges}
-        options={{ title: 'Challenges', drawerIcon: () => <FontAwesomeIcon icon={faCrown} /> }}
+        options={{ title: 'Challenges', drawerIcon: () => <FontAwesomeIcon icon={faCrown} />, unmountOnBlur: true }}
         name={DrawerScreens.Challenges}
         component={challengeStack}
     />,
     <Drawer.Screen
         key={DrawerScreens.Leaderboards}
         name={DrawerScreens.Leaderboards}
-        options={{ title: 'Leaderboards', drawerIcon: () => <FontAwesomeIcon icon={faHelmetBattle} /> }}
+        options={{
+            title: 'Leaderboards',
+            drawerIcon: () => <FontAwesomeIcon icon={faHelmetBattle} />,
+            unmountOnBlur: true,
+        }}
         component={leaderboardsStack}
     />,
     <Drawer.Screen
         key={DrawerScreens.ActivityFeed}
         name={DrawerScreens.ActivityFeed}
-        options={{ title: 'Activity Feed', drawerIcon: () => <FontAwesomeIcon icon={faUserFriends} /> }}
+        options={{
+            title: 'Activity Feed',
+            drawerIcon: () => <FontAwesomeIcon icon={faUserFriends} />,
+            unmountOnBlur: true,
+        }}
         component={ActivityFeedBottomTab}
     />,
     <Drawer.Screen
         key={DrawerScreens.Recommendations}
         name={DrawerScreens.Recommendations}
-        options={{ title: 'Recommendations', drawerIcon: () => <FontAwesomeIcon icon={faRobot} /> }}
+        options={{
+            title: 'Recommendations',
+            drawerIcon: () => <FontAwesomeIcon icon={faRobot} />,
+            unmountOnBlur: true,
+        }}
         component={streakRecommendationsStack}
     />,
     <Drawer.Screen
         key={DrawerScreens.Users}
         name={DrawerScreens.Users}
-        options={{ title: 'Users', drawerIcon: () => <FontAwesomeIcon icon={faUser} /> }}
+        options={{ title: 'Users', drawerIcon: () => <FontAwesomeIcon icon={faUser} />, unmountOnBlur: true }}
         component={usersStack}
     />,
     <Drawer.Screen
         key={DrawerScreens.Account}
         name={DrawerScreens.Account}
-        options={{ title: 'Account', drawerIcon: () => <FontAwesomeIcon icon={faCog} /> }}
+        options={{ title: 'Account', drawerIcon: () => <FontAwesomeIcon icon={faCog} />, unmountOnBlur: true }}
         component={accountStack}
     />,
 ];
@@ -79,7 +91,11 @@ const sharedDrawerOptions = [
 const homeDrawerScreen = (
     <Drawer.Screen
         key={DrawerScreens.Streaks}
-        options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} />, title: 'Streaks' }}
+        options={{
+            drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} />,
+            title: 'Streaks',
+            unmountOnBlur: true,
+        }}
         name={DrawerScreens.Streaks}
         component={StreakBottomTab}
     />
@@ -97,7 +113,7 @@ export const getDrawerOptions = ({
             homeDrawerScreen,
             <Drawer.Screen
                 key={DrawerScreens.Upgrade}
-                options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} /> }}
+                options={{ drawerIcon: () => <FontAwesomeIcon icon={faCalendarCheck} />, unmountOnBlur: true }}
                 name={DrawerScreens.Upgrade}
                 component={upgradeStack}
             />,
