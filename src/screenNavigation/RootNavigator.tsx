@@ -290,7 +290,7 @@ const ChallengeInfoStackScreen = (
 const ChallengeStreaksStackScreen = (
     <Stack.Screen
         name={Screens.ChallengeStreaks}
-        initialParams={{ getMultipleLiveChallengeStreaksIsLoading: false, totalLiveStreaks: 0 }}
+        initialParams={{ totalLiveStreaks: 0 }}
         component={ChallengeStreaksScreen}
         options={({ route, navigation }) => ({
             title: 'Challenge Streaks',

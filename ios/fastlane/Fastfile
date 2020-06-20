@@ -18,7 +18,6 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
-  bundle_install
     prompt(
       text: "Have you increased the version code in Info.plist",
       boolean: true,
@@ -29,7 +28,8 @@ platform :ios do
     ) 
     increment_build_number(xcodeproj: "streakoid.xcodeproj")
     build_app(workspace: "streakoid.xcworkspace", scheme: "streakoid")
-    deliver(automatic_release: true, force: true)
+    deliver(automatic_release: true, force: true, skip_metadata: true,
+    skip_screenshots: true)
     notification(title: "Finished IOS Build", message: "Finished IOS Build")
   end
   error do |lane, exception, options|
