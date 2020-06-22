@@ -11,7 +11,7 @@
 #
 
 # Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+update_fastlane
 
 default_platform(:ios)
 
@@ -28,8 +28,7 @@ platform :ios do
     ) 
     increment_build_number(xcodeproj: "streakoid.xcodeproj")
     build_app(workspace: "streakoid.xcworkspace", scheme: "streakoid")
-    deliver(automatic_release: true, force: true, skip_metadata: true,
-    skip_screenshots: true)
+    deliver(force: true)
     notification(title: "Finished IOS Build", message: "Finished IOS Build")
   end
   error do |lane, exception, options|

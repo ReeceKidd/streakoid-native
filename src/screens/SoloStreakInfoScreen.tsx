@@ -348,7 +348,7 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
 
     archiveSoloStreak = async ({ selectedSoloStreakId }: { selectedSoloStreakId: string }) => {
         const { archiveSoloStreak } = this.props;
-        archiveSoloStreak(selectedSoloStreakId);
+        archiveSoloStreak({ soloStreakId: selectedSoloStreakId });
     };
 
     render(): JSX.Element | null {
@@ -511,7 +511,7 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                     <Spacer>
                                         <Button
                                             onPress={() => {
-                                                deleteArchivedSoloStreak(selectedSoloStreak._id);
+                                                deleteArchivedSoloStreak({ soloStreakId: selectedSoloStreak._id });
                                                 this.props.navigation.pop();
                                             }}
                                             buttonStyle={{ backgroundColor: 'red' }}
