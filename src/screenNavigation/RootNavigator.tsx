@@ -26,7 +26,7 @@ import { ChallengeInfoScreen } from '../screens/ChallengeInfoScreen';
 import { ChallengeStreaksScreen } from '../screens/ChallengeStreaksScreen';
 import { ChallengeStreakInfoScreen } from '../screens/ChallengeStreakInfoScreen';
 import { AddNoteToChallengeStreakScreen } from '../screens/AddNoteToChallengeStreakScreen';
-import { faPlus, faEdit } from '@fortawesome/pro-light-svg-icons';
+import { faPlus, faEdit } from '@fortawesome/pro-solid-svg-icons';
 import { MAXIMUM_NUMBER_OF_FREE_STREAKS } from '../../config';
 import { LeaderboardsScreen } from '../screens/LeaderboardsScreen';
 import { SoloStreakLeaderboardScreen } from '../screens/SoloStreakLeaderboardScreen';
@@ -60,9 +60,36 @@ import { UserProfileScreen } from '../screens/UserProfileScreen';
 import { FollowingActivityScreen } from '../screens/FollowingActivityScreen';
 import { GlobalActivityScreen } from '../screens/GlobalActivityScreen';
 
+export interface SoloStreakInfoRouteParams {
+    _id: string;
+    streakName: string;
+    isUsersStreak: boolean;
+}
+
+export interface ChallengeStreakInfoRouteParams {
+    _id: string;
+    challengeName: string;
+}
+
+export interface TeamStreakInfoRouteParams {
+    _id: string;
+    streakName: string;
+    userIsApartOfStreak: boolean;
+}
+
+export interface UserProfileRouteParams {
+    _id: string;
+    username: string;
+    profileImage: string;
+}
+
+export interface AccountRouteParams {
+    username: string;
+}
+
 export type RootStackParamList = {
     [Screens.Home]: undefined;
-    [Screens.Account]: { username: string };
+    [Screens.Account]: AccountRouteParams;
     [Screens.WhatIsYourFirstName]: undefined;
     [Screens.WhatIsYourLastName]: undefined;
     [Screens.WhyDoYouWantToBuildHabits]: undefined;
@@ -80,9 +107,9 @@ export type RootStackParamList = {
     [Screens.ChallengeStreaks]: {
         isPayingMember: boolean;
         totalLiveStreaks: number;
-        getMultipleLiveChallengeStreaksIsLoading: boolean;
+        getLiveChallengeStreaksIsLoading: boolean;
     };
-    [Screens.ChallengeStreakInfo]: { _id: string; streakName: string };
+    [Screens.ChallengeStreakInfo]: ChallengeStreakInfoRouteParams;
     [Screens.AddNoteToChallengeStreak]: undefined;
     [Screens.Leaderboards]: undefined;
     [Screens.SoloStreakLeaderboard]: undefined;
@@ -96,7 +123,7 @@ export type RootStackParamList = {
         totalLiveStreaks: number;
         getMultipleLiveSoloStreaksIsLoading: boolean;
     };
-    [Screens.SoloStreakInfo]: { _id: string; streakName: string; isUsersStreak: boolean };
+    [Screens.SoloStreakInfo]: SoloStreakInfoRouteParams;
     [Screens.CreateSoloStreak]: undefined;
     [Screens.EditSoloStreak]: undefined;
     [Screens.AddNoteToSoloStreak]: undefined;
@@ -107,7 +134,7 @@ export type RootStackParamList = {
         totalLiveStreaks: number;
         getMultipleLiveTeamStreaksIsLoading: boolean;
     };
-    [Screens.TeamStreakInfo]: { _id: string; streakName: string; userIsApartOfStreak: boolean };
+    [Screens.TeamStreakInfo]: TeamStreakInfoRouteParams;
     [Screens.CreateTeamStreak]: undefined;
     [Screens.EditTeamStreak]: undefined;
     [Screens.AddFollowerToTeamStreak]: undefined;
@@ -124,7 +151,7 @@ export type RootStackParamList = {
     [Screens.Upgrade]: undefined;
     //Users
     [Screens.Users]: undefined;
-    [Screens.UserProfile]: { _id: string; username: string };
+    [Screens.UserProfile]: UserProfileRouteParams;
     [Screens.ChooseAPath]: undefined;
 };
 
@@ -314,7 +341,7 @@ const ChallengeStreaksStackScreen = (
             headerLeft: () => (
                 <View style={{ flexDirection: 'row' }}>
                     <HamburgerSelector />
-                    {route.params.getMultipleLiveChallengeStreaksIsLoading ? <ActivityIndicator /> : null}
+                    {route.params.getLiveChallengeStreaksIsLoading ? <ActivityIndicator /> : null}
                 </View>
             ),
         })}
@@ -326,16 +353,17 @@ const ChallengeStreakInfoStackScreen = (
         name={Screens.ChallengeStreakInfo}
         component={ChallengeStreakInfoScreen}
         options={({ route }) => ({
-            title: route.params.streakName,
+            title: route.params.challengeName,
+            headerStyle: { color: 'black' },
             headerRight: () => (
                 <Button
                     type="clear"
                     icon={<FontAwesomeIcon icon={faShareAlt} />}
                     onPress={async () => {
                         await Share.share({
-                            message: `View challenge streak ${route.params.streakName} at ${streakoidUrl}/${RouterCategories.challengeStreaks}/${route.params._id}`,
+                            message: `View challenge streak ${route.params.challengeName} at ${streakoidUrl}/${RouterCategories.challengeStreaks}/${route.params._id}`,
                             url: `${streakoidUrl}/${RouterCategories.challengeStreaks}/${route.params._id}`,
-                            title: `View Streakoid challenge streak ${route.params.streakName}`,
+                            title: `View Streakoid challenge streak ${route.params.challengeName}`,
                         });
                     }}
                 />

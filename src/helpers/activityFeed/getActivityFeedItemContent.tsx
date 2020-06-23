@@ -33,7 +33,7 @@ export const getActivityFeedItemContent = ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     navigation: StackNavigationProp<RootStackParamList, any>;
 }) => {
-    const { username, userId, title } = activityFeedItem;
+    const { username, userId, title, userProfileImage } = activityFeedItem;
     if (
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.createdSoloStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.archivedSoloStreak ||
@@ -53,6 +53,7 @@ export const getActivityFeedItemContent = ({
                             navigation.navigate(Screens.UserProfile, {
                                 username,
                                 _id: userId,
+                                profileImage: userProfileImage,
                             })
                         }
                     >
@@ -88,6 +89,7 @@ export const getActivityFeedItemContent = ({
                             navigation.navigate(Screens.UserProfile, {
                                 username,
                                 _id: userId,
+                                profileImage: userProfileImage,
                             })
                         }
                     >
@@ -123,6 +125,7 @@ export const getActivityFeedItemContent = ({
                             navigation.navigate(Screens.UserProfile, {
                                 username,
                                 _id: userId,
+                                profileImage: userProfileImage,
                             })
                         }
                     >
@@ -133,7 +136,7 @@ export const getActivityFeedItemContent = ({
                         onPress={() =>
                             navigation.navigate(Screens.ChallengeStreakInfo, {
                                 _id: activityFeedItem._id || '',
-                                streakName: activityFeedItem.challengeName,
+                                challengeName: activityFeedItem.challengeName,
                             })
                         }
                     >
@@ -164,6 +167,7 @@ export const getActivityFeedItemContent = ({
                             navigation.navigate(Screens.UserProfile, {
                                 username,
                                 _id: userId,
+                                profileImage: userProfileImage,
                             })
                         }
                     >
@@ -195,6 +199,7 @@ export const getActivityFeedItemContent = ({
                             navigation.navigate(Screens.UserProfile, {
                                 username,
                                 _id: userId,
+                                profileImage: userProfileImage,
                             })
                         }
                     >
@@ -215,6 +220,7 @@ export const getActivityFeedItemContent = ({
                             navigation.navigate(Screens.UserProfile, {
                                 username,
                                 _id: userId,
+                                profileImage: userProfileImage,
                             })
                         }
                     >
@@ -226,6 +232,7 @@ export const getActivityFeedItemContent = ({
                             navigation.navigate(Screens.UserProfile, {
                                 _id: activityFeedItem.userFollowedId,
                                 username: activityFeedItem.userFollowedUsername,
+                                profileImage: userProfileImage,
                             })
                         }
                     >
@@ -244,6 +251,7 @@ export const getActivityFeedItemContent = ({
                         navigation.navigate(Screens.UserProfile, {
                             username,
                             _id: userId,
+                            profileImage: userProfileImage,
                         })
                     }
                 >

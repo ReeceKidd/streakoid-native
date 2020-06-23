@@ -415,6 +415,7 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                     this.props.navigation.navigate(Screens.UserProfile, {
                                         username: selectedSoloStreak.username,
                                         _id: selectedSoloStreak.userId,
+                                        profileImage: selectedSoloStreak.userProfileImage,
                                     });
                                 }}
                             >

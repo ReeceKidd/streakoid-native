@@ -21,8 +21,18 @@ import PushNotificationSupportedDeviceTypes from '@streakoid/streakoid-models/li
 import { userActions } from './src/actions/authenticatedSharedActions';
 import { NavigationContainer } from '@react-navigation/native';
 import { getDrawerMenu } from './src/screenNavigation/DrawerMenu';
-import { navigationRef } from './NavigationService';
+import { navigationRef, NavigationService } from './NavigationService';
 import { UnauthenticatedStackNavigator } from './src/screenNavigation/UnauthenticatedStack';
+import { PushNotificationType } from '@streakoid/streakoid-models/lib/Models/PushNotifications';
+import PushNotificationTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationTypes';
+import { Screens } from './src/screens/Screens';
+import {
+    SoloStreakInfoRouteParams,
+    ChallengeStreakInfoRouteParams,
+    TeamStreakInfoRouteParams,
+    UserProfileRouteParams,
+    AccountRouteParams,
+} from './src/screenNavigation/RootNavigator';
 
 enableScreens();
 
@@ -83,12 +93,116 @@ class AppContainerComponent extends React.PureComponent<Props> {
                         },
                     });
                 },
+                onNotification: (notification) => {
+                    if (Platform.OS === 'ios') {
+                        this._handleNotification({
+                            pushNotification: notification.data as PushNotificationType,
+                        });
+                    } else {
+                        this._handleNotification({
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            pushNotification: (notification as any).userInfo,
+                        });
+                    }
+                },
                 permissions: {
                     alert: true,
                     badge: true,
                     sound: true,
                 },
             });
+        }
+    };
+
+    _handleNotification = async ({ pushNotification }: { pushNotification: PushNotificationType }) => {
+        if (!pushNotification.pushNotificationType) {
+            return;
+        }
+
+        if (pushNotification.pushNotificationType == PushNotificationTypes.customSoloStreakReminder) {
+            const params: SoloStreakInfoRouteParams = {
+                _id: pushNotification.soloStreakId,
+                streakName: pushNotification.soloStreakName,
+                isUsersStreak: true,
+            };
+            return NavigationService.navigate({
+                screen: Screens.SoloStreakInfo,
+                params,
+            });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.customChallengeStreakReminder) {
+            const params: ChallengeStreakInfoRouteParams = {
+                _id: pushNotification.challengeStreakId,
+                challengeName: pushNotification.challengeName,
+            };
+            return NavigationService.navigate({
+                screen: Screens.ChallengeStreakInfo,
+                params,
+            });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.customTeamStreakReminder) {
+            const params: TeamStreakInfoRouteParams = {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+                userIsApartOfStreak: true,
+            };
+            return NavigationService.navigate({
+                screen: Screens.TeamStreakInfo,
+                params,
+            });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.completeAllStreaksReminder) {
+            return NavigationService.navigate({ screen: Screens.Home });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.completedTeamStreakUpdate) {
+            const params: TeamStreakInfoRouteParams = {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+                userIsApartOfStreak: true,
+            };
+            return NavigationService.navigate({
+                screen: Screens.TeamStreakInfo,
+                params,
+            });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.incompletedTeamStreakUpdate) {
+            const params: TeamStreakInfoRouteParams = {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+                userIsApartOfStreak: true,
+            };
+            return NavigationService.navigate({
+                screen: Screens.TeamStreakInfo,
+                params,
+            });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.newFollower) {
+            const profileImage =
+                this.props.currentUser &&
+                this.props.currentUser.profileImages &&
+                this.props.currentUser.profileImages.originalImageUrl;
+            const params: UserProfileRouteParams = {
+                _id: pushNotification.followerId,
+                username: pushNotification.followerUsername,
+                profileImage,
+            };
+            return NavigationService.navigate({
+                screen: Screens.UserProfile,
+                params,
+            });
+        }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.unlockedAchievement) {
+            const params: AccountRouteParams = {
+                username: this.props.currentUser.username,
+            };
+            return NavigationService.navigate({ screen: Screens.Account, params });
         }
     };
 

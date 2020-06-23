@@ -94,6 +94,7 @@ class UsersScreenComponent extends PureComponent<Props, State> {
                                         this.props.navigation.navigate(Screens.UserProfile, {
                                             username: item.username,
                                             _id: item._id,
+                                            profileImage,
                                         });
                                     }}
                                 >

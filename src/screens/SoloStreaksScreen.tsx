@@ -93,7 +93,10 @@ const styles = StyleSheet.create({
 
 class SoloStreaksScreenComponent extends PureComponent<Props> {
     componentDidMount() {
-        this.props.getLiveSoloStreaks();
+        const currentUserId = this.props.currentUser._id;
+        if (currentUserId) {
+            this.props.getLiveSoloStreaks({ currentUserId });
+        }
         this.props.getArchivedSoloStreaks();
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
@@ -113,7 +116,10 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
 
     _handleAppStateChange = (nextAppState: string) => {
         if (nextAppState === 'active') {
-            this.props.getLiveSoloStreaks();
+            const currentUserId = this.props.currentUser._id;
+            if (currentUserId) {
+                this.props.getLiveSoloStreaks({ currentUserId });
+            }
         }
     };
 

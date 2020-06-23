@@ -35,7 +35,7 @@ const mapStateToProps = (state: AppState) => {
     const getCurrentUserIsLoading = state && state.users && state.users.getCurrentUserIsLoading;
     const liveChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.liveChallengeStreaks;
     const getLiveChallengeStreaksIsLoading =
-        state && state.challengeStreaks && state.challengeStreaks.getMultipleLiveChallengeStreaksIsLoading;
+        state && state.challengeStreaks && state.challengeStreaks.getLiveChallengeStreaksIsLoading;
     const updatePushNotificationsIsLoading =
         state && state.users && state.users.currentUser.updatePushNotificationsIsLoading;
     const updatePushNotificationsErrorMessage =
@@ -233,6 +233,7 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                                             this.props.navigation.navigate(Screens.UserProfile, {
                                                                 username: item.username,
                                                                 _id: item.userId,
+                                                                profileImage: item.profileImage,
                                                             })
                                                         }
                                                     >
@@ -289,6 +290,7 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                                             this.props.navigation.navigate(Screens.UserProfile, {
                                                                 username: item.username,
                                                                 _id: item.userId,
+                                                                profileImage: item.profileImage,
                                                             })
                                                         }
                                                     >

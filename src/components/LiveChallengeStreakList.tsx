@@ -15,9 +15,9 @@ interface LiveChallengeStreakListProps {
     navigation: StackNavigationProp<RootStackParamList, Screens.Home | Screens.ChallengeStreaks>;
     getChallengeStreak: typeof challengeStreakActions.getChallengeStreak;
     getLiveChallengeStreaks: typeof challengeStreakActions.getLiveChallengeStreaks;
-    getMultipleLiveChallengeStreaksIsLoading: boolean;
     completeChallengeStreakListTask: typeof challengeStreakActions.completeChallengeStreakListTask;
     incompleteChallengeStreakListTask: typeof challengeStreakActions.incompleteChallengeStreakListTask;
+    getLiveChallengeStreaksIsLoading: boolean;
     liveChallengeStreaks: ChallengeStreakListItem[];
     totalNumberOfChallengeStreaks: number;
     userId: string;
@@ -60,7 +60,7 @@ class LiveChallengeStreakList extends PureComponent<Props> {
                                 onPress={() =>
                                     this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
                                         _id: item._id,
-                                        streakName: item.challengeName,
+                                        challengeName: item.challengeName,
                                     })
                                 }
                             >
@@ -100,14 +100,10 @@ class LiveChallengeStreakList extends PureComponent<Props> {
     }
 
     render(): JSX.Element {
-        const {
-            liveChallengeStreaks,
-            getMultipleLiveChallengeStreaksIsLoading,
-            totalNumberOfChallengeStreaks,
-        } = this.props;
+        const { liveChallengeStreaks, getLiveChallengeStreaksIsLoading, totalNumberOfChallengeStreaks } = this.props;
         return (
             <>
-                {totalNumberOfChallengeStreaks === 0 && !getMultipleLiveChallengeStreaksIsLoading ? (
+                {totalNumberOfChallengeStreaks === 0 && !getLiveChallengeStreaksIsLoading ? (
                     <View style={{ marginTop: 5 }}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate(Screens.Challenges)}>
                             <Text style={{ color: 'blue' }}>{`No challenge streaks found. Join one`}</Text>

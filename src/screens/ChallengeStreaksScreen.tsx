@@ -36,8 +36,8 @@ const getIncompleteChallengeStreaks = (state: AppState) => {
 const mapStateToProps = (state: AppState) => {
     const liveChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.liveChallengeStreaks;
     const archivedChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.archivedChallengeStreaks;
-    const getMultipleLiveChallengeStreaksIsLoading =
-        state && state.challengeStreaks && state.challengeStreaks.getMultipleLiveChallengeStreaksIsLoading;
+    const getLiveChallengeStreaksIsLoading =
+        state && state.challengeStreaks && state.challengeStreaks.getLiveChallengeStreaksIsLoading;
     const getArchivedChallengeStreaksIsLoading =
         state && state.challengeStreaks && state.challengeStreaks.getArchivedChallengeStreaksIsLoading;
     const totalNumberOfChallengeStreaks = state.challengeStreaks.liveChallengeStreaks.length;
@@ -49,7 +49,7 @@ const mapStateToProps = (state: AppState) => {
     return {
         liveChallengeStreaks,
         archivedChallengeStreaks,
-        getMultipleLiveChallengeStreaksIsLoading,
+        getLiveChallengeStreaksIsLoading,
         getArchivedChallengeStreaksIsLoading,
         timezone: currentUser.timezone,
         totalNumberOfChallengeStreaks,
@@ -94,13 +94,17 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         this.props.getArchivedChallengeStreaks();
+        const currentUserId = this.props.currentUser._id;
+        if (currentUserId) {
+            this.props.getLiveChallengeStreaks({ currentUserId });
+        }
     }
 
     componentDidUpdate(prevProps: Props) {
-        const { getMultipleLiveChallengeStreaksIsLoading } = this.props;
-        if (prevProps.getMultipleLiveChallengeStreaksIsLoading !== getMultipleLiveChallengeStreaksIsLoading) {
+        const { getLiveChallengeStreaksIsLoading } = this.props;
+        if (prevProps.getLiveChallengeStreaksIsLoading !== getLiveChallengeStreaksIsLoading) {
             this.props.navigation.setParams({
-                getMultipleLiveChallengeStreaksIsLoading: getMultipleLiveChallengeStreaksIsLoading,
+                getLiveChallengeStreaksIsLoading: getLiveChallengeStreaksIsLoading,
             });
         }
     }
@@ -111,7 +115,8 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
 
     _handleAppStateChange = (nextAppState: string) => {
         if (nextAppState === 'active') {
-            this.props.getLiveChallengeStreaks();
+            const currentUserId = this.props.currentUser._id;
+            this.props.getLiveChallengeStreaks({ currentUserId });
         }
     };
 
@@ -122,7 +127,7 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
             completeChallengeStreakListTask,
             incompleteChallengeStreakListTask,
             liveChallengeStreaks,
-            getMultipleLiveChallengeStreaksIsLoading,
+            getLiveChallengeStreaksIsLoading,
             totalNumberOfChallengeStreaks,
             archivedChallengeStreaks,
             getArchivedChallengeStreaksIsLoading,
@@ -153,7 +158,7 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}
                             getLiveChallengeStreaks={getLiveChallengeStreaks}
-                            getMultipleLiveChallengeStreaksIsLoading={getMultipleLiveChallengeStreaksIsLoading}
+                            getLiveChallengeStreaksIsLoading={getLiveChallengeStreaksIsLoading}
                             completeChallengeStreakListTask={completeChallengeStreakListTask}
                             incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
                             liveChallengeStreaks={liveChallengeStreaks}

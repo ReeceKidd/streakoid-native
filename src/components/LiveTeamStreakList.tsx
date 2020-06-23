@@ -143,6 +143,14 @@ const LiveTeamStreakList = (props: Props) => {
                                                             source={{
                                                                 uri: member.profileImage,
                                                             }}
+                                                            containerStyle={{
+                                                                borderWidth: 2,
+                                                                borderColor: member.teamMemberStreak.completedToday
+                                                                    ? 'green'
+                                                                    : 'red',
+                                                                overflow: 'hidden',
+                                                                marginLeft: 2,
+                                                            }}
                                                         />
                                                     );
                                                 })
@@ -158,6 +166,15 @@ const LiveTeamStreakList = (props: Props) => {
                                                                     key={member._id}
                                                                     source={{
                                                                         uri: member.profileImage,
+                                                                    }}
+                                                                    containerStyle={{
+                                                                        borderWidth: 2,
+                                                                        borderColor: member.teamMemberStreak
+                                                                            .completedToday
+                                                                            ? 'green'
+                                                                            : 'red',
+                                                                        overflow: 'hidden',
+                                                                        marginLeft: 2,
                                                                     }}
                                                                 />
                                                             );

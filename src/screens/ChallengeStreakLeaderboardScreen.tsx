@@ -64,7 +64,7 @@ class ChallengeStreakLeaderboardScreenComponent extends PureComponent<Props> {
                                 onPress={() =>
                                     this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
                                         _id: streakId,
-                                        streakName: challengeName,
+                                        challengeName,
                                     })
                                 }
                             >

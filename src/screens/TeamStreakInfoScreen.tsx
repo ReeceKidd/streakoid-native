@@ -12,7 +12,6 @@ import { Text, Button, ListItem, Divider, Card } from 'react-native-elements';
 import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Spacer } from '../components/Spacer';
 import { Screens } from './Screens';
-import { TeamStreakDetails } from '../components/TeamStreakDetails';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { ScrollView, FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { TeamNotes } from '../components/TeamNotes';
@@ -437,7 +436,62 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                 negativeDayStreak={negativeDayStreak}
                             />
                         </Spacer>
-                        <TeamStreakDetails selectedTeamStreak={selectedTeamStreak} navigation={this.props.navigation} />
+                        <Spacer>
+                            <Text style={{ fontWeight: 'bold' }}> Team Members </Text>
+                            <FlatList
+                                data={selectedTeamStreak.members}
+                                keyExtractor={(teamMember) => teamMember._id}
+                                renderItem={({ item, index }) => {
+                                    const { username, profileImage, teamMemberStreak } = item;
+                                    const { currentStreak, longestStreak, completedToday } = teamMemberStreak;
+                                    return (
+                                        <>
+                                            <TouchableOpacity
+                                                onPress={() =>
+                                                    this.props.navigation.navigate(Screens.TeamMemberStreakInfo, {
+                                                        _id: item.teamMemberStreak._id,
+                                                        streakName: this.props.route.params.streakName,
+                                                    })
+                                                }
+                                            >
+                                                <ListItem
+                                                    leftElement={<Text>#{index + 1}</Text>}
+                                                    chevron={true}
+                                                    leftAvatar={{
+                                                        overlayContainerStyle: {
+                                                            borderWidth: 2,
+                                                            borderColor: completedToday ? 'green' : 'red',
+                                                            overflow: 'hidden',
+                                                        },
+                                                        source: { uri: profileImage },
+                                                    }}
+                                                    title={username}
+                                                    subtitle={
+                                                        <View style={{ flexDirection: 'row' }}>
+                                                            <StreakFlame
+                                                                currentStreakNumberOfDaysInARow={
+                                                                    currentStreak.numberOfDaysInARow
+                                                                }
+                                                                negativeDayStreak={negativeDayStreak}
+                                                            />
+                                                            <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+                                                                <Text style={{ fontWeight: 'bold' }}>
+                                                                    {longestStreak}
+                                                                </Text>
+                                                                <FontAwesomeIcon icon={faCrown} color={'gold'} />
+                                                            </View>
+                                                        </View>
+                                                    }
+                                                ></ListItem>
+
+                                                <Spacer />
+                                            </TouchableOpacity>
+                                            <Divider />
+                                        </>
+                                    );
+                                }}
+                            />
+                        </Spacer>
                         {isCurrentUserAMemberOfTeamStreak ? (
                             <>
                                 <Spacer>
@@ -491,54 +545,6 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                     {selectedTeamStreak.totalTimesTracked}
                                 </Text>
                             </Card>
-                        </Spacer>
-                        <Spacer>
-                            <Text style={{ fontWeight: 'bold' }}> Team Members </Text>
-                            <FlatList
-                                data={selectedTeamStreak.members}
-                                keyExtractor={(teamMember) => teamMember._id}
-                                renderItem={({ item, index }) => {
-                                    const { username, profileImage, teamMemberStreak } = item;
-                                    const { currentStreak, totalTimesTracked, longestStreak } = teamMemberStreak;
-                                    const currentStreakText =
-                                        currentStreak.numberOfDaysInARow !== 1
-                                            ? `${currentStreak.numberOfDaysInARow.toString()} days`
-                                            : `${currentStreak.numberOfDaysInARow.toString()} day`;
-                                    const longestStreakText =
-                                        longestStreak !== 1
-                                            ? `Longest streak: ${longestStreak} days`
-                                            : `Longest streak: ${longestStreak} day`;
-                                    const totalTimesTrackedText =
-                                        totalTimesTracked !== 1
-                                            ? `Total times tracked: ${totalTimesTracked} times`
-                                            : `Total times tracked: ${totalTimesTracked} time`;
-                                    return (
-                                        <>
-                                            <TouchableOpacity
-                                                onPress={() =>
-                                                    this.props.navigation.navigate(Screens.TeamMemberStreakInfo, {
-                                                        _id: item.teamMemberStreak._id,
-                                                        streakName: this.props.route.params.streakName,
-                                                    })
-                                                }
-                                            >
-                                                <ListItem
-                                                    leftElement={<Text>#{index + 1}</Text>}
-                                                    leftAvatar={{
-                                                        source: { uri: profileImage },
-                                                    }}
-                                                    title={username}
-                                                    subtitle={currentStreakText}
-                                                ></ListItem>
-                                                <Text>{longestStreakText}</Text>
-                                                <Text>{totalTimesTrackedText}</Text>
-                                                <Spacer />
-                                            </TouchableOpacity>
-                                            <Divider />
-                                        </>
-                                    );
-                                }}
-                            />
                         </Spacer>
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Activity Feed</Text>

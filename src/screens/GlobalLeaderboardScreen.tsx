@@ -63,6 +63,7 @@ class GlobalUserLeaderboardScreenComponent extends PureComponent<Props> {
                                     this.props.navigation.navigate(Screens.UserProfile, {
                                         _id,
                                         username,
+                                        profileImage: userProfileImage,
                                     })
                                 }
                             >

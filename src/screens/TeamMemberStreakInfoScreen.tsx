@@ -82,6 +82,7 @@ class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
                                     this.props.navigation.navigate(Screens.UserProfile, {
                                         username: selectedTeamMemberStreak.username,
                                         _id: selectedTeamMemberStreak.userId,
+                                        profileImage: selectedTeamMemberStreak.userProfileImage,
                                     });
                                 }}
                             >

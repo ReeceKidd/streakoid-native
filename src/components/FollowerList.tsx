@@ -17,10 +17,19 @@ interface FollowerListProps {
 type Props = FollowerListProps;
 
 class FollowerList extends PureComponent<Props> {
-    navigateToFollowerProfile = ({ username, _id }: { username: string; _id: string }) => {
+    navigateToFollowerProfile = ({
+        username,
+        _id,
+        profileImage,
+    }: {
+        username: string;
+        _id: string;
+        profileImage: string;
+    }) => {
         this.props.navigation.navigate(Screens.UserProfile, {
             username,
             _id,
+            profileImage,
         });
     };
     renderUsersList(): JSX.Element {

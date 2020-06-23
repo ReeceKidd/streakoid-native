@@ -9,7 +9,6 @@ import { AppState, AppActions } from '@streakoid/streakoid-shared/lib';
 import { challengeActions } from '../actions/authenticatedSharedActions';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { ChallengeIcon } from '../components/ChallengeIcon';
 import { Screens } from './Screens';
 import { WhatsappGroupLink } from '../components/WhatsappGroupLink';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
@@ -70,19 +69,7 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                     </Spacer>
                 ) : (
                     <Spacer>
-                        <View
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <ChallengeIcon icon={selectedChallenge.icon} color={selectedChallenge.color} />
-                            <Text h4 style={{ textAlign: 'center' }}>
-                                {this.props.route.params.challengeName}
-                            </Text>
-                            <Text style={{ textAlign: 'center' }}>{selectedChallenge.description}</Text>
-                        </View>
-                        <Spacer></Spacer>
+                        {selectedChallenge.description ? <Text>{selectedChallenge.description}</Text> : null}
                         {selectedChallenge.userIsApartOfChallenge ? (
                             <ListItem
                                 leftIcon={<FontAwesomeIcon icon={faCalendarCheck} />}
@@ -92,7 +79,7 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                 onPress={() =>
                                     this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
                                         _id: selectedChallenge.usersChallengeStreakId,
-                                        streakName: selectedChallenge.name,
+                                        challengeName: selectedChallenge.name,
                                     })
                                 }
                             />
@@ -168,7 +155,7 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                         <>
                                             <TouchableOpacity
                                                 onPress={() =>
-                                                    this.props.navigation.navigate(Screens.ChallengeInfo, {
+                                                    this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
                                                         _id: challengeStreakId,
                                                         challengeName: this.props.route.params.challengeName,
                                                     })

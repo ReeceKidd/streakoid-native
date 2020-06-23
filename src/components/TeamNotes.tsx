@@ -35,7 +35,7 @@ interface NotesProps {
     subjectId?: string;
 }
 
-type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NotesProps & NavigationProps;
+type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NotesProps;
 
 class NotesComponent extends PureComponent<Props> {
     getNotes = (): void => {
@@ -89,6 +89,7 @@ class NotesComponent extends PureComponent<Props> {
                                         this.props.navigation.navigate(Screens.UserProfile, {
                                             username: noteCreatorUsername,
                                             _id: userId,
+                                            profileImage: noteCreatorProfilePicture,
                                         });
                                     },
                                 }}

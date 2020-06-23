@@ -39,7 +39,7 @@ const ArchivedChallengeStreakList = (props: Props) => {
                                 onPress={() =>
                                     navigation.navigate(Screens.ChallengeStreakInfo, {
                                         _id,
-                                        streakName: challengeName,
+                                        challengeName,
                                     })
                                 }
                             >

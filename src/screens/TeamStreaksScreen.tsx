@@ -21,7 +21,7 @@ import { ProgressBar } from '../components/ProgressBar';
 import StreakStatus from '@streakoid/streakoid-models/lib/Types/StreakStatus';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { TeamStreakStackParamList } from '../screenNavigation/TeamStreaksStack';
+import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 const getIncompleteTeamStreaks = (state: AppState) => {
     return (
@@ -77,8 +77,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
 });
 
-type TeamStreaksScreenNavigationProp = StackNavigationProp<TeamStreakStackParamList, Screens.TeamStreaks>;
-type TeamStreaksScreenRouteProp = RouteProp<TeamStreakStackParamList, Screens.TeamStreaks>;
+type TeamStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TeamStreaks>;
+type TeamStreaksScreenRouteProp = RouteProp<RootStackParamList, Screens.TeamStreaks>;
 
 type NavigationProps = {
     navigation: TeamStreaksScreenNavigationProp;
@@ -97,7 +97,10 @@ const styles = StyleSheet.create({
 class TeamStreaksScreenComponent extends PureComponent<Props> {
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
-        this.props.getLiveTeamStreaks();
+        const currentUserId = this.props.currentUser._id;
+        if (currentUserId) {
+            this.props.getLiveTeamStreaks({ currentUserId });
+        }
         this.props.getArchivedTeamStreaks();
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
@@ -116,7 +119,10 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
 
     _handleAppStateChange = (nextAppState: string) => {
         if (nextAppState === 'active') {
-            this.props.getLiveTeamStreaks();
+            const currentUserId = this.props.currentUser._id;
+            if (currentUserId) {
+                this.props.getLiveTeamStreaks({ currentUserId });
+            }
         }
     };
 

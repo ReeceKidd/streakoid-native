@@ -126,7 +126,7 @@ class StreakRecommendationsScreenComponent extends PureComponent<Props> {
                                     this.props.navigation.navigate(Screens.ChallengeStreaks, {
                                         isPayingMember: false,
                                         totalLiveStreaks: 0,
-                                        getMultipleLiveChallengeStreaksIsLoading: false,
+                                        getLiveChallengeStreaksIsLoading: false,
                                     })
                                 }
                             >
