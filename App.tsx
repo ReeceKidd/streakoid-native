@@ -17,7 +17,6 @@ import GoogleAnalytics from '@segment/analytics-react-native-google-analytics';
 import Mixpanel from '@segment/analytics-react-native-mixpanel';
 
 import { enableScreens } from 'react-native-screens';
-import PushNotificationSupportedDeviceTypes from '@streakoid/streakoid-models/lib/Types/PushNotificationSupportedDeviceTypes';
 import { userActions } from './src/actions/authenticatedSharedActions';
 import { NavigationContainer } from '@react-navigation/native';
 import { getDrawerMenu } from './src/screenNavigation/DrawerMenu';
@@ -75,20 +74,17 @@ class AppContainerComponent extends React.PureComponent<Props> {
                 onRegister: (tokenData) => {
                     const { token } = tokenData;
                     const { currentUser } = this.props;
-                    const pushNotificationToken = currentUser && currentUser.pushNotification.token;
-                    const endpointArn = currentUser && currentUser.pushNotification.endpointArn;
-                    if (token === pushNotificationToken && endpointArn) {
+                    const androidToken = currentUser.pushNotification.androidToken;
+                    const iosToken = currentUser.pushNotification.iosToken;
+                    if (token === androidToken || token === iosToken) {
                         return;
                     }
-                    const deviceType =
-                        Platform.OS === 'ios'
-                            ? PushNotificationSupportedDeviceTypes.ios
-                            : PushNotificationSupportedDeviceTypes.android;
+
                     this.props.updateCurrentUser({
                         updateData: {
                             pushNotification: {
-                                token: String(token),
-                                deviceType,
+                                androidToken: Platform.OS === 'android' ? androidToken : undefined,
+                                iosToken: Platform.OS === 'ios' ? iosToken : undefined,
                             },
                         },
                     });
