@@ -113,7 +113,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
                 {
                     name: 'image',
                     filename: photo.fileName,
-                    type: 'image/jpeg',
+                    type: photo.type,
                     data: RNFetchBlob.wrap(uri),
                 },
             ],
@@ -122,7 +122,13 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
         this.props.uploadProfileImage({ profileImages });
     };
     render(): JSX.Element {
-        const { currentUser, profileImage, uploadProfileImageIsLoading, uploadProfileImageErrorMessage } = this.props;
+        const {
+            currentUser,
+            profileImage,
+            uploadProfileImageIsLoading,
+            uploadProfileImageErrorMessage,
+            uploadProfileImageSuccessMessage,
+        } = this.props;
         return (
             <SafeAreaView style={styles.container}>
                 <AccountStrengthProgressBar currentUser={currentUser} />
@@ -144,6 +150,7 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
                         onPress={() => this.props.navigation.navigate(Screens.CompletedCustomization)}
                     ></Button>
                     {uploadProfileImageErrorMessage ? <Text>{uploadProfileImageErrorMessage}</Text> : null}
+                    {uploadProfileImageSuccessMessage ? <Text>{uploadProfileImageSuccessMessage}</Text> : null}
                 </Spacer>
             </SafeAreaView>
         );

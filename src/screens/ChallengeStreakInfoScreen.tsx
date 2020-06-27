@@ -183,7 +183,7 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
         enabled: boolean;
         challengeId: string;
     }) => {
-        const challengeName = this.props.route.params.streakName;
+        const challengeName = this.props.route.params.challengeName;
         const challengeStreakId = this.props.route.params._id;
         const customStreakReminders = this.props.currentUser.pushNotifications.customStreakReminders;
         const customCompleteChallengeStreakReminder = customStreakReminders.find(
@@ -443,6 +443,7 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                     this.props.navigation.push(Screens.UserProfile, {
                                         _id: selectedChallengeStreak.userId,
                                         username: selectedChallengeStreak.username,
+                                        profileImage: selectedChallengeStreak.userProfileImage,
                                     });
                                 }}
                             >

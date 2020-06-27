@@ -185,7 +185,7 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
         if (enabled) {
             const newExpoId = await this.scheduleDailyPush({
                 title: `Complete your solo streak!`,
-                body: `Complete ${soloStreakName}.`,
+                body: `Complete ${soloStreakName && soloStreakName.trim()}.`,
                 reminderHour,
                 reminderMinute,
                 soloStreakId,

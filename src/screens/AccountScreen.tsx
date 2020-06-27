@@ -148,7 +148,7 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                     {
                         name: 'image',
                         filename: photo.fileName,
-                        type: 'image/jpeg',
+                        type: photo.type,
                         data: RNFetchBlob.wrap(photo.uri),
                     },
                 ],

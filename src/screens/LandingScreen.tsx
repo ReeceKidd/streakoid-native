@@ -35,7 +35,7 @@ class LandingScreen extends PureComponent<Props> {
                     </Text>
                 </Spacer>
                 <Spacer>
-                    <Text style={{ textAlign: 'center' }}>Build daily habits with others.</Text>
+                    <Text style={{ textAlign: 'center' }}>Build habits with friends.</Text>
                 </Spacer>
                 <Spacer />
                 <Spacer>
