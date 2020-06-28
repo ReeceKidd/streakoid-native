@@ -67,51 +67,66 @@ class AppContainerComponent extends React.PureComponent<Props> {
                 collectDeviceId: true,
             },
         });
+        const googleSenderId = '392167142636';
+        NativePushNotification.configure({
+            onRegister: (tokenData) => {
+                const { token, os } = tokenData;
+                if (!token) {
+                    return;
+                }
+                const { currentUser } = this.props;
+                const androidToken = currentUser.pushNotification.androidToken;
+                const iosToken = currentUser.pushNotification.iosToken;
 
-        const { isAuthenticated } = this.props;
-        if (isAuthenticated) {
-            NativePushNotification.configure({
-                onRegister: (tokenData) => {
-                    const { token } = tokenData;
-                    const { currentUser } = this.props;
-                    const androidToken = currentUser.pushNotification.androidToken;
-                    const iosToken = currentUser.pushNotification.iosToken;
-                    if (token === androidToken || token === iosToken) {
-                        return;
-                    }
+                if (token === androidToken || token === iosToken) {
+                    return;
+                }
 
+                if (os === 'android') {
                     this.props.updateCurrentUser({
                         updateData: {
                             pushNotification: {
-                                androidToken: Platform.OS === 'android' ? androidToken : undefined,
-                                iosToken: Platform.OS === 'ios' ? iosToken : undefined,
+                                ...this.props.currentUser.pushNotification,
+                                androidToken: token,
                             },
                         },
                     });
-                },
-                onNotification: (notification) => {
-                    if (Platform.OS === 'ios') {
-                        this._handleNotification({
-                            pushNotification: notification.data as PushNotificationType,
-                        });
-                    } else {
-                        this._handleNotification({
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            pushNotification: (notification as any).userInfo,
-                        });
-                    }
-                },
-                permissions: {
-                    alert: true,
-                    badge: true,
-                    sound: true,
-                },
-            });
-        }
+                }
+                if (os === 'ios') {
+                    this.props.updateCurrentUser({
+                        updateData: {
+                            pushNotification: {
+                                ...this.props.currentUser.pushNotification,
+                                iosToken: token,
+                            },
+                        },
+                    });
+                }
+            },
+            onNotification: (notification) => {
+                if (Platform.OS === 'ios') {
+                    this._handleNotification({
+                        pushNotification: notification.data as PushNotificationType,
+                    });
+                } else {
+                    this._handleNotification({
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        pushNotification: notification as any,
+                    });
+                }
+            },
+            senderID: googleSenderId,
+            permissions: {
+                alert: true,
+                badge: true,
+                sound: true,
+            },
+            requestPermissions: true,
+        });
     };
 
     _handleNotification = async ({ pushNotification }: { pushNotification: PushNotificationType }) => {
-        if (!pushNotification.pushNotificationType) {
+        if ((pushNotification as any).foreground) {
             return;
         }
 

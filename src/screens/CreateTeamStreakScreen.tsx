@@ -28,6 +28,7 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
+    getCurrentUser: bindActionCreators(userActions.getCurrentUser, dispatch),
     createTeamStreak: bindActionCreators(teamStreakActions.createTeamStreak, dispatch),
     clearCreateTeamStreakError: bindActionCreators(teamStreakActions.clearCreateTeamStreakError, dispatch),
     addFollowerToTeamStreak: bindActionCreators(teamStreakActions.addFollowerToTeamStreak, dispatch),
@@ -53,6 +54,9 @@ const styles = StyleSheet.create({
 });
 
 class CreateTeamStreakScreenComponent extends PureComponent<Props> {
+    componentDidMount() {
+        this.props.getCurrentUser();
+    }
     render(): JSX.Element {
         const {
             createTeamStreak,
