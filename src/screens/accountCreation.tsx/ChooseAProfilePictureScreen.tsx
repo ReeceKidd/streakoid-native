@@ -142,6 +142,12 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
                             rounded
                             onPress={() => this.handleChoosePhoto()}
                         />
+                        {uploadProfileImageErrorMessage ? (
+                            <Text style={{ color: 'red', marginTop: 5 }}>{uploadProfileImageErrorMessage}</Text>
+                        ) : null}
+                        {uploadProfileImageSuccessMessage ? (
+                            <Text style={{ color: 'green', marginTop: 5 }}>{uploadProfileImageSuccessMessage}</Text>
+                        ) : null}
                     </View>
                     <Spacer />
                     <Button
@@ -149,8 +155,6 @@ class ChooseAProfilePictureScreenComponent extends PureComponent<Props, { photo:
                         loading={uploadProfileImageIsLoading}
                         onPress={() => this.props.navigation.navigate(Screens.CompletedCustomization)}
                     ></Button>
-                    {uploadProfileImageErrorMessage ? <Text>{uploadProfileImageErrorMessage}</Text> : null}
-                    {uploadProfileImageSuccessMessage ? <Text>{uploadProfileImageSuccessMessage}</Text> : null}
                 </Spacer>
             </SafeAreaView>
         );

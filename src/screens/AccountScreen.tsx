@@ -186,10 +186,12 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                     onPress={() => this.handleChoosePhoto()}
                                 />
                                 {uploadProfileImageErrorMessage ? (
-                                    <Text style={{ color: 'red' }}>{uploadProfileImageErrorMessage}</Text>
+                                    <Text style={{ color: 'red', marginTop: 5 }}>{uploadProfileImageErrorMessage}</Text>
                                 ) : null}
                                 {uploadProfileImageSuccessMessage ? (
-                                    <Text style={{ color: 'green' }}>{uploadProfileImageErrorMessage}</Text>
+                                    <Text style={{ color: 'green', marginTop: 5 }}>
+                                        {uploadProfileImageSuccessMessage}
+                                    </Text>
                                 ) : null}
                             </View>
                         </Spacer>
