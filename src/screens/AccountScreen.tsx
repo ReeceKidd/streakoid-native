@@ -27,6 +27,8 @@ import RouterCategories from '@streakoid/streakoid-models/lib/Types/RouterCatego
 import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/SupportedRequestHeaders';
 import { ProfileImages } from '@streakoid/streakoid-models/lib/Models/ProfileImages';
 import { getAccountCompletionPercentage } from '@streakoid/streakoid-shared/lib/helpers/progress/getAccountCompletionPercentage';
+import { faCoins } from '@fortawesome/pro-solid-svg-icons';
+import { faShield } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -195,6 +197,18 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                 ) : null}
                             </View>
                         </Spacer>
+                        <Spacer>
+                        <View style={{flexDirection: 'row'}} >
+                            <FontAwesomeIcon icon={faCoins} color="gold"/><Text style={{marginLeft: 5}}>{currentUser.coins}</Text>
+                      
+                            <View style={{flexDirection: 'row', marginLeft: 5}}  >
+                            <FontAwesomeIcon icon={faShield}/><Text style={{marginLeft: 5}}>{currentUser.oidXp}</Text>
+                            </View>
+                        </View>
+                    
+                        </Spacer>
+                      
+                        
                         <View style={{ flexDirection: 'row', marginLeft: 15 }}>
                             <Text style={{ marginRight: 5 }}>{currentUser.firstName}</Text>
                             <Text>{currentUser.lastName}</Text>

@@ -72,12 +72,12 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
     restoreArchivedTeamStreak: bindActionCreators(teamStreakActions.restoreArchivedTeamStreak, dispatch),
     deleteArchivedTeamStreak: bindActionCreators(teamStreakActions.deleteArchivedTeamStreak, dispatch),
-    completeSelectedTeamMemberStreakTask: bindActionCreators(
-        teamMemberStreakTaskActions.completeSelectedTeamMemberStreakTask,
+    completeTeamMemberStreakTask: bindActionCreators(
+        teamMemberStreakTaskActions.completeTeamMemberStreakTask,
         dispatch,
     ),
-    incompleteSelectedTeamMemberStreakTask: bindActionCreators(
-        teamMemberStreakTaskActions.incompleteSelectedTeamMemberStreakTask,
+    incompleteTeamMemberStreakTask: bindActionCreators(
+        teamMemberStreakTaskActions.incompleteTeamMemberStreakTask,
         dispatch,
     ),
     updateCurrentUserPushNotification: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
@@ -402,9 +402,9 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={selectedTeamMemberStreak.incompleteTeamMemberStreakTaskIsLoading}
                                             onPress={() =>
-                                                this.props.incompleteSelectedTeamMemberStreakTask({
+                                                this.props.incompleteTeamMemberStreakTask({
                                                     teamStreakId: selectedTeamStreak._id,
-                                                    selectedTeamMemberStreakId: selectedTeamMemberStreak._id,
+                                                    teamMemberStreakId: selectedTeamMemberStreak._id,
                                                 })
                                             }
                                         />
@@ -415,9 +415,9 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                             title="Complete"
                                             loading={selectedTeamMemberStreak.completeTeamMemberStreakTaskIsLoading}
                                             onPress={() =>
-                                                this.props.completeSelectedTeamMemberStreakTask({
+                                                this.props.completeTeamMemberStreakTask({
                                                     teamStreakId: selectedTeamStreak._id,
-                                                    selectedTeamMemberStreakId: selectedTeamMemberStreak._id,
+                                                    teamMemberStreakId: selectedTeamMemberStreak._id,
                                                 })
                                             }
                                         />
@@ -497,8 +497,8 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                 <Spacer>
                                     <Button
                                         buttonStyle={{ backgroundColor: 'green' }}
-                                        title="Add follower"
-                                        onPress={() => this.props.navigation.push(Screens.AddFollowerToTeamStreak)}
+                                        title="Add team member"
+                                        onPress={() => this.props.navigation.push(Screens.AddUserToTeamStreak)}
                                     />
                                 </Spacer>
                                 {selectedTeamStreak.status === StreakStatus.live ? (

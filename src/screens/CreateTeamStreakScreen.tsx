@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getCurrentUser: bindActionCreators(userActions.getCurrentUser, dispatch),
     createTeamStreak: bindActionCreators(teamStreakActions.createTeamStreak, dispatch),
     clearCreateTeamStreakError: bindActionCreators(teamStreakActions.clearCreateTeamStreakError, dispatch),
-    addFollowerToTeamStreak: bindActionCreators(teamStreakActions.addFollowerToTeamStreak, dispatch),
+    addUserToTeamStreak: bindActionCreators(teamStreakActions.addUserToTeamStreak, dispatch),
     selectFollower: bindActionCreators(userActions.selectFollower, dispatch),
     unselectFollower: bindActionCreators(userActions.unselectFollower, dispatch),
 });

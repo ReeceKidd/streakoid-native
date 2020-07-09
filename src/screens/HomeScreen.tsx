@@ -95,8 +95,6 @@ const mapStateToProps = (state: AppState) => {
         state && state.teamStreaks && state.teamStreaks.getMultipleLiveTeamStreaksIsLoading;
     const getLiveChallengeStreaksIsLoading =
         state.challengeStreaks && state.challengeStreaks.getLiveChallengeStreaksIsLoading;
-    const getLiveChallengeStreaksErrorMessage =
-        state && state.challengeStreaks && state.challengeStreaks.getLiveChallengeStreaksErrorMessage;
     const incompleteSoloStreaks = getIncompleteSoloStreaks(state);
     const incompleteTeamStreaks = getIncompleteTeamStreaks(state);
     const incompleteChallengeStreaks = getIncompleteChallengeStreaks(state);
@@ -122,7 +120,6 @@ const mapStateToProps = (state: AppState) => {
         getMultipleLiveTeamStreaksIsLoading,
         incompleteChallengeStreaks,
         getLiveChallengeStreaksIsLoading,
-        getLiveChallengeStreaksErrorMessage,
         totalIncompleteStreaks,
         totalNumberOfSoloStreaks,
         totalNumberOfTeamStreaks,
@@ -382,7 +379,6 @@ class HomeScreenComponent extends PureComponent<Props> {
             incompleteChallengeStreaks,
             totalNumberOfChallengeStreaks,
             getLiveChallengeStreaksIsLoading,
-            getLiveChallengeStreaksErrorMessage,
             userId,
             navigation,
         } = this.props;
@@ -416,9 +412,6 @@ class HomeScreenComponent extends PureComponent<Props> {
                     navigation={navigation}
                     userId={userId}
                 />
-                {getLiveChallengeStreaksErrorMessage ? (
-                    <Text style={{ color: 'red' }}>{getLiveChallengeStreaksErrorMessage}</Text>
-                ) : null}
             </>
         );
     }

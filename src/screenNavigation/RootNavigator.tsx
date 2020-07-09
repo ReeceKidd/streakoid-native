@@ -44,7 +44,7 @@ import { StreakRecommendationsScreen } from '../screens/StreakRecommendationsScr
 import { TeamStreaksScreen } from '../screens/TeamStreaksScreen';
 import { TeamStreakInfoScreen } from '../screens/TeamStreakInfoScreen';
 import { CreateTeamStreakScreen } from '../screens/CreateTeamStreakScreen';
-import { AddFollowerToTeamStreakScreen } from '../screens/AddFollowerToTeamStreakScreen';
+import { AddUserToTeamStreakScreen } from '../screens/AddUserToTeamStreakScreen';
 import { TeamMemberStreakInfoScreen } from '../screens/TeamMemberStreakInfoScreen';
 import { AddNoteToTeamStreakScreen } from '../screens/AddNoteToTeamStreakScreen';
 import { EditTeamStreakScreen } from '../screens/EditTeamStreakScreen';
@@ -137,7 +137,7 @@ export type RootStackParamList = {
     [Screens.TeamStreakInfo]: TeamStreakInfoRouteParams;
     [Screens.CreateTeamStreak]: undefined;
     [Screens.EditTeamStreak]: undefined;
-    [Screens.AddFollowerToTeamStreak]: undefined;
+    [Screens.AddUserToTeamStreak]: undefined;
     [Screens.TeamMemberStreakInfo]: { _id: string; streakName: string };
     [Screens.AddNoteToTeamStreak]: undefined;
     //Tutorial
@@ -586,12 +586,12 @@ const CreateTeamTeamStreakStackScreen = (
 
 const EditTeamTeamStreakStackScreen = <Stack.Screen name={Screens.EditTeamStreak} component={EditTeamStreakScreen} />;
 
-const AddFollowerToTeamTeamStreakStackScreen = (
+const AddUserToTeamTeamStreakStackScreen = (
     <Stack.Screen
-        name={Screens.AddFollowerToTeamStreak}
-        component={AddFollowerToTeamStreakScreen}
+        name={Screens.AddUserToTeamStreak}
+        component={AddUserToTeamStreakScreen}
         options={() => ({
-            title: 'Add follower to team streak',
+            title: 'Add user to team streak',
         })}
     />
 );
@@ -755,7 +755,7 @@ export const getStackScreens = () => {
             {TeamStreakInfoStackScreen}
             {CreateTeamTeamStreakStackScreen}
             {EditTeamTeamStreakStackScreen}
-            {AddFollowerToTeamTeamStreakStackScreen}
+            {AddUserToTeamTeamStreakStackScreen}
             {TeamMemberStreakInfoStackScreen}
             {AddNoteToTeamTeamStreakStackScreen}
             {WhatIsAStreakStackScreen}

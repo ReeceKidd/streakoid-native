@@ -18,7 +18,7 @@ export enum Screens {
     TeamStreakInfo = 'TeamStreakInfo',
     CreateTeamStreak = 'CreateTeamStreak',
     EditTeamStreak = 'EditTeamStreak',
-    AddFollowerToTeamStreak = 'AddFollowerToTeamStreak',
+    AddUserToTeamStreak = 'AddUserToTeamStreak',
     Users = 'Users',
     UserProfile = 'UserProfile',
     StreakRecommendations = 'StreakRecommendations',
