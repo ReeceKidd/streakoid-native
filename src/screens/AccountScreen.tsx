@@ -198,17 +198,17 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                             </View>
                         </Spacer>
                         <Spacer>
-                        <View style={{flexDirection: 'row'}} >
-                            <FontAwesomeIcon icon={faCoins} color="gold"/><Text style={{marginLeft: 5}}>{currentUser.coins}</Text>
-                      
-                            <View style={{flexDirection: 'row', marginLeft: 5}}  >
-                            <FontAwesomeIcon icon={faShield}/><Text style={{marginLeft: 5}}>{currentUser.oidXp}</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <FontAwesomeIcon icon={faCoins} color="gold" />
+                                <Text style={{ marginLeft: 5 }}>{currentUser.coins}</Text>
+
+                                <View style={{ flexDirection: 'row', marginLeft: 5 }}>
+                                    <FontAwesomeIcon icon={faShield} />
+                                    <Text style={{ marginLeft: 5 }}>{currentUser.oidXp}</Text>
+                                </View>
                             </View>
-                        </View>
-                    
                         </Spacer>
-                      
-                        
+
                         <View style={{ flexDirection: 'row', marginLeft: 15 }}>
                             <Text style={{ marginRight: 5 }}>{currentUser.firstName}</Text>
                             <Text>{currentUser.lastName}</Text>

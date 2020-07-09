@@ -127,6 +127,18 @@ class AddUserToTeamStreakScreenComponent extends PureComponent<Props> {
                         </TouchableOpacity>
                     )}
                 </Spacer>
+                <Spacer>
+                    <Button
+                        title={`Go to team streak`}
+                        onPress={() =>
+                            this.props.navigation.navigate(Screens.TeamStreakInfo, {
+                                _id: selectedTeamStreak._id,
+                                streakName: selectedTeamStreak.streakName,
+                                userIsApartOfStreak: true,
+                            })
+                        }
+                    />
+                </Spacer>
                 <Spacer />
             </ScrollView>
         );
