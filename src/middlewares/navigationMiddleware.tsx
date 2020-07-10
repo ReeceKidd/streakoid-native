@@ -16,6 +16,7 @@ import {
     NAVIGATE_TO_CHOOSE_A_PROFILE_PICTURE,
     NAVIGATE_TO_COMPLETED_REGISTRATION,
     NAVIGATE_TO_VERIFY_EMAIL,
+    NAVIGATE_TO_ADD_TEAM_MEMBER,
 } from '@streakoid/streakoid-shared/lib/actions/types';
 import { Screens } from '../screens/Screens';
 import { NavigationService } from '../../NavigationService';
@@ -57,6 +58,12 @@ const navigationMiddleware = (store: any) => (next: any) => (action: AppActions)
 
         case NAVIGATE_TO_VERIFY_EMAIL:
             return NavigationService.navigate({ screen: Screens.VerifyEmail });
+
+        case NAVIGATE_TO_ADD_TEAM_MEMBER:
+            return NavigationService.navigate({
+                screen: Screens.AddUserToTeamStreak,
+                params: { teamStreakId: action.payload.teamStreakId },
+            });
     }
 
     const result = next(action);

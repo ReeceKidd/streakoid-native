@@ -3,11 +3,9 @@ import juration from 'juration';
 import { Formik, FormikErrors } from 'formik';
 import { View } from 'react-native';
 import { Spacer } from './Spacer';
-import { Input, Button, Text } from 'react-native-elements';
+import { Input, Button } from 'react-native-elements';
 import { ErrorMessage } from './ErrorMessage';
-import { teamStreakActions, userActions } from '../actions/authenticatedSharedActions';
-import { FollowerSelector } from './FollowerSelector';
-import { FollowerWithClientData } from '@streakoid/streakoid-shared/lib/reducers/userReducer';
+import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { streakoidAnalytics } from '../../streakoidAnalytics';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -15,10 +13,6 @@ import { Screens } from '../screens/Screens';
 
 interface CreateTeamStreakFormProps {
     createTeamStreak: typeof teamStreakActions.createTeamStreak;
-    selectFollower: typeof userActions.selectFollower;
-    unselectFollower: typeof userActions.unselectFollower;
-    followers: FollowerWithClientData[];
-    members: { memberId: string }[];
     createTeamStreakErrorMessage: string;
     createTeamStreakIsLoading: boolean;
     navigation: StackNavigationProp<RootStackParamList, Screens.CreateTeamStreak>;
@@ -66,7 +60,6 @@ class CreateTeamStreakForm extends PureComponent<Props> {
         streakDescription?: string;
         streakDuration?: string;
     }): void => {
-        const { members } = this.props;
         const convertedNaturalLanguageTimeSeconds = (streakDuration && juration.parse(streakDuration)) || undefined;
         const numberOfMinutes =
             convertedNaturalLanguageTimeSeconds && convertedNaturalLanguageTimeSeconds > 0
@@ -74,15 +67,14 @@ class CreateTeamStreakForm extends PureComponent<Props> {
                 : undefined;
         this.props.createTeamStreak({
             streakName,
-            members,
+            members: [],
             streakDescription: streakDescription !== '' ? streakDescription : undefined,
             numberOfMinutes,
         });
-        this.props.navigation.pop();
     };
 
     render(): JSX.Element {
-        const { selectFollower, unselectFollower, followers, createTeamStreakIsLoading } = this.props;
+        const { createTeamStreakIsLoading } = this.props;
         return (
             <Formik
                 initialValues={{ streakName: '', streakDescription: '', streakDuration: '' }}
@@ -137,14 +129,6 @@ class CreateTeamStreakForm extends PureComponent<Props> {
                             {errors.streakDuration && touched.streakDuration ? (
                                 <ErrorMessage message={errors.streakDuration} />
                             ) : null}
-                        </Spacer>
-                        <Spacer>
-                            <Text style={{ fontWeight: 'bold' }}> Add followers </Text>
-                            <FollowerSelector
-                                selectFollower={selectFollower}
-                                unselectFollower={unselectFollower}
-                                followers={followers}
-                            />
                         </Spacer>
                         <Spacer>
                             <Button

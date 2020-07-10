@@ -32,8 +32,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     createTeamStreak: bindActionCreators(teamStreakActions.createTeamStreak, dispatch),
     clearCreateTeamStreakError: bindActionCreators(teamStreakActions.clearCreateTeamStreakError, dispatch),
     addUserToTeamStreak: bindActionCreators(teamStreakActions.addUserToTeamStreak, dispatch),
-    selectFollower: bindActionCreators(userActions.selectFollower, dispatch),
-    unselectFollower: bindActionCreators(userActions.unselectFollower, dispatch),
 });
 
 type CreateTeamStreakScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.CreateTeamStreak>;
@@ -58,30 +56,14 @@ class CreateTeamStreakScreenComponent extends PureComponent<Props> {
         this.props.getCurrentUser();
     }
     render(): JSX.Element {
-        const {
-            createTeamStreak,
-            selectFollower,
-            unselectFollower,
-            createTeamStreakIsLoading,
-            createTeamStreakErrorMessage,
-            currentUser,
-        } = this.props;
-        const members: { memberId: string }[] = [];
-        currentUser.followers.forEach((follower) => {
-            if (follower.isSelected) {
-                members.push({ memberId: follower.userId });
-            }
-        });
+        const { createTeamStreak, createTeamStreakIsLoading, createTeamStreakErrorMessage } = this.props;
+
         return (
             <ScrollView style={styles.container}>
                 <View>
                     <Spacer>
                         <CreateTeamStreakForm
                             createTeamStreak={createTeamStreak}
-                            selectFollower={selectFollower}
-                            unselectFollower={unselectFollower}
-                            followers={currentUser.followers}
-                            members={members}
                             createTeamStreakIsLoading={createTeamStreakIsLoading}
                             createTeamStreakErrorMessage={createTeamStreakErrorMessage}
                             navigation={this.props.navigation}

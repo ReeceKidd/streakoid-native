@@ -137,7 +137,7 @@ export type RootStackParamList = {
     [Screens.TeamStreakInfo]: TeamStreakInfoRouteParams;
     [Screens.CreateTeamStreak]: undefined;
     [Screens.EditTeamStreak]: undefined;
-    [Screens.AddUserToTeamStreak]: undefined;
+    [Screens.AddUserToTeamStreak]: { teamStreakId: string };
     [Screens.TeamMemberStreakInfo]: { _id: string; streakName: string };
     [Screens.AddNoteToTeamStreak]: undefined;
     //Tutorial

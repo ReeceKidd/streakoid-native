@@ -498,7 +498,11 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                     <Button
                                         buttonStyle={{ backgroundColor: 'green' }}
                                         title="Add team member"
-                                        onPress={() => this.props.navigation.push(Screens.AddUserToTeamStreak)}
+                                        onPress={() =>
+                                            this.props.navigation.push(Screens.AddUserToTeamStreak, {
+                                                teamStreakId: this.props.route.params._id,
+                                            })
+                                        }
                                     />
                                 </Spacer>
                                 {selectedTeamStreak.status === StreakStatus.live ? (
@@ -595,7 +599,7 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                         <Button
                                             onPress={() => {
                                                 deleteArchivedTeamStreak(selectedTeamStreak._id);
-                                                this.props.navigation.pop();
+                                                this.props.navigation.popToTop();
                                             }}
                                             buttonStyle={{ backgroundColor: 'red' }}
                                             loading={deleteArchivedTeamStreakIsLoading}
