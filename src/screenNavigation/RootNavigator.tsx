@@ -373,7 +373,13 @@ const ChallengeStreakInfoStackScreen = (
 );
 
 const AddNoteToChallengeStreaksStackScreen = (
-    <Stack.Screen name={Screens.AddNoteToChallengeStreak} component={AddNoteToChallengeStreakScreen} />
+    <Stack.Screen
+        name={Screens.AddNoteToChallengeStreak}
+        component={AddNoteToChallengeStreakScreen}
+        options={() => ({
+            title: 'Add note to challenge streak',
+        })}
+    />
 );
 
 const LeaderboardsStackScreen = (
@@ -492,10 +498,20 @@ const CreateSoloStreakStackScreen = (
     />
 );
 
-const EditSoloStreakStackScreen = <Stack.Screen name={Screens.EditSoloStreak} component={EditSoloStreakScreen} />;
+const EditSoloStreakStackScreen = (
+    <Stack.Screen
+        name={Screens.EditSoloStreak}
+        component={EditSoloStreakScreen}
+        options={{ title: 'Edit Solo streak' }}
+    />
+);
 
 const AddNoteToSoloStreakStackScreen = (
-    <Stack.Screen name={Screens.AddNoteToSoloStreak} component={AddNoteToSoloStreakScreen} />
+    <Stack.Screen
+        name={Screens.AddNoteToSoloStreak}
+        component={AddNoteToSoloStreakScreen}
+        options={{ title: 'Add note to solo streak' }}
+    />
 );
 
 const StreakRecommendationsStackScreen = (
@@ -584,7 +600,15 @@ const CreateTeamTeamStreakStackScreen = (
     />
 );
 
-const EditTeamTeamStreakStackScreen = <Stack.Screen name={Screens.EditTeamStreak} component={EditTeamStreakScreen} />;
+const EditTeamTeamStreakStackScreen = (
+    <Stack.Screen
+        name={Screens.EditTeamStreak}
+        component={EditTeamStreakScreen}
+        options={() => ({
+            title: 'Edit team streak',
+        })}
+    />
+);
 
 const AddUserToTeamTeamStreakStackScreen = (
     <Stack.Screen
@@ -620,7 +644,13 @@ const TeamMemberStreakInfoStackScreen = (
 );
 
 const AddNoteToTeamTeamStreakStackScreen = (
-    <Stack.Screen name={Screens.AddNoteToTeamStreak} component={AddNoteToTeamStreakScreen} />
+    <Stack.Screen
+        name={Screens.AddNoteToTeamStreak}
+        component={AddNoteToTeamStreakScreen}
+        options={() => ({
+            title: 'Add note to team streak',
+        })}
+    />
 );
 
 const WhatIsAStreakStackScreen = (
