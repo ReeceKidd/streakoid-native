@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { ChallengeStreakListItem } from '@streakoid/streakoid-shared/lib/reducers/challengeStreakReducer';
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import { ListItem, Divider, Text } from 'react-native-elements';
+import { ListItem, Divider, Text, Button } from 'react-native-elements';
 
 import { ChallengeStreakTaskButton } from './ChallengeStreakTaskButton';
 import { Screens } from '../screens/Screens';
@@ -10,6 +10,9 @@ import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { StreakFlame } from './StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCoins } from '@fortawesome/pro-solid-svg-icons';
+import { Spacer } from './Spacer';
 
 interface LiveChallengeStreakListProps {
     navigation: StackNavigationProp<RootStackParamList, Screens.Home | Screens.ChallengeStreaks>;
@@ -17,6 +20,7 @@ interface LiveChallengeStreakListProps {
     getLiveChallengeStreaks: typeof challengeStreakActions.getLiveChallengeStreaks;
     completeChallengeStreakListTask: typeof challengeStreakActions.completeChallengeStreakListTask;
     incompleteChallengeStreakListTask: typeof challengeStreakActions.incompleteChallengeStreakListTask;
+    recoverChallengeStreak: typeof challengeStreakActions.recoverChallengeStreak;
     getLiveChallengeStreaksIsLoading: boolean;
     liveChallengeStreaks: ChallengeStreakListItem[];
     totalNumberOfChallengeStreaks: number;
@@ -40,6 +44,8 @@ class LiveChallengeStreakList extends PureComponent<Props> {
                         incompleteChallengeStreakListTaskIsLoading,
                         pastStreaks,
                         currentStreak,
+                        recoverChallengeStreakErrorMessage,
+                        recoverChallengeStreakIsLoading,
                         timezone,
                         createdAt,
                     } = item;
@@ -91,6 +97,26 @@ class LiveChallengeStreakList extends PureComponent<Props> {
                                     title={item.challengeName}
                                 />
                             </TouchableOpacity>
+                            {negativeDayStreak === 1 ? (
+                                <View>
+                                    <Text>Forget to complete this streak yesterday? </Text>
+                                    <Spacer>
+                                        <Button
+                                            loading={recoverChallengeStreakIsLoading}
+                                            onPress={() =>
+                                                this.props.recoverChallengeStreak({ challengeStreakId: _id })
+                                            }
+                                            title={`Restore this streak for 1000 `}
+                                            iconRight={true}
+                                            icon={<FontAwesomeIcon icon={faCoins} color={'gold'} />}
+                                        />
+                                    </Spacer>
+
+                                    {recoverChallengeStreakErrorMessage ? (
+                                        <Text style={{ color: 'red' }}>{recoverChallengeStreakErrorMessage}</Text>
+                                    ) : null}
+                                </View>
+                            ) : null}
                             <Divider />
                         </View>
                     );

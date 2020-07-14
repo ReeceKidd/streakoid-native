@@ -372,6 +372,7 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
     archiveChallengeStreak = async ({ selectedChallengeStreakId }: { selectedChallengeStreakId: string }) => {
         const { archiveChallengeStreak } = this.props;
         archiveChallengeStreak({ challengeStreakId: selectedChallengeStreakId });
+        this.props.navigation.pop();
     };
 
     render(): JSX.Element {

@@ -162,6 +162,8 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
         challengeStreakActions.incompleteChallengeStreakListTask,
         dispatch,
     ),
+    recoverChallengeStreak: bindActionCreators(challengeStreakActions.recoverChallengeStreak, dispatch),
+    recoverSoloStreak: bindActionCreators(soloStreakActions.recoverSoloStreak, dispatch),
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
 });
 
@@ -376,6 +378,7 @@ class HomeScreenComponent extends PureComponent<Props> {
             incompleteChallengeStreakListTask,
             getChallengeStreak,
             getLiveChallengeStreaks,
+            recoverChallengeStreak,
             incompleteChallengeStreaks,
             totalNumberOfChallengeStreaks,
             getLiveChallengeStreaksIsLoading,
@@ -406,6 +409,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                     getLiveChallengeStreaks={getLiveChallengeStreaks}
                     completeChallengeStreakListTask={completeChallengeStreakListTask}
                     incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
+                    recoverChallengeStreak={recoverChallengeStreak}
                     getLiveChallengeStreaksIsLoading={getLiveChallengeStreaksIsLoading}
                     liveChallengeStreaks={incompleteChallengeStreaks}
                     totalNumberOfChallengeStreaks={totalNumberOfChallengeStreaks}
@@ -467,6 +471,7 @@ class HomeScreenComponent extends PureComponent<Props> {
             getSoloStreak,
             completeSoloStreakListTask,
             incompleteSoloStreakListTask,
+            recoverSoloStreak,
             incompleteSoloStreaks,
             getMultipleLiveSoloStreaksIsLoading,
             totalNumberOfSoloStreaks,
@@ -504,6 +509,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                     getSoloStreak={getSoloStreak}
                     completeSoloStreakListTask={completeSoloStreakListTask}
                     incompleteSoloStreakListTask={incompleteSoloStreakListTask}
+                    recoverSoloStreak={recoverSoloStreak}
                     liveSoloStreaks={incompleteSoloStreaks}
                     getMultipleLiveSoloStreaksIsLoading={getMultipleLiveSoloStreaksIsLoading}
                     totalNumberOfSoloStreaks={totalNumberOfSoloStreaks}

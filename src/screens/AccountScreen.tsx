@@ -28,7 +28,7 @@ import SupportedRequestHeaders from '@streakoid/streakoid-models/lib/Types/Suppo
 import { ProfileImages } from '@streakoid/streakoid-models/lib/Models/ProfileImages';
 import { getAccountCompletionPercentage } from '@streakoid/streakoid-shared/lib/helpers/progress/getAccountCompletionPercentage';
 import { faCoins } from '@fortawesome/pro-solid-svg-icons';
-import { faShield } from '@fortawesome/pro-solid-svg-icons';
+import { faDiamond } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -203,7 +203,7 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                 <Text style={{ marginLeft: 5 }}>{currentUser.coins}</Text>
 
                                 <View style={{ flexDirection: 'row', marginLeft: 5 }}>
-                                    <FontAwesomeIcon icon={faShield} />
+                                    <FontAwesomeIcon icon={faDiamond} color="blue" />
                                     <Text style={{ marginLeft: 5 }}>{currentUser.oidXp}</Text>
                                 </View>
                             </View>

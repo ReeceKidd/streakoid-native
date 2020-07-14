@@ -72,6 +72,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getLiveChallengeStreaks: bindActionCreators(challengeStreakActions.getLiveChallengeStreaks, dispatch),
     getChallengeStreak: bindActionCreators(challengeStreakActions.getChallengeStreak, dispatch),
     getArchivedChallengeStreaks: bindActionCreators(challengeStreakActions.getArchivedChallengeStreaks, dispatch),
+    recoverChallengeStreak: bindActionCreators(challengeStreakActions.recoverChallengeStreak, dispatch),
 });
 
 type ChallengeStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.ChallengeStreaks>;
@@ -126,6 +127,7 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
             getChallengeStreak,
             completeChallengeStreakListTask,
             incompleteChallengeStreakListTask,
+            recoverChallengeStreak,
             liveChallengeStreaks,
             getLiveChallengeStreaksIsLoading,
             totalNumberOfChallengeStreaks,
@@ -158,9 +160,10 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}
                             getLiveChallengeStreaks={getLiveChallengeStreaks}
-                            getLiveChallengeStreaksIsLoading={getLiveChallengeStreaksIsLoading}
                             completeChallengeStreakListTask={completeChallengeStreakListTask}
                             incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
+                            recoverChallengeStreak={recoverChallengeStreak}
+                            getLiveChallengeStreaksIsLoading={getLiveChallengeStreaksIsLoading}
                             liveChallengeStreaks={liveChallengeStreaks}
                             totalNumberOfChallengeStreaks={totalNumberOfChallengeStreaks}
                             getChallengeStreak={getChallengeStreak}

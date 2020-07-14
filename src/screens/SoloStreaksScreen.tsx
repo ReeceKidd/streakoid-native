@@ -70,6 +70,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     completeSoloStreakListTask: bindActionCreators(soloStreakActions.completeSoloStreakListTask, dispatch),
     incompleteSoloStreakListTask: bindActionCreators(soloStreakActions.incompleteSoloStreakListTask, dispatch),
     getArchivedSoloStreaks: bindActionCreators(soloStreakActions.getArchivedSoloStreaks, dispatch),
+    recoverSoloStreak: bindActionCreators(soloStreakActions.recoverSoloStreak, dispatch),
 });
 
 type SoloStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.SoloStreaks>;
@@ -125,12 +126,13 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
 
     render(): JSX.Element {
         const {
-            currentUser,
-            liveSoloStreaks,
             getSoloStreak,
-            archivedSoloStreaks,
             completeSoloStreakListTask,
             incompleteSoloStreakListTask,
+            recoverSoloStreak,
+            currentUser,
+            liveSoloStreaks,
+            archivedSoloStreaks,
             getMultipleLiveSoloStreaksIsLoading,
             getMultipleArchivedSoloStreaksIsLoading,
             totalNumberOfSoloStreaks,
@@ -164,6 +166,7 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
                             getSoloStreak={getSoloStreak}
                             completeSoloStreakListTask={completeSoloStreakListTask}
                             incompleteSoloStreakListTask={incompleteSoloStreakListTask}
+                            recoverSoloStreak={recoverSoloStreak}
                             liveSoloStreaks={liveSoloStreaks}
                             getMultipleLiveSoloStreaksIsLoading={getMultipleLiveSoloStreaksIsLoading}
                             totalNumberOfSoloStreaks={totalNumberOfSoloStreaks}

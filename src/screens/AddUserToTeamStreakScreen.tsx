@@ -13,7 +13,6 @@ import { teamStreakActions } from '../actions/authenticatedSharedActions';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ListItem, Button } from 'react-native-elements';
 import { Screens } from './Screens';
-import { BasicUser } from '@streakoid/streakoid-models/lib/Models/BasicUser';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -104,7 +103,7 @@ class AddUserToTeamStreakScreenComponent extends PureComponent<Props> {
                                 {currentUser.followers.length > 0 ? (
                                     <FlatList
                                         data={currentUser.followers}
-                                        keyExtractor={(follower: BasicUser) => follower.userId}
+                                        keyExtractor={(follower) => follower.userId}
                                         renderItem={({ item }) => {
                                             const { profileImage } = item;
                                             const isApartOfTeamStreak = Boolean(

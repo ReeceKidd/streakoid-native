@@ -8,7 +8,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Screens } from './Screens';
 import { GeneralActivityFeed } from '../components/GeneralActivityFeed';
-import { faChild, faPeopleCarry, faMedal, faUser, faCoins, faShield } from '@fortawesome/pro-solid-svg-icons';
+import { faChild, faPeopleCarry, faMedal, faUser, faCoins, faDiamond } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { SoloStreak } from '@streakoid/streakoid-models/lib/Models/SoloStreak';
 import { PopulatedTeamStreak } from '@streakoid/streakoid-models/lib/Models/PopulatedTeamStreak';
@@ -123,7 +123,7 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                                     <Text style={{ marginLeft: 5 }}>{selectedUser.coins}</Text>
 
                                     <View style={{ flexDirection: 'row', marginLeft: 5 }}>
-                                        <FontAwesomeIcon icon={faShield} />
+                                        <FontAwesomeIcon icon={faDiamond} color="blue" />
                                         <Text style={{ marginLeft: 5 }}>{selectedUser.oidXp}</Text>
                                     </View>
                                 </View>
