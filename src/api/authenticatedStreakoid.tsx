@@ -47,7 +47,7 @@ streakoidAuthenticatedClient.interceptors.response.use(
     },
     (error: AxiosError) => {
         // eslint-disable-next-line no-undef
-        console.log(error.response?.data);
+        console.log(error.response);
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         if (error.response && error.response.status === 401) {
             return store.dispatch({ type: SESSION_EXPIRED });

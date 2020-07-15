@@ -5,6 +5,7 @@ import { Provider, connect } from 'react-redux';
 
 import { store, persistor, AppState } from './store';
 import { ErrorBoundary } from './ErrorBoundary';
+import { NoInternetBoundary } from './NoInternetBoundary';
 
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -69,6 +70,13 @@ class AppContainerComponent extends React.PureComponent<Props> {
         });
         const googleSenderId = '392167142636';
         NativePushNotification.configure({
+            senderID: googleSenderId,
+            permissions: {
+                alert: true,
+                badge: true,
+                sound: true,
+            },
+            requestPermissions: true,
             onRegister: (tokenData) => {
                 const { token, os } = tokenData;
                 if (!token) {
@@ -115,13 +123,6 @@ class AppContainerComponent extends React.PureComponent<Props> {
                     });
                 }
             },
-            senderID: googleSenderId,
-            permissions: {
-                alert: true,
-                badge: true,
-                sound: true,
-            },
-            requestPermissions: true,
         });
     };
 
@@ -237,33 +238,37 @@ const MyTheme = {
     },
 };
 
-const App = () => (
-    <Provider store={store}>
-        <NavigationContainer ref={navigationRef as any} theme={MyTheme}>
-            <PersistGate
-                loading={
-                    <View
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <ActivityIndicator size={'large'} />
-                    </View>
-                }
-                persistor={persistor}
-            >
-                <ErrorBoundary>
-                    <AppContainer />
-                </ErrorBoundary>
-            </PersistGate>
-        </NavigationContainer>
-    </Provider>
-);
+const App = () => {
+    return (
+        <Provider store={store}>
+            <NavigationContainer ref={navigationRef as any} theme={MyTheme}>
+                <PersistGate
+                    loading={
+                        <View
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                top: 0,
+                                bottom: 0,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <ActivityIndicator size={'large'} />
+                        </View>
+                    }
+                    persistor={persistor}
+                >
+                    <ErrorBoundary>
+                        <NoInternetBoundary>
+                            <AppContainer />
+                        </NoInternetBoundary>
+                    </ErrorBoundary>
+                </PersistGate>
+            </NavigationContainer>
+        </Provider>
+    );
+};
 
 export default App;
