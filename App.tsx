@@ -215,6 +215,18 @@ class AppContainerComponent extends React.PureComponent<Props> {
             };
             return NavigationService.navigate({ screen: Screens.Account, params });
         }
+
+        if (pushNotification.pushNotificationType === PushNotificationTypes.joinedTeamStreak) {
+            const params: TeamStreakInfoRouteParams = {
+                _id: pushNotification.teamStreakId,
+                streakName: pushNotification.teamStreakName,
+                userIsApartOfStreak: true,
+            };
+            return NavigationService.navigate({
+                screen: Screens.TeamStreakInfo,
+                params,
+            });
+        }
     };
 
     render() {
