@@ -33,6 +33,7 @@ import {
     UserProfileRouteParams,
     AccountRouteParams,
 } from './src/screenNavigation/RootNavigator';
+import SplashScreen from 'react-native-splash-screen';
 
 enableScreens();
 
@@ -60,6 +61,7 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 
 class AppContainerComponent extends React.PureComponent<Props> {
     componentDidMount = async () => {
+        SplashScreen.hide();
         analytics.setup('bn5p5VLmYRJ5oWE1z4xkmTGcb3DflWYg', {
             using: [GoogleAnalytics, Mixpanel],
             trackAppLifecycleEvents: true,
