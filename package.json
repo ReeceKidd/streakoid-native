@@ -34,7 +34,7 @@
         "@streakoid/streakoid-analytics": "^1.0.8",
         "@streakoid/streakoid-models": "^1.0.89",
         "@streakoid/streakoid-sdk": "^1.0.571",
-        "@streakoid/streakoid-shared": "^1.0.663",
+        "@streakoid/streakoid-shared": "^1.0.669",
         "@types/react-native-push-notification": "^3.0.9",
         "@types/react-native-uuid": "^1.4.0",
         "@types/react-redux": "^7.1.7",

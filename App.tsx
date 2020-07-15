@@ -79,6 +79,7 @@ class AppContainerComponent extends React.PureComponent<Props> {
             requestPermissions: true,
             onRegister: (tokenData) => {
                 const { token, os } = tokenData;
+
                 if (!token) {
                     return;
                 }
@@ -94,7 +95,6 @@ class AppContainerComponent extends React.PureComponent<Props> {
                     this.props.updateCurrentUser({
                         updateData: {
                             pushNotification: {
-                                ...this.props.currentUser.pushNotification,
                                 androidToken: token,
                             },
                         },
@@ -104,7 +104,6 @@ class AppContainerComponent extends React.PureComponent<Props> {
                     this.props.updateCurrentUser({
                         updateData: {
                             pushNotification: {
-                                ...this.props.currentUser.pushNotification,
                                 iosToken: token,
                             },
                         },
