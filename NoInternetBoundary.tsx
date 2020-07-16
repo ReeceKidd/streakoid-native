@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 });
 
 export class NoInternetBoundary extends React.PureComponent<{ children: unknown }> {
-    state = { isInternetReachable: false };
+    state = { isInternetReachable: true };
 
     unsubscribe: NetInfoSubscription | undefined;
 
@@ -36,8 +36,8 @@ export class NoInternetBoundary extends React.PureComponent<{ children: unknown 
                     <Image source={OID_NO_INTERNET_IMAGE} style={{ width: 300, height: 300 }} />
                 </View>
                 <Spacer>
-                    <Text h3 style={{ textAlign: 'center' }}>
-                        Streakoid requires an internet connection
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                        Oid needs an internet connection to keep this show moving.
                     </Text>
                 </Spacer>
                 <Spacer />
