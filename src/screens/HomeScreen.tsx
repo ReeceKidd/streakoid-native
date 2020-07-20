@@ -164,6 +164,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     ),
     recoverChallengeStreak: bindActionCreators(challengeStreakActions.recoverChallengeStreak, dispatch),
     recoverSoloStreak: bindActionCreators(soloStreakActions.recoverSoloStreak, dispatch),
+    recoverTeamMemberStreak: bindActionCreators(teamStreakActions.recoverTeamMemberStreak, dispatch),
     updateCurrentUserPushNotifications: bindActionCreators(userActions.updateCurrentUserPushNotifications, dispatch),
 });
 
@@ -424,9 +425,10 @@ class HomeScreenComponent extends PureComponent<Props> {
         const {
             getSelectedTeamStreak,
             getLiveTeamStreaks,
-            getMultipleLiveTeamStreaksIsLoading,
             completeTeamMemberStreakTask,
             incompleteTeamMemberStreakTask,
+            recoverTeamMemberStreak,
+            getMultipleLiveTeamStreaksIsLoading,
             incompleteTeamStreaks,
             userId,
             totalNumberOfTeamStreaks,
@@ -453,9 +455,10 @@ class HomeScreenComponent extends PureComponent<Props> {
                 <LiveTeamStreakList
                     getTeamStreak={getSelectedTeamStreak}
                     getLiveTeamStreaks={getLiveTeamStreaks}
-                    getMultipleLiveTeamStreaksIsLoading={getMultipleLiveTeamStreaksIsLoading}
                     completeTeamMemberStreakTask={completeTeamMemberStreakTask}
                     incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
+                    recoverTeamMemberStreak={recoverTeamMemberStreak}
+                    getMultipleLiveTeamStreaksIsLoading={getMultipleLiveTeamStreaksIsLoading}
                     teamStreaks={incompleteTeamStreaks}
                     userId={userId}
                     totalNumberOfTeamStreaks={totalNumberOfTeamStreaks}

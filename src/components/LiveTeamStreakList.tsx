@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { ListItem, Divider, Text, Avatar } from 'react-native-elements';
+import { ListItem, Divider, Text, Avatar, Button } from 'react-native-elements';
 
 import { Spacer } from './Spacer';
 import { TeamMemberStreakTaskButton } from './TeamMemberStreakTaskButton';
@@ -10,30 +10,21 @@ import {
     PopulatedTeamMemberWithClientData,
 } from '@streakoid/streakoid-shared/lib/reducers/teamStreakReducer';
 import { ErrorMessage } from './ErrorMessage';
-import { teamStreakActions } from '../actions/authenticatedSharedActions';
+import { teamStreakActions, teamMemberStreakTaskActions } from '../actions/authenticatedSharedActions';
 import { getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { StreakFlame } from './StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCoins } from '@fortawesome/free-solid-svg-icons';
 
 interface LiveTeamStreakListProps {
     navigation: StackNavigationProp<RootStackParamList, Screens.Home | Screens.TeamStreaks>;
     getTeamStreak: typeof teamStreakActions.getSelectedTeamStreak;
     getLiveTeamStreaks: typeof teamStreakActions.getLiveTeamStreaks;
-    completeTeamMemberStreakTask: ({
-        teamStreakId,
-        teamMemberStreakId,
-    }: {
-        teamStreakId: string;
-        teamMemberStreakId: string;
-    }) => void;
-    incompleteTeamMemberStreakTask: ({
-        teamStreakId,
-        teamMemberStreakId,
-    }: {
-        teamStreakId: string;
-        teamMemberStreakId: string;
-    }) => void;
+    completeTeamMemberStreakTask: typeof teamMemberStreakTaskActions.completeTeamMemberStreakTask;
+    incompleteTeamMemberStreakTask: typeof teamMemberStreakTaskActions.incompleteTeamMemberStreakTask;
+    recoverTeamMemberStreak: typeof teamStreakActions.recoverTeamMemberStreak;
     getMultipleLiveTeamStreaksIsLoading: boolean;
     teamStreaks: PopulatedTeamStreakWithClientData[];
     userId: string;
@@ -46,6 +37,7 @@ const LiveTeamStreakList = (props: Props) => {
     const {
         completeTeamMemberStreakTask,
         incompleteTeamMemberStreakTask,
+        recoverTeamMemberStreak,
         teamStreaks,
         totalNumberOfTeamStreaks,
         getMultipleLiveTeamStreaksIsLoading,
@@ -91,18 +83,35 @@ const LiveTeamStreakList = (props: Props) => {
                     } = teamMemberStreak;
                     const { _id, streakName, members, pastStreaks, currentStreak, timezone, createdAt } = item;
                     const userIsApartOfStreak = Boolean(item.members.find((member) => member._id === userId));
-                    const streakCompletionInfo = getStreakCompletionInfo({
+
+                    const teamStreakCompletionInfo = getStreakCompletionInfo({
                         pastStreaks,
                         currentStreak,
                         timezone,
                         createdAt: new Date(createdAt),
                     });
-                    const daysSinceUserCompletedStreak =
-                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
-                    const daysSinceUserCreatedStreak =
-                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
-                    const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
+                    const daysSinceUserCompletedTeamStreak =
+                        teamStreakCompletionInfo && teamStreakCompletionInfo.daysSinceUserCompletedStreak;
+                    const daysSinceUserCreatedTeamStreak =
+                        teamStreakCompletionInfo && teamStreakCompletionInfo.daysSinceUserCreatedStreak;
+                    const teamStreakNegativeDayStreak =
+                        daysSinceUserCompletedTeamStreak || daysSinceUserCreatedTeamStreak || 0;
+
+                    const teamMemberStreakCompletionInfo = getStreakCompletionInfo({
+                        pastStreaks,
+                        currentStreak,
+                        timezone,
+                        createdAt: new Date(createdAt),
+                    });
+                    const daysSinceUserCompletedTeamMemberStreak =
+                        teamMemberStreakCompletionInfo && teamMemberStreakCompletionInfo.daysSinceUserCompletedStreak;
+                    const daysSinceUserCreatedTeamMemberStreak =
+                        teamMemberStreakCompletionInfo && teamMemberStreakCompletionInfo.daysSinceUserCreatedStreak;
+                    const teamMemberStreakNegativeDayStreak =
+                        daysSinceUserCompletedTeamMemberStreak || daysSinceUserCreatedTeamMemberStreak || 0;
+
                     const maximumNumberOfTeamMembersToDisplay = 3;
+
                     return (
                         <View>
                             <TouchableOpacity
@@ -188,11 +197,24 @@ const LiveTeamStreakList = (props: Props) => {
                                     subtitle={
                                         <StreakFlame
                                             currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
-                                            negativeDayStreak={negativeDayStreak}
+                                            negativeDayStreak={teamStreakNegativeDayStreak}
                                         />
                                     }
                                 />
                             </TouchableOpacity>
+                            {teamMemberStreakNegativeDayStreak === 1 ? (
+                                <>
+                                    <Text>Forget to click your {streakName} yesterday?</Text>
+                                    <Spacer>
+                                        <Button
+                                            onPress={() => recoverTeamMemberStreak({ teamMemberStreakId })}
+                                            title={`Restore this streak for 1000 `}
+                                            iconRight={true}
+                                            icon={<FontAwesomeIcon icon={faCoins} color={'gold'} />}
+                                        />
+                                    </Spacer>
+                                </>
+                            ) : null}
 
                             {completeTeamMemberStreakTaskErrorMessage ? (
                                 <Spacer>

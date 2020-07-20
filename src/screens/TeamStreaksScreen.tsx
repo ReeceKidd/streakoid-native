@@ -75,6 +75,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
         teamMemberStreakTaskActions.incompleteTeamMemberStreakTask,
         dispatch,
     ),
+    recoverTeamMemberStreak: bindActionCreators(teamStreakActions.recoverTeamMemberStreak, dispatch),
 });
 
 type TeamStreaksScreenNavigationProp = StackNavigationProp<RootStackParamList, Screens.TeamStreaks>;
@@ -131,9 +132,10 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
             getTeamStreak,
             getLiveTeamStreaks,
             getArchivedTeamStreaks,
-            getMultipleLiveTeamStreaksIsLoading,
+            recoverTeamMemberStreak,
             completeTeamMemberStreakTask,
             incompleteTeamMemberStreakTask,
+            getMultipleLiveTeamStreaksIsLoading,
             liveTeamStreaks,
             userId,
             archivedTeamStreaks,
@@ -167,9 +169,10 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                             navigation={this.props.navigation}
                             getTeamStreak={getTeamStreak}
                             getLiveTeamStreaks={getLiveTeamStreaks}
-                            getMultipleLiveTeamStreaksIsLoading={getMultipleLiveTeamStreaksIsLoading}
                             completeTeamMemberStreakTask={completeTeamMemberStreakTask}
                             incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
+                            recoverTeamMemberStreak={recoverTeamMemberStreak}
+                            getMultipleLiveTeamStreaksIsLoading={getMultipleLiveTeamStreaksIsLoading}
                             teamStreaks={liveTeamStreaks}
                             userId={userId}
                             totalNumberOfTeamStreaks={liveTeamStreaks.length}
