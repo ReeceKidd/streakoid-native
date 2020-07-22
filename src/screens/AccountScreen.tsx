@@ -175,6 +175,7 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
             uploadProfileImageSuccessMessage,
         } = this.props;
         const profileImage = currentUser && currentUser.profileImages.originalImageUrl;
+        const { longestSoloStreak, longestChallengeStreak, longestTeamMemberStreak, longestTeamStreak } = currentUser;
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView>
@@ -219,9 +220,9 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                 <TouchableOpacity
                                     onPress={() =>
                                         this.props.navigation.navigate(Screens.SoloStreakInfo, {
-                                            _id: currentUser.longestSoloStreak.soloStreakId,
+                                            _id: longestSoloStreak && longestSoloStreak.soloStreakId,
                                             isUsersStreak: true,
-                                            streakName: currentUser.longestSoloStreak.soloStreakName,
+                                            streakName: longestSoloStreak && longestSoloStreak.soloStreakName,
                                         })
                                     }
                                 >
@@ -229,20 +230,22 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                         <Text h4 style={{ textAlign: 'center' }}>
                                             <FontAwesomeIcon
                                                 icon={faFlame}
-                                                color={currentUser.longestSoloStreak.endDate ? 'grey' : 'red'}
+                                                color={longestSoloStreak && longestSoloStreak.endDate ? 'grey' : 'red'}
                                             />
-                                            {currentUser.longestSoloStreak.numberOfDays}
+                                            {longestSoloStreak && longestSoloStreak.numberOfDays}
                                         </Text>
                                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
                                             Longest solo streak
                                         </Text>
                                         <Text style={{ textAlign: 'center' }}>
-                                            {currentUser.longestSoloStreak.soloStreakName}
+                                            {longestSoloStreak && longestSoloStreak.soloStreakName}
                                         </Text>
                                         <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
-                                            {new Date(currentUser.longestSoloStreak.startDate).toDateString()}-
-                                            {currentUser.longestSoloStreak.endDate
-                                                ? new Date(currentUser.longestSoloStreak.endDate).toDateString()
+                                            {new Date(longestSoloStreak && longestSoloStreak.startDate).toDateString()}-
+                                            {longestSoloStreak && longestSoloStreak.endDate
+                                                ? new Date(
+                                                      longestSoloStreak && longestSoloStreak.endDate,
+                                                  ).toDateString()
                                                 : 'Now'}
                                         </Text>
                                     </Card>
@@ -250,8 +253,9 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                 <TouchableOpacity
                                     onPress={() =>
                                         this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
-                                            _id: currentUser.longestChallengeStreak.challengeStreakId,
-                                            challengeName: currentUser.longestChallengeStreak.challengeName,
+                                            _id: longestChallengeStreak && longestChallengeStreak.challengeStreakId,
+                                            challengeName:
+                                                longestChallengeStreak && longestChallengeStreak.challengeName,
                                         })
                                     }
                                 >
@@ -259,20 +263,29 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                         <Text h4 style={{ textAlign: 'center' }}>
                                             <FontAwesomeIcon
                                                 icon={faFlame}
-                                                color={currentUser.longestChallengeStreak.endDate ? 'grey' : 'red'}
+                                                color={
+                                                    longestChallengeStreak && longestChallengeStreak.endDate
+                                                        ? 'grey'
+                                                        : 'red'
+                                                }
                                             />
-                                            {currentUser.longestChallengeStreak.numberOfDays}
+                                            {longestChallengeStreak && longestChallengeStreak.numberOfDays}
                                         </Text>
                                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
                                             Longest challenge streak
                                         </Text>
                                         <Text style={{ textAlign: 'center' }}>
-                                            {currentUser.longestChallengeStreak.challengeName}
+                                            {longestChallengeStreak && longestChallengeStreak.challengeName}
                                         </Text>
                                         <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
-                                            {new Date(currentUser.longestChallengeStreak.startDate).toDateString()}-
-                                            {currentUser.longestChallengeStreak.endDate
-                                                ? new Date(currentUser.longestChallengeStreak.endDate).toDateString()
+                                            {new Date(
+                                                longestChallengeStreak && longestChallengeStreak.startDate,
+                                            ).toDateString()}
+                                            -
+                                            {longestChallengeStreak && longestChallengeStreak.endDate
+                                                ? new Date(
+                                                      longestChallengeStreak && longestChallengeStreak.endDate,
+                                                  ).toDateString()
                                                 : 'Now'}
                                         </Text>
                                     </Card>
@@ -280,8 +293,9 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                 <TouchableOpacity
                                     onPress={() =>
                                         this.props.navigation.navigate(Screens.TeamMemberStreakInfo, {
-                                            _id: currentUser.longestTeamMemberStreak.teamMemberStreakId,
-                                            streakName: currentUser.longestTeamMemberStreak.teamStreakName,
+                                            _id: longestTeamMemberStreak && longestTeamMemberStreak.teamMemberStreakId,
+                                            streakName:
+                                                longestTeamMemberStreak && longestTeamMemberStreak.teamStreakName,
                                         })
                                     }
                                 >
@@ -289,20 +303,29 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                         <Text h4 style={{ textAlign: 'center' }}>
                                             <FontAwesomeIcon
                                                 icon={faFlame}
-                                                color={currentUser.longestTeamMemberStreak.endDate ? 'grey' : 'red'}
+                                                color={
+                                                    longestTeamMemberStreak && longestTeamMemberStreak.endDate
+                                                        ? 'grey'
+                                                        : 'red'
+                                                }
                                             />
-                                            {currentUser.longestTeamMemberStreak.numberOfDays}
+                                            {longestTeamMemberStreak && longestTeamMemberStreak.numberOfDays}
                                         </Text>
                                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
                                             Longest team member streak
                                         </Text>
                                         <Text style={{ textAlign: 'center' }}>
-                                            {currentUser.longestTeamMemberStreak.teamStreakName}
+                                            {longestTeamMemberStreak && longestTeamMemberStreak.teamStreakName}
                                         </Text>
                                         <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
-                                            {new Date(currentUser.longestTeamMemberStreak.startDate).toDateString()}-
-                                            {currentUser.longestTeamMemberStreak.endDate
-                                                ? new Date(currentUser.longestTeamMemberStreak.endDate).toDateString()
+                                            {new Date(
+                                                longestTeamMemberStreak && longestTeamMemberStreak.startDate,
+                                            ).toDateString()}
+                                            -
+                                            {longestTeamMemberStreak && longestTeamMemberStreak.endDate
+                                                ? new Date(
+                                                      longestTeamMemberStreak && longestTeamMemberStreak.endDate,
+                                                  ).toDateString()
                                                 : 'Now'}
                                         </Text>
                                     </Card>
@@ -310,8 +333,8 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                 <TouchableOpacity
                                     onPress={() =>
                                         this.props.navigation.navigate(Screens.TeamStreakInfo, {
-                                            _id: currentUser.longestTeamStreak.teamStreakId,
-                                            streakName: currentUser.longestTeamStreak.teamStreakName,
+                                            _id: longestTeamStreak && longestTeamStreak.teamStreakId,
+                                            streakName: longestTeamStreak && longestTeamStreak.teamStreakName,
                                             userIsApartOfStreak: true,
                                         })
                                     }
@@ -320,20 +343,22 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                                         <Text h4 style={{ textAlign: 'center' }}>
                                             <FontAwesomeIcon
                                                 icon={faFlame}
-                                                color={currentUser.longestTeamStreak.endDate ? 'grey' : 'red'}
+                                                color={longestTeamStreak && longestTeamStreak.endDate ? 'grey' : 'red'}
                                             />
-                                            {currentUser.longestTeamStreak.numberOfDays}
+                                            {longestTeamStreak && longestTeamStreak.numberOfDays}
                                         </Text>
                                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
                                             Longest team streak
                                         </Text>
                                         <Text style={{ textAlign: 'center' }}>
-                                            {currentUser.longestTeamStreak.teamStreakName}
+                                            {longestTeamStreak && longestTeamStreak.teamStreakName}
                                         </Text>
                                         <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
-                                            {new Date(currentUser.longestTeamStreak.startDate).toDateString()}-
-                                            {currentUser.longestTeamStreak.endDate
-                                                ? new Date(currentUser.longestTeamStreak.endDate).toDateString()
+                                            {new Date(longestTeamStreak && longestTeamStreak.startDate).toDateString()}-
+                                            {longestTeamStreak && longestTeamStreak.endDate
+                                                ? new Date(
+                                                      longestTeamStreak && longestTeamStreak.endDate,
+                                                  ).toDateString()
                                                 : 'Now'}
                                         </Text>
                                     </Card>
