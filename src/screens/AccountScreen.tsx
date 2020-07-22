@@ -6,7 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 
 import { AppState } from '../../store';
-import { Button, Avatar, Text, ListItem } from 'react-native-elements';
+import { Button, Avatar, Text, ListItem, Card } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { AppActions } from '@streakoid/streakoid-shared/lib';
 import { userActions, profilePictureActions } from '../actions/authenticatedSharedActions';
@@ -29,6 +29,7 @@ import { ProfileImages } from '@streakoid/streakoid-models/lib/Models/ProfileIma
 import { getAccountCompletionPercentage } from '@streakoid/streakoid-shared/lib/helpers/progress/getAccountCompletionPercentage';
 import { faCoins } from '@fortawesome/pro-solid-svg-icons';
 import { faDiamond } from '@fortawesome/pro-solid-svg-icons';
+import { faFlame } from '@fortawesome/pro-solid-svg-icons';
 
 const mapStateToProps = (state: AppState) => {
     const selectedUser = state && state.users && state.users.selectedUser;
@@ -213,6 +214,132 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                             <Text style={{ marginRight: 5 }}>{currentUser.firstName}</Text>
                             <Text>{currentUser.lastName}</Text>
                         </View>
+                        <Spacer>
+                            <View>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.props.navigation.navigate(Screens.SoloStreakInfo, {
+                                            _id: currentUser.longestSoloStreak.soloStreakId,
+                                            isUsersStreak: true,
+                                            streakName: currentUser.longestSoloStreak.soloStreakName,
+                                        })
+                                    }
+                                >
+                                    <Card>
+                                        <Text h4 style={{ textAlign: 'center' }}>
+                                            <FontAwesomeIcon
+                                                icon={faFlame}
+                                                color={currentUser.longestSoloStreak.endDate ? 'grey' : 'red'}
+                                            />
+                                            {currentUser.longestSoloStreak.numberOfDays}
+                                        </Text>
+                                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                                            Longest solo streak
+                                        </Text>
+                                        <Text style={{ textAlign: 'center' }}>
+                                            {currentUser.longestSoloStreak.soloStreakName}
+                                        </Text>
+                                        <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
+                                            {new Date(currentUser.longestSoloStreak.startDate).toDateString()}-
+                                            {currentUser.longestSoloStreak.endDate
+                                                ? new Date(currentUser.longestSoloStreak.endDate).toDateString()
+                                                : 'Now'}
+                                        </Text>
+                                    </Card>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
+                                            _id: currentUser.longestChallengeStreak.challengeStreakId,
+                                            challengeName: currentUser.longestChallengeStreak.challengeName,
+                                        })
+                                    }
+                                >
+                                    <Card>
+                                        <Text h4 style={{ textAlign: 'center' }}>
+                                            <FontAwesomeIcon
+                                                icon={faFlame}
+                                                color={currentUser.longestChallengeStreak.endDate ? 'grey' : 'red'}
+                                            />
+                                            {currentUser.longestChallengeStreak.numberOfDays}
+                                        </Text>
+                                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                                            Longest challenge streak
+                                        </Text>
+                                        <Text style={{ textAlign: 'center' }}>
+                                            {currentUser.longestChallengeStreak.challengeName}
+                                        </Text>
+                                        <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
+                                            {new Date(currentUser.longestChallengeStreak.startDate).toDateString()}-
+                                            {currentUser.longestChallengeStreak.endDate
+                                                ? new Date(currentUser.longestChallengeStreak.endDate).toDateString()
+                                                : 'Now'}
+                                        </Text>
+                                    </Card>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.props.navigation.navigate(Screens.TeamMemberStreakInfo, {
+                                            _id: currentUser.longestTeamMemberStreak.teamMemberStreakId,
+                                            streakName: currentUser.longestTeamMemberStreak.teamStreakName,
+                                        })
+                                    }
+                                >
+                                    <Card>
+                                        <Text h4 style={{ textAlign: 'center' }}>
+                                            <FontAwesomeIcon
+                                                icon={faFlame}
+                                                color={currentUser.longestTeamMemberStreak.endDate ? 'grey' : 'red'}
+                                            />
+                                            {currentUser.longestTeamMemberStreak.numberOfDays}
+                                        </Text>
+                                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                                            Longest team member streak
+                                        </Text>
+                                        <Text style={{ textAlign: 'center' }}>
+                                            {currentUser.longestTeamMemberStreak.teamStreakName}
+                                        </Text>
+                                        <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
+                                            {new Date(currentUser.longestTeamMemberStreak.startDate).toDateString()}-
+                                            {currentUser.longestTeamMemberStreak.endDate
+                                                ? new Date(currentUser.longestTeamMemberStreak.endDate).toDateString()
+                                                : 'Now'}
+                                        </Text>
+                                    </Card>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        this.props.navigation.navigate(Screens.TeamStreakInfo, {
+                                            _id: currentUser.longestTeamStreak.teamStreakId,
+                                            streakName: currentUser.longestTeamStreak.teamStreakName,
+                                            userIsApartOfStreak: true,
+                                        })
+                                    }
+                                >
+                                    <Card>
+                                        <Text h4 style={{ textAlign: 'center' }}>
+                                            <FontAwesomeIcon
+                                                icon={faFlame}
+                                                color={currentUser.longestTeamStreak.endDate ? 'grey' : 'red'}
+                                            />
+                                            {currentUser.longestTeamStreak.numberOfDays}
+                                        </Text>
+                                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                                            Longest team streak
+                                        </Text>
+                                        <Text style={{ textAlign: 'center' }}>
+                                            {currentUser.longestTeamStreak.teamStreakName}
+                                        </Text>
+                                        <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
+                                            {new Date(currentUser.longestTeamStreak.startDate).toDateString()}-
+                                            {currentUser.longestTeamStreak.endDate
+                                                ? new Date(currentUser.longestTeamStreak.endDate).toDateString()
+                                                : 'Now'}
+                                        </Text>
+                                    </Card>
+                                </TouchableOpacity>
+                            </View>
+                        </Spacer>
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>
                                 {`Account strength`} <FontAwesomeIcon icon={faUserCrown} />
