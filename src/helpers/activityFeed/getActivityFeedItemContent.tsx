@@ -43,7 +43,8 @@ export const getActivityFeedItemContent = ({
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.incompletedSoloStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.editedSoloStreakName ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.editedSoloStreakDescription ||
-        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.lostSoloStreak
+        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.lostSoloStreak ||
+        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.recoveredSoloStreak
     ) {
         return (
             <>
@@ -115,7 +116,8 @@ export const getActivityFeedItemContent = ({
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.archivedChallengeStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.restoredChallengeStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.deletedChallengeStreak ||
-        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.lostChallengeStreak
+        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.lostChallengeStreak ||
+        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.recoveredChallengeStreak
     ) {
         return (
             <>
@@ -155,6 +157,8 @@ export const getActivityFeedItemContent = ({
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.completedTeamMemberStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.incompletedTeamMemberStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.lostTeamStreak ||
+        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.recoveredTeamStreak ||
+        activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.recoveredTeamMemberStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.joinedTeamStreak ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.editedTeamStreakName ||
         activityFeedItem.activityFeedItemType === ActivityFeedItemTypes.editedTeamStreakDescription
