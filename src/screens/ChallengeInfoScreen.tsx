@@ -116,24 +116,24 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesomeIcon icon={faCalendarTimes} />
-                                <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
+                                <FontAwesomeIcon icon={faCrown} color="gold" />
+                                <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
-                                    {selectedChallenge.totalTimesTracked}
+                                    {selectedChallenge.longestEverStreakForChallenge}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesomeIcon icon={faCalendarCheck} />
+                                <FontAwesomeIcon icon={faFlame} color="red" />
                                 <Text style={{ textAlign: 'center' }}>Longest Current Streak</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
                                     {selectedChallenge.longestCurrentStreakForChallenge}
                                 </Text>
                             </Card>
                             <Card>
-                                <FontAwesomeIcon icon={faCrown} />
-                                <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
+                                <FontAwesomeIcon icon={faCalendarTimes} />
+                                <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>
                                 <Text h4 style={{ textAlign: 'center' }}>
-                                    {selectedChallenge.longestEverStreakForChallenge}
+                                    {selectedChallenge.totalTimesTracked}
                                 </Text>
                             </Card>
                         </Spacer>
@@ -146,9 +146,9 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                     const {
                                         username,
                                         profileImage,
-                                        currentStreak,
                                         challengeStreakId,
-                                        longestStreak,
+                                        longestStreakNumberOfDaysInARow,
+                                        currentStreakNumberOfDaysInARow,
                                         totalTimesTracked,
                                     } = item;
                                     return (
@@ -171,21 +171,24 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                                         <View style={{ flexDirection: 'row' }}>
                                                             <Text>
                                                                 <FontAwesomeIcon
+                                                                    icon={faCrown}
+                                                                    style={{
+                                                                        color:
+                                                                            longestStreakNumberOfDaysInARow > 0
+                                                                                ? 'gold'
+                                                                                : 'grey',
+                                                                    }}
+                                                                />
+                                                                {longestStreakNumberOfDaysInARow}
+                                                            </Text>
+                                                            <Text style={{ marginLeft: 5 }}>
+                                                                <FontAwesomeIcon
                                                                     icon={faCalendarTimes}
                                                                     style={{
                                                                         color: totalTimesTracked > 0 ? 'black' : 'grey',
                                                                     }}
                                                                 />
                                                                 {totalTimesTracked}
-                                                            </Text>
-                                                            <Text style={{ marginLeft: 5 }}>
-                                                                <FontAwesomeIcon
-                                                                    icon={faCrown}
-                                                                    style={{
-                                                                        color: longestStreak > 0 ? 'gold' : 'grey',
-                                                                    }}
-                                                                />
-                                                                {longestStreak}
                                                             </Text>
                                                         </View>
                                                     }
@@ -195,12 +198,12 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                                                 icon={faFlame}
                                                                 style={{
                                                                     color:
-                                                                        currentStreak.numberOfDaysInARow > 0
+                                                                        currentStreakNumberOfDaysInARow > 0
                                                                             ? 'red'
                                                                             : 'grey',
                                                                 }}
                                                             />
-                                                            {currentStreak.numberOfDaysInARow}
+                                                            {currentStreakNumberOfDaysInARow}
                                                         </Text>
                                                     }
                                                 ></ListItem>

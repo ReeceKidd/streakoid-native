@@ -29,6 +29,7 @@ import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { LongestStreakCard } from '../components/LongestStreakCard';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -375,7 +376,7 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
         const isCurrentUserAMemberOfTeamStreak = selectedTeamStreak.members.some(
             (member) => member._id === currentUser._id,
         );
-        const { pastStreaks, currentStreak, timezone, createdAt } = selectedTeamStreak;
+        const { pastStreaks, currentStreak, timezone, createdAt, longestTeamStreak } = selectedTeamStreak;
         const streakCompletionInfo = getStreakCompletionInfo({
             pastStreaks,
             currentStreak,
@@ -443,7 +444,7 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                 keyExtractor={(teamMember) => teamMember._id}
                                 renderItem={({ item, index }) => {
                                     const { username, profileImage, teamMemberStreak } = item;
-                                    const { currentStreak, longestStreak, completedToday } = teamMemberStreak;
+                                    const { currentStreak, completedToday } = teamMemberStreak;
                                     return (
                                         <>
                                             <TouchableOpacity
@@ -476,7 +477,11 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                                                             />
                                                             <View style={{ flexDirection: 'row', marginLeft: 5 }}>
                                                                 <Text style={{ fontWeight: 'bold' }}>
-                                                                    {longestStreak}
+                                                                    {item &&
+                                                                        item.teamMemberStreak &&
+                                                                        item.teamMemberStreak.longestTeamMemberStreak &&
+                                                                        item.teamMemberStreak.longestTeamMemberStreak
+                                                                            .numberOfDays}
                                                                 </Text>
                                                                 <FontAwesomeIcon icon={faCrown} color={'gold'} />
                                                             </View>
@@ -535,13 +540,11 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                         ) : null}
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <Card>
-                                <FontAwesomeIcon icon={faCrown} />
-                                <Text style={{ textAlign: 'center' }}>Longest Ever Streak</Text>
-                                <Text h4 style={{ textAlign: 'center' }}>
-                                    {selectedTeamStreak.longestStreak}
-                                </Text>
-                            </Card>
+                            <LongestStreakCard
+                                numberOfDays={longestTeamStreak && longestTeamStreak.numberOfDays}
+                                startDate={longestTeamStreak && longestTeamStreak.startDate}
+                                endDate={longestTeamStreak && longestTeamStreak.endDate}
+                            />
                             <Card>
                                 <FontAwesomeIcon icon={faAbacus} />
                                 <Text style={{ textAlign: 'center' }}>Total Times Tracked</Text>

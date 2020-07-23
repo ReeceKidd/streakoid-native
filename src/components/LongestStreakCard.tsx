@@ -2,22 +2,27 @@
 import React, { PureComponent } from 'react';
 import { Card, Text } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCrown } from '@fortawesome/pro-solid-svg-icons';
+import { faFlame } from '@fortawesome/pro-solid-svg-icons';
 
 interface LongestStreakCardProps {
-    longestStreak: number;
+    numberOfDays: number;
+    startDate: Date;
+    endDate?: Date;
 }
 
 class LongestStreakCard extends PureComponent<LongestStreakCardProps> {
     render(): JSX.Element {
-        const { longestStreak } = this.props;
+        const { numberOfDays, startDate, endDate } = this.props;
         return (
             <Card>
-                <FontAwesomeIcon icon={faCrown} />
                 <Text h4 style={{ textAlign: 'center' }}>
-                    {longestStreak}
+                    <FontAwesomeIcon icon={faFlame} color={endDate ? 'grey' : 'red'} />
+                    {numberOfDays}
                 </Text>
-                <Text style={{ textAlign: 'center' }}>Longest streak</Text>
+                <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Longest streak</Text>
+                <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
+                    {new Date(startDate).toDateString()}-{endDate ? new Date(endDate).toDateString() : 'Now'}
+                </Text>
             </Card>
         );
     }

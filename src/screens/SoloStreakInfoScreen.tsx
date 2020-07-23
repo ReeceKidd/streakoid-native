@@ -364,7 +364,7 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
             deleteArchivedSoloStreakIsLoading,
             deleteArchivedSoloStreakErrorMessage,
         } = this.props;
-        const { pastStreaks, currentStreak, timezone, createdAt } = selectedSoloStreak;
+        const { pastStreaks, currentStreak, timezone, createdAt, longestSoloStreak } = selectedSoloStreak;
         const streakCompletionInfo = getStreakCompletionInfo({
             pastStreaks,
             currentStreak,
@@ -462,7 +462,11 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                 </>
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <LongestStreakCard longestStreak={selectedSoloStreak.longestStreak} />
+                            <LongestStreakCard
+                                numberOfDays={longestSoloStreak && longestSoloStreak.numberOfDays}
+                                startDate={longestSoloStreak && longestSoloStreak.startDate}
+                                endDate={longestSoloStreak && longestSoloStreak.endDate}
+                            />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedSoloStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedSoloStreak.createdAt)} />
                             <DaysSinceStreakCreationCard

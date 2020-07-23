@@ -60,7 +60,7 @@ class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
     }
     render(): JSX.Element | null {
         const { selectedTeamMemberStreak, getTeamMemberStreakIsLoading } = this.props;
-        const { pastStreaks, currentStreak, timezone, createdAt } = selectedTeamMemberStreak;
+        const { pastStreaks, currentStreak, timezone, createdAt, longestTeamMemberStreak } = selectedTeamMemberStreak;
         const streakCompletionInfo = getStreakCompletionInfo({
             pastStreaks,
             currentStreak,
@@ -107,7 +107,11 @@ class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
 
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <LongestStreakCard longestStreak={selectedTeamMemberStreak.longestStreak} />
+                            <LongestStreakCard
+                                numberOfDays={longestTeamMemberStreak && longestTeamMemberStreak.numberOfDays}
+                                startDate={longestTeamMemberStreak && longestTeamMemberStreak.startDate}
+                                endDate={longestTeamMemberStreak && longestTeamMemberStreak.endDate}
+                            />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedTeamMemberStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedTeamMemberStreak.createdAt)} />
                             <DaysSinceStreakCreationCard

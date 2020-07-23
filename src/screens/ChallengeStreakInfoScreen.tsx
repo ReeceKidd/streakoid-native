@@ -389,7 +389,7 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
             deleteArchivedChallengeStreakErrorMessage,
             deleteArchivedChallengeStreakIsLoading,
         } = this.props;
-        const { pastStreaks, currentStreak, timezone, createdAt } = selectedChallengeStreak;
+        const { pastStreaks, currentStreak, timezone, createdAt, longestChallengeStreak } = selectedChallengeStreak;
         const streakCompletionInfo = getStreakCompletionInfo({
             pastStreaks,
             currentStreak,
@@ -506,7 +506,11 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                 </>
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <LongestStreakCard longestStreak={selectedChallengeStreak.longestStreak} />
+                            <LongestStreakCard
+                                numberOfDays={longestChallengeStreak && longestChallengeStreak.numberOfDays}
+                                startDate={longestChallengeStreak && longestChallengeStreak.startDate}
+                                endDate={longestChallengeStreak && longestChallengeStreak.endDate}
+                            />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedChallengeStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedChallengeStreak.createdAt)} />
                             <DaysSinceStreakCreationCard
