@@ -9,7 +9,7 @@ import { Text } from 'react-native-elements';
 
 import { View, StyleSheet, ScrollView, Share } from 'react-native';
 import { Spacer } from '../components/Spacer';
-import { teamStreakActions } from '../actions/authenticatedSharedActions';
+import { teamStreakActions, userActions } from '../actions/authenticatedSharedActions';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ListItem, Button } from 'react-native-elements';
 import { Screens } from './Screens';
@@ -22,13 +22,13 @@ import { faMinus, faPlus } from '@fortawesome/pro-solid-svg-icons';
 import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 
 const mapStateToProps = (state: AppState) => {
-    const currentUser = state && state.users && state.users.currentUser;
     const selectedTeamStreak = state && state.teamStreaks && state.teamStreaks.selectedTeamStreak;
     const selectedTeamStreakIsLoading = state && state.teamStreaks && state.teamStreaks.getTeamStreakIsLoading;
-    return { currentUser, selectedTeamStreak, selectedTeamStreakIsLoading };
+    return { selectedTeamStreak, selectedTeamStreakIsLoading };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
+    getCurrentUser: bindActionCreators(userActions.getCurrentUser, dispatch),
     getSelectedTeamStreak: bindActionCreators(teamStreakActions.getSelectedTeamStreak, dispatch),
     addUserToTeamStreak: bindActionCreators(teamStreakActions.addUserToTeamStreak, dispatch),
     removeUserFromTeamStreak: bindActionCreators(teamStreakActions.removeUserFromTeamStreak, dispatch),
@@ -53,6 +53,7 @@ type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchT
 
 class AddUserToTeamStreakScreenComponent extends PureComponent<Props> {
     componentDidMount() {
+        this.props.getCurrentUser();
         this.props.getSelectedTeamStreak(this.props.route.params.teamStreakId);
     }
     addUserToTeamStreak({ userId }: { userId: string }) {
@@ -66,7 +67,7 @@ class AddUserToTeamStreakScreenComponent extends PureComponent<Props> {
     }
 
     render(): JSX.Element | null {
-        const { currentUser, selectedTeamStreak, selectedTeamStreakIsLoading } = this.props;
+        const { selectedTeamStreak, selectedTeamStreakIsLoading } = this.props;
 
         return (
             <ScrollView style={styles.container}>
@@ -100,10 +101,12 @@ class AddUserToTeamStreakScreenComponent extends PureComponent<Props> {
                                 <Text style={{ fontWeight: 'bold' }}>
                                     Add one of your followers to the team streak.
                                 </Text>
-                                {currentUser.followers.length > 0 ? (
+                                {selectedTeamStreak &&
+                                selectedTeamStreak.possibleTeamMembers &&
+                                selectedTeamStreak.possibleTeamMembers.length > 0 ? (
                                     <FlatList
-                                        data={currentUser.followers}
-                                        keyExtractor={(follower) => follower.userId}
+                                        data={selectedTeamStreak.possibleTeamMembers}
+                                        keyExtractor={(possibleTeamMember) => possibleTeamMember.userId}
                                         renderItem={({ item }) => {
                                             const { profileImage } = item;
                                             const isApartOfTeamStreak = Boolean(
@@ -120,9 +123,7 @@ class AddUserToTeamStreakScreenComponent extends PureComponent<Props> {
                                                         rightElement={
                                                             isApartOfTeamStreak ? (
                                                                 <Button
-                                                                    loading={
-                                                                        selectedTeamStreak.removeUserFromTeamStreakIsLoading
-                                                                    }
+                                                                    loading={item.removeUserFromTeamStreakIsLoading}
                                                                     type="clear"
                                                                     icon={
                                                                         <FontAwesomeIcon icon={faMinus} color="red" />
@@ -136,9 +137,7 @@ class AddUserToTeamStreakScreenComponent extends PureComponent<Props> {
                                                                 />
                                                             ) : (
                                                                 <Button
-                                                                    loading={
-                                                                        selectedTeamStreak.addUserToTeamStreakIsLoading
-                                                                    }
+                                                                    loading={item.addUserToTeamStreakIsLoading}
                                                                     type="clear"
                                                                     icon={
                                                                         <FontAwesomeIcon icon={faPlus} color="green" />
