@@ -11,7 +11,6 @@ import { Spacer } from '../components/Spacer';
 import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Screens } from './Screens';
 import { connect } from 'react-redux';
-import { LongestStreakCard } from '../components/LongestStreakCard';
 import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
 import { StreakStartDateCard } from '../components/StreakStartDateCard';
 import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
@@ -23,6 +22,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { ScrollView } from 'react-native-gesture-handler';
+import { LongestTeamMemberStreakCard } from './LongestTeamMemberStreakCard';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -107,10 +107,23 @@ class TeamMemberStreakInfoScreenComponent extends PureComponent<Props> {
 
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <LongestStreakCard
+                            <LongestTeamMemberStreakCard
+                                navigation={this.props.navigation}
+                                teamMemberStreakId={
+                                    longestTeamMemberStreak && longestTeamMemberStreak.teamMemberStreakId
+                                }
+                                teamStreakName={longestTeamMemberStreak && longestTeamMemberStreak.teamStreakName}
                                 numberOfDays={longestTeamMemberStreak && longestTeamMemberStreak.numberOfDays}
-                                startDate={longestTeamMemberStreak && longestTeamMemberStreak.startDate}
-                                endDate={longestTeamMemberStreak && longestTeamMemberStreak.endDate}
+                                startDate={
+                                    longestTeamMemberStreak &&
+                                    longestTeamMemberStreak.startDate &&
+                                    longestTeamMemberStreak.startDate.toString()
+                                }
+                                endDate={
+                                    longestTeamMemberStreak &&
+                                    longestTeamMemberStreak.endDate &&
+                                    longestTeamMemberStreak.endDate.toString()
+                                }
                             />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedTeamMemberStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedTeamMemberStreak.createdAt)} />

@@ -12,7 +12,6 @@ import { View, StyleSheet, ActivityIndicator, Picker } from 'react-native';
 import { Text, Button, ListItem } from 'react-native-elements';
 import { Spacer } from '../components/Spacer';
 import { ErrorMessage } from '../components/ErrorMessage';
-import { LongestStreakCard } from '../components/LongestStreakCard';
 import { StreakStartDateCard } from '../components/StreakStartDateCard';
 import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
 import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
@@ -35,6 +34,7 @@ import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { RouteProp } from '@react-navigation/native';
+import { LongestChallengeStreakCard } from './LongestChallengeStreakCard';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -506,10 +506,21 @@ class ChallengeStreakInfoComponent extends PureComponent<Props> {
                                 </>
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <LongestStreakCard
+                            <LongestChallengeStreakCard
+                                navigation={this.props.navigation}
+                                challengeStreakId={longestChallengeStreak && longestChallengeStreak.challengeStreakId}
+                                challengeName={longestChallengeStreak && longestChallengeStreak.challengeName}
                                 numberOfDays={longestChallengeStreak && longestChallengeStreak.numberOfDays}
-                                startDate={longestChallengeStreak && longestChallengeStreak.startDate}
-                                endDate={longestChallengeStreak && longestChallengeStreak.endDate}
+                                startDate={
+                                    longestChallengeStreak &&
+                                    longestChallengeStreak.startDate &&
+                                    longestChallengeStreak.startDate.toString()
+                                }
+                                endDate={
+                                    longestChallengeStreak &&
+                                    longestChallengeStreak.endDate &&
+                                    longestChallengeStreak.endDate.toString()
+                                }
                             />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedChallengeStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedChallengeStreak.createdAt)} />

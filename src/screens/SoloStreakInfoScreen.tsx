@@ -12,7 +12,6 @@ import { LoadingScreenSpinner } from '../components/LoadingScreenSpinner';
 import { Screens } from './Screens';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { connect } from 'react-redux';
-import { LongestStreakCard } from '../components/LongestStreakCard';
 import { TotalNumberOfDaysCard } from '../components/TotalNumberOfDaysCard';
 import { StreakStartDateCard } from '../components/StreakStartDateCard';
 import { DaysSinceStreakCreationCard } from '../components/DaysSinceStreakCreationCard';
@@ -35,6 +34,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { LongestSoloStreakCard } from './LongestSoloStreakCard';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -462,10 +462,22 @@ class SoloStreakInfoScreenComponent extends PureComponent<Props> {
                                 </>
                             ) : null}
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <LongestStreakCard
+                            <LongestSoloStreakCard
+                                navigation={this.props.navigation}
+                                soloStreakId={longestSoloStreak && longestSoloStreak.soloStreakId}
+                                soloStreakName={longestSoloStreak && longestSoloStreak.soloStreakName}
                                 numberOfDays={longestSoloStreak && longestSoloStreak.numberOfDays}
-                                startDate={longestSoloStreak && longestSoloStreak.startDate}
-                                endDate={longestSoloStreak && longestSoloStreak.endDate}
+                                startDate={
+                                    longestSoloStreak &&
+                                    longestSoloStreak.startDate &&
+                                    longestSoloStreak.startDate.toString()
+                                }
+                                endDate={
+                                    longestSoloStreak &&
+                                    longestSoloStreak.endDate &&
+                                    longestSoloStreak.endDate.toString()
+                                }
+                                isUsersStreak={selectedSoloStreak.userId === currentUser._id}
                             />
                             <TotalNumberOfDaysCard totalTimesTracked={selectedSoloStreak.totalTimesTracked} />
                             <StreakStartDateCard createdAt={new Date(selectedSoloStreak.createdAt)} />

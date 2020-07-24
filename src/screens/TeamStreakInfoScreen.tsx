@@ -29,7 +29,7 @@ import { StreakFlame } from '../components/StreakFlame';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
-import { LongestStreakCard } from '../components/LongestStreakCard';
+import { LongestTeamStreakCard } from './LongestTeamStreakCard';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -540,10 +540,22 @@ class TeamStreakInfoScreenComponent extends PureComponent<Props> {
                         ) : null}
                         <Spacer>
                             <Text style={{ fontWeight: 'bold' }}>Stats</Text>
-                            <LongestStreakCard
+                            <LongestTeamStreakCard
+                                navigation={this.props.navigation}
+                                teamStreakId={longestTeamStreak && longestTeamStreak.teamStreakId}
+                                teamStreakName={longestTeamStreak && longestTeamStreak.teamStreakName}
                                 numberOfDays={longestTeamStreak && longestTeamStreak.numberOfDays}
-                                startDate={longestTeamStreak && longestTeamStreak.startDate}
-                                endDate={longestTeamStreak && longestTeamStreak.endDate}
+                                userIsApartOfTeamStreak={isCurrentUserAMemberOfTeamStreak}
+                                startDate={
+                                    longestTeamStreak &&
+                                    longestTeamStreak.startDate &&
+                                    longestTeamStreak.startDate.toString()
+                                }
+                                endDate={
+                                    longestTeamStreak &&
+                                    longestTeamStreak.endDate &&
+                                    longestTeamStreak.endDate.toString()
+                                }
                             />
                             <Card>
                                 <FontAwesomeIcon icon={faAbacus} />
