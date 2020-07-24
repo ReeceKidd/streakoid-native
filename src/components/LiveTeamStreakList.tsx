@@ -81,12 +81,12 @@ const LiveTeamStreakList = (props: Props) => {
                         incompleteTeamMemberStreakTaskIsLoading,
                         incompleteTeamMemberStreakTaskErrorMessage,
                     } = teamMemberStreak;
-                    const { _id, streakName, members, pastStreaks, currentStreak, timezone, createdAt } = item;
+                    const { _id, streakName, members, timezone, createdAt } = item;
                     const userIsApartOfStreak = Boolean(item.members.find((member) => member._id === userId));
 
                     const teamStreakCompletionInfo = getStreakCompletionInfo({
-                        pastStreaks,
-                        currentStreak,
+                        pastStreaks: item.pastStreaks,
+                        currentStreak: item.currentStreak,
                         timezone,
                         createdAt: new Date(createdAt),
                     });
@@ -98,8 +98,8 @@ const LiveTeamStreakList = (props: Props) => {
                         daysSinceUserCompletedTeamStreak || daysSinceUserCreatedTeamStreak || 0;
 
                     const teamMemberStreakCompletionInfo = getStreakCompletionInfo({
-                        pastStreaks,
-                        currentStreak,
+                        pastStreaks: teamMemberStreak.pastStreaks,
+                        currentStreak: teamMemberStreak.currentStreak,
                         timezone,
                         createdAt: new Date(createdAt),
                     });
@@ -196,7 +196,7 @@ const LiveTeamStreakList = (props: Props) => {
                                     title={item.streakName}
                                     subtitle={
                                         <StreakFlame
-                                            currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                            currentStreakNumberOfDaysInARow={item.currentStreak.numberOfDaysInARow}
                                             negativeDayStreak={teamStreakNegativeDayStreak}
                                         />
                                     }
@@ -210,6 +210,7 @@ const LiveTeamStreakList = (props: Props) => {
                                             onPress={() => recoverTeamMemberStreak({ teamMemberStreakId })}
                                             title={`Restore this streak for 1000 `}
                                             iconRight={true}
+                                            loading={teamMemberStreak.recoverTeamMemberStreakIsLoading}
                                             icon={<FontAwesomeIcon icon={faCoins} color={'gold'} />}
                                         />
                                     </Spacer>
