@@ -14,19 +14,19 @@ class StreakFlame extends PureComponent<Props> {
         const { currentStreakNumberOfDaysInARow, negativeDayStreak } = this.props;
         return currentStreakNumberOfDaysInARow > 0 ? (
             <View style={{ flexDirection: 'row' }}>
-                <Text style={{ fontWeight: 'bold' }}>{currentStreakNumberOfDaysInARow}</Text>
+                <Text>{currentStreakNumberOfDaysInARow}</Text>
                 <FontAwesomeIcon icon={faFlame} style={{ color: 'red' }} />
             </View>
         ) : (
             <>
                 {negativeDayStreak === 0 ? (
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ fontWeight: 'bold' }}>{negativeDayStreak}</Text>
+                        <Text>{negativeDayStreak}</Text>
                         <FontAwesomeIcon icon={faFlame} style={{ color: 'gray' }} />
                     </View>
                 ) : (
                     <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ fontWeight: 'bold' }}>-{negativeDayStreak}</Text>
+                        <Text>-{negativeDayStreak}</Text>
                         <FontAwesomeIcon icon={faFlame} style={{ color: 'blue' }} />
                     </View>
                 )}

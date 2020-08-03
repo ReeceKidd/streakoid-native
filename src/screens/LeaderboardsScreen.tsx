@@ -13,6 +13,7 @@ import {
     IconDefinition,
     faUserFriends,
     faGlobe,
+    faUsers,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -32,6 +33,7 @@ const mapStateToProps = (state: AppState) => {
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     getSoloStreaksLeaderboard: bindActionCreators(leaderboardActions.getSoloStreakLeaderboard, dispatch),
     getTeamStreaksLeaderboard: bindActionCreators(leaderboardActions.getTeamStreakLeaderboard, dispatch),
+    getTeamMemberStreaksLeaderboard: bindActionCreators(leaderboardActions.getTeamMemberStreakLeaderboard, dispatch),
     getChallengeStreaksLeaderboard: bindActionCreators(leaderboardActions.getChallengeStreakLeaderboard, dispatch),
     getGlobalUserLeaderboard: bindActionCreators(leaderboardActions.getGlobalUserLeaderboard, dispatch),
     getFollowingLeaderboard: bindActionCreators(leaderboardActions.getFollowingLeaderboard, dispatch),
@@ -56,9 +58,10 @@ interface LeaderboardMenuOption {
 class LeaderboardsScreenComponent extends PureComponent<Props> {
     static LeaderboardsMenuOptions: LeaderboardMenuOption[] = [
         { name: 'Following', screen: Screens.FollowingLeaderboard, icon: faUserFriends },
-        { name: 'Global', screen: Screens.GlobalUserLeaderboard, icon: faGlobe },
+        { name: 'User', screen: Screens.GlobalUserLeaderboard, icon: faGlobe },
         { name: 'Solo Streak', screen: Screens.SoloStreakLeaderboard, icon: faChild },
         { name: 'Team Streak', screen: Screens.TeamStreakLeaderboard, icon: faPeopleCarry },
+        { name: 'Team Member Streak', screen: Screens.TeamMemberStreakLeaderboard, icon: faUsers },
         { name: 'Challenge Streak', screen: Screens.ChallengeStreakLeaderboard, icon: faMedal },
     ];
 
@@ -66,6 +69,7 @@ class LeaderboardsScreenComponent extends PureComponent<Props> {
         const {
             getSoloStreaksLeaderboard,
             getTeamStreaksLeaderboard,
+            getTeamMemberStreaksLeaderboard,
             getChallengeStreaksLeaderboard,
             getGlobalUserLeaderboard,
             getFollowingLeaderboard,
@@ -73,6 +77,7 @@ class LeaderboardsScreenComponent extends PureComponent<Props> {
         } = this.props;
         getSoloStreaksLeaderboard();
         getTeamStreaksLeaderboard();
+        getTeamMemberStreaksLeaderboard();
         getChallengeStreaksLeaderboard();
         getGlobalUserLeaderboard({ limit: 25 });
         getFollowingLeaderboard({ userIds });

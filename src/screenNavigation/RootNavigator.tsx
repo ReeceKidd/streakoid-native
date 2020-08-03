@@ -59,6 +59,7 @@ import { UsersScreen } from '../screens/UsersScreen';
 import { UserProfileScreen } from '../screens/UserProfileScreen';
 import { FollowingActivityScreen } from '../screens/FollowingActivityScreen';
 import { GlobalActivityScreen } from '../screens/GlobalActivityScreen';
+import { TeamMemberStreakLeaderboardScreen } from '../screens/TeamMemberStreakLeaderboardScreen';
 
 export interface SoloStreakInfoRouteParams {
     _id: string;
@@ -114,6 +115,7 @@ export type RootStackParamList = {
     [Screens.Leaderboards]: undefined;
     [Screens.SoloStreakLeaderboard]: undefined;
     [Screens.TeamStreakLeaderboard]: undefined;
+    [Screens.TeamMemberStreakLeaderboard]: undefined;
     [Screens.ChallengeStreakLeaderboard]: undefined;
     [Screens.FollowingLeaderboard]: undefined;
     [Screens.GlobalUserLeaderboard]: undefined;
@@ -405,6 +407,13 @@ const TeamStreakLeaderboardStackScreen = (
         name={Screens.TeamStreakLeaderboard}
         options={{ title: '' }}
         component={TeamStreakLeaderboardScreen}
+    />
+);
+const TeamMemberStreakLeaderboardStackScreen = (
+    <Stack.Screen
+        name={Screens.TeamMemberStreakLeaderboard}
+        options={{ title: '' }}
+        component={TeamMemberStreakLeaderboardScreen}
     />
 );
 const ChallengeStreakLeaderboardStackScreen = (
@@ -772,6 +781,7 @@ export const getStackScreens = () => {
             {LeaderboardsStackScreen}
             {SoloStreakLeaderboardStackScreen}
             {TeamStreakLeaderboardStackScreen}
+            {TeamMemberStreakLeaderboardStackScreen}
             {ChallengeStreakLeaderboardStackScreen}
             {FollowingLeaderboardStackScreen}
             {GlobalUserLeaderboardStackScreen}

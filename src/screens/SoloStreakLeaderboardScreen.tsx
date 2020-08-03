@@ -4,17 +4,18 @@ import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { Spacer } from '../components/Spacer';
-import { AppActions } from '@streakoid/streakoid-shared/lib';
+import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
-import { ListItem, Divider, Text } from 'react-native-elements';
+import { Divider, Text } from 'react-native-elements';
 import { View, ActivityIndicator } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChild } from '@fortawesome/pro-solid-svg-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { RouteProp } from '@react-navigation/native';
+import { IndividualStreakLeaderboardItem } from '../components/IndividualStreakLeaderboardItem';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -56,7 +57,28 @@ class SoloStreakLeaderboardScreenComponent extends PureComponent<Props> {
                 data={soloStreakLeaderboard}
                 keyExtractor={(soloStreakLeaderboardItem) => soloStreakLeaderboardItem.streakId}
                 renderItem={({ item, index }) => {
-                    const { currentStreakNumberOfDaysInARow, streakId, streakName, userProfileImage } = item;
+                    const {
+                        currentStreak,
+                        pastStreaks,
+                        timezone,
+                        streakCreatedAt,
+                        streakId,
+                        streakName,
+                        userProfileImage,
+                        longestSoloStreakNumberOfDays,
+                        totalTimesTracked,
+                    } = item;
+                    const streakCompletionInfo = getStreakCompletionInfo({
+                        pastStreaks,
+                        currentStreak,
+                        timezone,
+                        createdAt: new Date(streakCreatedAt),
+                    });
+                    const daysSinceUserCompletedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+                    const daysSinceUserCreatedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                    const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
                     return (
                         <>
                             <TouchableOpacity
@@ -68,17 +90,14 @@ class SoloStreakLeaderboardScreenComponent extends PureComponent<Props> {
                                     })
                                 }
                             >
-                                <ListItem
-                                    leftElement={<Text>#{index + 1}</Text>}
-                                    leftAvatar={{
-                                        source: { uri: userProfileImage },
-                                    }}
-                                    title={streakName}
-                                    subtitle={
-                                        currentStreakNumberOfDaysInARow !== 1
-                                            ? `${currentStreakNumberOfDaysInARow.toString()} days`
-                                            : `${currentStreakNumberOfDaysInARow.toString()} day`
-                                    }
+                                <IndividualStreakLeaderboardItem
+                                    index={index}
+                                    currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                    longestStreakNumberOfDaysInARow={longestSoloStreakNumberOfDays}
+                                    negativeDayStreak={negativeDayStreak}
+                                    streakName={streakName}
+                                    totalTimesTracked={totalTimesTracked}
+                                    userProfileImage={userProfileImage}
                                 />
                             </TouchableOpacity>
                             <Divider />

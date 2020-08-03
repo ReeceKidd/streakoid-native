@@ -36,6 +36,7 @@ export enum Screens {
     Leaderboards = 'Leaderboards',
     SoloStreakLeaderboard = 'SoloStreakLeaderboard',
     TeamStreakLeaderboard = 'TeamStreakLeaderboard',
+    TeamMemberStreakLeaderboard = 'TeamMemberStreakLeaderboard',
     ChallengeStreakLeaderboard = 'ChallengeStreakLeaderboard',
     FollowingLeaderboard = 'FollowingLeaderboard',
     GlobalUserLeaderboard = 'GlobalUserLeaderboard',

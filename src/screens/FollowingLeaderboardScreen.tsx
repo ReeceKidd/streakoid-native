@@ -15,6 +15,8 @@ import { View, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { LongestStreakFlame } from '../components/LongestStreakFlame';
+import { StreakTotalTimesTracked } from '../components/StreakTotalTimesTracked';
 
 const mapStateToProps = (state: AppState) => {
     const followingLeaderboard = state && state.leaderboards && state.leaderboards.followingLeaderboard;
@@ -58,7 +60,7 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
                 data={followingLeaderboard}
                 keyExtractor={(user) => user._id}
                 renderItem={({ item, index }) => {
-                    const { _id, username, profileImages, totalStreakCompletes } = item;
+                    const { _id, username, profileImages, longestEverStreakNumberOfDays, totalStreakCompletes } = item;
                     const userProfileImage = profileImages.originalImageUrl;
                     return (
                         <>
@@ -79,8 +81,14 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
                                     title={username}
                                     subtitle={
                                         <View style={{ flexDirection: 'row' }}>
-                                            <Text>{`Streak completes: `}</Text>
-                                            <Text style={{ fontWeight: 'bold' }}>{`${totalStreakCompletes}`}</Text>
+                                            <View>
+                                                <LongestStreakFlame
+                                                    numberOfDaysInARow={longestEverStreakNumberOfDays}
+                                                />
+                                            </View>
+                                            <View style={{ marginLeft: 5 }}>
+                                                <StreakTotalTimesTracked totalTimesTracked={totalStreakCompletes} />
+                                            </View>
                                         </View>
                                     }
                                 />

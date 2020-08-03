@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { ScrollView, TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { Spacer } from '../components/Spacer';
-import { AppActions } from '@streakoid/streakoid-shared/lib';
+import { AppActions, getStreakCompletionInfo } from '@streakoid/streakoid-shared/lib';
 import { bindActionCreators, Dispatch } from 'redux';
 import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
@@ -15,6 +15,9 @@ import { faPeopleCarry } from '@fortawesome/pro-solid-svg-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { LongestStreakFlame } from '../components/LongestStreakFlame';
+import { StreakFlame } from '../components/StreakFlame';
+import { StreakTotalTimesTracked } from '../components/StreakTotalTimesTracked';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -56,8 +59,29 @@ class TeamStreakLeaderboardScreenComponent extends PureComponent<Props> {
                 data={teamStreakLeaderboard}
                 keyExtractor={(teamStreakLeaderboardItem) => teamStreakLeaderboardItem.streakId}
                 renderItem={({ item, index }) => {
-                    const { currentStreakNumberOfDaysInARow, streakId, streakName, members } = item;
-                    const maximumNumberOfTeamMembersToDisplay = 3;
+                    const {
+                        currentStreak,
+                        pastStreaks,
+                        timezone,
+                        totalTimesTracked,
+                        streakCreatedAt,
+                        longestTeamStreakNumberOfDays,
+                        streakId,
+                        streakName,
+                        members,
+                    } = item;
+                    const streakCompletionInfo = getStreakCompletionInfo({
+                        pastStreaks,
+                        currentStreak,
+                        timezone,
+                        createdAt: new Date(streakCreatedAt),
+                    });
+                    const daysSinceUserCompletedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCompletedStreak;
+                    const daysSinceUserCreatedStreak =
+                        streakCompletionInfo && streakCompletionInfo.daysSinceUserCreatedStreak;
+                    const negativeDayStreak = daysSinceUserCompletedStreak || daysSinceUserCreatedStreak || 0;
+                    const maximumNumberOfTeamMembersToDisplay = 2;
                     return (
                         <>
                             <TouchableOpacity
@@ -109,9 +133,23 @@ class TeamStreakLeaderboardScreenComponent extends PureComponent<Props> {
                                     }
                                     title={streakName}
                                     subtitle={
-                                        currentStreakNumberOfDaysInARow !== 1
-                                            ? `${currentStreakNumberOfDaysInARow.toString()} days`
-                                            : `${currentStreakNumberOfDaysInARow.toString()} day`
+                                        <View style={{ flexDirection: 'row' }}>
+                                            <View>
+                                                <LongestStreakFlame
+                                                    numberOfDaysInARow={longestTeamStreakNumberOfDays}
+                                                />
+                                            </View>
+                                            <View style={{ marginLeft: 5 }}>
+                                                <StreakFlame
+                                                    negativeDayStreak={negativeDayStreak}
+                                                    currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
+                                                />
+                                            </View>
+
+                                            <View style={{ marginLeft: 5 }}>
+                                                <StreakTotalTimesTracked totalTimesTracked={totalTimesTracked} />
+                                            </View>
+                                        </View>
                                     }
                                 />
                             </TouchableOpacity>

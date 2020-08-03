@@ -9,65 +9,65 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { leaderboardActions } from '../actions/authenticatedSharedActions';
 import { Screens } from './Screens';
 import { Divider, Text } from 'react-native-elements';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faMedal } from '@fortawesome/pro-solid-svg-icons';
 import { View, ActivityIndicator } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChild } from '@fortawesome/pro-solid-svg-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { RouteProp } from '@react-navigation/native';
 import { IndividualStreakLeaderboardItem } from '../components/IndividualStreakLeaderboardItem';
 
 const mapStateToProps = (state: AppState) => {
-    const challengeStreakLeaderboard = state && state.leaderboards && state.leaderboards.challengeStreakLeaderboard;
-    const getChallengeStreakLeaderboardIsLoading =
-        state && state.leaderboards && state.leaderboards.getChallengeStreakLeaderboardIsLoading;
-    const getChallengeStreakLeaderboardErrorMessage =
-        state && state.leaderboards && state.leaderboards.getChallengeStreakLeaderboardErrorMessage;
+    const teamMemberStreakLeaderboard = state && state.leaderboards && state.leaderboards.teamMemberStreakLeaderboard;
+    const getTeamMemberStreakLeaderboardIsLoading =
+        state && state.leaderboards && state.leaderboards.getTeamMemberStreakLeaderboardIsLoading;
+    const getTeamMemberStreakLeaderboardErrorMessage =
+        state && state.leaderboards && state.leaderboards.getTeamMemberStreakLeaderboardErrorMessage;
     return {
-        challengeStreakLeaderboard,
-        getChallengeStreakLeaderboardIsLoading,
-        getChallengeStreakLeaderboardErrorMessage,
+        teamMemberStreakLeaderboard,
+        getTeamMemberStreakLeaderboardIsLoading,
+        getTeamMemberStreakLeaderboardErrorMessage,
     };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    getChallengeStreaksLeaderboard: bindActionCreators(leaderboardActions.getChallengeStreakLeaderboard, dispatch),
+    getTeamMemberStreaksLeaderboard: bindActionCreators(leaderboardActions.getTeamMemberStreakLeaderboard, dispatch),
 });
 
-type ChallengeStreakLeaderboardScreenNavigationProp = StackNavigationProp<
+type TeamMemberStreakLeaderboardScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
-    Screens.ChallengeStreakLeaderboard
+    Screens.TeamMemberStreakLeaderboard
 >;
-type ChallengeStreakLeaderboardScreenRouteProp = RouteProp<RootStackParamList, Screens.ChallengeStreakLeaderboard>;
+type TeamMemberStreakLeaderboardScreenRouteProp = RouteProp<RootStackParamList, Screens.TeamMemberStreakLeaderboard>;
 
 type NavigationProps = {
-    navigation: ChallengeStreakLeaderboardScreenNavigationProp;
-    route: ChallengeStreakLeaderboardScreenRouteProp;
+    navigation: TeamMemberStreakLeaderboardScreenNavigationProp;
+    route: TeamMemberStreakLeaderboardScreenRouteProp;
 };
 
 type Props = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & NavigationProps;
 
-class ChallengeStreakLeaderboardScreenComponent extends PureComponent<Props> {
+class TeamMemberStreakLeaderboardScreenComponent extends PureComponent<Props> {
     componentDidMount() {
-        this.props.getChallengeStreaksLeaderboard();
+        this.props.getTeamMemberStreaksLeaderboard();
     }
-    renderChallengeStreakLeaderboard(): JSX.Element {
-        const { challengeStreakLeaderboard } = this.props;
+    renderTeamMemberStreakLeaderboard(): JSX.Element {
+        const { teamMemberStreakLeaderboard } = this.props;
         return (
             <FlatList
-                data={challengeStreakLeaderboard}
-                keyExtractor={(challengeStreakLeaderboardItem) => challengeStreakLeaderboardItem.streakId}
+                data={teamMemberStreakLeaderboard}
+                keyExtractor={(teamMemberStreakLeaderboardItem) => teamMemberStreakLeaderboardItem.streakId}
                 renderItem={({ item, index }) => {
                     const {
                         currentStreak,
                         pastStreaks,
-                        streakCreatedAt,
                         timezone,
-                        totalTimesTracked,
-                        longestChallengeStreakNumberOfDays,
+                        streakCreatedAt,
                         streakId,
-                        challengeName,
+                        streakName,
                         userProfileImage,
+                        longestTeamMemberStreakNumberOfDays,
+                        totalTimesTracked,
                     } = item;
                     const streakCompletionInfo = getStreakCompletionInfo({
                         pastStreaks,
@@ -84,18 +84,18 @@ class ChallengeStreakLeaderboardScreenComponent extends PureComponent<Props> {
                         <>
                             <TouchableOpacity
                                 onPress={() =>
-                                    this.props.navigation.navigate(Screens.ChallengeStreakInfo, {
+                                    this.props.navigation.navigate(Screens.TeamMemberStreakInfo, {
                                         _id: streakId,
-                                        challengeName,
+                                        streakName: streakName,
                                     })
                                 }
                             >
                                 <IndividualStreakLeaderboardItem
                                     index={index}
                                     currentStreakNumberOfDaysInARow={currentStreak.numberOfDaysInARow}
-                                    longestStreakNumberOfDaysInARow={longestChallengeStreakNumberOfDays}
+                                    longestStreakNumberOfDaysInARow={longestTeamMemberStreakNumberOfDays}
                                     negativeDayStreak={negativeDayStreak}
-                                    streakName={challengeName}
+                                    streakName={streakName}
                                     totalTimesTracked={totalTimesTracked}
                                     userProfileImage={userProfileImage}
                                 />
@@ -109,27 +109,27 @@ class ChallengeStreakLeaderboardScreenComponent extends PureComponent<Props> {
     }
 
     render(): JSX.Element | null {
-        const { getChallengeStreakLeaderboardIsLoading } = this.props;
+        const { getTeamMemberStreakLeaderboardIsLoading } = this.props;
         return (
             <ScrollView>
                 <Spacer>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            Challenge Streak Leaderboard <FontAwesomeIcon icon={faMedal} />
+                        <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+                            TeamMember Streak Leaderboard <FontAwesomeIcon icon={faChild} />
                         </Text>
-                        {getChallengeStreakLeaderboardIsLoading ? (
+                        {getTeamMemberStreakLeaderboardIsLoading ? (
                             <ActivityIndicator style={{ marginLeft: 10 }} />
                         ) : null}
                     </View>
-                    {this.renderChallengeStreakLeaderboard()}
+                    {this.renderTeamMemberStreakLeaderboard()}
                 </Spacer>
             </ScrollView>
         );
     }
 }
 
-const ChallengeStreakLeaderboardScreen = connect(
+const TeamMemberStreakLeaderboardScreen = connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ChallengeStreakLeaderboardScreenComponent);
-export { ChallengeStreakLeaderboardScreen };
+)(TeamMemberStreakLeaderboardScreenComponent);
+export { TeamMemberStreakLeaderboardScreen };
