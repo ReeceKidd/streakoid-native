@@ -15,8 +15,9 @@ import { View, ActivityIndicator } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
-import { LongestStreakFlame } from '../components/LongestStreakFlame';
 import { StreakTotalTimesTracked } from '../components/StreakTotalTimesTracked';
+import { LongestEverStreakFlame } from '../components/LongestEverStreakFlame';
+import { LongestCurrentStreakFlame } from '../components/LongestCurrentStreakFlame';
 
 const mapStateToProps = (state: AppState) => {
     const followingLeaderboard = state && state.leaderboards && state.leaderboards.followingLeaderboard;
@@ -60,7 +61,14 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
                 data={followingLeaderboard}
                 keyExtractor={(user) => user._id}
                 renderItem={({ item, index }) => {
-                    const { _id, username, profileImages, longestEverStreakNumberOfDays, totalStreakCompletes } = item;
+                    const {
+                        _id,
+                        username,
+                        profileImages,
+                        longestEverStreakNumberOfDays,
+                        longestCurrentStreakNumberOfDays,
+                        totalStreakCompletes,
+                    } = item;
                     const userProfileImage = profileImages.originalImageUrl;
                     return (
                         <>
@@ -82,8 +90,13 @@ class FollowingLeaderboardScreenComponent extends PureComponent<Props> {
                                     subtitle={
                                         <View style={{ flexDirection: 'row' }}>
                                             <View>
-                                                <LongestStreakFlame
+                                                <LongestEverStreakFlame
                                                     numberOfDaysInARow={longestEverStreakNumberOfDays}
+                                                />
+                                            </View>
+                                            <View style={{ marginLeft: 5 }}>
+                                                <LongestCurrentStreakFlame
+                                                    numberOfDaysInARow={longestCurrentStreakNumberOfDays}
                                                 />
                                             </View>
                                             <View style={{ marginLeft: 5 }}>

@@ -899,7 +899,7 @@
 				CODE_SIGN_ENTITLEMENTS = streakoid/streakoid.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 83;
+				CURRENT_PROJECT_VERSION = 84;
 				DEVELOPMENT_TEAM = 5QM2B4QG82;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -934,7 +934,7 @@
 				CODE_SIGN_ENTITLEMENTS = streakoid/streakoid.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 83;
+				CURRENT_PROJECT_VERSION = 84;
 				DEVELOPMENT_TEAM = 5QM2B4QG82;
 				INFOPLIST_FILE = streakoid/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

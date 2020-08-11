@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Text, ListItem } from 'react-native-elements';
 
-import { LongestStreakFlame } from './LongestStreakFlame';
+import { LongestEverStreakFlame } from './LongestEverStreakFlame';
 import { StreakFlame } from './StreakFlame';
 import { StreakTotalTimesTracked } from './StreakTotalTimesTracked';
 
@@ -37,7 +37,7 @@ class IndividualStreakLeaderboardItem extends PureComponent<Props> {
                 subtitle={
                     <View style={{ flexDirection: 'row' }}>
                         <View>
-                            <LongestStreakFlame numberOfDaysInARow={longestStreakNumberOfDaysInARow} />
+                            <LongestEverStreakFlame numberOfDaysInARow={longestStreakNumberOfDaysInARow} />
                         </View>
                         <View style={{ marginLeft: 5 }}>
                             <StreakFlame

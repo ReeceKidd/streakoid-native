@@ -15,9 +15,9 @@ import { faPeopleCarry } from '@fortawesome/pro-solid-svg-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
-import { LongestStreakFlame } from '../components/LongestStreakFlame';
 import { StreakFlame } from '../components/StreakFlame';
 import { StreakTotalTimesTracked } from '../components/StreakTotalTimesTracked';
+import { LongestEverStreakFlame } from '../components/LongestEverStreakFlame';
 
 const mapStateToProps = (state: AppState) => {
     const currentUser = state && state.users && state.users.currentUser;
@@ -135,7 +135,7 @@ class TeamStreakLeaderboardScreenComponent extends PureComponent<Props> {
                                     subtitle={
                                         <View style={{ flexDirection: 'row' }}>
                                             <View>
-                                                <LongestStreakFlame
+                                                <LongestEverStreakFlame
                                                     numberOfDaysInARow={longestTeamStreakNumberOfDays}
                                                 />
                                             </View>
