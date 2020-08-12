@@ -2,15 +2,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {
-    faCrown,
-    faHelmetBattle,
-    faRobot,
-    faUser,
-    faCog,
-    faCalendarCheck,
-    faUserFriends,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faCrown, faHelmetBattle, faRobot, faUser, faCog, faCalendarCheck } from '@fortawesome/pro-solid-svg-icons';
 import { StreakBottomTab } from './StreakBottomTab';
 
 import {
@@ -21,7 +13,6 @@ import {
     accountStack,
     upgradeStack,
 } from './RootNavigator';
-import { ActivityFeedBottomTab } from './ActivityFeedBottomTab';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,7 +22,6 @@ export enum DrawerScreens {
     Upgrade = 'Upgrade',
     Challenges = 'Challenges',
     Leaderboards = 'Leaderboards',
-    ActivityFeed = 'ActivityFeed',
     Recommendations = 'Recommendations',
     Users = 'Users',
     Account = 'Account',
@@ -53,16 +43,6 @@ const sharedDrawerOptions = [
             unmountOnBlur: true,
         }}
         component={leaderboardsStack}
-    />,
-    <Drawer.Screen
-        key={DrawerScreens.ActivityFeed}
-        name={DrawerScreens.ActivityFeed}
-        options={{
-            title: 'Activity Feed',
-            drawerIcon: () => <FontAwesomeIcon icon={faUserFriends} />,
-            unmountOnBlur: true,
-        }}
-        component={ActivityFeedBottomTab}
     />,
     <Drawer.Screen
         key={DrawerScreens.Recommendations}

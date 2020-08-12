@@ -72,7 +72,14 @@ class UserProfileScreenComponent extends PureComponent<Props> {
         const { selectedUser, getUserIsLoading, currentUser } = this.props;
         const profileImage = this.props.route.params.profileImage || selectedUser.profileImages.originalImageUrl;
         const { soloStreaks, teamStreaks, challengeStreaks } = selectedUser;
-        const { longestSoloStreak, longestChallengeStreak, longestTeamMemberStreak, longestTeamStreak } = selectedUser;
+        const {
+            longestEverStreak,
+            longestCurrentStreak,
+            longestSoloStreak,
+            longestChallengeStreak,
+            longestTeamMemberStreak,
+            longestTeamStreak,
+        } = selectedUser;
         return (
             <ScrollView style={styles.container}>
                 <>
@@ -133,6 +140,8 @@ class UserProfileScreenComponent extends PureComponent<Props> {
                             <Spacer>
                                 <View>
                                     <LongestStreakCards
+                                        longestEverStreak={longestEverStreak}
+                                        longestCurrentStreak={longestCurrentStreak}
                                         longestSoloStreak={longestSoloStreak}
                                         longestChallengeStreak={longestChallengeStreak}
                                         longestTeamMemberStreak={longestTeamMemberStreak}

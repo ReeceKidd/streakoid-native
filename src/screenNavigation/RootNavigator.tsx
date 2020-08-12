@@ -57,8 +57,6 @@ import { TutorialCompleteScreen } from '../screens/tutorial/TutorialCompleteScre
 import { UpgradeScreen } from '../screens/UpgradeScreen';
 import { UsersScreen } from '../screens/UsersScreen';
 import { UserProfileScreen } from '../screens/UserProfileScreen';
-import { FollowingActivityScreen } from '../screens/FollowingActivityScreen';
-import { GlobalActivityScreen } from '../screens/GlobalActivityScreen';
 import { TeamMemberStreakLeaderboardScreen } from '../screens/TeamMemberStreakLeaderboardScreen';
 
 export interface SoloStreakInfoRouteParams {
@@ -256,28 +254,6 @@ const CompletedCustomizationStackScreen = (
         name={Screens.CompletedCustomization}
         options={{ title: 'All done!', headerLeft: () => <HamburgerSelector /> }}
         component={CompletedCustomizationScreen}
-    />
-);
-
-const FollowingActivityStackScreen = (
-    <Stack.Screen
-        name={Screens.FollowingActivity}
-        component={FollowingActivityScreen}
-        options={() => ({
-            title: 'Following Activity',
-            headerLeft: () => <HamburgerSelector />,
-        })}
-    />
-);
-
-const GlobalActivityStackScreen = (
-    <Stack.Screen
-        name={Screens.GlobalActivity}
-        component={GlobalActivityScreen}
-        options={() => ({
-            title: 'Global Activity ',
-            headerLeft: () => <HamburgerSelector />,
-        })}
     />
 );
 
@@ -771,8 +747,6 @@ export const getStackScreens = () => {
             {ChooseAPasswordStackScreen}
             {CompletedRegistrationStackScreen}
             {CompletedCustomizationStackScreen}
-            {FollowingActivityStackScreen}
-            {GlobalActivityStackScreen}
             {ChallengesStackScreen}
             {ChallengeInfoStackScreen}
             {ChallengeStreaksStackScreen}
@@ -836,10 +810,4 @@ export const accountStack = () => (
 );
 export const upgradeStack = () => (
     <Stack.Navigator initialRouteName={Screens.Upgrade}>{getStackScreens()}</Stack.Navigator>
-);
-export const followingActivityFeedStack = () => (
-    <Stack.Navigator initialRouteName={Screens.FollowingActivity}>{getStackScreens()}</Stack.Navigator>
-);
-export const globalActivityFeedStack = () => (
-    <Stack.Navigator initialRouteName={Screens.GlobalActivity}>{getStackScreens()}</Stack.Navigator>
 );

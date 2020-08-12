@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react';
 
+import { LongestCurrentStreak } from '@streakoid/streakoid-models/lib/Models/LongestCurrentStreak';
+import { LongestEverStreak } from '@streakoid/streakoid-models/lib/Models/LongestEverStreak';
 import { LongestChallengeStreak } from '@streakoid/streakoid-models/lib/Models/LongestChallengeStreak';
 import { LongestTeamMemberStreak } from '@streakoid/streakoid-models/lib/Models/LongestTeamMemberStreak';
 import { LongestSoloStreak } from '@streakoid/streakoid-models/lib/Models/LongestSoloStreak';
 import { LongestTeamStreak } from '@streakoid/streakoid-models/lib/Models/LongestTeamStreak';
+
+import { LongestEverStreakCard } from './LongestEverStreakCard';
+import { LongestCurrentStreakCard } from './LongestCurrentStreakCard';
 import { LongestSoloStreakCard } from './LongestSoloStreakCard';
 import { LongestChallengeStreakCard } from './LongestChallengeStreakCard';
 import { LongestTeamMemberStreakCard } from './LongestTeamMemberStreakCard';
@@ -13,6 +18,8 @@ import { RootStackParamList } from '../screenNavigation/RootNavigator';
 
 interface LongestStreakCardsProps {
     navigation: StackNavigationProp<RootStackParamList>;
+    longestEverStreak: LongestEverStreak;
+    longestCurrentStreak: LongestCurrentStreak;
     longestSoloStreak: LongestSoloStreak;
     longestChallengeStreak: LongestChallengeStreak;
     longestTeamMemberStreak: LongestTeamMemberStreak;
@@ -24,6 +31,8 @@ interface LongestStreakCardsProps {
 class LongestStreakCards extends PureComponent<LongestStreakCardsProps> {
     render() {
         const {
+            longestEverStreak,
+            longestCurrentStreak,
             longestSoloStreak,
             longestChallengeStreak,
             longestTeamMemberStreak,
@@ -33,6 +42,11 @@ class LongestStreakCards extends PureComponent<LongestStreakCardsProps> {
         } = this.props;
         return (
             <>
+                <LongestEverStreakCard navigation={this.props.navigation} longestEverStreak={longestEverStreak} />
+                <LongestCurrentStreakCard
+                    navigation={this.props.navigation}
+                    longestCurrentStreak={longestCurrentStreak}
+                />
                 <LongestSoloStreakCard
                     navigation={this.props.navigation}
                     soloStreakId={longestSoloStreak && longestSoloStreak.soloStreakId}

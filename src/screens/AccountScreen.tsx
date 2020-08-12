@@ -175,7 +175,14 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
             uploadProfileImageSuccessMessage,
         } = this.props;
         const profileImage = currentUser && currentUser.profileImages.originalImageUrl;
-        const { longestSoloStreak, longestChallengeStreak, longestTeamMemberStreak, longestTeamStreak } = currentUser;
+        const {
+            longestEverStreak,
+            longestCurrentStreak,
+            longestSoloStreak,
+            longestChallengeStreak,
+            longestTeamMemberStreak,
+            longestTeamStreak,
+        } = currentUser;
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView>
@@ -218,6 +225,8 @@ class AccountScreenComponent extends React.PureComponent<Props, { photo: any }> 
                         <Spacer>
                             <View>
                                 <LongestStreakCards
+                                    longestEverStreak={longestEverStreak}
+                                    longestCurrentStreak={longestCurrentStreak}
                                     longestSoloStreak={longestSoloStreak}
                                     longestChallengeStreak={longestChallengeStreak}
                                     longestTeamMemberStreak={longestTeamMemberStreak}
