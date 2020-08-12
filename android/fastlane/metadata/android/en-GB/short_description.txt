@@ -1,1 +1,1 @@
-Streakoid is a simple habit tracker that lets you build habits with others.
+Streakoid helps you build better habits to live your best life.
