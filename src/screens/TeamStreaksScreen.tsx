@@ -64,8 +64,11 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    getLiveTeamStreaks: bindActionCreators(teamStreakActions.getLiveTeamStreaks, dispatch),
-    getArchivedTeamStreaks: bindActionCreators(teamStreakActions.getArchivedTeamStreaks, dispatch),
+    getCurrentUserLiveTeamStreaks: bindActionCreators(teamStreakActions.getCurrentUserLiveTeamStreaks, dispatch),
+    getCurrentUserArchivedTeamStreaks: bindActionCreators(
+        teamStreakActions.getCurrentUserArchivedTeamStreaks,
+        dispatch,
+    ),
     getTeamStreak: bindActionCreators(teamStreakActions.getSelectedTeamStreak, dispatch),
     completeTeamMemberStreakTask: bindActionCreators(
         teamMemberStreakTaskActions.completeTeamMemberStreakTask,
@@ -100,9 +103,9 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
         const { isPayingMember, totalLiveStreaks } = this.props;
         const currentUserId = this.props.currentUser._id;
         if (currentUserId) {
-            this.props.getLiveTeamStreaks({ currentUserId });
+            this.props.getCurrentUserLiveTeamStreaks();
         }
-        this.props.getArchivedTeamStreaks();
+        this.props.getCurrentUserArchivedTeamStreaks();
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
     }
@@ -122,7 +125,7 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
         if (nextAppState === 'active') {
             const currentUserId = this.props.currentUser._id;
             if (currentUserId) {
-                this.props.getLiveTeamStreaks({ currentUserId });
+                this.props.getCurrentUserLiveTeamStreaks();
             }
         }
     };
@@ -130,8 +133,8 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
     render(): JSX.Element {
         const {
             getTeamStreak,
-            getLiveTeamStreaks,
-            getArchivedTeamStreaks,
+            getCurrentUserLiveTeamStreaks,
+            getCurrentUserArchivedTeamStreaks,
             recoverTeamMemberStreak,
             completeTeamMemberStreakTask,
             incompleteTeamMemberStreakTask,
@@ -168,7 +171,7 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                         <LiveTeamStreakList
                             navigation={this.props.navigation}
                             getTeamStreak={getTeamStreak}
-                            getLiveTeamStreaks={getLiveTeamStreaks}
+                            getLiveTeamStreaks={getCurrentUserLiveTeamStreaks}
                             completeTeamMemberStreakTask={completeTeamMemberStreakTask}
                             incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
                             recoverTeamMemberStreak={recoverTeamMemberStreak}
@@ -185,7 +188,7 @@ class TeamStreaksScreenComponent extends PureComponent<Props> {
                         <ArchivedTeamStreakList
                             navigation={this.props.navigation}
                             getTeamStreak={getTeamStreak}
-                            getArchivedTeamStreaks={getArchivedTeamStreaks}
+                            getArchivedTeamStreaks={getCurrentUserArchivedTeamStreaks}
                             archivedTeamStreaks={archivedTeamStreaks}
                             getMultipleArchivedTeamStreaksIsLoading={getMultipleArchivedTeamStreaksIsLoading}
                         />

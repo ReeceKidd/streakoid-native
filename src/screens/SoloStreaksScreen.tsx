@@ -65,11 +65,14 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
     updateCurrentUser: bindActionCreators(userActions.updateCurrentUser, dispatch),
-    getLiveSoloStreaks: bindActionCreators(soloStreakActions.getLiveSoloStreaks, dispatch),
+    getCurrentUserLiveSoloStreaks: bindActionCreators(soloStreakActions.getCurrentUserLiveSoloStreaks, dispatch),
     getSoloStreak: bindActionCreators(soloStreakActions.getSoloStreak, dispatch),
     completeSoloStreakListTask: bindActionCreators(soloStreakActions.completeSoloStreakListTask, dispatch),
     incompleteSoloStreakListTask: bindActionCreators(soloStreakActions.incompleteSoloStreakListTask, dispatch),
-    getArchivedSoloStreaks: bindActionCreators(soloStreakActions.getArchivedSoloStreaks, dispatch),
+    getCurrentUserArchivedSoloStreaks: bindActionCreators(
+        soloStreakActions.getCurrentUserArchivedSoloStreaks,
+        dispatch,
+    ),
     recoverSoloStreak: bindActionCreators(soloStreakActions.recoverSoloStreak, dispatch),
 });
 
@@ -96,9 +99,9 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
     componentDidMount() {
         const currentUserId = this.props.currentUser._id;
         if (currentUserId) {
-            this.props.getLiveSoloStreaks({ currentUserId });
+            this.props.getCurrentUserLiveSoloStreaks();
         }
-        this.props.getArchivedSoloStreaks();
+        this.props.getCurrentUserArchivedSoloStreaks();
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
         ReactNativeAppState.addEventListener('change', this._handleAppStateChange);
@@ -119,7 +122,7 @@ class SoloStreaksScreenComponent extends PureComponent<Props> {
         if (nextAppState === 'active') {
             const currentUserId = this.props.currentUser._id;
             if (currentUserId) {
-                this.props.getLiveSoloStreaks({ currentUserId });
+                this.props.getCurrentUserLiveSoloStreaks();
             }
         }
     };

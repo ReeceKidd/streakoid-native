@@ -93,7 +93,7 @@ const mapStateToProps = (state: AppState) => {
     const getMultipleLiveSoloStreaksIsLoading = state && state.soloStreaks.getMultipleLiveSoloStreaksIsLoading;
     const getMultipleLiveTeamStreaksIsLoading =
         state && state.teamStreaks && state.teamStreaks.getMultipleLiveTeamStreaksIsLoading;
-    const getLiveChallengeStreaksIsLoading =
+    const getCurrentUserLiveChallengeStreaksIsLoading =
         state.challengeStreaks && state.challengeStreaks.getLiveChallengeStreaksIsLoading;
     const incompleteSoloStreaks = getIncompleteSoloStreaks(state);
     const incompleteTeamStreaks = getIncompleteTeamStreaks(state);
@@ -119,7 +119,7 @@ const mapStateToProps = (state: AppState) => {
         incompleteTeamStreaks,
         getMultipleLiveTeamStreaksIsLoading,
         incompleteChallengeStreaks,
-        getLiveChallengeStreaksIsLoading,
+        getCurrentUserLiveChallengeStreaksIsLoading,
         totalIncompleteStreaks,
         totalNumberOfSoloStreaks,
         totalNumberOfTeamStreaks,
@@ -131,7 +131,7 @@ const mapStateToProps = (state: AppState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
-    getLiveSoloStreaks: bindActionCreators(soloStreakActions.getLiveSoloStreaks, dispatch),
+    getCurrentUserLiveSoloStreaks: bindActionCreators(soloStreakActions.getCurrentUserLiveSoloStreaks, dispatch),
     getSoloStreak: bindActionCreators(soloStreakActions.getSoloStreak, dispatch),
     completeSoloStreakListTask: bindActionCreators(soloStreakActions.completeSoloStreakListTask, dispatch),
     incompleteSoloStreakListTask: bindActionCreators(soloStreakActions.incompleteSoloStreakListTask, dispatch),
@@ -142,7 +142,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
         challengeStreakActions.updateChallengeStreakTimezones,
         dispatch,
     ),
-    getLiveTeamStreaks: bindActionCreators(teamStreakActions.getLiveTeamStreaks, dispatch),
+    getCurrentUserLiveTeamStreaks: bindActionCreators(teamStreakActions.getCurrentUserLiveTeamStreaks, dispatch),
     getSelectedTeamStreak: bindActionCreators(teamStreakActions.getSelectedTeamStreak, dispatch),
     completeTeamMemberStreakTask: bindActionCreators(
         teamMemberStreakTaskActions.completeTeamMemberStreakTask,
@@ -152,7 +152,10 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
         teamMemberStreakTaskActions.incompleteTeamMemberStreakTask,
         dispatch,
     ),
-    getLiveChallengeStreaks: bindActionCreators(challengeStreakActions.getLiveChallengeStreaks, dispatch),
+    getCurrentUserLiveChallengeStreaks: bindActionCreators(
+        challengeStreakActions.getCurrentUserLiveChallengeStreaks,
+        dispatch,
+    ),
     getChallengeStreak: bindActionCreators(challengeStreakActions.getChallengeStreak, dispatch),
     completeChallengeStreakListTask: bindActionCreators(
         challengeStreakActions.completeChallengeStreakListTask,
@@ -190,9 +193,9 @@ class HomeScreenComponent extends PureComponent<Props> {
         this.props.getCurrentUser();
         const currentUserId = this.props.currentUser._id;
         if (currentUserId) {
-            this.props.getLiveChallengeStreaks({ currentUserId });
-            this.props.getLiveTeamStreaks({ currentUserId });
-            this.props.getLiveSoloStreaks({ currentUserId });
+            this.props.getCurrentUserLiveChallengeStreaks();
+            this.props.getCurrentUserLiveTeamStreaks();
+            this.props.getCurrentUserLiveSoloStreaks();
             analytics.alias(currentUserId);
             //analytics.identify(currentUser._id, { email: currentUser.email, username: currentUser.username });
         }
@@ -211,10 +214,9 @@ class HomeScreenComponent extends PureComponent<Props> {
 
     componentDidUpdate(prevProps: Props) {
         if (prevProps.currentUser._id !== this.props.currentUser._id) {
-            const currentUserId = this.props.currentUser._id;
-            this.props.getLiveChallengeStreaks({ currentUserId });
-            this.props.getLiveTeamStreaks({ currentUserId });
-            this.props.getLiveSoloStreaks({ currentUserId });
+            this.props.getCurrentUserLiveChallengeStreaks();
+            this.props.getCurrentUserLiveTeamStreaks();
+            this.props.getCurrentUserLiveSoloStreaks();
         }
     }
 
@@ -228,9 +230,9 @@ class HomeScreenComponent extends PureComponent<Props> {
             return;
         }
         if (nextAppState === 'active') {
-            this.props.getLiveSoloStreaks({ currentUserId });
-            this.props.getLiveChallengeStreaks({ currentUserId });
-            this.props.getLiveTeamStreaks({ currentUserId });
+            this.props.getCurrentUserLiveSoloStreaks();
+            this.props.getCurrentUserLiveChallengeStreaks();
+            this.props.getCurrentUserLiveTeamStreaks();
         }
     };
 
@@ -378,11 +380,11 @@ class HomeScreenComponent extends PureComponent<Props> {
             completeChallengeStreakListTask,
             incompleteChallengeStreakListTask,
             getChallengeStreak,
-            getLiveChallengeStreaks,
+            getCurrentUserLiveChallengeStreaks,
             recoverChallengeStreak,
             incompleteChallengeStreaks,
             totalNumberOfChallengeStreaks,
-            getLiveChallengeStreaksIsLoading,
+            getCurrentUserLiveChallengeStreaksIsLoading,
             userId,
             navigation,
         } = this.props;
@@ -394,7 +396,9 @@ class HomeScreenComponent extends PureComponent<Props> {
                             Challenge Streaks <FontAwesomeIcon icon={faMedal} />
                         </Text>
                     </TouchableOpacity>
-                    {getLiveChallengeStreaksIsLoading ? <ActivityIndicator style={{ marginLeft: 10 }} /> : null}
+                    {getCurrentUserLiveChallengeStreaksIsLoading ? (
+                        <ActivityIndicator style={{ marginLeft: 10 }} />
+                    ) : null}
                 </View>
                 <View style={{ marginTop: 5 }}>
                     <ProgressBar
@@ -407,11 +411,11 @@ class HomeScreenComponent extends PureComponent<Props> {
                 </View>
                 <LiveChallengeStreakList
                     getChallengeStreak={getChallengeStreak}
-                    getLiveChallengeStreaks={getLiveChallengeStreaks}
+                    getLiveChallengeStreaks={getCurrentUserLiveChallengeStreaks}
                     completeChallengeStreakListTask={completeChallengeStreakListTask}
                     incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
                     recoverChallengeStreak={recoverChallengeStreak}
-                    getLiveChallengeStreaksIsLoading={getLiveChallengeStreaksIsLoading}
+                    getLiveChallengeStreaksIsLoading={getCurrentUserLiveChallengeStreaksIsLoading}
                     liveChallengeStreaks={incompleteChallengeStreaks}
                     totalNumberOfChallengeStreaks={totalNumberOfChallengeStreaks}
                     navigation={navigation}
@@ -424,7 +428,7 @@ class HomeScreenComponent extends PureComponent<Props> {
     renderIncompleteTeamStreaks(): JSX.Element {
         const {
             getSelectedTeamStreak,
-            getLiveTeamStreaks,
+            getCurrentUserLiveTeamStreaks,
             completeTeamMemberStreakTask,
             incompleteTeamMemberStreakTask,
             recoverTeamMemberStreak,
@@ -454,7 +458,7 @@ class HomeScreenComponent extends PureComponent<Props> {
                 </View>
                 <LiveTeamStreakList
                     getTeamStreak={getSelectedTeamStreak}
-                    getLiveTeamStreaks={getLiveTeamStreaks}
+                    getLiveTeamStreaks={getCurrentUserLiveTeamStreaks}
                     completeTeamMemberStreakTask={completeTeamMemberStreakTask}
                     incompleteTeamMemberStreakTask={incompleteTeamMemberStreakTask}
                     recoverTeamMemberStreak={recoverTeamMemberStreak}

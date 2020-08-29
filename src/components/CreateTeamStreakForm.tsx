@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import juration from 'juration';
 import { Formik, FormikErrors } from 'formik';
 import { View } from 'react-native';
 import { Spacer } from './Spacer';
@@ -20,56 +19,24 @@ interface CreateTeamStreakFormProps {
 
 interface FormValues {
     streakName: string;
-    streakDescription?: string;
-    streakDuration?: string;
 }
 
 type Props = CreateTeamStreakFormProps;
 
 const validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
-    const { streakName, streakDuration } = values;
+    const { streakName } = values;
     if (!streakName) {
         errors.streakName = 'You must enter a streak name';
-    }
-    if (streakDuration) {
-        try {
-            const numberOfSeconds = juration.parse(streakDuration);
-            if (numberOfSeconds <= 0) {
-                errors.streakDuration = 'Duration cannot be less than or equal to zero';
-            }
-        } catch (err) {
-            errors.streakDuration = 'Enter a valid duration like 30 minutes';
-        }
-
-        if (Number(streakDuration)) {
-            errors.streakDuration = 'Specify seconds, minutes or hours';
-        }
     }
 
     return errors;
 };
 
 class CreateTeamStreakForm extends PureComponent<Props> {
-    onSubmit = ({
-        streakName,
-        streakDescription,
-        streakDuration,
-    }: {
-        streakName: string;
-        streakDescription?: string;
-        streakDuration?: string;
-    }): void => {
-        const convertedNaturalLanguageTimeSeconds = (streakDuration && juration.parse(streakDuration)) || undefined;
-        const numberOfMinutes =
-            convertedNaturalLanguageTimeSeconds && convertedNaturalLanguageTimeSeconds > 0
-                ? convertedNaturalLanguageTimeSeconds / 60
-                : undefined;
+    onSubmit = ({ streakName }: { streakName: string }): void => {
         this.props.createTeamStreak({
             streakName,
-            members: [],
-            streakDescription: streakDescription !== '' ? streakDescription : undefined,
-            numberOfMinutes,
         });
     };
 
@@ -98,36 +65,6 @@ class CreateTeamStreakForm extends PureComponent<Props> {
                             />
                             {errors.streakName && touched.streakName ? (
                                 <ErrorMessage message={errors.streakName} />
-                            ) : null}
-                        </Spacer>
-                        <Spacer>
-                            <Input
-                                label="Streak description"
-                                nativeID="streakDescription"
-                                onChangeText={handleChange('streakDescription')}
-                                onBlur={handleBlur('streakDescription')}
-                                value={values.streakDescription}
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                multiline={true}
-                            />
-                            {errors.streakDescription && touched.streakDescription ? (
-                                <ErrorMessage message={errors.streakDescription} />
-                            ) : null}
-                        </Spacer>
-                        <Spacer>
-                            <Input
-                                label="How long will you do this for everyday?"
-                                nativeID="streakDuration"
-                                placeholder="30 minutes"
-                                onChangeText={handleChange('streakDuration')}
-                                onBlur={handleBlur('streakDuration')}
-                                value={values.streakDuration}
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                            />
-                            {errors.streakDuration && touched.streakDuration ? (
-                                <ErrorMessage message={errors.streakDuration} />
                             ) : null}
                         </Spacer>
                         <Spacer>

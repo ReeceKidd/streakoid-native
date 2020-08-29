@@ -5,22 +5,15 @@ import { View } from 'react-native';
 import { Spacer } from './Spacer';
 import { Input, Button } from 'react-native-elements';
 import { ErrorMessage } from './ErrorMessage';
+import IndividualVisibilityTypes from '@streakoid/streakoid-models/lib/Types/IndividualVisibilityTypes';
+import { soloStreakActions } from '../actions/authenticatedSharedActions';
 
 interface EditSoloStreakFormProps {
-    editSoloStreak: ({
-        soloStreakId,
-        streakName,
-        streakDescription,
-        numberOfMinutes,
-    }: {
-        soloStreakId: string;
-        streakName: string;
-        streakDescription?: string;
-        numberOfMinutes?: number;
-    }) => void;
+    editSoloStreak: typeof soloStreakActions.editSoloStreak;
     clearMessages: () => void;
     soloStreakId: string;
     streakName: string;
+    visibility: IndividualVisibilityTypes;
     editSoloStreakIsLoading: boolean;
     editSoloStreakErrorMessage: string;
     streakDescription?: string;
@@ -29,6 +22,7 @@ interface EditSoloStreakFormProps {
 
 interface FormValues {
     streakName: string;
+    visibility: IndividualVisibilityTypes;
     streakDescription?: string;
     streakDuration?: string;
 }
@@ -63,14 +57,16 @@ class EditSoloStreakForm extends PureComponent<Props> {
     onSubmit = ({
         soloStreakId,
         streakName,
+        visibility,
         streakDescription,
         streakDuration,
     }: {
         soloStreakId: string;
         streakName: string;
+        visibility: IndividualVisibilityTypes;
         streakDescription?: string;
         streakDuration?: string;
-    }): void => {
+    }) => {
         const convertedNaturalLanguageTimeSeconds = (streakDuration && juration.parse(streakDuration)) || undefined;
         const numberOfMinutes =
             convertedNaturalLanguageTimeSeconds && convertedNaturalLanguageTimeSeconds > 0
@@ -79,19 +75,27 @@ class EditSoloStreakForm extends PureComponent<Props> {
         return this.props.editSoloStreak({
             soloStreakId,
             streakName,
+            visibility,
             streakDescription: streakDescription !== '' ? streakDescription : undefined,
             numberOfMinutes,
         });
     };
 
     render(): JSX.Element {
-        const { soloStreakId, streakName, streakDescription, numberOfMinutes, editSoloStreakIsLoading } = this.props;
+        const {
+            soloStreakId,
+            streakName,
+            visibility,
+            streakDescription,
+            numberOfMinutes,
+            editSoloStreakIsLoading,
+        } = this.props;
         const numberOfSeconds = numberOfMinutes && numberOfMinutes * 60;
         const streakDuration =
             (numberOfSeconds && juration.stringify(numberOfSeconds, { format: 'long' })) || undefined;
         return (
             <Formik
-                initialValues={{ streakName, streakDescription, streakDuration }}
+                initialValues={{ streakName, visibility, streakDescription, streakDuration }}
                 onSubmit={(values: FormValues): void => {
                     this.onSubmit({ ...values, soloStreakId });
                 }}
@@ -111,6 +115,21 @@ class EditSoloStreakForm extends PureComponent<Props> {
                             />
                             {errors.streakName && touched.streakName ? (
                                 <ErrorMessage message={errors.streakName} />
+                            ) : null}
+                        </Spacer>
+                        <Spacer>
+                            <Input
+                                label="Visibility"
+                                nativeID="visibility"
+                                onChangeText={handleChange('visibility')}
+                                onBlur={handleBlur('visibility')}
+                                value={values.visibility}
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                multiline={true}
+                            />
+                            {errors.streakDescription && touched.streakDescription ? (
+                                <ErrorMessage message={errors.streakDescription} />
                             ) : null}
                         </Spacer>
                         <Spacer>

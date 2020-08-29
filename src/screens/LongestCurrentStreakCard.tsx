@@ -8,6 +8,7 @@ import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faFlame } from '@fortawesome/pro-solid-svg-icons';
 import { LongestCurrentStreak } from '@streakoid/streakoid-models/lib/Models/LongestCurrentStreak';
+import StreakTypes from '@streakoid/streakoid-models/lib/Types/StreakTypes';
 
 interface LongestCurrentStreakCardProps {
     navigation: StackNavigationProp<RootStackParamList>;
@@ -17,21 +18,11 @@ interface LongestCurrentStreakCardProps {
 class LongestCurrentStreakCard extends PureComponent<LongestCurrentStreakCardProps> {
     render() {
         const { navigation } = this.props;
-        const {
-            numberOfDays,
-            soloStreakId,
-            soloStreakName,
-            challengeStreakId,
-            challengeName,
-            teamMemberStreakId,
-            teamStreakId,
-            teamStreakName,
-            startDate,
-            endDate,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } = this.props.longestCurrentStreak as any;
-        const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
-        if (soloStreakId) {
+        const { numberOfDays } = this.props.longestCurrentStreak;
+
+        if (this.props.longestCurrentStreak.streakType === StreakTypes.solo) {
+            const { startDate, soloStreakId, soloStreakName } = this.props.longestCurrentStreak;
+            const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
             return (
                 <TouchableOpacity
                     onPress={() =>
@@ -44,7 +35,7 @@ class LongestCurrentStreakCard extends PureComponent<LongestCurrentStreakCardPro
                 >
                     <Card>
                         <Text h4 style={{ textAlign: 'center' }}>
-                            <FontAwesomeIcon icon={faFlame} color={endDate ? 'grey' : 'red'} />
+                            <FontAwesomeIcon icon={faFlame} color={'red'} />
                             {numberOfDays}
                         </Text>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Longest current streak</Text>
@@ -56,7 +47,9 @@ class LongestCurrentStreakCard extends PureComponent<LongestCurrentStreakCardPro
                 </TouchableOpacity>
             );
         }
-        if (challengeStreakId) {
+        if (this.props.longestCurrentStreak.streakType === StreakTypes.challenge) {
+            const { challengeStreakId, challengeName, startDate } = this.props.longestCurrentStreak;
+            const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
             return (
                 <TouchableOpacity
                     onPress={() =>
@@ -68,7 +61,7 @@ class LongestCurrentStreakCard extends PureComponent<LongestCurrentStreakCardPro
                 >
                     <Card>
                         <Text h4 style={{ textAlign: 'center' }}>
-                            <FontAwesomeIcon icon={faFlame} color={endDate ? 'grey' : 'red'} />
+                            <FontAwesomeIcon icon={faFlame} color={'red'} />
                             {numberOfDays}
                         </Text>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Longest current streak</Text>
@@ -80,7 +73,9 @@ class LongestCurrentStreakCard extends PureComponent<LongestCurrentStreakCardPro
                 </TouchableOpacity>
             );
         }
-        if (teamMemberStreakId) {
+        if (this.props.longestCurrentStreak.streakType === StreakTypes.teamMember) {
+            const { startDate, teamStreakId, teamStreakName } = this.props.longestCurrentStreak;
+            const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
             return (
                 <TouchableOpacity
                     onPress={() =>
@@ -93,7 +88,7 @@ class LongestCurrentStreakCard extends PureComponent<LongestCurrentStreakCardPro
                 >
                     <Card>
                         <Text h4 style={{ textAlign: 'center' }}>
-                            <FontAwesomeIcon icon={faFlame} color={endDate ? 'grey' : 'red'} />
+                            <FontAwesomeIcon icon={faFlame} color={'red'} />
                             {numberOfDays}
                         </Text>
                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>Longest current streak</Text>

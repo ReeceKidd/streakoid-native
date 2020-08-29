@@ -147,8 +147,8 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                         username,
                                         profileImage,
                                         challengeStreakId,
-                                        longestStreakNumberOfDaysInARow,
-                                        currentStreakNumberOfDaysInARow,
+                                        longestChallengeStreakNumberOfDays,
+                                        currentStreak,
                                         totalTimesTracked,
                                     } = item;
                                     return (
@@ -174,12 +174,12 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                                                     icon={faCrown}
                                                                     style={{
                                                                         color:
-                                                                            longestStreakNumberOfDaysInARow > 0
+                                                                            longestChallengeStreakNumberOfDays > 0
                                                                                 ? 'gold'
                                                                                 : 'grey',
                                                                     }}
                                                                 />
-                                                                {longestStreakNumberOfDaysInARow}
+                                                                {longestChallengeStreakNumberOfDays}
                                                             </Text>
                                                             <Text style={{ marginLeft: 5 }}>
                                                                 <FontAwesomeIcon
@@ -198,12 +198,12 @@ class ChallengeInfoScreenComponent extends PureComponent<Props> {
                                                                 icon={faFlame}
                                                                 style={{
                                                                     color:
-                                                                        currentStreakNumberOfDaysInARow > 0
+                                                                        currentStreak.numberOfDaysInARow > 0
                                                                             ? 'red'
                                                                             : 'grey',
                                                                 }}
                                                             />
-                                                            {currentStreakNumberOfDaysInARow}
+                                                            {currentStreak.numberOfDaysInARow}
                                                         </Text>
                                                     }
                                                 ></ListItem>

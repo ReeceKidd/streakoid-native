@@ -2,10 +2,6 @@ import React, { PureComponent } from 'react';
 
 import { LongestCurrentStreak } from '@streakoid/streakoid-models/lib/Models/LongestCurrentStreak';
 import { LongestEverStreak } from '@streakoid/streakoid-models/lib/Models/LongestEverStreak';
-import { LongestChallengeStreak } from '@streakoid/streakoid-models/lib/Models/LongestChallengeStreak';
-import { LongestTeamMemberStreak } from '@streakoid/streakoid-models/lib/Models/LongestTeamMemberStreak';
-import { LongestSoloStreak } from '@streakoid/streakoid-models/lib/Models/LongestSoloStreak';
-import { LongestTeamStreak } from '@streakoid/streakoid-models/lib/Models/LongestTeamStreak';
 
 import { LongestEverStreakCard } from './LongestEverStreakCard';
 import { LongestCurrentStreakCard } from './LongestCurrentStreakCard';
@@ -15,15 +11,19 @@ import { LongestTeamMemberStreakCard } from './LongestTeamMemberStreakCard';
 import { LongestTeamStreakCard } from './LongestTeamStreakCard';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../screenNavigation/RootNavigator';
+import { LongestEverSoloStreak } from '@streakoid/streakoid-models/lib/Models/LongestEverSoloStreak';
+import { LongestEverChallengeStreak } from '@streakoid/streakoid-models/lib/Models/LongestEverChallengeStreak';
+import { LongestEverTeamMemberStreak } from '@streakoid/streakoid-models/lib/Models/LongestEverTeamMemberStreak';
+import { LongestEverTeamStreak } from '@streakoid/streakoid-models/lib/Models/LongestEverTeamStreak';
 
 interface LongestStreakCardsProps {
     navigation: StackNavigationProp<RootStackParamList>;
     longestEverStreak: LongestEverStreak;
     longestCurrentStreak: LongestCurrentStreak;
-    longestSoloStreak: LongestSoloStreak;
-    longestChallengeStreak: LongestChallengeStreak;
-    longestTeamMemberStreak: LongestTeamMemberStreak;
-    longestTeamStreak: LongestTeamStreak;
+    longestSoloStreak: LongestEverSoloStreak;
+    longestChallengeStreak: LongestEverChallengeStreak;
+    longestTeamMemberStreak: LongestEverTeamMemberStreak;
+    longestTeamStreak: LongestEverTeamStreak;
     isUsersSoloStreak: boolean;
     userIsApartOfTeamStreak: boolean;
 }

@@ -8,6 +8,7 @@ import { RootStackParamList } from '../screenNavigation/RootNavigator';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faFlame } from '@fortawesome/pro-solid-svg-icons';
 import { LongestEverStreak } from '@streakoid/streakoid-models/lib/Models/LongestEverStreak';
+import StreakTypes from '@streakoid/streakoid-models/lib/Types/StreakTypes';
 
 interface LongestEverStreakCardProps {
     navigation: StackNavigationProp<RootStackParamList>;
@@ -17,21 +18,10 @@ interface LongestEverStreakCardProps {
 class LongestEverStreakCard extends PureComponent<LongestEverStreakCardProps> {
     render() {
         const { navigation } = this.props;
-        const {
-            numberOfDays,
-            soloStreakId,
-            soloStreakName,
-            challengeStreakId,
-            challengeName,
-            teamMemberStreakId,
-            teamStreakId,
-            teamStreakName,
-            startDate,
-            endDate,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } = this.props.longestEverStreak as any;
-        const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
-        if (soloStreakId) {
+        const { numberOfDays } = this.props.longestEverStreak;
+        if (this.props.longestEverStreak.streakType === StreakTypes.solo) {
+            const { startDate, endDate, soloStreakId, soloStreakName } = this.props.longestEverStreak;
+            const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
             return (
                 <TouchableOpacity
                     onPress={() =>
@@ -56,7 +46,9 @@ class LongestEverStreakCard extends PureComponent<LongestEverStreakCardProps> {
                 </TouchableOpacity>
             );
         }
-        if (challengeStreakId) {
+        if (this.props.longestEverStreak.streakType === StreakTypes.challenge) {
+            const { challengeStreakId, challengeName, startDate, endDate } = this.props.longestEverStreak;
+            const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
             return (
                 <TouchableOpacity
                     onPress={() =>
@@ -80,7 +72,9 @@ class LongestEverStreakCard extends PureComponent<LongestEverStreakCardProps> {
                 </TouchableOpacity>
             );
         }
-        if (teamMemberStreakId) {
+        if (this.props.longestEverStreak.streakType == StreakTypes.teamMember) {
+            const { startDate, endDate, teamStreakId, teamStreakName } = this.props.longestEverStreak;
+            const startDateDateString = startDate ? new Date(startDate).toDateString() : new Date().toDateString();
             return (
                 <TouchableOpacity
                     onPress={() =>

@@ -36,9 +36,9 @@ const getIncompleteChallengeStreaks = (state: AppState) => {
 const mapStateToProps = (state: AppState) => {
     const liveChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.liveChallengeStreaks;
     const archivedChallengeStreaks = state && state.challengeStreaks && state.challengeStreaks.archivedChallengeStreaks;
-    const getLiveChallengeStreaksIsLoading =
+    const getCurrentUserLiveChallengeStreaksIsLoading =
         state && state.challengeStreaks && state.challengeStreaks.getLiveChallengeStreaksIsLoading;
-    const getArchivedChallengeStreaksIsLoading =
+    const getCurrentUserArchivedChallengeStreaksIsLoading =
         state && state.challengeStreaks && state.challengeStreaks.getArchivedChallengeStreaksIsLoading;
     const totalNumberOfChallengeStreaks = state.challengeStreaks.liveChallengeStreaks.length;
     const currentUser = state && state.users && state.users.currentUser;
@@ -49,8 +49,8 @@ const mapStateToProps = (state: AppState) => {
     return {
         liveChallengeStreaks,
         archivedChallengeStreaks,
-        getLiveChallengeStreaksIsLoading,
-        getArchivedChallengeStreaksIsLoading,
+        getCurrentUserLiveChallengeStreaksIsLoading,
+        getCurrentUserArchivedChallengeStreaksIsLoading,
         timezone: currentUser.timezone,
         totalNumberOfChallengeStreaks,
         currentUser,
@@ -69,9 +69,15 @@ const mapDispatchToProps = (dispatch: Dispatch<AppActions>) => ({
         challengeStreakActions.incompleteChallengeStreakListTask,
         dispatch,
     ),
-    getLiveChallengeStreaks: bindActionCreators(challengeStreakActions.getLiveChallengeStreaks, dispatch),
+    getCurrentUserLiveChallengeStreaks: bindActionCreators(
+        challengeStreakActions.getCurrentUserLiveChallengeStreaks,
+        dispatch,
+    ),
     getChallengeStreak: bindActionCreators(challengeStreakActions.getChallengeStreak, dispatch),
-    getArchivedChallengeStreaks: bindActionCreators(challengeStreakActions.getArchivedChallengeStreaks, dispatch),
+    getCurrentUserArchivedChallengeStreaks: bindActionCreators(
+        challengeStreakActions.getCurrentUserArchivedChallengeStreaks,
+        dispatch,
+    ),
     recoverChallengeStreak: bindActionCreators(challengeStreakActions.recoverChallengeStreak, dispatch),
 });
 
@@ -94,18 +100,18 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
     componentDidMount() {
         const { isPayingMember, totalLiveStreaks } = this.props;
         this.props.navigation.setParams({ isPayingMember, totalLiveStreaks });
-        this.props.getArchivedChallengeStreaks();
+        this.props.getCurrentUserArchivedChallengeStreaks();
         const currentUserId = this.props.currentUser._id;
         if (currentUserId) {
-            this.props.getLiveChallengeStreaks({ currentUserId });
+            this.props.getCurrentUserLiveChallengeStreaks();
         }
     }
 
     componentDidUpdate(prevProps: Props) {
-        const { getLiveChallengeStreaksIsLoading } = this.props;
-        if (prevProps.getLiveChallengeStreaksIsLoading !== getLiveChallengeStreaksIsLoading) {
+        const { getCurrentUserLiveChallengeStreaksIsLoading } = this.props;
+        if (prevProps.getCurrentUserLiveChallengeStreaksIsLoading !== getCurrentUserLiveChallengeStreaksIsLoading) {
             this.props.navigation.setParams({
-                getLiveChallengeStreaksIsLoading: getLiveChallengeStreaksIsLoading,
+                getLiveChallengeStreaksIsLoading: getCurrentUserLiveChallengeStreaksIsLoading,
             });
         }
     }
@@ -116,23 +122,22 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
 
     _handleAppStateChange = (nextAppState: string) => {
         if (nextAppState === 'active') {
-            const currentUserId = this.props.currentUser._id;
-            this.props.getLiveChallengeStreaks({ currentUserId });
+            this.props.getCurrentUserLiveChallengeStreaks();
         }
     };
 
     render(): JSX.Element {
         const {
-            getLiveChallengeStreaks,
+            getCurrentUserLiveChallengeStreaks,
             getChallengeStreak,
             completeChallengeStreakListTask,
             incompleteChallengeStreakListTask,
             recoverChallengeStreak,
             liveChallengeStreaks,
-            getLiveChallengeStreaksIsLoading,
+            getCurrentUserLiveChallengeStreaksIsLoading,
             totalNumberOfChallengeStreaks,
             archivedChallengeStreaks,
-            getArchivedChallengeStreaksIsLoading,
+            getCurrentUserArchivedChallengeStreaksIsLoading,
             currentUser,
             isPayingMember,
             incompleteChallengeStreaks,
@@ -159,11 +164,11 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                     <View style={{ marginLeft: 15, marginRight: 15, marginBottom: 15 }}>
                         <LiveChallengeStreakList
                             navigation={this.props.navigation}
-                            getLiveChallengeStreaks={getLiveChallengeStreaks}
+                            getLiveChallengeStreaks={getCurrentUserLiveChallengeStreaks}
                             completeChallengeStreakListTask={completeChallengeStreakListTask}
                             incompleteChallengeStreakListTask={incompleteChallengeStreakListTask}
                             recoverChallengeStreak={recoverChallengeStreak}
-                            getLiveChallengeStreaksIsLoading={getLiveChallengeStreaksIsLoading}
+                            getLiveChallengeStreaksIsLoading={getCurrentUserLiveChallengeStreaksIsLoading}
                             liveChallengeStreaks={liveChallengeStreaks}
                             totalNumberOfChallengeStreaks={totalNumberOfChallengeStreaks}
                             getChallengeStreak={getChallengeStreak}
@@ -177,7 +182,9 @@ class ChallengeStreaksScreenComponent extends PureComponent<Props> {
                         <ArchivedChallengeStreakList
                             navigation={this.props.navigation}
                             archivedChallengeStreaks={archivedChallengeStreaks}
-                            getMultipleArchivedChallengeStreaksIsLoading={getArchivedChallengeStreaksIsLoading}
+                            getMultipleArchivedChallengeStreaksIsLoading={
+                                getCurrentUserArchivedChallengeStreaksIsLoading
+                            }
                         />
                     </Spacer>
                 </View>
